@@ -15,6 +15,20 @@ Modelo:
 
 ---
 
+## 2026-10-29 · E2
+**Feito:** `lib/camara.ts` (adapter: listar, perfil, órgãos, histórico; paginação por `links.next`).
+`scripts/sonda/camara.ts` busca os 70 perfis de SP, casa por hash de CPF com a amostra e gera
+`data/sonda/politicos-camara.json` (12 registros: 10 reeleitos, João Paulo Cunha com registro
+antigo, Derrite). 40 dos 70 eleitos de 2026 por SP já estão em exercício; os 4 ambíguos da E1
+eram reeleitos. `CLAUDE.md` corrigido (e-mail em `gabinete.email`, busca por nome por legislatura).
+**Decidido:** para quem não está em exercício, varrer legislaturas 56→50 por nome e confirmar
+pelo hash; nunca aceitar só o nome. Derrite entra no modelo com dois mandatos (Câmara até
+01/2027, Senado depois). Retry de 1 s resolveu os 504 da Câmara; manter.
+**Lacunas:** 4 novos sem registro na Câmara até 01/02/2027; João Paulo Cunha sem e-mail de
+gabinete. Ver `docs/LACUNAS.md`.
+**Próximo passo:** E3 — `/votacoes?idOrgao=180` por janela de datas (descobrir o intervalo máximo
+que a API aceita), depois `/orientacoes` de cada uma; medir volume e tempo.
+
 ## 2026-10-29 · E1
 **Feito:** `scripts/sonda/tse.ts` gera `data/sonda/politicos-tse.json` com os 20 da amostra
 (10 reeleitos, 5 novos, 2 senadores eleitos, 3 em exercício), votos válidos de 2026, hash de CPF

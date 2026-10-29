@@ -68,13 +68,14 @@ Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por esta
 - Quociente eleitoral: tratar **federação** como lista única. Frase na interface: "seu voto contou para [partido/federação], que elegeu N em [UF]". Nunca "ajudou a eleger Z".
 
 ### Câmara — `https://dadosabertos.camara.leg.br/api/v2` (JSON, sem chave)
-- `/deputados`, `/deputados/{id}` (tem CPF para o join com o TSE; email, redeSocial, situação).
+- `/deputados`, `/deputados/{id}` (tem CPF para o join com o TSE, confirmado em 70/70 de SP). E-mail oficial em `ultimoStatus.gabinete.email` (o `email` do topo vem nulo); foto em `ultimoStatus.urlFoto`; `redeSocial` é array de URLs.
+- `/deputados?nome=` sem `idLegislatura` só busca em exercício; com `idLegislatura=N` busca quem passou pela legislatura N. Ids são estáveis entre legislaturas. Eleitos pela 1ª vez em 2026 não existem até 01/02/2027; ex-deputados existem com registro antigo.
 - `/deputados/{id}/orgaos`, `/frentes`, `/historico`, `/despesas?ano&mes`.
 - `/votacoes?idOrgao=180&dataInicio&dataFim` — plenário. Depois `/votacoes/{id}/votos` e `/votacoes/{id}/orientacoes`.
 - `/proposicoes?idDeputadoAutor` retorna **coautorias**. Filtrar por `/proposicoes/{id}/autores` com `proponente = true`.
 - `tipoVoto` tem 5 valores: `Sim`, `Não`, `Abstenção`, `Obstrução`, `Artigo 17`. Quem não aparece no array = `ausente`. Tratar todos explicitamente.
 - Votação simbólica = array de votos vazio. Ignorar.
-- API instável, sem rate limit documentado. Retry com backoff, timeout de 30s, log por endpoint. Falha num endpoint não aborta o job.
+- API instável, sem rate limit documentado (observado: ~3% das chamadas falham e passam no retry). Retry com backoff, timeout de 30s, log por endpoint. Falha num endpoint não aborta o job.
 - Eleitos em 2026 só existem aqui a partir de 01/02/2027. Até lá, dado vem do TSE.
 
 ### Senado — `https://legis.senado.leg.br/dadosabertos` (XML por padrão; pedir JSON via header `Accept` ou sufixo `.json`)

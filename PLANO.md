@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E2** (atualizar esta linha ao avançar)
+**Etapa atual: E3** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -49,10 +49,10 @@ Calendário externo que afeta o plano:
 - Pronto quando: o JSON tem os 20 e nenhum campo vazio que a fonte preenchia.
 
 ### E2 · Câmara: perfil e join com o TSE
-- [ ] `lib/camara.ts` (adapter): `/deputados`, `/deputados/{id}`, `/orgaos`, `/historico`.
-- [ ] Join Câmara ↔ TSE por `cpf_hash` para os 15 deputados. Registrar quantos casaram;
+- [x] `lib/camara.ts` (adapter): `/deputados`, `/deputados/{id}`, `/orgaos`, `/historico`.
+- [x] Join Câmara ↔ TSE por `cpf_hash` para os 15 deputados. Registrar quantos casaram;
       os que não casaram vão para `docs/LACUNAS.md` com fallback manual (nome+UF+partido).
-- [ ] `data/sonda/politicos-camara.json` (email, redes, situação, foto oficial).
+- [x] `data/sonda/politicos-camara.json` (email, redes, situação, foto oficial).
 - Pronto quando: os 10 reeleitos têm `camara_id` e os 5 novos estão marcados
   "sem registro na Câmara até 01/02/2027".
 

@@ -1,0 +1,1627 @@
+[
+  {
+    "tseSqCandidato": "250002536722",
+    "camaraId": 162067,
+    "join": "cpf_hash",
+    "emExercicio": true,
+    "nome": "Kiko Celeguim",
+    "nomeCivil": "FRANCISCO DANIEL CELEGUIM DE MORAIS",
+    "partido": "PT",
+    "uf": "SP",
+    "legislatura": 57,
+    "fotoUrl": "https://www.camara.leg.br/internet/deputado/bandep/162067.jpg",
+    "emailGabinete": "dep.kikoceleguim@camara.leg.br",
+    "telefoneGabinete": "3215-5337",
+    "situacao": "Exercício",
+    "condicaoEleitoral": "Titular",
+    "redesSociais": [
+      "https://twitter.com/kikoceleguim",
+      "https://www.facebook.com/kikoceleguim",
+      "https://www.instagram.com/kiko.celeguim",
+      "https://youtube.com/KikoCeleguimoficial"
+    ],
+    "site": null,
+    "orgaosAtuais": [
+      {
+        "orgaoId": 2003,
+        "sigla": "CCJC",
+        "nome": "Comissão de Constituição e Justiça e de Cidadania",
+        "titulo": "Suplente",
+        "inicio": "2026-02-09T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 2004,
+        "sigla": "CDC",
+        "nome": "Comissão de Defesa do Consumidor",
+        "titulo": "Suplente",
+        "inicio": "2026-02-05T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 2016,
+        "sigla": "CVT",
+        "nome": "Comissão de Viação e Transportes",
+        "titulo": "Titular",
+        "inicio": "2026-02-03T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539809,
+        "sigla": "PLP15225",
+        "nome": "Comissão Especial destinada a proferir parecer ao Projeto de Lei Complementar nº 152, de 2025, do Senhor Luiz Gastão, que \"regula os serviços de transporte remunerado privado individual de passageiros e de coleta e entrega de bens prestados pelas empresas operadoras de plataforma digital\"",
+        "titulo": "Titular",
+        "inicio": "2025-08-14T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539788,
+        "sigla": "CEXTUNEL",
+        "nome": "Comissão Externa destinada a acompanhar e monitorar as obras do túnel submerso Santos-Guarujá, projeto de infraestrutura e mobilidade lançado pelo Governo Federal, que visa promover a ligação seca dos Municípios de Santos e Guarujá, no litoral do Estado de São Paulo, por meio de passagem submersa sob o canal do Porto de Santos.",
+        "titulo": "Titular",
+        "inicio": "2025-05-07T00:00",
+        "fim": null
+      }
+    ],
+    "historico": [
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 58,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T12:05",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      }
+    ]
+  },
+  {
+    "tseSqCandidato": "250002539612",
+    "camaraId": 220645,
+    "join": "cpf_hash",
+    "emExercicio": true,
+    "nome": "Erika Hilton",
+    "nomeCivil": "ERIKA SANTOS SILVA",
+    "partido": "PSOL",
+    "uf": "SP",
+    "legislatura": 57,
+    "fotoUrl": "https://www.camara.leg.br/internet/deputado/bandep/220645.jpg",
+    "emailGabinete": "dep.erikahilton@camara.leg.br",
+    "telefoneGabinete": "3215-5636",
+    "situacao": "Exercício",
+    "condicaoEleitoral": "Titular",
+    "redesSociais": [
+      "https://twitter.com/erikakhilton",
+      "https://www.instagram.com/hilton_erika"
+    ],
+    "site": null,
+    "orgaosAtuais": [
+      {
+        "orgaoId": 539797,
+        "sigla": "SUBESTET",
+        "nome": "Subcomissão Especial destinada a “debater e apresentar sugestões ao setor de estética e aprimorar suas relações trabalhistas”",
+        "titulo": "Titular",
+        "inicio": "2029-02-25T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539845,
+        "sigla": "PEC22119",
+        "nome": "Comissão Especial destinada a proferir parecer à Proposta de Emenda à Constituição nº 221, de 2019, do Senhor Reginaldo Lopes, que \"altera o Art. 7º inciso XII da constituição Federal, reduzindo a jornada de trabalho a 36 horas semanais em 10 anos\", e apensada",
+        "titulo": "Titular",
+        "inicio": "2026-04-28T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 537870,
+        "sigla": "CMULHER",
+        "nome": "Comissão de Defesa dos Direitos da Mulher",
+        "titulo": "Presidente",
+        "inicio": "2026-03-11T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539797,
+        "sigla": "SUBESTET",
+        "nome": "Subcomissão Especial destinada a “debater e apresentar sugestões ao setor de estética e aprimorar suas relações trabalhistas”",
+        "titulo": "Titular",
+        "inicio": "2026-03-06T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 2004,
+        "sigla": "CDC",
+        "nome": "Comissão de Defesa do Consumidor",
+        "titulo": "Suplente",
+        "inicio": "2026-02-04T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 2007,
+        "sigla": "CDHMIR",
+        "nome": "Comissão de Direitos Humanos, Minorias e Igualdade Racial",
+        "titulo": "Titular",
+        "inicio": "2026-02-04T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 2015,
+        "sigla": "CTRAB",
+        "nome": "Comissão de Trabalho",
+        "titulo": "Suplente",
+        "inicio": "2026-02-03T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539776,
+        "sigla": "PL233823",
+        "nome": "Comissão Especial destinada a proferir parecer ao Projeto de Lei nº 2338, de 2023, do Senado Federal, que \"dispõe sobre o desenvolvimento, o fomento e o uso ético e responsável da inteligência artificial com base na centralidade da pessoa humana\"",
+        "titulo": "Titular",
+        "inicio": "2025-05-20T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539644,
+        "sigla": "BANEGRA",
+        "nome": "Bancada Negra da Câmara dos Deputados, criada pela Resolução n. 6, de 2023, que acresceu ao Regimento Interno da Câmara dos Deputados o Capítulo VI, do Título I, com os artigos 13-A e 13-B",
+        "titulo": "Titular",
+        "inicio": "2023-11-02T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 537239,
+        "sigla": "SEMULHER",
+        "nome": "Secretaria da Mulher",
+        "titulo": "Titular",
+        "inicio": "2023-05-04T00:00",
+        "fim": null
+      }
+    ],
+    "historico": [
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PSOL",
+        "uf": "SP",
+        "legislatura": 58,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PSOL",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T12:05",
+        "partido": "PSOL",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      }
+    ]
+  },
+  {
+    "tseSqCandidato": "250002539604",
+    "camaraId": 204535,
+    "join": "cpf_hash",
+    "emExercicio": true,
+    "nome": "Sâmia Bomfim",
+    "nomeCivil": "SAMIA DE SOUZA BOMFIM",
+    "partido": "PSOL",
+    "uf": "SP",
+    "legislatura": 57,
+    "fotoUrl": "https://www.camara.leg.br/internet/deputado/bandep/204535.jpg",
+    "emailGabinete": "dep.samiabomfim@camara.leg.br",
+    "telefoneGabinete": "3215-5642",
+    "situacao": "Exercício",
+    "condicaoEleitoral": "Titular",
+    "redesSociais": [
+      "https://twitter.com/samiabomfim",
+      "https://www.facebook.com/samia.bomfim.psol",
+      "https://www.instagram.com/samiabomfim",
+      "https://youtube.com/samiabomfimpsol"
+    ],
+    "site": null,
+    "orgaosAtuais": [
+      {
+        "orgaoId": 2018,
+        "sigla": "CREDN",
+        "nome": "Comissão de Relações Exteriores e de Defesa Nacional",
+        "titulo": "Suplente",
+        "inicio": "2026-08-17T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 2009,
+        "sigla": "CE",
+        "nome": "Comissão de Educação",
+        "titulo": "Suplente",
+        "inicio": "2026-03-10T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 537870,
+        "sigla": "CMULHER",
+        "nome": "Comissão de Defesa dos Direitos da Mulher",
+        "titulo": "Titular",
+        "inicio": "2026-03-10T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 6174,
+        "sigla": "CMADS",
+        "nome": "Comissão de Meio Ambiente e Desenvolvimento Sustentável",
+        "titulo": "Titular",
+        "inicio": "2026-03-03T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 2003,
+        "sigla": "CCJC",
+        "nome": "Comissão de Constituição e Justiça e de Cidadania",
+        "titulo": "Titular",
+        "inicio": "2026-02-10T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 5438,
+        "sigla": "CLP",
+        "nome": "Comissão de Legislação Participativa",
+        "titulo": "Titular",
+        "inicio": "2026-02-04T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 536996,
+        "sigla": "CCULT",
+        "nome": "Comissão de Cultura",
+        "titulo": "Suplente",
+        "inicio": "2026-02-04T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539388,
+        "sigla": "CASP",
+        "nome": "Comissão de Administração e Serviço Público",
+        "titulo": "Titular",
+        "inicio": "2026-02-04T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539792,
+        "sigla": "PL073325",
+        "nome": "Comissão Especial destinada a proferir parecer ao Projeto de Lei nº 733, de 2025, do Sr. Leur Lomanto Júnior, que \"dispõe sobre o Sistema Portuário Brasileiro, regula a exploração dos portos, as atividades de operação portuária, o trabalho portuário e dá outras providências\"",
+        "titulo": "Titular",
+        "inicio": "2025-11-05T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539814,
+        "sigla": "PEC03424",
+        "nome": "Comissão Especial destinada a proferir parecer à Proposta de Emenda à Constituição nº 34, de 2024, da Senhora Laura Carneiro e outros, que \"inclui a primeira infância como beneficiária de direitos e garantias, no texto constitucional\"",
+        "titulo": "Suplente",
+        "inicio": "2025-10-21T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539731,
+        "sigla": "PEC01421",
+        "nome": "Comissão Especial destinada a proferir parecer à Proposta de Emenda à Constituição nº 14, de 2021, do Sr. Dr. Leonardo e outros, que \"altera o art. 198 da Constituição Federal para estabelecer o Sistema de Proteção Social e Valorização dos Agentes Comunitários de Saúde e Agentes de Combate às Endemias, a aposentadoria especial e exclusiva, e fixar a responsabilidade do gestor local do SUS pela regularidade do vínculo empregatício desses profissionais\"",
+        "titulo": "Titular",
+        "inicio": "2025-06-10T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539777,
+        "sigla": "PL261424",
+        "nome": "Comissão Especial destinada a proferir parecer ao Projeto de Lei n. 2614, de 2024, do Poder Executivo, que \"aprova o Plano Nacional de Educação para o decênio 2024-2034\"",
+        "titulo": "Suplente",
+        "inicio": "2025-05-06T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 537239,
+        "sigla": "SEMULHER",
+        "nome": "Secretaria da Mulher",
+        "titulo": "Titular",
+        "inicio": "2023-05-04T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539410,
+        "sigla": "CEOBSTET",
+        "nome": "Comissão Especial para estudo das razões do aumento de denúncias de violência obstétrica e a alta taxa de morte materna no Brasil",
+        "titulo": "Suplente",
+        "inicio": "2023-03-28T00:00",
+        "fim": null
+      }
+    ],
+    "historico": [
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PSOL",
+        "uf": "SP",
+        "legislatura": 58,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PSOL",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T12:05",
+        "partido": "PSOL",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2019-02-01T11:45",
+        "partido": "PSOL",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2023-01-31T23:59",
+        "partido": "PSOL",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "FIM_MANDATO",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento definitivo - Término da Legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PSOL",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      }
+    ]
+  },
+  {
+    "tseSqCandidato": "250002546642",
+    "camaraId": 204536,
+    "join": "cpf_hash",
+    "emExercicio": true,
+    "nome": "Kim Kataguiri",
+    "nomeCivil": "KIM PATROCA KATAGUIRI",
+    "partido": "MISSÃO",
+    "uf": "SP",
+    "legislatura": 57,
+    "fotoUrl": "https://www.camara.leg.br/internet/deputado/bandep/204536.jpg",
+    "emailGabinete": "dep.kimkataguiri@camara.leg.br",
+    "telefoneGabinete": "3215-5744",
+    "situacao": "Exercício",
+    "condicaoEleitoral": "Titular",
+    "redesSociais": [
+      "https://twitter.com/kimkataguiri",
+      "https://www.facebook.com/Kim-Kataguiri-833053646745836",
+      "https://www.instagram.com/kimkataguiri",
+      "https://youtube.com/kimkataguiri"
+    ],
+    "site": null,
+    "orgaosAtuais": [
+      {
+        "orgaoId": 539388,
+        "sigla": "CASP",
+        "nome": "Comissão de Administração e Serviço Público",
+        "titulo": "Suplente",
+        "inicio": "2026-04-28T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 2010,
+        "sigla": "CFT",
+        "nome": "Comissão de Finanças e Tributação",
+        "titulo": "Titular",
+        "inicio": "2026-04-06T00:00",
+        "fim": null
+      }
+    ],
+    "historico": [
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "MISSÃO",
+        "uf": "SP",
+        "legislatura": 58,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "UNIÃO",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T12:05",
+        "partido": "UNIÃO",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2026-03-09T17:24",
+        "partido": "MISSÃO",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Alteração de partido"
+      },
+      {
+        "dataHora": "2019-02-01T11:45",
+        "partido": "DEM",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2022-02-23T00:00",
+        "partido": "UNIÃO",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Alteração de partido"
+      },
+      {
+        "dataHora": "2023-01-31T23:59",
+        "partido": "UNIÃO",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "FIM_MANDATO",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento definitivo - Término da Legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "UNIÃO",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      }
+    ]
+  },
+  {
+    "tseSqCandidato": "250002539435",
+    "camaraId": 204534,
+    "join": "cpf_hash",
+    "emExercicio": true,
+    "nome": "Tabata Amaral",
+    "nomeCivil": "TABATA CLAUDIA AMARAL DE PONTES",
+    "partido": "PSB",
+    "uf": "SP",
+    "legislatura": 57,
+    "fotoUrl": "https://www.camara.leg.br/internet/deputado/bandep/204534.jpg",
+    "emailGabinete": "dep.tabataamaral@camara.leg.br",
+    "telefoneGabinete": "3215-5848",
+    "situacao": "Exercício",
+    "condicaoEleitoral": "Titular",
+    "redesSociais": [
+      "https://twitter.com/tabataamaralsp",
+      "https://www.facebook.com/tabataamaralSP",
+      "https://www.instagram.com/tabataamaralsp",
+      "https://youtube.com/channel/UCWcx5M5negY_kqSawo2bjZQ"
+    ],
+    "site": null,
+    "orgaosAtuais": [
+      {
+        "orgaoId": 2009,
+        "sigla": "CE",
+        "nome": "Comissão de Educação",
+        "titulo": "Titular",
+        "inicio": "2026-03-10T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 6174,
+        "sigla": "CMADS",
+        "nome": "Comissão de Meio Ambiente e Desenvolvimento Sustentável",
+        "titulo": "Titular",
+        "inicio": "2026-03-03T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 2003,
+        "sigla": "CCJC",
+        "nome": "Comissão de Constituição e Justiça e de Cidadania",
+        "titulo": "Suplente",
+        "inicio": "2026-02-09T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539449,
+        "sigla": "CONMP",
+        "nome": "Coordenadoria-Geral do Observatório Nacional da Mulher na Política",
+        "titulo": "2º Coordenador Adjunto",
+        "inicio": "2025-05-21T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539788,
+        "sigla": "CEXTUNEL",
+        "nome": "Comissão Externa destinada a acompanhar e monitorar as obras do túnel submerso Santos-Guarujá, projeto de infraestrutura e mobilidade lançado pelo Governo Federal, que visa promover a ligação seca dos Municípios de Santos e Guarujá, no litoral do Estado de São Paulo, por meio de passagem submersa sob o canal do Porto de Santos.",
+        "titulo": "Titular",
+        "inicio": "2025-05-07T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539777,
+        "sigla": "PL261424",
+        "nome": "Comissão Especial destinada a proferir parecer ao Projeto de Lei n. 2614, de 2024, do Poder Executivo, que \"aprova o Plano Nacional de Educação para o decênio 2024-2034\"",
+        "titulo": "Presidente",
+        "inicio": "2025-04-29T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539635,
+        "sigla": "CEDESNAT",
+        "nome": "Comissão Especial destinada a estudar e analisar formas de prevenção e auxílio a desastres e calamidades naturais que vêm assolando o Território Nacional",
+        "titulo": "Titular",
+        "inicio": "2024-02-07T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 537239,
+        "sigla": "SEMULHER",
+        "nome": "Secretaria da Mulher",
+        "titulo": "Titular",
+        "inicio": "2023-05-04T00:00",
+        "fim": null
+      }
+    ],
+    "historico": [
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PSB",
+        "uf": "SP",
+        "legislatura": 58,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PSB",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T12:05",
+        "partido": "PSB",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2019-02-01T11:45",
+        "partido": "PDT",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2021-09-28T19:32",
+        "partido": "PSB",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Alteração de partido"
+      },
+      {
+        "dataHora": "2023-01-31T23:59",
+        "partido": "PSB",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "FIM_MANDATO",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento definitivo - Término da Legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PSB",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      }
+    ]
+  },
+  {
+    "tseSqCandidato": "250002544357",
+    "camaraId": 220652,
+    "join": "cpf_hash",
+    "emExercicio": true,
+    "nome": "Delegado Palumbo",
+    "nomeCivil": "MARIO PALUMBO JUNIOR",
+    "partido": "PODE",
+    "uf": "SP",
+    "legislatura": 57,
+    "fotoUrl": "https://www.camara.leg.br/internet/deputado/bandep/220652.jpg",
+    "emailGabinete": "dep.delegadopalumbo@camara.leg.br",
+    "telefoneGabinete": "3215-5192",
+    "situacao": "Exercício",
+    "condicaoEleitoral": "Titular",
+    "redesSociais": [
+      "https://www.facebook.com/delegadopalumbo",
+      "https://www.instagram.com/delegadopalumbo/"
+    ],
+    "site": null,
+    "orgaosAtuais": [
+      {
+        "orgaoId": 5503,
+        "sigla": "CSPCCO",
+        "nome": "Comissão de Segurança Pública e Combate ao Crime Organizado",
+        "titulo": "Suplente",
+        "inicio": "2026-04-27T00:00",
+        "fim": null
+      }
+    ],
+    "historico": [
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PODE",
+        "uf": "SP",
+        "legislatura": 58,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "MDB",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T12:05",
+        "partido": "MDB",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2026-03-25T17:30",
+        "partido": "PODE",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Alteração de partido"
+      }
+    ]
+  },
+  {
+    "tseSqCandidato": "250002532379",
+    "camaraId": 220647,
+    "join": "cpf_hash",
+    "emExercicio": true,
+    "nome": "Mauricio Neves",
+    "nomeCivil": "MANOEL MAURICIO SILVA NEVES",
+    "partido": "PP",
+    "uf": "SP",
+    "legislatura": 57,
+    "fotoUrl": "https://www.camara.leg.br/internet/deputado/bandep/220647.jpg",
+    "emailGabinete": "dep.mauricioneves@camara.leg.br",
+    "telefoneGabinete": "3215-5712",
+    "situacao": "Exercício",
+    "condicaoEleitoral": "Titular",
+    "redesSociais": [
+      "https://twitter.com/MauricioNeves_",
+      "https://www.facebook.com/mauricioneves",
+      "https://www.instagram.com/mauricioneves_oficial",
+      "https://youtube.com/mauricioneves9642"
+    ],
+    "site": null,
+    "orgaosAtuais": [
+      {
+        "orgaoId": 539386,
+        "sigla": "CICS",
+        "nome": "Comissão de Indústria, Comércio e Serviços",
+        "titulo": "Suplente",
+        "inicio": "2026-04-14T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 2016,
+        "sigla": "CVT",
+        "nome": "Comissão de Viação e Transportes",
+        "titulo": "Titular",
+        "inicio": "2026-02-03T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539788,
+        "sigla": "CEXTUNEL",
+        "nome": "Comissão Externa destinada a acompanhar e monitorar as obras do túnel submerso Santos-Guarujá, projeto de infraestrutura e mobilidade lançado pelo Governo Federal, que visa promover a ligação seca dos Municípios de Santos e Guarujá, no litoral do Estado de São Paulo, por meio de passagem submersa sob o canal do Porto de Santos.",
+        "titulo": "Titular",
+        "inicio": "2025-05-07T00:00",
+        "fim": null
+      }
+    ],
+    "historico": [
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 58,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T12:05",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      }
+    ]
+  },
+  {
+    "tseSqCandidato": "250002535980",
+    "camaraId": 178983,
+    "join": "cpf_hash",
+    "emExercicio": true,
+    "nome": "Marcio Alvino",
+    "nomeCivil": "MARCIO LUIZ ALVINO DE SOUZA",
+    "partido": "PL",
+    "uf": "SP",
+    "legislatura": 57,
+    "fotoUrl": "https://www.camara.leg.br/internet/deputado/bandep/178983.jpg",
+    "emailGabinete": "dep.marcioalvino@camara.leg.br",
+    "telefoneGabinete": "3215-5331",
+    "situacao": "Exercício",
+    "condicaoEleitoral": "Titular",
+    "redesSociais": [],
+    "site": null,
+    "orgaosAtuais": [
+      {
+        "orgaoId": 6855,
+        "sigla": "CMO",
+        "nome": "Comissão Mista de Planos, Orçamentos Públicos e Fiscalização",
+        "titulo": "Suplente",
+        "inicio": "2026-06-16T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 2010,
+        "sigla": "CFT",
+        "nome": "Comissão de Finanças e Tributação",
+        "titulo": "Titular",
+        "inicio": "2026-03-18T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 537480,
+        "sigla": "CPD",
+        "nome": "Comissão de Defesa dos Direitos das Pessoas com Deficiência",
+        "titulo": "Suplente",
+        "inicio": "2026-02-03T00:00",
+        "fim": null
+      }
+    ],
+    "historico": [
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 58,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T12:05",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2019-02-01T11:45",
+        "partido": "PR",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2019-05-22T17:05",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Alteração de partido"
+      },
+      {
+        "dataHora": "2023-01-31T23:59",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "FIM_MANDATO",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento definitivo - Término da Legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2015-02-01T10:00",
+        "partido": "PR",
+        "uf": "SP",
+        "legislatura": 55,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2019-01-31T23:59",
+        "partido": "PR",
+        "uf": "SP",
+        "legislatura": 55,
+        "situacao": "FIM_MANDATO",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento definitivo - Término da Legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PR",
+        "uf": "SP",
+        "legislatura": 55,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      }
+    ]
+  },
+  {
+    "tseSqCandidato": "250002533647",
+    "camaraId": 178975,
+    "join": "cpf_hash",
+    "emExercicio": true,
+    "nome": "Baleia Rossi",
+    "nomeCivil": "LUIZ FELIPE BALEIA TENUTO ROSSI",
+    "partido": "MDB",
+    "uf": "SP",
+    "legislatura": 57,
+    "fotoUrl": "https://www.camara.leg.br/internet/deputado/bandep/178975.jpg",
+    "emailGabinete": "dep.baleiarossi@camara.leg.br",
+    "telefoneGabinete": "3215-5829",
+    "situacao": "Exercício",
+    "condicaoEleitoral": "Titular",
+    "redesSociais": [
+      "https://www.instagram.com/baleia.rossi"
+    ],
+    "site": null,
+    "orgaosAtuais": [
+      {
+        "orgaoId": 2018,
+        "sigla": "CREDN",
+        "nome": "Comissão de Relações Exteriores e de Defesa Nacional",
+        "titulo": "Titular",
+        "inicio": "2026-02-03T00:00",
+        "fim": null
+      }
+    ],
+    "historico": [
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "MDB",
+        "uf": "SP",
+        "legislatura": 58,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "MDB",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T12:05",
+        "partido": "MDB",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2019-02-01T11:45",
+        "partido": "MDB",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2023-01-31T23:59",
+        "partido": "MDB",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "FIM_MANDATO",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento definitivo - Término da Legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "MDB",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2015-02-01T10:00",
+        "partido": "PMDB",
+        "uf": "SP",
+        "legislatura": 55,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2018-05-21T11:16",
+        "partido": "MDB",
+        "uf": "SP",
+        "legislatura": 55,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Alteração de partido"
+      },
+      {
+        "dataHora": "2019-01-31T23:59",
+        "partido": "MDB",
+        "uf": "SP",
+        "legislatura": 55,
+        "situacao": "FIM_MANDATO",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento definitivo - Término da Legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "MDB",
+        "uf": "SP",
+        "legislatura": 55,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      }
+    ]
+  },
+  {
+    "tseSqCandidato": "250002544341",
+    "camaraId": 220642,
+    "join": "cpf_hash",
+    "emExercicio": true,
+    "nome": "Delegado Bruno Lima",
+    "nomeCivil": "BRUNO MARCELLO DE OLIVEIRA LIMA",
+    "partido": "PODE",
+    "uf": "SP",
+    "legislatura": 57,
+    "fotoUrl": "https://www.camara.leg.br/internet/deputado/bandep/220642.jpg",
+    "emailGabinete": "dep.delegadobrunolima@camara.leg.br",
+    "telefoneGabinete": "3215-5933",
+    "situacao": "Exercício",
+    "condicaoEleitoral": "Titular",
+    "redesSociais": [
+      "https://twitter.com/https:",
+      "https://www.facebook.com/profile.php",
+      "https://www.instagram.com/del.brunolima"
+    ],
+    "site": null,
+    "orgaosAtuais": [
+      {
+        "orgaoId": 2018,
+        "sigla": "CREDN",
+        "nome": "Comissão de Relações Exteriores e de Defesa Nacional",
+        "titulo": "Titular",
+        "inicio": "2026-06-09T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539849,
+        "sigla": "CEXEXPLO",
+        "nome": "Comissão Externa de Prevenção e Enfrentamento da Violência Sexual Infantojuvenil",
+        "titulo": "Titular",
+        "inicio": "2026-05-11T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 537870,
+        "sigla": "CMULHER",
+        "nome": "Comissão de Defesa dos Direitos da Mulher",
+        "titulo": "Suplente",
+        "inicio": "2026-05-06T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 5438,
+        "sigla": "CLP",
+        "nome": "Comissão de Legislação Participativa",
+        "titulo": "Titular",
+        "inicio": "2026-02-04T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 5503,
+        "sigla": "CSPCCO",
+        "nome": "Comissão de Segurança Pública e Combate ao Crime Organizado",
+        "titulo": "Suplente",
+        "inicio": "2026-02-03T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539808,
+        "sigla": "PEC01825",
+        "nome": "Comissão Especial destinada a proferir parecer à Proposta de Emenda à Constituição n. 18, de 2025, do Poder Executivo, que \"altera os art. 21, art. 22, art. 23, art. 24 e art. 144 da Constituição, para dispor sobre competências da União, dos Estados, do Distrito Federal e dos Municípios relativas à segurança pública\"",
+        "titulo": "Titular",
+        "inicio": "2025-09-03T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 539776,
+        "sigla": "PL233823",
+        "nome": "Comissão Especial destinada a proferir parecer ao Projeto de Lei nº 2338, de 2023, do Senado Federal, que \"dispõe sobre o desenvolvimento, o fomento e o uso ético e responsável da inteligência artificial com base na centralidade da pessoa humana\"",
+        "titulo": "Suplente",
+        "inicio": "2025-04-29T00:00",
+        "fim": null
+      }
+    ],
+    "historico": [
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PODE",
+        "uf": "SP",
+        "legislatura": 58,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T12:05",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2023-02-07T18:21",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Licença",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento sem prazo determinado - Secretário de Prefeitura de Capital"
+      },
+      {
+        "dataHora": "2023-04-27T12:53",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Reassunção"
+      },
+      {
+        "dataHora": "2023-04-28T16:44",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Licença",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento sem prazo determinado - Secretário de Prefeitura de Capital"
+      },
+      {
+        "dataHora": "2023-08-03T16:46",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Reassunção"
+      },
+      {
+        "dataHora": "2023-08-04T15:30",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Licença",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento sem prazo determinado - Secretário de Prefeitura de Capital"
+      },
+      {
+        "dataHora": "2024-03-22T12:25",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Reassunção"
+      },
+      {
+        "dataHora": "2024-03-25T16:50",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Licença",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento sem prazo determinado - Secretário de Prefeitura de Capital"
+      },
+      {
+        "dataHora": "2024-08-01T15:50",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Reassunção"
+      },
+      {
+        "dataHora": "2026-04-07T11:45",
+        "partido": "PODE",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Alteração de partido"
+      }
+    ]
+  },
+  {
+    "tseSqCandidato": "250002536733",
+    "camaraId": 73534,
+    "join": "cpf_hash",
+    "emExercicio": false,
+    "nome": "JOÃO PAULO CUNHA",
+    "nomeCivil": "JOÃO PAULO CUNHA",
+    "partido": "PT",
+    "uf": "SP",
+    "legislatura": 54,
+    "fotoUrl": "https://www.camara.leg.br/internet/deputado/bandep/73534.jpg",
+    "emailGabinete": null,
+    "telefoneGabinete": null,
+    "situacao": "Vacância",
+    "condicaoEleitoral": "Titular",
+    "redesSociais": [],
+    "site": null,
+    "orgaosAtuais": [],
+    "historico": [
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 58,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2011-02-01T00:00",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 54,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2014-02-07T20:21",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 54,
+        "situacao": "VACANCIA",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento definitivo - Renúncia"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 54,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2007-02-01T00:00",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 53,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2011-01-31T23:59",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 53,
+        "situacao": "FIM_MANDATO",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento definitivo - Término da Legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 53,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2003-02-01T00:00",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 52,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2003-02-06T00:00",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 52,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Alteração de nome"
+      },
+      {
+        "dataHora": "2007-01-31T00:00",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 52,
+        "situacao": "FIM_MANDATO",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento definitivo - Término da Legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 52,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 51,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PT",
+        "uf": "SP",
+        "legislatura": 50,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      }
+    ]
+  },
+  {
+    "tseSqCandidato": "250002541312",
+    "camaraId": 204531,
+    "join": "cpf_hash",
+    "emExercicio": true,
+    "nome": "Guilherme Derrite",
+    "nomeCivil": "GUILHERME MURARO DERRITE",
+    "partido": "PP",
+    "uf": "SP",
+    "legislatura": 57,
+    "fotoUrl": "https://www.camara.leg.br/internet/deputado/bandep/204531.jpg",
+    "emailGabinete": "dep.guilhermederrite@camara.leg.br",
+    "telefoneGabinete": "3215-5750",
+    "situacao": "Exercício",
+    "condicaoEleitoral": "Titular",
+    "redesSociais": [
+      "https://twitter.com/capitaoderrite",
+      "https://www.facebook.com/capitaoderrite",
+      "https://www.instagram.com/capitaoderrite",
+      "https://youtube.com/channel/UCZHZxgmwC2c5tz3_Jn-gGOw"
+    ],
+    "site": null,
+    "orgaosAtuais": [
+      {
+        "orgaoId": 539858,
+        "sigla": "PEC03215",
+        "nome": "Comissão Especial destinada a proferir parecer à Proposta de Emenda à Constituição nº 32, de 2015, do Sr. Gonzaga Patriota, que \"altera a redação dos artigos 14 e 228 da Constituição Federal, para estabelecer a plena maioridade civil e penal aos dezesseis anos de idade\", e apensadas",
+        "titulo": "1º Vice-Presidente",
+        "inicio": "2026-08-12T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 2003,
+        "sigla": "CCJC",
+        "nome": "Comissão de Constituição e Justiça e de Cidadania",
+        "titulo": "Suplente",
+        "inicio": "2026-02-09T00:00",
+        "fim": null
+      },
+      {
+        "orgaoId": 5503,
+        "sigla": "CSPCCO",
+        "nome": "Comissão de Segurança Pública e Combate ao Crime Organizado",
+        "titulo": "Titular",
+        "inicio": "2026-02-03T00:00",
+        "fim": null
+      }
+    ],
+    "historico": [
+      {
+        "dataHora": "2023-01-30T15:18",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": ""
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      },
+      {
+        "dataHora": "2023-02-01T12:05",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2023-02-02T10:53",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Licença",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento sem prazo determinado - Secretário de Estado"
+      },
+      {
+        "dataHora": "2024-03-12T09:50",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Reassunção"
+      },
+      {
+        "dataHora": "2024-03-21T17:42",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Licença",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento sem prazo determinado - Secretário de Estado"
+      },
+      {
+        "dataHora": "2025-11-06T09:53",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Reassunção"
+      },
+      {
+        "dataHora": "2025-11-10T20:18",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Alteração de partido"
+      },
+      {
+        "dataHora": "2025-11-24T16:46",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Licença",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento sem prazo determinado - Secretário de Estado"
+      },
+      {
+        "dataHora": "2025-12-02T10:13",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 57,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Reassunção"
+      },
+      {
+        "dataHora": "2019-01-29T11:16",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Licença",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Deputado eleito para a 56ª Legislatura."
+      },
+      {
+        "dataHora": "2019-02-01T11:45",
+        "partido": "PP",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Entrada - Posse de Eleito Titular - Posse na Sessão Preparatória"
+      },
+      {
+        "dataHora": "2022-03-29T14:19",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Alteração de partido"
+      },
+      {
+        "dataHora": "2022-03-30T13:02",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Exercício",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Of. 104/2022"
+      },
+      {
+        "dataHora": "2023-01-01T15:43",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Licença",
+        "condicaoEleitoral": "Titular",
+        "descricao": "Saída - Afastamento sem prazo determinado - Secretário de Estado"
+      },
+      {
+        "dataHora": "2023-01-30T15:18",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": "Licença",
+        "condicaoEleitoral": "Titular",
+        "descricao": ""
+      },
+      {
+        "dataHora": "2023-02-01T00:00",
+        "partido": "PL",
+        "uf": "SP",
+        "legislatura": 56,
+        "situacao": null,
+        "condicaoEleitoral": null,
+        "descricao": "Nome no início da legislatura / Partido no início da legislatura"
+      }
+    ]
+  }
+]

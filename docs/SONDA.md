@@ -65,3 +65,35 @@ Critério, implementado em `scripts/sonda/tse.ts`:
 - O hash SHA-256 de CPF sem sal é reversível por força bruta (espaço de ~10⁹ CPFs válidos).
   Como o CPF já é público no CSV do TSE, o hash não expõe nada novo, mas o JSON em `data/`
   é público: considerar remover `cpfHash` do que vai ao site e manter só no cron/Supabase.
+
+## E2 · Câmara: perfil e join (2026-10-29)
+
+### Shape real de `/deputados/{id}`
+- `cpf` vem preenchido (11 dígitos) nos 70 perfis de SP. O join por SHA-256 funcionou em 100%.
+- O e-mail oficial está em **`ultimoStatus.gabinete.email`**; o campo `email` do topo veio
+  `null` em todos. `ultimoStatus.urlFoto` é a foto oficial (`camara.leg.br/internet/deputado/bandep/{id}.jpg`).
+- `ultimoStatus.situacao` ∈ {"Exercício", "Vacância", ...}; `condicaoEleitoral` ∈ {"Titular", "Suplente"}.
+- `redeSocial` é um array de URLs. `urlWebsite` quase sempre `null`.
+- `/deputados/{id}/orgaos`: `dataFim == null` = participação atual. Inclui comissões especiais
+  de projetos (`PL261424`) e frentes não aparecem aqui.
+- `/deputados/{id}/historico`: eventos com `siglaPartido` por data; dá para reconstruir trocas
+  de partido (ex.: Tabata PDT → PSB em 2021-09-28).
+
+### Busca por nome
+- `/deputados?nome=X` **sem** `idLegislatura` só procura entre quem está em exercício.
+  Com `idLegislatura=N` procura em quem passou por aquela legislatura.
+- Para quem não está em exercício, o script varre as legislaturas 56→50 por nome de urna e
+  confirma pelo hash. Achou João Paulo Cunha (id 73534, legislatura 54, situação "Vacância",
+  sem e-mail de gabinete). Os ids da Câmara são estáveis entre legislaturas.
+
+### Estabilidade
+138 chamadas, 4 responderam **504 aos ~15 s** (gateway timeout do lado da Câmara) e passaram na 2ª tentativa. Sem 429.
+Tempo total ~1 min. O cron de 513 + 81 vai precisar de paralelismo moderado (4–8 em voo).
+
+### Resultado
+- Dos 70 eleitos em 2026 por SP, **40 já estão em exercício** (reeleitos de fato).
+  Os 4 ambíguos da E1 eram todos reeleitos com nome parlamentar diferente do nome de urna.
+- Guilherme Derrite (senador eleito) é deputado em exercício: o card dele em 2026 usa o
+  histórico da Câmara, e a partir de 2027 o do Senado. Caso a tratar no modelo (`mandatos`).
+- Amostra: 12 com registro (10 reeleitos + João Paulo Cunha + Derrite); 4 novos sem registro
+  até 01/02/2027 (Sargento Nantes, Lucas Pavanato, Renato Bolsonaro, Guilherme Cortez).
