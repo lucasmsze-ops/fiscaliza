@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E0** (atualizar esta linha ao avançar)
+**Etapa atual: E1** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -21,14 +21,14 @@ Calendário externo que afeta o plano:
 ## Fase 0 — Fundação
 
 ### E0 · Repositório e convenções
-- [ ] `package.json` só com `tsx` e `typescript` (scripts da sonda rodam com `npx tsx`).
-      Next.js entra só na E8.
-- [ ] `lib/types.ts` com os tipos internos iniciais (`Politico`, `Votacao`, `Voto`,
-      `Orientacao`, `DespesaMes`, `EleitoMunicipio`). Serão revisados na E7 com dado real.
-- [ ] `lib/http.ts`: fetch com retry + backoff, timeout 30 s, log por endpoint.
+- [x] `package.json` só com `tsx` e `typescript` (scripts da sonda rodam com `npx tsx`).
+      Next.js entra só na E9.
+- [x] `lib/types.ts` com os tipos internos iniciais (`Politico`, `Votacao`, `Voto`,
+      `Orientacao`, `DespesaMes`, `EleitoMunicipio`). Serão revisados na E8 com dado real.
+- [x] `lib/http.ts`: fetch com retry + backoff, timeout 30 s, log por endpoint.
       Usado por todos os adapters.
-- [ ] `LICENSE` (AGPL-3.0) e nota CC-BY 4.0 para `data/` no `README.md`.
-- [ ] `docs/LACUNAS.md` vazio, com o cabeçalho.
+- [x] `LICENSE` (AGPL-3.0) e nota CC-BY 4.0 para `data/` no `README.md`.
+- [x] `docs/LACUNAS.md` vazio, com o cabeçalho.
 - Pronto quando: `npx tsx scripts/ping.ts` chama a Câmara (`/referencias/situacoesDeputado`)
   e o Senado (`/senador/lista/atual`, JSON) e imprime o status de cada um.
 
