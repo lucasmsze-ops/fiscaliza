@@ -15,6 +15,20 @@ Modelo:
 
 ---
 
+## 2026-10-29 · E3
+**Feito:** `lib/camara.ts` ganhou votações (lista por janelas de 90 dias, detalhe, orientações,
+votos) e `lib/async.ts` (`mapLimite`). `scripts/sonda/votacoes.ts` gerou `data/sonda/votacoes.json`
+(1.117 nominais de 2023→hoje, com proposição afetada e URL oficial) e `orientacoes.json` (11.594).
+6.537 votações listadas; 2.611 chamadas em 7m40s, zero falhas. `docs/SONDA.md` e `CLAUDE.md`
+atualizados (janela de 3 meses, 100 itens/página, valores de orientação).
+**Decidido:** nominal = placar na descrição (validado: FP 0, FN 1 em 303); a E4 fecha a lista
+exata chamando `/votos` de todas. Orientação "Governo" vazia ou "Liberado" não conta no
+governismo. `aprovacao` null em 190 casos: resultado vai usar a descrição como fallback.
+**Lacunas:** 18 nominais sem nenhuma orientação; 1 sem proposição afetada (votação de pessoa).
+**Próximo passo:** E4 — `/votos` das 6.537 (≈15 min com 6 em voo), gravar só os votos dos 12 com
+`camaraId` (10 reeleitos + Derrite + João Paulo Cunha), `lib/indicadores.ts` com
+`participacao()` e `governismo()` + testes vitest em fixtures reais.
+
 ## 2026-10-29 · E2
 **Feito:** `lib/camara.ts` (adapter: listar, perfil, órgãos, histórico; paginação por `links.next`).
 `scripts/sonda/camara.ts` busca os 70 perfis de SP, casa por hash de CPF com a amostra e gera

@@ -71,7 +71,9 @@ Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por esta
 - `/deputados`, `/deputados/{id}` (tem CPF para o join com o TSE, confirmado em 70/70 de SP). E-mail oficial em `ultimoStatus.gabinete.email` (o `email` do topo vem nulo); foto em `ultimoStatus.urlFoto`; `redeSocial` é array de URLs.
 - `/deputados?nome=` sem `idLegislatura` só busca em exercício; com `idLegislatura=N` busca quem passou pela legislatura N. Ids são estáveis entre legislaturas. Eleitos pela 1ª vez em 2026 não existem até 01/02/2027; ex-deputados existem com registro antigo.
 - `/deputados/{id}/orgaos`, `/frentes`, `/historico`, `/despesas?ano&mes`.
-- `/votacoes?idOrgao=180&dataInicio&dataFim` — plenário. Depois `/votacoes/{id}/votos` e `/votacoes/{id}/orientacoes`.
+- `/votacoes?idOrgao=180&dataInicio&dataFim` — plenário. **Máximo 3 meses por chamada** e 100 itens por página (`lib/camara.ts#janelas` divide). ~1.700 votações/ano listadas, ~280 nominais/ano. Depois `/votacoes/{id}` (`proposicoesAfetadas` = matéria principal), `/votos` e `/orientacoes`.
+- Nominal tem placar na `descricao` (`Sim: N; Não: M`): precisão 100%, recall 99% (medido). O cron confirma por `/votos` mesmo assim.
+- `orientacaoVoto` ∈ {`Sim`, `Não`, `Obstrução`, `Liberado`, `""`}. Vazio e `Liberado` ficam fora do denominador do governismo. `aprovacao` vem `null` em ~17% das nominais.
 - `/proposicoes?idDeputadoAutor` retorna **coautorias**. Filtrar por `/proposicoes/{id}/autores` com `proponente = true`.
 - `tipoVoto` tem 5 valores: `Sim`, `Não`, `Abstenção`, `Obstrução`, `Artigo 17`. Quem não aparece no array = `ausente`. Tratar todos explicitamente.
 - Votação simbólica = array de votos vazio. Ignorar.

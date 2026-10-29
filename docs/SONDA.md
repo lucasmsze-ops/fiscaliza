@@ -97,3 +97,51 @@ Tempo total ~1 min. O cron de 513 + 81 vai precisar de paralelismo moderado (4�
   histórico da Câmara, e a partir de 2027 o do Senado. Caso a tratar no modelo (`mandatos`).
 - Amostra: 12 com registro (10 reeleitos + João Paulo Cunha + Derrite); 4 novos sem registro
   até 01/02/2027 (Sargento Nantes, Lucas Pavanato, Renato Bolsonaro, Guilherme Cortez).
+
+## E3 · Câmara: votações do plenário 2023→2026 (2026-10-29)
+
+### Limites reais da API
+- `/votacoes` aceita **no máximo 3 meses** entre `dataInicio` e `dataFim` (400 com mensagem
+  explícita). `lib/camara.ts#janelas` divide em janelas de 90 dias.
+- `itens` tem teto de **100** por página (pedir 200 devolve 100). Paginar por `links.next`.
+- `idOrgao=180` devolve só `siglaOrgao=PLEN`. OK.
+
+### Volume (2023-01-01 → 2026-10-29)
+| Ano | Votações listadas | Nominais |
+|---|---|---|
+| 2023 | 1.048 | 300 |
+| 2024 | 2.128 | 277 |
+| 2025 | 1.983 | 413 |
+| 2026 | 1.378 | 127 |
+| **Total** | **6.537** | **1.117** |
+
+2.611 chamadas em 7m40s com 6 em voo: **zero retries, zero falhas**. Bem mais estável que o
+`/deputados/{id}` da E2. O cron diário só precisa da janela dos últimos dias.
+
+### Separar nominal de simbólica sem chamar `/votos`
+A descrição das votações nominais traz o placar: `"... Sim: 323; Não: 106; Total: 429."`.
+Validado no trimestre 2025-Q2 (303 votações, todas conferidas em `/votos`):
+VP=129, VN=173, **FP=0, FN=1** (`2355104-96`, "Rejeitado o Requerimento." com 385 votos e sem
+placar). Precisão 100%, recall ~99%. Para a sonda, a E4 chama `/votos` de todas as 6.537 e fecha
+a lista exata; no cron, `/votos` de tudo que entrou no dia (poucas por dia) e a heurística não é
+necessária.
+
+### Shapes
+- `/votacoes/{id}`: `proposicoesAfetadas[]` (tipo, número, ano, ementa) é a matéria principal;
+  `objetosPossiveis[]` o objeto imediato (requerimento, emenda). `proposicaoObjeto` da listagem
+  vem preenchido em ~15% dos casos. Só 1 nominal sem proposição afetada (`2576389-4`, votação de
+  pessoa, descrição multilinha com `\r\n`).
+- Tipos das 1.117: PL 711, PLP 166, PEC 100, MPV 71, PDL 43, outros 26.
+- `aprovacao`: 1 em 529, 0 em 398, **null em 190**. Não usar como "resultado" sem fallback
+  para a descrição.
+- `/orientacoes`: `siglaPartidoBloco` ∈ {Governo, Oposição, Minoria, Maioria, partidos,
+  federações como `Fdr PSOL-REDE`, `Fdr PT-PCdoB-PV`, blocos como `Bl MdbPsdRepPode`};
+  `codTipoLideranca` P (partido) ou B (bloco/liderança). 18 nominais sem nenhuma orientação.
+- **Valores de `orientacaoVoto`: `Sim`, `Não`, `Obstrução`, `Liberado` e string vazia `""`.**
+  Para "Governo": Sim 510, Não 348, vazio 213, Liberado 25, Obstrução 3. Vazio e Liberado
+  **não entram** no denominador do governismo; a E4 implementa assim e `/como-funciona` explica.
+- 1.099 das 1.117 nominais têm orientação "Governo".
+
+### URL oficial
+`https://www.camara.leg.br/propostas-legislativas/{proposicaoId}` da proposição afetada.
+A votação em si não tem página pública estável; quando não há proposição, fica a URI da API.

@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E3** (atualizar esta linha ao avançar)
+**Etapa atual: E4** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -57,15 +57,16 @@ Calendário externo que afeta o plano:
   "sem registro na Câmara até 01/02/2027".
 
 ### E3 · Câmara: votações do plenário 2023–26 (lista + orientações)
-- [ ] `/votacoes?idOrgao=180` por janela de datas (a API limita o intervalo; paginar).
-- [ ] Para cada votação, `/orientacoes`. Descartar simbólicas (sem votos nominais).
-- [ ] `data/sonda/votacoes.json` e `data/sonda/orientacoes.json`.
-- [ ] Medir: quantas votações, quanto tempo levou, quantas falhas por endpoint.
+- [x] `/votacoes?idOrgao=180` por janela de datas (a API limita o intervalo; paginar).
+- [x] Para cada votação, `/orientacoes`. Descartar simbólicas (sem votos nominais).
+- [x] `data/sonda/votacoes.json` e `data/sonda/orientacoes.json`.
+- [x] Medir: quantas votações, quanto tempo levou, quantas falhas por endpoint.
       Isso dimensiona o cron da E18.
 - Pronto quando: o JSON cobre 2023-01-01 até hoje e as falhas estão logadas, não escondidas.
 
 ### E4 · Câmara: votos nominais e os dois primeiros números
-- [ ] `/votacoes/{id}/votos` para todas as votações da E3. Tratar os 5 `tipoVoto`
+- [ ] `/votacoes/{id}/votos` para **todas as 6.537 listadas** (a heurística do placar perde ~1%);
+      a lista exata de nominais substitui `votacoes.json`. Tratar os 5 `tipoVoto`
       explicitamente e inferir `ausente` para quem não aparece.
 - [ ] `data/sonda/votos.json` só com os 10 reeleitos (reduz tamanho).
 - [ ] `lib/indicadores.ts`: `participacao()` e `governismo()` com testes
