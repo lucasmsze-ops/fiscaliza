@@ -1,0 +1,8 @@
+node_modules/
+.next/
+.env*
+!.env.example
+.vercel/
+.DS_Store
+# downloads brutos do TSE (grandes); o JSON derivado em data/ é versionado
+data/raw/
