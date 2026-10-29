@@ -60,8 +60,10 @@ Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por esta
 ## Fontes de dados e armadilhas conhecidas
 
 ### TSE — `dadosabertos.tse.jus.br` (CSV, download único)
-- `consulta_cand`: candidatos, nome de urna, partido, federação, situação de totalização, foto, CPF (guardar **apenas hash SHA-256**, nunca o CPF).
-- `votacao_candidato_munzona`: votos por município e zona. Agregar por município e guardar só o top-20 por cargo/município.
+- `consulta_cand`: candidatos, nome de urna, partido, federação, situação de totalização, CPF (guardar **apenas hash SHA-256**, nunca o CPF). **Não tem foto**: fotos vêm em `foto_cand{ano}_{UF}_div.zip` (arquivos `F{UE}{SQ_CANDIDATO}_div.jpg`), sem URL por candidato. O DivulgaCand bloqueia acesso automatizado; não usar.
+- Zips só por ano (um CSV por UF dentro). Catálogo via API CKAN: `dadosabertos.tse.jus.br/api/3/action/package_show?id=candidatos-2026`.
+- CSV latin-1, `;`. Nulos: `#NULO`, `#NE` (2026) e `#NULO#`, `#NE#` (2018). `DS_CARGO` é MAIÚSCULO em `consulta_cand` e Capitalizado em `votacao_candidato_munzona`. `SG_FEDERACAO` em 2026 é a composição, não uma sigla.
+- `votacao_candidato_munzona`: votos por município e zona (SP: 884 MB, 1,9 M linhas). Agregar por município e guardar só o top-20 por cargo/município. Usar `QT_VOTOS_NOMINAIS_VALIDOS` (exclui "anulado sub judice").
 - `bem_candidato`: bens declarados (para v1.2).
 - Quociente eleitoral: tratar **federação** como lista única. Frase na interface: "seu voto contou para [partido/federação], que elegeu N em [UF]". Nunca "ajudou a eleger Z".
 

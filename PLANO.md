@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E1** (atualizar esta linha ao avançar)
+**Etapa atual: E2** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -35,14 +35,14 @@ Calendário externo que afeta o plano:
 ## Passo 1 — Sonda (JSON estático, ~20 políticos reais)
 
 ### E1 · TSE 2026: candidatos e votos de SP
-- [ ] Baixar `consulta_cand_2026` e `votacao_candidato_munzona_2026` (SP) de
+- [x] Baixar `consulta_cand_2026` e `votacao_candidato_munzona_2026` (SP) de
       `dadosabertos.tse.jus.br` para `data/raw/` (ignorado no git).
       Atenção: CSV em latin1, separador `;`, cabeçalho em maiúsculas.
-- [ ] Processar com DuckDB via pacote npm (`@duckdb/node-api`); o CLI não está instalado.
-- [ ] Escolher a amostra: 10 deputados reeleitos SP, 5 deputados novos SP, 5 senadores
+- [x] Processar com DuckDB via pacote npm (`@duckdb/node-api`); o CLI não está instalado.
+- [x] Escolher a amostra: 10 deputados reeleitos SP, 5 deputados novos SP, 5 senadores
       (os 2 eleitos por SP em 2026 + 3 em exercício). Critério de escolha anotado em
       `docs/SONDA.md`.
-- [ ] `data/sonda/politicos-tse.json`: nome, nome de urna, partido, federação, UF,
+- [x] `data/sonda/politicos-tse.json`: nome, nome de urna, partido, federação, UF,
       situação de totalização, foto, `sq_candidato`, `cpf_hash` (SHA-256, nunca o CPF).
 - Risco: se o CSV de 2026 ainda não estiver publicado, parar e anotar. Não usar 2022
   como substituto de dado.

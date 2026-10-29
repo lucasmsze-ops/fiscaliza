@@ -15,6 +15,23 @@ Modelo:
 
 ---
 
+## 2026-10-29 · E1
+**Feito:** `scripts/sonda/tse.ts` gera `data/sonda/politicos-tse.json` com os 20 da amostra
+(10 reeleitos, 5 novos, 2 senadores eleitos, 3 em exercício), votos válidos de 2026, hash de CPF
+e nome do arquivo de foto no zip do TSE. Apoio: `_listas-atuais.ts` (Câmara/Senado SP em
+exercício → `data/raw/apoio/`) e `_inspecionar.ts` (consultas DuckDB ad hoc num CSV).
+`docs/SONDA.md` registra formato, armadilhas e critério da amostra; `CLAUDE.md` corrigido
+(TSE não tem foto no CSV, sentinelas, caixa do `DS_CARGO`, votos válidos).
+**Decidido:** reeleito/novo por nome de urna exato só para escolher a amostra; o join real é
+por CPF na E2 (4 ambíguos listados). Votos = `QT_VOTOS_NOMINAIS_VALIDOS`. Senadores em
+exercício entram com o registro TSE da eleição deles (2018/2022). Não contornei o bloqueio
+do DivulgaCand.
+**Lacunas:** foto dos novos (TSE só dá arquivo em zip; decidir na E10 se o site hospeda os jpgs);
+partido atual dos senadores em exercício vem do Senado na E6. Ver `docs/LACUNAS.md`.
+**Próximo passo:** E2 — `lib/camara.ts`; `/deputados/{id}` dos 70 de SP para pegar CPF e
+casar por hash com o JSON da E1; resolver os 4 ambíguos; marcar os 5 novos como "sem registro
+na Câmara até 01/02/2027".
+
 ## 2026-10-29 · E0
 **Feito:** `package.json` (só `tsx`, `typescript`, `@types/node`), `tsconfig.json`, `lib/types.ts`
 (tipos internos do modelo de dados), `lib/http.ts` (fetch com timeout 30 s, retry com backoff
