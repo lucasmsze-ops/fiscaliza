@@ -6,9 +6,10 @@ import type { Orientacao, TipoVoto, Votacao, Voto } from "./types";
 
 /**
  * Votos que contam como "registrou voto". `art17` é o presidente da sessão, que não vota mas
- * está presente; `nao_informado` é voto registrado cujo valor a API não divulga.
+ * está presente; `nao_informado` é voto registrado cujo valor a API não divulga; `secreto` é
+ * voto registrado em votação secreta do Senado (a direção não é pública).
  */
-const REGISTRA_VOTO: ReadonlySet<TipoVoto> = new Set(["sim", "nao", "abstencao", "obstrucao", "art17", "nao_informado"]);
+const REGISTRA_VOTO: ReadonlySet<TipoVoto> = new Set(["sim", "nao", "abstencao", "obstrucao", "art17", "nao_informado", "secreto"]);
 
 /** Orientações que expressam posição. "Liberado" e vazio não entram no governismo. */
 const ORIENTACAO_POSICIONAL: ReadonlySet<string> = new Set(["Sim", "Não", "Obstrução"]);
@@ -35,7 +36,8 @@ const noPeriodo = (v: Votacao, p?: Periodo) => !p || (v.data >= p.inicio && v.da
 
 /**
  * Participação em votações: % das votações nominais do plenário (no período) em que o político
- * registrou voto. Quem não aparece na lista de votos é `ausente`.
+ * registrou voto. Quem não aparece na lista de votos é `ausente`. Votação secreta (Senado) conta:
+ * o painel registra que votou, só não diz como.
  */
 export function participacao(votacoes: Votacao[], votosDoPolitico: Voto[], periodo?: Periodo): Indicador {
   const porVotacao = new Map(votosDoPolitico.map((v) => [v.votacaoId, v.voto]));

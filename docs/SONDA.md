@@ -250,3 +250,88 @@ cada deputado-mês a cada execução e marca o mês como **fechado** quando o to
 entre duas execuções mensais; o card mostra o último mês fechado e o rótulo "mês de referência:
 jun/2026". Até ter duas execuções, usar regra provisória: último mês com ≥90% da bancada com
 lançamento (hoje: 2026-08).
+
+## E6 · Senado: adapter, join e votações (2026-10-29)
+
+### A API (OpenAPI 4.1.3 em `/dadosabertos/v3/api-docs`)
+- `/dadosabertos/docs/` é um Swagger UI; o JSON com os 157 paths está em `/dadosabertos/v3/api-docs`.
+- Os paths de votação que o `CLAUDE.md` listava estão **DEPRECATED** (`/senador/{codigo}/votacoes`,
+  `/plenario/lista/votacao/{inicio}/{fim}`, `/plenario/votacao/nominal/{ano}`). O substituto é
+  `GET /votacao?dataInicio&dataFim` (janela ≤ 1 ano; 400 acima). 4 chamadas cobrem 2023-02→hoje
+  em 6 s (maior resposta: 2,7 MB, 2023).
+- Orientação: `GET /plenario/votacao/orientacaoBancada/{AAAAMMDD}/{AAAAMMDD}` aceitou o período
+  inteiro numa chamada (2,4 MB, 6 s). Chave de junção: `sequencialVotacao`.
+- JSON via `Accept: application/json` em todos; `.json` no path só redireciona (301). A conversão
+  XML→JSON devolve objeto quando há um item (`Partidos.Partido`) e omite a chave quando vazio
+  (`Parlamentares` some em `lista/atual?uf=AC&participacao=S`).
+- **Sem CPF em nenhum endpoint** (0 ocorrências no OpenAPI).
+- Foto: `UrlFotoParlamentar` vem em `http://` e redireciona duas vezes até
+  `https://legis.senado.leg.br/senadores/fotos-oficiais/{codigo}` (JPEG, ~240 KB).
+
+### Shape de `/votacao` (2023-02-01 → 2026-10-29)
+- **426 votações nominais** do plenário (2023: 141 · 2024: 95 · 2025: 128 · 2026: 62). Só
+  `casaSessao: SF` (DOR 400, DEX 26). Vetos (sessão conjunta do CN) não aparecem.
+- **Cada votação lista os 81 senadores.** Siglas vistas: Sim 9.548 · Não 2.596 · Abstenção 33 ·
+  "Votou" 12.708 (secreta) · P-NRV 5.222 (presente, não registrou voto) · AP 2.395 (atividade
+  parlamentar) · LS 877 · MIS 620 · "Presidente (art. 51 RISF)" 195 · NCom 152 · LP 128 · NA 31 ·
+  LAP 1. Ao contrário da Câmara, a ausência é explícita e tem motivo.
+- **240 das 426 (56%) são secretas**: MSF 188 (sabatinas de autoridades), OFS 49, PDL 3. Nelas o
+  voto é só "Votou". Nenhuma secreta tem orientação do Governo.
+- `sequencialVotacao` nulo em 10 (todas abertas, quase todas requerimentos) → sem orientação.
+  `codigoSessaoVotacao` é único e vira `idExterno`. Todas têm `codigoMateria` → URL oficial
+  `www25.senado.leg.br/web/atividade/materias/-/materia/{codigoMateria}`.
+
+### Orientação de bancada
+- 427 votações no período; 2.043 orientações juntadas. 11 sem par em `/votacao`: 7 sessões
+  conjuntas do CN e 4 que correspondem a votações de `sequencialVotacao` nulo (não juntadas).
+- Bancadas: partidos na grafia da API ("Republica", "Podemos", "UNIÃO"), "Governo" (136),
+  "Oposição", "Maioria", "Minoria", "Banc Fem". Valores SIM/NÃO/LIVRE/OBSTRUÇÃO/null →
+  Sim/Não/Liberado/Obstrução/"" no adapter.
+- Governo orientou Sim/Não/Obstrução em **129 votações abertas** (2023: 36 · 2024: 44 · 2025: 39 ·
+  2026: 10). É o denominador máximo do governismo de um senador.
+
+### Join com o TSE
+- Sem CPF, o join é nome completo (NFD sem acento, maiúsculas) + UF entre
+  `NomeCompletoParlamentar` e `NM_CANDIDATO`: 3/3 casaram sem ambiguidade (Marcos Cesar Pontes
+  2022; Mara Cristina Gabrilli 2018; Alexandre Luiz Giordano 2018, 1º suplente). O método fica
+  gravado em `join: "nome_completo+uf"`.
+- André do Prado e Derrite não existem no Senado até 01/02/2027 (Derrite já tem `camaraId`).
+
+### Perfil, mandatos, licenças
+- `/senador/{codigo}` v6: nome parlamentar e completo, e-mail oficial, foto, nascimento,
+  telefones. `/mandatos`: as duas legislaturas do mandato, titular/suplente, exercícios e
+  histórico de filiação (Giordano: 1º suplente de Major Olimpio, em exercício desde 2021-03-31;
+  PSL → MDB → sem partido → PODE em 2026-03). `/licencas?dataInicio`: períodos com tipo.
+
+### Os dois números (mesmas funções da Câmara, 2023-02-01 → 2026-10-29)
+
+| Senador | Partido | Participação | Governismo | Ausências por sigla | Licenças desde 2023-02 |
+|---|---|---|---|---|---|
+| Astronauta Marcos Pontes | PL | 71,4% (304/426) | 55,1% (54/98) | P-NRV 47, MIS 46, LS 17, AP 9, NCom 3 | 28 (88 dias) |
+| Giordano | PODE | 46,0% (196/426) | 98,4% (61/62) | AP 166, P-NRV 40, MIS 17, NCom 7 | 81 (176 dias) |
+| Mara Gabrilli | PSD | 38,3% (163/426) | 91,7% (77/84) | LS 132, P-NRV 57, MIS 57, AP 17 | 43 (248 dias) |
+
+Participação só nas 186 abertas: Pontes 80,6% · Giordano 51,6% · Mara Gabrilli 67,7%. Só nas 240
+secretas: 64,2% · 41,7% · 15,4%. Tipos de voto dos 3 no total: ausente 615, secreto 291, sim 289,
+nao 82, abstencao 1.
+
+### Metodologia (soma à da E4; espelhar em `/como-funciona`)
+- Novo tipo `secreto` (Senado, "Votou"): conta na participação — o painel registra que votou,
+  só não diz como —, nunca entra em governismo nem concordância.
+- Sigla de comparecimento (P-NRV, AP, MIS, LS, LP, LAP, NCom...) → `ausente`;
+  "Presidente (art. 51 RISF)" → `art17`; NA (dispositivo não citado) → `nao_informado`.
+- Vetos ficam fora dos dois números nas duas Casas (sessão conjunta do CN não está em
+  `/votacao` nem em `/votacoes?idOrgao=180`).
+- `participacao()` e `governismo()` rodaram sem alteração para senador; fixture real em
+  `tests/fixtures/indicadores-senado-real.json` (Marcos Pontes, 2025).
+
+### Questões que o dado levantou (continuam a lista da E4)
+3. **Secretas no denominador da participação?** 56% das nominais do Senado são secretas
+   (sabatinas). Com elas, Mara Gabrilli tem 38,3%; só nas abertas, 67,7%. Proposta: manter —
+   é votação nominal do plenário e o painel registra quem votou — e dizer em `/como-funciona`
+   que no Senado o número inclui votações secretas.
+4. **P-NRV** ("presente, não registrou voto") conta como ausência. É o que o rótulo
+   "participação em votações" promete; a sigla crua fica gravada para quem quiser ver.
+5. **Licença no Senado** reforça a questão 1 da E4: Mara Gabrilli tem 132 ausências por licença
+   saúde e 43 licenças (248 dias) no período. O dado oficial já está em `senadores.json`
+   (`licencas`) para mostrar "licenciada N dias no período" ao lado do número.

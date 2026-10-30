@@ -94,9 +94,14 @@ export interface Votacao {
 }
 
 /**
- * Os 5 valores de `tipoVoto` da Câmara, mais `nao_informado` (voto registrado com
- * `tipoVoto: null`, visto em votações de pessoa) e `ausente` (quem não aparece no array
- * de votos). Todos tratados explicitamente no cálculo de participação.
+ * Os 5 valores de `tipoVoto` da Câmara, mais:
+ * - `nao_informado`: voto registrado cujo valor a fonte não divulga (Câmara: `tipoVoto: null`
+ *   em votações de pessoa; Senado: "NA – dispositivo não citado").
+ * - `secreto`: votação secreta do Senado — a API diz só "Votou". Conta como participação,
+ *   nunca entra em governismo ou concordância.
+ * - `ausente`: não registrou voto (Câmara: não aparece no array; Senado: qualquer sigla de
+ *   comparecimento — licença, missão, "presente, não registrou voto"...).
+ * Todos tratados explicitamente no cálculo de participação.
  */
 export type TipoVoto =
   | "sim"
@@ -105,6 +110,7 @@ export type TipoVoto =
   | "obstrucao"
   | "art17"
   | "nao_informado"
+  | "secreto"
   | "ausente";
 
 export interface Voto {

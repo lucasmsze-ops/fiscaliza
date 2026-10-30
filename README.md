@@ -31,4 +31,5 @@ Os CSVs do TSE ficam em `data/raw/` (ignorado no git). Para reproduzir a E1:
 # data/raw/{consulta_cand,consulta_cand_2022,consulta_cand_2018,votacao_munzona}/ e as fotos em data/raw/fotos/
 npx tsx scripts/sonda/_listas-atuais.ts   # quem está em exercício em SP (Câmara/Senado)
 npx tsx scripts/sonda/tse.ts              # gera data/sonda/politicos-tse.json
+npx tsx scripts/sonda/senadores.ts        # Senado: senadores.json, votacoes-senado.json, orientacoes-senado.json, votos-senado.json
 ```

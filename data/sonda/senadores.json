@@ -1,0 +1,1140 @@
+[
+ {
+  "senadoCodigo": "6009",
+  "nome": "Astronauta Marcos Pontes",
+  "nomeCompleto": "Marcos Cesar Pontes",
+  "sexo": "Masculino",
+  "partido": "PL",
+  "uf": "SP",
+  "email": "sen.astronautamarcospontes@senado.leg.br",
+  "fotoUrl": "https://www.senado.leg.br/senadores/img/fotos-oficiais/senador6009.jpg",
+  "urlPagina": "https://www25.senado.leg.br/web/senadores/senador/-/perfil/6009",
+  "dataNascimento": "1963-03-11",
+  "naturalidade": "Bauru/SP",
+  "telefones": [
+   "33031177",
+   "33031797"
+  ],
+  "tseSqCandidato": "250001612472",
+  "cpfHash": "d5a0a8ac3ecac57f01e3cd8a19a660e515288407b5993b508c77851c2f61ff17",
+  "join": "nome_completo+uf",
+  "emExercicio": true,
+  "participacao": "Titular",
+  "titular": true,
+  "bloco": "Bloco Parlamentar Vanguarda",
+  "mandatos": [
+   {
+    "codigoMandato": "617",
+    "uf": "SP",
+    "participacao": "Titular",
+    "titular": true,
+    "titularDe": null,
+    "suplentes": [
+     {
+      "participacao": "1º Suplente",
+      "senadoCodigo": "6385",
+      "nome": "Professor Alberto"
+     },
+     {
+      "participacao": "2º Suplente",
+      "senadoCodigo": "6386",
+      "nome": "Sirlange Manga"
+     }
+    ],
+    "legislaturas": [
+     {
+      "numero": 57,
+      "inicio": "2023-02-01",
+      "fim": "2027-01-31"
+     },
+     {
+      "numero": 58,
+      "inicio": "2027-02-01",
+      "fim": "2031-01-31"
+     }
+    ],
+    "exercicios": [
+     {
+      "inicio": "2023-02-01",
+      "fim": null
+     }
+    ],
+    "partidos": [
+     {
+      "sigla": "PL",
+      "filiacao": "2022-03-27",
+      "desfiliacao": null
+     }
+    ]
+   }
+  ],
+  "licencas": [
+   {
+    "inicio": "2023-03-15",
+    "fim": "2023-03-16",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-06-20",
+    "fim": "2023-07-06",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2023-07-14",
+    "fim": "2023-07-27",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-08-31",
+    "fim": "2023-08-31",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-09-26",
+    "fim": "2023-09-26",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-12-06",
+    "fim": "2023-12-06",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-12-20",
+    "fim": "2023-12-21",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-02-22",
+    "fim": "2024-02-22",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-02-29",
+    "fim": "2024-02-29",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-03-07",
+    "fim": "2024-03-07",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-03-25",
+    "fim": "2024-03-25",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-04-23",
+    "fim": "2024-04-23",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-06-06",
+    "fim": "2024-06-06",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-06-20",
+    "fim": "2024-06-20",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-08-06",
+    "fim": "2024-08-06",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-12-04",
+    "fim": "2024-12-04",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-12-05",
+    "fim": "2024-12-05",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-02-19",
+    "fim": "2025-02-20",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-07-01",
+    "fim": "2025-07-03",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-09-24",
+    "fim": "2025-09-24",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-09-25",
+    "fim": "2025-09-26",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-10-06",
+    "fim": "2025-10-10",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-10-21",
+    "fim": "2025-10-21",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-11-04",
+    "fim": "2025-11-06",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-11-25",
+    "fim": "2025-12-02",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2026-01-25",
+    "fim": "2026-02-01",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-05-22",
+    "fim": "2026-05-25",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-06-09",
+    "fim": "2026-06-11",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   }
+  ]
+ },
+ {
+  "senadoCodigo": "6008",
+  "nome": "Giordano",
+  "nomeCompleto": "Alexandre Luiz Giordano",
+  "sexo": "Masculino",
+  "partido": "PODE",
+  "uf": "SP",
+  "email": "sen.giordano@senado.leg.br",
+  "fotoUrl": "https://www.senado.leg.br/senadores/img/fotos-oficiais/senador6008.jpg",
+  "urlPagina": "https://www25.senado.leg.br/web/senadores/senador/-/perfil/6008",
+  "dataNascimento": "1973-06-26",
+  "naturalidade": "São Paulo/SP",
+  "telefones": [
+   "33034177"
+  ],
+  "tseSqCandidato": "250000615467",
+  "cpfHash": "668c1d73b1f6447f14d2df069addd82da1dfcbf71b8e9d73fd7f17c3a93b7959",
+  "join": "nome_completo+uf",
+  "emExercicio": true,
+  "participacao": "1º Suplente",
+  "titular": false,
+  "bloco": "Bloco Parlamentar Democracia",
+  "mandatos": [
+   {
+    "codigoMandato": "570",
+    "uf": "SP",
+    "participacao": "1º Suplente",
+    "titular": false,
+    "titularDe": {
+     "senadoCodigo": "5666",
+     "nome": "Major Olimpio"
+    },
+    "suplentes": [],
+    "legislaturas": [
+     {
+      "numero": 56,
+      "inicio": "2019-02-01",
+      "fim": "2023-01-31"
+     },
+     {
+      "numero": 57,
+      "inicio": "2023-02-01",
+      "fim": "2027-01-31"
+     }
+    ],
+    "exercicios": [
+     {
+      "inicio": "2021-03-31",
+      "fim": null
+     }
+    ],
+    "partidos": [
+     {
+      "sigla": "PODE",
+      "filiacao": "2026-03-10",
+      "desfiliacao": null
+     },
+     {
+      "sigla": "S/Partido",
+      "filiacao": "2025-12-16",
+      "desfiliacao": "2026-03-09"
+     },
+     {
+      "sigla": "MDB",
+      "filiacao": "2021-08-16",
+      "desfiliacao": "2025-12-15"
+     },
+     {
+      "sigla": "PSL",
+      "filiacao": "2021-03-26",
+      "desfiliacao": "2021-08-16"
+     }
+    ]
+   }
+  ],
+  "licencas": [
+   {
+    "inicio": "2023-03-28",
+    "fim": "2023-03-30",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-04-25",
+    "fim": "2023-04-25",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-05-17",
+    "fim": "2023-05-17",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-05-25",
+    "fim": "2023-05-25",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-06-27",
+    "fim": "2023-06-27",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-08-01",
+    "fim": "2023-08-03",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-08-15",
+    "fim": "2023-08-17",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-08-29",
+    "fim": "2023-08-31",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-09-19",
+    "fim": "2023-09-21",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-10-24",
+    "fim": "2023-10-26",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-11-28",
+    "fim": "2023-11-30",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-02-06",
+    "fim": "2024-02-08",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-02-27",
+    "fim": "2024-02-29",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-03-19",
+    "fim": "2024-03-21",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-03-26",
+    "fim": "2024-03-26",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-04-02",
+    "fim": "2024-04-03",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-04-10",
+    "fim": "2024-04-11",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-04-16",
+    "fim": "2024-04-18",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-04-23",
+    "fim": "2024-04-25",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-05-07",
+    "fim": "2024-05-09",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-05-21",
+    "fim": "2024-05-23",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-05-29",
+    "fim": "2024-05-29",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-06-04",
+    "fim": "2024-06-05",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-06-11",
+    "fim": "2024-06-13",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-06-18",
+    "fim": "2024-06-20",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-07-02",
+    "fim": "2024-07-04",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-07-09",
+    "fim": "2024-07-11",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-07-16",
+    "fim": "2024-07-17",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-08-06",
+    "fim": "2024-08-08",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-08-13",
+    "fim": "2024-08-15",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-09-03",
+    "fim": "2024-09-04",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-10-08",
+    "fim": "2024-10-09",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-10-29",
+    "fim": "2024-10-30",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-11-12",
+    "fim": "2024-11-13",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-11-27",
+    "fim": "2024-11-27",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-12-03",
+    "fim": "2024-12-05",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2024-12-12",
+    "fim": "2024-12-12",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-02-19",
+    "fim": "2025-02-19",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-03-11",
+    "fim": "2025-03-12",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-03-18",
+    "fim": "2025-03-19",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-03-25",
+    "fim": "2025-03-26",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-04-01",
+    "fim": "2025-04-03",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-04-08",
+    "fim": "2025-04-10",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-04-22",
+    "fim": "2025-04-24",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-04-29",
+    "fim": "2025-04-30",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-05-08",
+    "fim": "2025-05-08",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-05-13",
+    "fim": "2025-05-14",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-05-20",
+    "fim": "2025-05-21",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-05-28",
+    "fim": "2025-05-29",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-06-10",
+    "fim": "2025-06-11",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-06-17",
+    "fim": "2025-06-18",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-06-23",
+    "fim": "2025-06-29",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-06-24",
+    "fim": "2025-06-24",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-07-01",
+    "fim": "2025-07-02",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-07-09",
+    "fim": "2025-07-09",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-07-15",
+    "fim": "2025-07-15",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-08-12",
+    "fim": "2025-08-13",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-08-26",
+    "fim": "2025-08-27",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-09-09",
+    "fim": "2025-09-11",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-09-16",
+    "fim": "2025-09-18",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-09-30",
+    "fim": "2025-10-02",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-10-14",
+    "fim": "2025-10-14",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-10-28",
+    "fim": "2025-10-29",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-10-30",
+    "fim": "2025-11-10",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-11-11",
+    "fim": "2025-11-12",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-11-25",
+    "fim": "2025-11-26",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-12-02",
+    "fim": "2025-12-03",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-03-03",
+    "fim": "2026-03-03",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-03-04",
+    "fim": "2026-03-04",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-03-17",
+    "fim": "2026-03-17",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-03-18",
+    "fim": "2026-03-18",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-04-07",
+    "fim": "2026-04-07",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-04-08",
+    "fim": "2026-04-08",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-04-15",
+    "fim": "2026-04-15",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-05-12",
+    "fim": "2026-05-12",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-05-13",
+    "fim": "2026-05-13",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-05-19",
+    "fim": "2026-05-19",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-05-20",
+    "fim": "2026-05-20",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-06-02",
+    "fim": "2026-06-02",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-06-10",
+    "fim": "2026-06-10",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-07-09",
+    "fim": "2026-07-09",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   }
+  ]
+ },
+ {
+  "senadoCodigo": "5376",
+  "nome": "Mara Gabrilli",
+  "nomeCompleto": "Mara Cristina Gabrilli",
+  "sexo": "Feminino",
+  "partido": "PSD",
+  "uf": "SP",
+  "email": "sen.maragabrilli@senado.leg.br",
+  "fotoUrl": "https://www.senado.leg.br/senadores/img/fotos-oficiais/senador5376.jpg",
+  "urlPagina": "https://www25.senado.leg.br/web/senadores/senador/-/perfil/5376",
+  "dataNascimento": "1967-09-28",
+  "naturalidade": "São Paulo/SP",
+  "telefones": [
+   "33032191"
+  ],
+  "tseSqCandidato": "250000612593",
+  "cpfHash": "4a9b81d800fff71754733d5b01509820f0026f45f681c0741794fc931ae30347",
+  "join": "nome_completo+uf",
+  "emExercicio": true,
+  "participacao": "Titular",
+  "titular": true,
+  "bloco": "Bloco Parlamentar da Resistência Democrática",
+  "mandatos": [
+   {
+    "codigoMandato": "569",
+    "uf": "SP",
+    "participacao": "Titular",
+    "titular": true,
+    "titularDe": null,
+    "suplentes": [
+     {
+      "participacao": "1º Suplente",
+      "senadoCodigo": "3651",
+      "nome": "Alfredo Cotait Neto"
+     },
+     {
+      "participacao": "2º Suplente",
+      "senadoCodigo": "6007",
+      "nome": "Ivani Boscolo"
+     }
+    ],
+    "legislaturas": [
+     {
+      "numero": 56,
+      "inicio": "2019-02-01",
+      "fim": "2023-01-31"
+     },
+     {
+      "numero": 57,
+      "inicio": "2023-02-01",
+      "fim": "2027-01-31"
+     }
+    ],
+    "exercicios": [
+     {
+      "inicio": "2019-02-01",
+      "fim": null
+     }
+    ],
+    "partidos": [
+     {
+      "sigla": "PSD",
+      "filiacao": "2023-01-28",
+      "desfiliacao": null
+     },
+     {
+      "sigla": "PSDB",
+      "filiacao": "2011-02-01",
+      "desfiliacao": "2023-01-27"
+     }
+    ]
+   }
+  ],
+  "licencas": [
+   {
+    "inicio": "2023-02-07",
+    "fim": "2023-02-08",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2023-02-28",
+    "fim": "2023-03-01",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2023-03-09",
+    "fim": "2023-03-09",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-03-16",
+    "fim": "2023-03-16",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-03-23",
+    "fim": "2023-03-23",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-03-28",
+    "fim": "2023-03-31",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2023-04-13",
+    "fim": "2023-04-13",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-04-19",
+    "fim": "2023-04-19",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2023-05-23",
+    "fim": "2023-05-27",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2023-06-20",
+    "fim": "2023-06-22",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2023-08-11",
+    "fim": "2023-08-17",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2023-08-21",
+    "fim": "2023-08-26",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2023-08-30",
+    "fim": "2023-08-31",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2023-09-14",
+    "fim": "2023-09-14",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2023-09-25",
+    "fim": "2023-09-28",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2023-10-24",
+    "fim": "2023-10-29",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2023-11-27",
+    "fim": "2023-12-01",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2023-12-13",
+    "fim": "2023-12-15",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-02-05",
+    "fim": "2024-02-10",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-02-20",
+    "fim": "2024-02-23",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-02-26",
+    "fim": "2024-03-01",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-03-11",
+    "fim": "2024-03-24",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-03-25",
+    "fim": "2024-04-01",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-04-05",
+    "fim": "2024-04-12",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-04-22",
+    "fim": "2024-04-29",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-05-06",
+    "fim": "2024-05-12",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-05-13",
+    "fim": "2024-05-19",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-05-20",
+    "fim": "2024-05-27",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-06-17",
+    "fim": "2024-06-21",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-07-08",
+    "fim": "2024-07-14",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-09-03",
+    "fim": "2024-09-06",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-10-07",
+    "fim": "2024-11-04",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-11-11",
+    "fim": "2024-11-22",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-11-25",
+    "fim": "2024-12-03",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-12-04",
+    "fim": "2024-12-17",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2024-12-17",
+    "fim": "2024-12-19",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2025-07-08",
+    "fim": "2025-07-08",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2025-11-12",
+    "fim": "2025-11-12",
+    "tipo": "LICENCA_ATIVIDADE_PARLAMENTAR",
+    "descricao": "Missão política ou cultural de interesse parlamentar"
+   },
+   {
+    "inicio": "2026-03-18",
+    "fim": "2026-04-07",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2026-04-07",
+    "fim": "2026-04-09",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2026-04-13",
+    "fim": "2026-04-15",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2026-04-30",
+    "fim": "2026-04-30",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   },
+   {
+    "inicio": "2026-06-17",
+    "fim": "2026-06-21",
+    "tipo": "LICENCA_SAUDE_ATE_120D",
+    "descricao": "Licença Saúde (até a 120 dias)"
+   }
+  ]
+ }
+]

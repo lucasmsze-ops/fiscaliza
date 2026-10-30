@@ -14,3 +14,8 @@ Nunca preencher com dado sintético.
 | 2026-10-29 | Câmara | Político sem mandato no período (João Paulo Cunha) | "Sem mandato no período" em vez de 0% (modelar na E8) |
 | 2026-10-29 | Câmara | CEAP dos últimos ~3 meses está incompleta (lançamentos em aberto); CSV anual omite passagens SIGEPA | Card usa o último mês fechado (regra: ≥90% da bancada com lançamento) e avisa "mês em aberto" nos demais |
 | 2026-10-29 | Câmara | 6 dos 70 de SP sem nenhum gasto em 2025 (assumiram em 2026) | Média do mês conta só deputados com lançamento no mês |
+| 2026-10-29 | Senado | Nenhum endpoint expõe CPF | Join com o TSE por nome completo + UF, método gravado em `join`; revisar à mão se houver homônimo |
+| 2026-10-29 | Senado | 240 das 426 votações nominais do plenário (2023-02→2026-10) são secretas: a API diz só "Votou" | Conta na participação (tipo `secreto`); fora de governismo e concordância; quiz só usa abertas |
+| 2026-10-29 | Senado | 10 votações com `sequencialVotacao` nulo não casam com a orientação de bancada | Fora do governismo (sem orientação); seguem na participação |
+| 2026-10-29 | Senado / Câmara | Vetos são votados em sessão conjunta do CN e não estão em `/votacao` (Senado) nem em `/votacoes?idOrgao=180` (Câmara) | Fora dos números do MVP; dizer em `/como-funciona` |
+| 2026-10-29 | Senado | André do Prado e Derrite (eleitos 2026) não existem na API até 01/02/2027 | Perfil só do TSE; "primeiro voto em fevereiro" |

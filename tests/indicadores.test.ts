@@ -9,10 +9,10 @@ const voto = (votacaoId: string, v: Voto["voto"]): Voto => ({ votacaoId, politic
 const ori = (votacaoId: string, orientacao: string, bancada = "Governo"): Orientacao => ({ votacaoId, bancada, orientacao });
 
 describe("participacao", () => {
-  it("conta Sim/Não/Abstenção/Obstrução/Art.17/não informado como voto registrado e quem não aparece como ausente", () => {
-    const votacoes = ["a", "b", "c", "d", "e", "f", "g"].map((id) => vot(id));
-    const votos = [voto("a", "sim"), voto("b", "nao"), voto("c", "abstencao"), voto("d", "obstrucao"), voto("e", "art17"), voto("f", "nao_informado")];
-    expect(participacao(votacoes, votos)).toEqual({ numerador: 6, denominador: 7, percentual: 85.7 });
+  it("conta Sim/Não/Abstenção/Obstrução/Art.17/não informado/secreto como voto registrado; ausente e quem não aparece, não", () => {
+    const votacoes = ["a", "b", "c", "d", "e", "f", "g", "h", "i"].map((id) => vot(id));
+    const votos = [voto("a", "sim"), voto("b", "nao"), voto("c", "abstencao"), voto("d", "obstrucao"), voto("e", "art17"), voto("f", "nao_informado"), voto("g", "secreto"), voto("h", "ausente")];
+    expect(participacao(votacoes, votos)).toEqual({ numerador: 7, denominador: 9, percentual: 77.8 });
   });
   it("sem votações no período → percentual null", () => {
     expect(participacao([vot("a", "2024-05-05")], [], { inicio: "2025-01-01", fim: "2025-12-31" })).toEqual({ numerador: 0, denominador: 0, percentual: null });
@@ -29,10 +29,10 @@ describe("governismo", () => {
     const votos = [voto("a", "sim"), voto("b", "sim"), voto("c", "obstrucao")];
     expect(governismo(votacoes, votos, orientacoes)).toEqual({ numerador: 2, denominador: 3, percentual: 66.7 });
   });
-  it("exclui do denominador: Liberado, orientação vazia, abstenção, ausência, art. 17 e orientação de outra bancada", () => {
-    const votacoes = ["lib", "vazia", "abst", "aus", "art", "outra", "ok"].map((id) => vot(id));
-    const orientacoes = [ori("lib", "Liberado"), ori("vazia", ""), ori("abst", "Sim"), ori("aus", "Sim"), ori("art", "Sim"), ori("outra", "Sim", "PT"), ori("ok", "Não")];
-    const votos = [voto("lib", "sim"), voto("vazia", "sim"), voto("abst", "abstencao"), voto("art", "art17"), voto("outra", "sim"), voto("ok", "nao")];
+  it("exclui do denominador: Liberado, orientação vazia, abstenção, ausência, art. 17, voto secreto e orientação de outra bancada", () => {
+    const votacoes = ["lib", "vazia", "abst", "aus", "art", "sec", "outra", "ok"].map((id) => vot(id));
+    const orientacoes = [ori("lib", "Liberado"), ori("vazia", ""), ori("abst", "Sim"), ori("aus", "Sim"), ori("art", "Sim"), ori("sec", "Sim"), ori("outra", "Sim", "PT"), ori("ok", "Não")];
+    const votos = [voto("lib", "sim"), voto("vazia", "sim"), voto("abst", "abstencao"), voto("art", "art17"), voto("sec", "secreto"), voto("outra", "sim"), voto("ok", "nao")];
     expect(governismo(votacoes, votos, orientacoes)).toEqual({ numerador: 1, denominador: 1, percentual: 100 });
   });
   it("respeita o período de governo", () => {

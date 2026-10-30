@@ -84,12 +84,15 @@ Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por esta
 - API instável, sem rate limit documentado (observado: ~3% das chamadas falham e passam no retry). Retry com backoff, timeout de 30s, log por endpoint. Falha num endpoint não aborta o job.
 - Eleitos em 2026 só existem aqui a partir de 01/02/2027. Até lá, dado vem do TSE.
 
-### Senado — `https://legis.senado.leg.br/dadosabertos` (XML por padrão; pedir JSON via header `Accept` ou sufixo `.json`)
-- `/senador/lista/atual`, `/senador/{codigo}`, `/senador/{codigo}/mandatos`, `/comissoes`, `/autorias`, `/votacoes`.
-- Votações do plenário: confirmar path atual na doc (`/dadosabertos/docs/`) antes de codar — a nomenclatura mudou entre versões.
-- Campos inconsistentes entre endpoints. Normalizar num adapter em `lib/senado.ts`; nunca usar o shape cru no restante do código.
-- `codigo` do Senado não tem relação com `id` da Câmara. Join com TSE por hash de CPF; fallback manual por nome+UF+partido, revisado à mão.
-- 2026 renovou 2/3 do Senado: a maioria dos senadores eleitos não tem dado até fevereiro.
+### Senado — `https://legis.senado.leg.br/dadosabertos` (JSON via header `Accept: application/json`; o sufixo `.json` só redireciona)
+- Doc: Swagger UI em `/dadosabertos/docs/`; o OpenAPI está em `/dadosabertos/v3/api-docs` (v4.1.3 em 2026-10-29, 157 paths).
+- `/senador/lista/atual?uf=`, `/senador/{codigo}` (v6), `/senador/{codigo}/mandatos`, `/senador/{codigo}/licencas?dataInicio=AAAAMMDD`, `/comissoes`, `/autorias`.
+- **Votos nominais do plenário: `GET /votacao?dataInicio&dataFim` (ISO, janela ≤ 1 ano; 400 acima).** `/senador/{codigo}/votacoes`, `/plenario/lista/votacao/...` e `/plenario/votacao/nominal/{ano}` estão DEPRECATED e apontam para este. Cada votação lista **os 81 senadores** com `siglaVotoParlamentar`: Sim/Não/Abstenção; "Votou" (votação secreta — 56% das nominais 2023–26, sabatinas MSF/OFS); "Presidente (art. 51 RISF)"; NA (dispositivo não citado); e siglas de comparecimento (P-NRV, AP, MIS, LS, LP, NCom..., lista em `/plenario/lista/tiposComparecimento`) que viram `ausente`. `idExterno` = `codigoSessaoVotacao`. Só sessões do SF: vetos (sessão conjunta do CN) não aparecem.
+- Orientação de bancada: `GET /plenario/votacao/orientacaoBancada/{AAAAMMDD}/{AAAAMMDD}` (aceitou o período inteiro numa chamada). Junta com `/votacao` por `sequencialVotacao` (nulo em ~2% das votações → sem orientação). Bancadas: partidos na grafia da API ("Republica", "Podemos", "UNIÃO"), "Governo", "Oposição", "Maioria", "Minoria", "Banc Fem". Valores SIM/NÃO/LIVRE/OBSTRUÇÃO/null, normalizados no adapter para Sim/Não/Liberado/Obstrução/"" (vocabulário da Câmara).
+- XML→JSON: objeto em vez de array quando há um só item (`Partidos.Partido`), chave ausente quando vazio. Normalizar em `lib/senado.ts`; nunca usar o shape cru fora dele.
+- **Nenhum endpoint expõe CPF** (0 ocorrências no OpenAPI). Join com o TSE por nome completo + UF (`NomeCompletoParlamentar` × `NM_CANDIDATO`, sem acento, maiúsculas), gravando o método em `join`; revisão manual se houver ambiguidade. `codigo` do Senado não tem relação com `id` da Câmara.
+- Foto: `UrlFotoParlamentar` vem em `http://` e redireciona até `https://legis.senado.leg.br/senadores/fotos-oficiais/{codigo}` (JPEG). O adapter troca o esquema para https.
+- 2026 renovou 2/3 do Senado: a maioria dos senadores eleitos não tem dado até 01/02/2027.
 
 ### Portal da Transparência (v1.1) — chave gratuita, uma só, usada apenas no cron.
 

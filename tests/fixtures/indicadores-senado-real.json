@@ -1,0 +1,172 @@
+{
+ "politico": {
+  "senadoCodigo": "6009",
+  "nome": "Astronauta Marcos Pontes"
+ },
+ "votacoes": [
+  {
+   "idExterno": "6919",
+   "data": "2025-03-11",
+   "secreta": false,
+   "proposicao": "PEC 18/2024",
+   "descricao": "Votação nominal da Proposta de Emenda à Constituição nº 18, de 2024, nos termos do parecer (1º Turno)."
+  },
+  {
+   "idExterno": "6920",
+   "data": "2025-03-11",
+   "secreta": false,
+   "proposicao": "PEC 18/2024",
+   "descricao": "Votação nominal da Proposta de Emenda à Constituição nº 18, de 2024 (2º Turno)."
+  },
+  {
+   "idExterno": "6922",
+   "data": "2025-03-19",
+   "secreta": false,
+   "proposicao": "PLP 22/2025 (Substitutivo-CD)",
+   "descricao": "Votação nominal do Substitutivo da Câmara dos Deputados ao PLP nº 22/2025, nos termos do parecer."
+  },
+  {
+   "idExterno": "7008",
+   "data": "2025-09-02",
+   "secreta": false,
+   "proposicao": "PEC 66/2023 (fase 2)",
+   "descricao": "Votação nominal da Expressão do §19 do art. 165 da Constituição, constante do art. 1º da PEC nº 66/2023, destacada."
+  },
+  {
+   "idExterno": "7030",
+   "data": "2025-12-03",
+   "secreta": false,
+   "proposicao": "PLP 163/2025",
+   "descricao": "Votação nominal da Emenda nº 1 (Substitutivo) ao Projeto de Lei Complementar nº 163, de 2025, nos termos do parecer."
+  },
+  {
+   "idExterno": "7031",
+   "data": "2025-12-09",
+   "secreta": false,
+   "proposicao": "RQS 911/2025",
+   "descricao": "Votação nominal do Requerimento nº 911, de 2025, de iniciativa de Líderes, que solicita calendário especial para a Proposta de Emenda à Constituição nº 48, de 2023."
+  },
+  {
+   "idExterno": "6930",
+   "data": "2025-05-21",
+   "secreta": true,
+   "proposicao": "MSF 3/2025",
+   "descricao": "Votação nominal da Mensagem nº 3, de 2025 - Rodrigo de Lima Baena Soares (Alemanha)."
+  },
+  {
+   "idExterno": "6931",
+   "data": "2025-05-21",
+   "secreta": true,
+   "proposicao": "MSF 11/2025",
+   "descricao": "Votação nominal da Mensagem nº 11, de 2025 - Paulo Uchôa Ribeiro Filho (Arábia Saudita e Iêmen)."
+  },
+  {
+   "idExterno": "6918",
+   "data": "2025-02-19",
+   "secreta": false,
+   "proposicao": "PLP 22/2025",
+   "descricao": "Votação nominal da Emenda nº 1 (Substitutivo) ao Projeto de Lei Complementar nº 22, de 2025, nos termos do parecer."
+  },
+  {
+   "idExterno": "6925",
+   "data": "2025-04-08",
+   "secreta": false,
+   "proposicao": "PEC 2/2016",
+   "descricao": "Votação nominal da Proposta de Emenda à Constituição nº 2, de 2016, nos termos do parecer (1º turno)."
+  }
+ ],
+ "orientacoesGoverno": [
+  {
+   "votacaoId": "6919",
+   "orientacao": "Sim"
+  },
+  {
+   "votacaoId": "6920",
+   "orientacao": "Sim"
+  },
+  {
+   "votacaoId": "6922",
+   "orientacao": "Sim"
+  },
+  {
+   "votacaoId": "7008",
+   "orientacao": "Sim"
+  },
+  {
+   "votacaoId": "7030",
+   "orientacao": "Sim"
+  },
+  {
+   "votacaoId": "7031",
+   "orientacao": "Não"
+  },
+  {
+   "votacaoId": "6930",
+   "orientacao": null
+  },
+  {
+   "votacaoId": "6931",
+   "orientacao": null
+  },
+  {
+   "votacaoId": "6918",
+   "orientacao": "Sim"
+  },
+  {
+   "votacaoId": "6925",
+   "orientacao": "Sim"
+  }
+ ],
+ "votos": [
+  {
+   "votacaoId": "6919",
+   "sigla": "Sim",
+   "voto": "sim"
+  },
+  {
+   "votacaoId": "6920",
+   "sigla": "Sim",
+   "voto": "sim"
+  },
+  {
+   "votacaoId": "6922",
+   "sigla": "Sim",
+   "voto": "sim"
+  },
+  {
+   "votacaoId": "7008",
+   "sigla": "Não",
+   "voto": "nao"
+  },
+  {
+   "votacaoId": "7030",
+   "sigla": "Não",
+   "voto": "nao"
+  },
+  {
+   "votacaoId": "7031",
+   "sigla": "Sim",
+   "voto": "sim"
+  },
+  {
+   "votacaoId": "6930",
+   "sigla": "Votou",
+   "voto": "secreto"
+  },
+  {
+   "votacaoId": "6931",
+   "sigla": "Votou",
+   "voto": "secreto"
+  },
+  {
+   "votacaoId": "6918",
+   "sigla": "AP",
+   "voto": "ausente"
+  },
+  {
+   "votacaoId": "6925",
+   "sigla": "MIS",
+   "voto": "ausente"
+  }
+ ]
+}

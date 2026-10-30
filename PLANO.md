@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E6** (atualizar esta linha ao avançar)
+**Etapa atual: E7** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -83,12 +83,14 @@ Calendário externo que afeta o plano:
   "média SP" sem cálculo na interface.
 
 ### E6 · Senado: adapter e votações
-- [ ] Ler `legis.senado.leg.br/dadosabertos/docs/` e confirmar o path atual das
-      votações do plenário **antes** de codar. Anotar no `CLAUDE.md`.
-- [ ] `lib/senado.ts`: lista atual, `/senador/{codigo}`, mandatos, votações. Normalizar
-      os campos inconsistentes aqui; nada do shape cru sai deste arquivo.
-- [ ] Join Senado ↔ TSE por `cpf_hash`; fallback manual revisado.
-- [ ] `data/sonda/senadores.json`, votos e orientações dos 3 em exercício.
+- [x] Ler `legis.senado.leg.br/dadosabertos/docs/` e confirmar o path atual das
+      votações do plenário **antes** de codar. Anotar no `CLAUDE.md`. (É `/votacao`; os antigos
+      estão deprecated.)
+- [x] `lib/senado.ts`: lista atual, `/senador/{codigo}`, mandatos, licenças, votações,
+      orientações. Normalizar os campos inconsistentes aqui; nada do shape cru sai deste arquivo.
+- [x] Join Senado ↔ TSE (a API não tem CPF: nome completo + UF, método gravado em `join`).
+- [x] `data/sonda/senadores.json`, `votacoes-senado.json`, `orientacoes-senado.json`,
+      `votos-senado.json` (3 em exercício).
 - Pronto quando: `participacao()` e `governismo()` rodam igual para senador e deputado.
 
 ### E7 · Quociente eleitoral e "seu voto contou para"

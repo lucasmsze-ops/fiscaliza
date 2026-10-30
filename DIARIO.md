@@ -15,6 +15,25 @@ Modelo:
 
 ---
 
+## 2026-10-29 · E6
+**Feito:** `lib/senado.ts` (lista atual, perfil, mandatos, licenças, `/votacao`, orientação de
+bancada; normaliza o XML→JSON e as siglas do painel). `scripts/sonda/senadores.ts` gerou
+`senadores.json` (3 de SP em exercício, join ao TSE), `votacoes-senado.json` (426 nominais
+2023-02→hoje, 240 secretas), `orientacoes-senado.json` (2.043) e `votos-senado.json` (1.278; no
+Senado a ausência é explícita e tem sigla). 15 chamadas, 0 falhas, 6 s. Tipo `secreto` em
+`TipoVoto`; `participacao()` e `governismo()` rodaram sem mudança para senador (fixture real
+do Marcos Pontes; 18 testes). `CLAUDE.md` (seção Senado reescrita), `SONDA.md`, `LACUNAS.md`, `README.md`.
+**Decidido:** o path é `/votacao` (os do `CLAUDE.md` estavam deprecated). Secreta conta na
+participação, não no governismo. Sigla de comparecimento → `ausente`; "Presidente (art. 51)" →
+`art17`; NA → `nao_informado`. Join por nome completo + UF porque a API não expõe CPF. Vetos
+(sessão conjunta do CN) ficam fora nas duas Casas. Foto com esquema trocado para https.
+**Lacunas:** sem CPF; 56% das nominais secretas; 10 votações sem `sequencialVotacao` (sem
+orientação); vetos; André do Prado e Derrite sem registro até 01/02/2027. Três questões novas de
+metodologia no `SONDA.md` (secretas no denominador, P-NRV, licença).
+**Próximo passo:** E7 — cadeiras por partido/federação em SP a partir do TSE 2026 (federação
+como lista única), conferir contra o resultado oficial; top-20 por município e cargo →
+`data/sonda/eleitos-mun.json`; `lib/quociente.ts` com testes.
+
 ## 2026-10-29 · E5
 **Feito:** `listarDespesas()` em `lib/camara.ts`; `scripts/sonda/despesas.ts` busca a CEAP dos 70
 deputados de SP (2025→hoje, 538 chamadas, 0 falhas) e grava `data/sonda/despesas.json` com os
