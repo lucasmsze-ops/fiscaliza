@@ -196,3 +196,57 @@ Gerado por `scripts/sonda/_numeros.ts` com `lib/indicadores.ts`.
 2. **Denominador por mandato.** João Paulo Cunha dá 0/1107 porque não tinha mandato. O card
    deve mostrar "sem mandato no período", não 0%. A E8 modela `mandatos` e a participação
    passa a usar só as votações dentro do mandato.
+
+## E5 · Câmara: CEAP e média da bancada de SP (2026-10-29)
+
+### A API
+- `/deputados/{id}/despesas?ano=2025` devolve **vazio** (também com `mes`, sem ordenação, em
+  2023/2024, para vários deputados). Só funciona com **`idLegislatura=57&ano=…`**. Não está na doc.
+- ~10 páginas de 100 por deputado-ano. 70 deputados × 2025–2026 = 538 chamadas, 44 s, 0 falhas,
+  1 retry. 46.389 documentos.
+- `codDocumento` repetido **não é duplicata**: passagens SIGEPA têm várias linhas por código
+  (trechos, estornos com `valorLiquido` negativo). 3.063 linhas negativas em SP. Somar tudo.
+- Paginação estável (mesma página duas vezes = mesma sequência; páginas não se sobrepõem).
+- Campos: `ano`/`mes` = competência (9 de 181 documentos do Kim têm `dataDocumento` em outro
+  mês). `urlDocumento` é null nas SIGEPA (não há nota).
+
+### O CSV anual oficial não serve para a média
+`camara.leg.br/cotas/Ano-{ano}.csv.zip` (6 MB zipado, 171k linhas em 2025, UTF-8 com BOM,
+`;`, tem `ideCadastro` = id da Câmara e **CPF em claro**) foi testado como atalho para a média:
+- **Omite "PASSAGEM AÉREA - SIGEPA"**: Kim Kataguiri 2025 = R$ 151.745 na API, R$ 35.043 no CSV.
+- Inclui micro-itens de TELEFONIA (R$ 0,99 "RAMAL") que a API não traz.
+- Só 25 de 227 deputado-meses batiam. Descartado: o número do político e a média precisam
+  vir da mesma fonte. O cron mensal faz 513 × ~10 páginas ≈ 5k chamadas; cabe.
+
+### Média da bancada de SP por mês (API, R$)
+| Mês | Média | Com lançamento | | Mês | Média | Com lançamento |
+|---|---|---|---|---|---|---|
+| 2025-01 | 30.615 | 64 | | 2026-01 | 37.260 | 64 |
+| 2025-02 | 38.609 | 64 | | 2026-02 | 40.876 | 65 |
+| 2025-03 | 36.787 | 64 | | 2026-03 | 45.797 | 67 |
+| 2025-04 | 38.044 | 64 | | 2026-04 | 47.386 | 70 |
+| 2025-05 | 39.528 | 64 | | 2026-05 | 52.072 | 70 |
+| 2025-06 | 37.650 | 64 | | 2026-06 | 31.499 | 70 |
+| 2025-07 | 40.373 | 64 | | 2026-07 | 29.393 | 69 |
+| 2025-08 | 41.799 | 64 | | 2026-08 | 22.634 | 69 |
+| 2025-09 | 42.491 | 64 | | 2026-09 | 17.254 | 64 |
+| 2025-10 | 41.722 | 64 | | 2026-10 | 9.831 | 56 |
+| 2025-11 | 38.220 | 64 | | | | |
+| 2025-12 | 38.657 | 65 | | | | |
+
+Média = soma dos deputados com lançamento no mês ÷ quantidade deles (6 dos 70 só assumiram em
+2026). A queda a partir de jun/2026 mistura **lançamento em aberto** (a cota é prestada com
+meses de atraso) e possivelmente o período eleitoral; não dá para separar com uma foto só.
+
+### Amostra em 2026-08 (média SP R$ 22.634)
+Celeguim 39.717 · Sâmia 32.973 · Bruno Lima 32.017 · Derrite 26.239 · Baleia 24.266 ·
+Kataguiri 20.636 · Tabata 18.949 · Erika 9.897 · Mauricio Neves 8.790 · Palumbo 8.365 ·
+Alvino 1.838. Categorias de SP no período: divulgação 17,7 mi; escritório 9,3 mi;
+locação de veículos 8,3 mi; SIGEPA 6,6 mi; combustível 3,7 mi.
+
+### Decisão pendente: qual mês o card mostra
+"CEAP do mês" não pode ser o mês corrente (incompleto). Proposta: o cron guarda o total de
+cada deputado-mês a cada execução e marca o mês como **fechado** quando o total de SP não muda
+entre duas execuções mensais; o card mostra o último mês fechado e o rótulo "mês de referência:
+jun/2026". Até ter duas execuções, usar regra provisória: último mês com ≥90% da bancada com
+lançamento (hoje: 2026-08).

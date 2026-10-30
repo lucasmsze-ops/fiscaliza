@@ -1,0 +1,3286 @@
+{
+ "fonte": "API /deputados/{id}/despesas?idLegislatura=57&ano",
+ "geradoEm": "2026-10-30",
+ "despesas": [
+  {
+   "camaraId": 162067,
+   "ano": 2025,
+   "mes": 1,
+   "total": 44527.57,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 16915.31,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3199.17,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 15065.9,
+    "TELEFONIA": 83,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 9000,
+    "PASSAGEM AÉREA - SIGEPA": 264.19
+   },
+   "documentos": 21
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2025,
+   "mes": 2,
+   "total": 52711.55,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17365.59,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5162.07,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 11300,
+    "TELEFONIA": 83,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 9000,
+    "PASSAGEM AÉREA - SIGEPA": 9800.89
+   },
+   "documentos": 27
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2025,
+   "mes": 3,
+   "total": 49365.8,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17617.14,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5236.42,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 6555.9,
+    "TELEFONIA": 87.17,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 865.98,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 10000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 48.84,
+    "PASSAGEM AÉREA - SIGEPA": 8954.35
+   },
+   "documentos": 31
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2025,
+   "mes": 4,
+   "total": 57488.83,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17551.47,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5035.32,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 8755.9,
+    "TELEFONIA": 87.17,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 1079,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 10000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 35.88,
+    "PASSAGEM AÉREA - SIGEPA": 14944.09
+   },
+   "documentos": 47
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2025,
+   "mes": 5,
+   "total": 49432.36,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17349.63,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3917.36,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 7200,
+    "TELEFONIA": 87.17,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 10000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 46.91,
+    "PASSAGEM AÉREA - SIGEPA": 10831.29
+   },
+   "documentos": 29
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2025,
+   "mes": 6,
+   "total": 47733.61,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17426.29,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4168.97,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 7200,
+    "TELEFONIA": 87.17,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 10000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 36.87,
+    "PASSAGEM AÉREA - SIGEPA": 8814.31
+   },
+   "documentos": 28
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2025,
+   "mes": 7,
+   "total": 37849.21,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17423.46,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2868.78,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 5000,
+    "TELEFONIA": 87.17,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 10000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 17.93,
+    "PASSAGEM AÉREA - SIGEPA": 2451.87
+   },
+   "documentos": 22
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2025,
+   "mes": 8,
+   "total": 41115.74,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17507.02,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3881.3,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 5000,
+    "TELEFONIA": 87.17,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 10000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 39.94,
+    "PASSAGEM AÉREA - SIGEPA": 4600.31
+   },
+   "documentos": 24
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2025,
+   "mes": 9,
+   "total": 49352.87,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17542.81,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4037.52,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 9000,
+    "TELEFONIA": 87.17,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 10000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 18.95,
+    "PASSAGEM AÉREA - SIGEPA": 8666.42
+   },
+   "documentos": 25
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2025,
+   "mes": 10,
+   "total": 46842.4,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17592.61,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3341.31,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 5000,
+    "TELEFONIA": 87.17,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 10000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 29.74,
+    "PASSAGEM AÉREA - SIGEPA": 10791.57
+   },
+   "documentos": 25
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2025,
+   "mes": 11,
+   "total": 40051.29,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17342.9,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4082.33,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 5000,
+    "TELEFONIA": 87.17,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 10000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 29.33,
+    "PASSAGEM AÉREA - SIGEPA": 3509.56
+   },
+   "documentos": 23
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2025,
+   "mes": 12,
+   "total": 8676.41,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1727.86,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2595.53,
+    "TELEFONIA": 97,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 59.4,
+    "PASSAGEM AÉREA - SIGEPA": 4196.62
+   },
+   "documentos": 18
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2026,
+   "mes": 1,
+   "total": 46794.32,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17567.5,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3243.97,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 5500,
+    "TELEFONIA": 97,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 13000,
+    "PASSAGEM AÉREA - SIGEPA": 7385.85
+   },
+   "documentos": 23
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2026,
+   "mes": 2,
+   "total": 49939.26,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17316.2,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2616.84,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 5500,
+    "TELEFONIA": 97,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 3928.2,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 13000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 18.52,
+    "PASSAGEM AÉREA - SIGEPA": 7462.5
+   },
+   "documentos": 20
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2026,
+   "mes": 3,
+   "total": 52944.56,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17517.78,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4311.45,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 5500,
+    "TELEFONIA": 97,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 2311.61,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 13000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 17.94,
+    "PASSAGEM AÉREA - SIGEPA": 10188.78
+   },
+   "documentos": 31
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2026,
+   "mes": 4,
+   "total": 46597.85,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 21276.42,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4061.12,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 5500,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 299,
+    "TELEFONIA": 97,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 13000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 22.1,
+    "PASSAGEM AÉREA - SIGEPA": 2342.21
+   },
+   "documentos": 18
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2026,
+   "mes": 5,
+   "total": 50180.93,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 21027.59,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4702.05,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 5500,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 299,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 13000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 51.31,
+    "PASSAGEM AÉREA - SIGEPA": 5600.98
+   },
+   "documentos": 28
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2026,
+   "mes": 6,
+   "total": 43796.42,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 21436.2,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3938.96,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 299,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 13400,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 10.36,
+    "PASSAGEM AÉREA - SIGEPA": 4711.9
+   },
+   "documentos": 18
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2026,
+   "mes": 7,
+   "total": 48355.64,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 21553.73,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3797.22,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 299,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 13400,
+    "PASSAGEM AÉREA - SIGEPA": 9305.69
+   },
+   "documentos": 19
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2026,
+   "mes": 8,
+   "total": 39716.99,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 22080.49,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3920.54,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 299,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 13400,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 16.96
+   },
+   "documentos": 36
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2026,
+   "mes": 9,
+   "total": 44446.57,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 22479.91,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4187.28,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 299,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 13400,
+    "PASSAGEM AÉREA - SIGEPA": 4080.38
+   },
+   "documentos": 41
+  },
+  {
+   "camaraId": 162067,
+   "ano": 2026,
+   "mes": 10,
+   "total": 9391.17,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1162.8,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 228.37,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 8000
+   },
+   "documentos": 5
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2025,
+   "mes": 1,
+   "total": 26275.9,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 19092.68,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 186.4,
+    "TELEFONIA": 711.41,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 4839.9,
+    "PASSAGEM AÉREA - SIGEPA": 1445.51
+   },
+   "documentos": 20
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2025,
+   "mes": 2,
+   "total": 34351.29,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17279.62,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 186.4,
+    "TELEFONIA": 2048.41,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 4839.9,
+    "PASSAGENS TERRESTRES, MARÍTIMAS OU FLUVIAIS": 671.76,
+    "PASSAGEM AÉREA - SIGEPA": 9154.11,
+    "PASSAGEM AÉREA - RPA": 171.09
+   },
+   "documentos": 43
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2025,
+   "mes": 3,
+   "total": 31066.92,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 17837.88,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 3999.99,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 186.4,
+    "TELEFONIA": 2168.04,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 4839.9,
+    "PASSAGENS TERRESTRES, MARÍTIMAS OU FLUVIAIS": 324.69,
+    "PASSAGEM AÉREA - SIGEPA": 1710.02
+   },
+   "documentos": 27
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2025,
+   "mes": 4,
+   "total": 24318.89,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11104.06,
+    "TELEFONIA": 1857,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 4839.9,
+    "PASSAGENS TERRESTRES, MARÍTIMAS OU FLUVIAIS": 974.07,
+    "PASSAGEM AÉREA - SIGEPA": 5543.86
+   },
+   "documentos": 31
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2025,
+   "mes": 5,
+   "total": 20057.79,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 3031.26,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1200,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 284.58,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 4839.9,
+    "PASSAGEM AÉREA - SIGEPA": 10702.05
+   },
+   "documentos": 37
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2025,
+   "mes": 6,
+   "total": 31631.97,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 16408.4,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 6000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1200,
+    "TELEFONIA": 1800.17,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 4839.9,
+    "PASSAGEM AÉREA - SIGEPA": 1383.5
+   },
+   "documentos": 25
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2025,
+   "mes": 7,
+   "total": 38054.92,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 14465.04,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 6000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1200,
+    "TELEFONIA": 1337,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 4839.9,
+    "PASSAGEM AÉREA - SIGEPA": 10212.98
+   },
+   "documentos": 30
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2025,
+   "mes": 8,
+   "total": 39734.95,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 16820.97,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 6000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1200,
+    "TELEFONIA": 2216.99,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 4839.9,
+    "PASSAGEM AÉREA - SIGEPA": 8657.09
+   },
+   "documentos": 30
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2025,
+   "mes": 9,
+   "total": 37238.42,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 18291.42,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 6000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1200,
+    "TELEFONIA": 2216.55,
+    "SERVIÇOS POSTAIS": 40.4,
+    "ASSINATURA DE PUBLICAÇÕES": 710,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 4838.9,
+    "PASSAGEM AÉREA - SIGEPA": 3941.15
+   },
+   "documentos": 26
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2025,
+   "mes": 10,
+   "total": 33253.01,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 13082.83,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 6000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1200,
+    "TELEFONIA": 2536.89,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 4033.25,
+    "PASSAGEM AÉREA - SIGEPA": 6400.04
+   },
+   "documentos": 33
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2025,
+   "mes": 11,
+   "total": 30188.78,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12513.27,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 6000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1200,
+    "TELEFONIA": 2536.89,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 590,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5379.6,
+    "PASSAGEM AÉREA - SIGEPA": 1969.02
+   },
+   "documentos": 22
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2025,
+   "mes": 12,
+   "total": 31015.85,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 20119.7,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1200,
+    "TELEFONIA": 2963.54,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5379.6,
+    "PASSAGEM AÉREA - SIGEPA": 1353.01
+   },
+   "documentos": 17
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2026,
+   "mes": 1,
+   "total": 34222.27,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 24446.69,
+    "TELEFONIA": 853.99,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5379.6,
+    "PASSAGEM AÉREA - SIGEPA": 3541.99
+   },
+   "documentos": 23
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2026,
+   "mes": 2,
+   "total": 44049.54,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 21777.04,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 6000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1200,
+    "TELEFONIA": 2640.89,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5379.6,
+    "PASSAGEM AÉREA - SIGEPA": 7052.01
+   },
+   "documentos": 34
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2026,
+   "mes": 3,
+   "total": 39923.05,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 26674.59,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1200,
+    "TELEFONIA": 2650.89,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5379.6,
+    "PASSAGEM AÉREA - SIGEPA": 4017.97
+   },
+   "documentos": 22
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2026,
+   "mes": 4,
+   "total": 36459.43,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 22058.29,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1200,
+    "TELEFONIA": 3957.89,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5379.6,
+    "PASSAGEM AÉREA - SIGEPA": 3863.65
+   },
+   "documentos": 22
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2026,
+   "mes": 5,
+   "total": 44064.73,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 24828.8,
+    "TELEFONIA": 863.99,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5379.6,
+    "PASSAGEM AÉREA - SIGEPA": 12992.34
+   },
+   "documentos": 30
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2026,
+   "mes": 6,
+   "total": 30185.15,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 19508.71,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1245.72,
+    "TELEFONIA": 2200.99,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5379.6,
+    "PASSAGEM AÉREA - SIGEPA": 1850.13
+   },
+   "documentos": 25
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2026,
+   "mes": 7,
+   "total": 39785.65,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 23398.5,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1245.72,
+    "TELEFONIA": 2620.89,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5379.6,
+    "PASSAGEM AÉREA - SIGEPA": 7140.94
+   },
+   "documentos": 22
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2026,
+   "mes": 8,
+   "total": 24266.46,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11459.22,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1245.72,
+    "TELEFONIA": 1337,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5379.6,
+    "PASSAGEM AÉREA - SIGEPA": 4844.92
+   },
+   "documentos": 14
+  },
+  {
+   "camaraId": 178975,
+   "ano": 2026,
+   "mes": 9,
+   "total": 20217.43,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 10042.98,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 1515.72,
+    "TELEFONIA": 2230.99,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5379.6,
+    "PASSAGEM AÉREA - SIGEPA": 1048.14
+   },
+   "documentos": 10
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2025,
+   "mes": 1,
+   "total": 1808.32,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1583.27,
+    "TELEFONIA": 225.05,
+    "PASSAGEM AÉREA - SIGEPA": 0
+   },
+   "documentos": 7
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2025,
+   "mes": 2,
+   "total": 15586.11,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1581.01,
+    "TELEFONIA": 225.05,
+    "PASSAGEM AÉREA - SIGEPA": 13780.05
+   },
+   "documentos": 52
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2025,
+   "mes": 3,
+   "total": 2721.29,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1707.67,
+    "TELEFONIA": 228.11,
+    "PASSAGEM AÉREA - SIGEPA": 785.51
+   },
+   "documentos": 8
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2025,
+   "mes": 4,
+   "total": 2252.16,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1695.86,
+    "TELEFONIA": 228.11,
+    "PASSAGEM AÉREA - SIGEPA": 328.19
+   },
+   "documentos": 8
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2025,
+   "mes": 5,
+   "total": 1928.65,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1693.83,
+    "TELEFONIA": 234.82
+   },
+   "documentos": 5
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2025,
+   "mes": 6,
+   "total": 2649.57,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1633.65,
+    "TELEFONIA": 234.74,
+    "PASSAGEM AÉREA - SIGEPA": 781.18
+   },
+   "documentos": 5
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2025,
+   "mes": 7,
+   "total": 5359.41,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1733.4,
+    "TELEFONIA": 235.04,
+    "PASSAGEM AÉREA - SIGEPA": 3390.97
+   },
+   "documentos": 7
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2025,
+   "mes": 8,
+   "total": 6044.85,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1633.65,
+    "TELEFONIA": 228.76,
+    "PASSAGEM AÉREA - SIGEPA": 4182.44
+   },
+   "documentos": 9
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2025,
+   "mes": 9,
+   "total": 15292.86,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1731.7,
+    "TELEFONIA": 235.06,
+    "PASSAGEM AÉREA - SIGEPA": 13326.1
+   },
+   "documentos": 153
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2025,
+   "mes": 10,
+   "total": 852.59,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1694.15,
+    "TELEFONIA": 235.12,
+    "PASSAGEM AÉREA - SIGEPA": -1076.68
+   },
+   "documentos": 11
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2025,
+   "mes": 11,
+   "total": 872.87,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1693.22,
+    "TELEFONIA": 235.12,
+    "PASSAGEM AÉREA - SIGEPA": -1055.47
+   },
+   "documentos": 12
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2025,
+   "mes": 12,
+   "total": 1935.4,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2412.74,
+    "TELEFONIA": 246.12,
+    "PASSAGEM AÉREA - SIGEPA": -723.46
+   },
+   "documentos": 21
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2026,
+   "mes": 1,
+   "total": 38874.71,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1747.52,
+    "TELEFONIA": 246.12,
+    "PASSAGEM AÉREA - SIGEPA": 36881.07
+   },
+   "documentos": 80
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2026,
+   "mes": 2,
+   "total": 1378.26,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1132.14,
+    "TELEFONIA": 246.12
+   },
+   "documentos": 4
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2026,
+   "mes": 3,
+   "total": 2712.61,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1762.34,
+    "TELEFONIA": 246.12,
+    "PASSAGEM AÉREA - SIGEPA": 704.15
+   },
+   "documentos": 7
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2026,
+   "mes": 4,
+   "total": 2389.59,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2143.47,
+    "TELEFONIA": 246.12,
+    "PASSAGEM AÉREA - SIGEPA": 0
+   },
+   "documentos": 10
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2026,
+   "mes": 5,
+   "total": 1996.25,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1765.78,
+    "TELEFONIA": 230.47
+   },
+   "documentos": 6
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2026,
+   "mes": 6,
+   "total": 1925.51,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1746.61,
+    "TELEFONIA": 178.9
+   },
+   "documentos": 5
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2026,
+   "mes": 7,
+   "total": 1890.31,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1779.88,
+    "TELEFONIA": 110.43
+   },
+   "documentos": 5
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2026,
+   "mes": 8,
+   "total": 1837.51,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1837.51
+   },
+   "documentos": 4
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2026,
+   "mes": 9,
+   "total": 1729.95,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1729.95
+   },
+   "documentos": 3
+  },
+  {
+   "camaraId": 178983,
+   "ano": 2026,
+   "mes": 10,
+   "total": 1630.05,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1630.05
+   },
+   "documentos": 2
+  },
+  {
+   "camaraId": 204531,
+   "ano": 2025,
+   "mes": 11,
+   "total": 6390.99,
+   "porCategoria": {
+    "PASSAGEM AÉREA - SIGEPA": 6390.99
+   },
+   "documentos": 3
+  },
+  {
+   "camaraId": 204531,
+   "ano": 2025,
+   "mes": 12,
+   "total": 13352.18,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 3850.7,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 438.25,
+    "PASSAGEM AÉREA - SIGEPA": 9063.23
+   },
+   "documentos": 11
+  },
+  {
+   "camaraId": 204531,
+   "ano": 2026,
+   "mes": 2,
+   "total": 17955.52,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 822.72,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 10000,
+    "PASSAGEM AÉREA - SIGEPA": 7132.8
+   },
+   "documentos": 8
+  },
+  {
+   "camaraId": 204531,
+   "ano": 2026,
+   "mes": 3,
+   "total": 30367.98,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 707.97,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 10000,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 738.15,
+    "PASSAGEM AÉREA - SIGEPA": 18921.86
+   },
+   "documentos": 17
+  },
+  {
+   "camaraId": 204531,
+   "ano": 2026,
+   "mes": 4,
+   "total": 46497.98,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7800,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 550.05,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 10000,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5500,
+    "PASSAGEM AÉREA - SIGEPA": 22647.93
+   },
+   "documentos": 24
+  },
+  {
+   "camaraId": 204531,
+   "ano": 2026,
+   "mes": 5,
+   "total": 38789.62,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 8173.7,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2566.05,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 10000,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 1511.9,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6349.4,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1034,
+    "PASSAGEM AÉREA - SIGEPA": 9154.57
+   },
+   "documentos": 27
+  },
+  {
+   "camaraId": 204531,
+   "ano": 2026,
+   "mes": 6,
+   "total": 35369.82,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7944.55,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3706.22,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 2972.48,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5500,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1088.6,
+    "PASSAGEM AÉREA - SIGEPA": 14157.97
+   },
+   "documentos": 56
+  },
+  {
+   "camaraId": 204531,
+   "ano": 2026,
+   "mes": 7,
+   "total": 45477.7,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7951.89,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 7909.78,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 3547.16,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6300,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1825.09,
+    "PASSAGEM AÉREA - SIGEPA": 17943.78
+   },
+   "documentos": 71
+  },
+  {
+   "camaraId": 204531,
+   "ano": 2026,
+   "mes": 8,
+   "total": 26239.17,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 8042.89,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3188.5,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 1072.79,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5500,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 2025.65,
+    "PASSAGEM AÉREA - SIGEPA": 6409.34
+   },
+   "documentos": 30
+  },
+  {
+   "camaraId": 204531,
+   "ano": 2026,
+   "mes": 9,
+   "total": 16051.68,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 8121.08,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 557.73,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5500,
+    "PASSAGEM AÉREA - SIGEPA": 1872.87
+   },
+   "documentos": 9
+  },
+  {
+   "camaraId": 204531,
+   "ano": 2026,
+   "mes": 10,
+   "total": 12465.37,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7918.05,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3275.55,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 420.63,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 641.78,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 209.36
+   },
+   "documentos": 24
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2025,
+   "mes": 1,
+   "total": 12220.05,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1066.38,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2085.5,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 5500,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1048.78,
+    "PASSAGEM AÉREA - SIGEPA": 2519.39
+   },
+   "documentos": 30
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2025,
+   "mes": 2,
+   "total": 31191.71,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 574.98,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3138.48,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 18000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1598.8,
+    "PASSAGEM AÉREA - SIGEPA": 7879.45
+   },
+   "documentos": 46
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2025,
+   "mes": 3,
+   "total": 69495.27,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12200.28,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4425.12,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 49135.98,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 643.69,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 322.3,
+    "PASSAGEM AÉREA - SIGEPA": 2767.9
+   },
+   "documentos": 52
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2025,
+   "mes": 4,
+   "total": 50742.32,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7968.15,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3343.26,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 40610.84,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 480.52,
+    "PASSAGEM AÉREA - SIGEPA": -1660.45
+   },
+   "documentos": 49
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2025,
+   "mes": 5,
+   "total": 43664.93,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 14772.65,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4116.64,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 24010,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 215.65,
+    "PASSAGEM AÉREA - SIGEPA": 549.99
+   },
+   "documentos": 38
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2025,
+   "mes": 6,
+   "total": 46349,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 15135.3,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3687.72,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 25350,
+    "TELEFONIA": 299.9,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1162.91,
+    "PASSAGEM AÉREA - SIGEPA": 713.17
+   },
+   "documentos": 47
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2025,
+   "mes": 7,
+   "total": 49122.25,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 14725.11,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3946.73,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 22850,
+    "ASSINATURA DE PUBLICAÇÕES": 624.89,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 196.88,
+    "PASSAGEM AÉREA - SIGEPA": 6778.64
+   },
+   "documentos": 38
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2025,
+   "mes": 8,
+   "total": 45812.97,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 14391.56,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2875.29,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 25665,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 448.2,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 169.79,
+    "PASSAGEM AÉREA - SIGEPA": 2263.13
+   },
+   "documentos": 27
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2025,
+   "mes": 9,
+   "total": 47484.65,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 14535.71,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5023.42,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 25665,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 155.55,
+    "PASSAGEM AÉREA - SIGEPA": 2104.97
+   },
+   "documentos": 41
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2025,
+   "mes": 10,
+   "total": 46840.02,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 14354.26,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5488.97,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 18111.55,
+    "TELEFONIA": 389.81,
+    "ASSINATURA DE PUBLICAÇÕES": 1137.61,
+    "PASSAGEM AÉREA - SIGEPA": 7357.82
+   },
+   "documentos": 41
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2025,
+   "mes": 11,
+   "total": 41208.11,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 14237.23,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 6721.52,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 16650,
+    "TELEFONIA": 389.81,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1626.8,
+    "PASSAGEM AÉREA - SIGEPA": 1582.75
+   },
+   "documentos": 41
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2025,
+   "mes": 12,
+   "total": 46100.27,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11888.1,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3956.18,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 16650,
+    "TELEFONIA": 389.81,
+    "PASSAGEM AÉREA - SIGEPA": 13216.18
+   },
+   "documentos": 46
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2026,
+   "mes": 1,
+   "total": 45014.16,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11705.55,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2772.63,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 20950,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 4515,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 467.08,
+    "PASSAGEM AÉREA - SIGEPA": 4603.9
+   },
+   "documentos": 41
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2026,
+   "mes": 2,
+   "total": 35667.43,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 15142.13,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2685.49,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 17450,
+    "TELEFONIA": 389.81
+   },
+   "documentos": 20
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2026,
+   "mes": 3,
+   "total": 36188.23,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 15720.11,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5104.16,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 14950,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 413.96
+   },
+   "documentos": 33
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2026,
+   "mes": 4,
+   "total": 42552.29,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 15509.78,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4033.17,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 17560.52,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 740.02,
+    "PASSAGEM AÉREA - SIGEPA": 4708.8
+   },
+   "documentos": 41
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2026,
+   "mes": 5,
+   "total": 68447.2,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 16469.87,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 6099.34,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 29835,
+    "TELEFONIA": 66.99,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 12219,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 164.21,
+    "PASSAGEM AÉREA - SIGEPA": 3592.79
+   },
+   "documentos": 49
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2026,
+   "mes": 6,
+   "total": 71956.59,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 15373.75,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4445.16,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 21450,
+    "TELEFONIA": 66.99,
+    "ASSINATURA DE PUBLICAÇÕES": 291,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 1275,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 11990.1,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 343.81,
+    "PASSAGEM AÉREA - SIGEPA": 16720.78
+   },
+   "documentos": 46
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2026,
+   "mes": 7,
+   "total": 66051.52,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 31084.81,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 7362.45,
+    "TELEFONIA": 66.99,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 11990.1,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 466.81,
+    "PASSAGEM AÉREA - SIGEPA": 15080.36
+   },
+   "documentos": 53
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2026,
+   "mes": 8,
+   "total": 18949.02,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 16017.12,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2492.1,
+    "TELEFONIA": 439.8
+   },
+   "documentos": 17
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2026,
+   "mes": 9,
+   "total": 16059.9,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 15205.13,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 300,
+    "TELEFONIA": 439.77,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 115
+   },
+   "documentos": 8
+  },
+  {
+   "camaraId": 204534,
+   "ano": 2026,
+   "mes": 10,
+   "total": 5157.41,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 718.64,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2645.26,
+    "ASSINATURA DE PUBLICAÇÕES": 1637.54,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 155.97
+   },
+   "documentos": 16
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2025,
+   "mes": 1,
+   "total": 26580.01,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 3569.31,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 868.27,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 11000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 2642.43
+   },
+   "documentos": 13
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2025,
+   "mes": 2,
+   "total": 43006.17,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 8015.1,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 352.62,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 12900,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 13238.45
+   },
+   "documentos": 24
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2025,
+   "mes": 3,
+   "total": 28924.62,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 1617.54,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 11000,
+    "PASSAGEM AÉREA - SIGEPA": 16307.08
+   },
+   "documentos": 19
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2025,
+   "mes": 4,
+   "total": 65561.58,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7434.04,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1014.14,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 11000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 37613.4
+   },
+   "documentos": 35
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2025,
+   "mes": 5,
+   "total": 44933.21,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7434.04,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 457.18,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 11000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 17541.99
+   },
+   "documentos": 23
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2025,
+   "mes": 6,
+   "total": 38590.13,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 3704.08,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 697.1,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 12000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 13688.95
+   },
+   "documentos": 26
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2025,
+   "mes": 7,
+   "total": 54267.75,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7434.04,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 292.94,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 14500,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 23540.77
+   },
+   "documentos": 33
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2025,
+   "mes": 8,
+   "total": 45867.91,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7644.74,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 691.14,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 11000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - REEMBOLSO": 4157.04,
+    "PASSAGEM AÉREA - SIGEPA": 13874.99
+   },
+   "documentos": 25
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2025,
+   "mes": 9,
+   "total": 41374.75,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7555.32,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 311.81,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 11000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 14007.62
+   },
+   "documentos": 23
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2025,
+   "mes": 10,
+   "total": 49726.81,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 8124.25,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 11000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 22102.56
+   },
+   "documentos": 30
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2025,
+   "mes": 11,
+   "total": 31842.4,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 3365.48,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 11000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 8976.92
+   },
+   "documentos": 12
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2025,
+   "mes": 12,
+   "total": 46420.09,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 4834.11,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 11000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 6317.49,
+    "PASSAGEM AÉREA - SIGEPA": 24268.49
+   },
+   "documentos": 17
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2026,
+   "mes": 1,
+   "total": 35933.66,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7140.11,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 14000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 6293.55
+   },
+   "documentos": 11
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2026,
+   "mes": 2,
+   "total": 45320.46,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7916.04,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 298.57,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 11000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 17605.85
+   },
+   "documentos": 19
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2026,
+   "mes": 3,
+   "total": 41457.65,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 8397.24,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 901.07,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 11000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGENS TERRESTRES, MARÍTIMAS OU FLUVIAIS": 956.84,
+    "PASSAGEM AÉREA - SIGEPA": 11702.5
+   },
+   "documentos": 27
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2026,
+   "mes": 4,
+   "total": 60592.31,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 8064.24,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 890.26,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 16000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 27137.81
+   },
+   "documentos": 29
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2026,
+   "mes": 5,
+   "total": 65053.31,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7979.75,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 284.37,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 11000,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 37289.19
+   },
+   "documentos": 37
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2026,
+   "mes": 6,
+   "total": 42642.29,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7975.14,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 883.69,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 1999.97,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 23283.49
+   },
+   "documentos": 25
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2026,
+   "mes": 7,
+   "total": 46171.5,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7975.14,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 539.7,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 29156.66
+   },
+   "documentos": 34
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2026,
+   "mes": 8,
+   "total": 32972.84,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7975.14,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 307.16,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 16190.54
+   },
+   "documentos": 15
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2026,
+   "mes": 9,
+   "total": 25416.54,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 850,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8500,
+    "PASSAGEM AÉREA - SIGEPA": 16066.54
+   },
+   "documentos": 12
+  },
+  {
+   "camaraId": 204535,
+   "ano": 2026,
+   "mes": 10,
+   "total": 646.06,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 646.06
+   },
+   "documentos": 2
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2025,
+   "mes": 1,
+   "total": 16974.36,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 6580.5,
+    "PASSAGEM AÉREA - SIGEPA": 10393.86
+   },
+   "documentos": 18
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2025,
+   "mes": 2,
+   "total": 10302.89,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2401.01,
+    "PASSAGEM AÉREA - SIGEPA": 7901.88
+   },
+   "documentos": 12
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2025,
+   "mes": 3,
+   "total": 7231.69,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2401.3,
+    "PASSAGEM AÉREA - SIGEPA": 4830.39
+   },
+   "documentos": 11
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2025,
+   "mes": 4,
+   "total": 12336.94,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2437.03,
+    "PASSAGEM AÉREA - SIGEPA": 9899.91
+   },
+   "documentos": 14
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2025,
+   "mes": 5,
+   "total": 11039.22,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2557.89,
+    "PASSAGEM AÉREA - SIGEPA": 8481.33
+   },
+   "documentos": 13
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2025,
+   "mes": 6,
+   "total": 5173.96,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2462.77,
+    "PASSAGEM AÉREA - SIGEPA": 2711.19
+   },
+   "documentos": 7
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2025,
+   "mes": 7,
+   "total": 19615.87,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 3127.18,
+    "PASSAGEM AÉREA - SIGEPA": 16488.69
+   },
+   "documentos": 12
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2025,
+   "mes": 8,
+   "total": 17549.68,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2537.54,
+    "PASSAGEM AÉREA - SIGEPA": 15012.14
+   },
+   "documentos": 20
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2025,
+   "mes": 9,
+   "total": 17604.26,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2780.43,
+    "PASSAGEM AÉREA - SIGEPA": 14823.83
+   },
+   "documentos": 25
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2025,
+   "mes": 10,
+   "total": 14134.86,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2476.07,
+    "PASSAGEM AÉREA - SIGEPA": 11658.79
+   },
+   "documentos": 24
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2025,
+   "mes": 11,
+   "total": 13546.18,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2491.76,
+    "PASSAGEM AÉREA - SIGEPA": 11054.42
+   },
+   "documentos": 14
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2025,
+   "mes": 12,
+   "total": 6235.27,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2783.49,
+    "PASSAGEM AÉREA - SIGEPA": 3451.78
+   },
+   "documentos": 11
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2026,
+   "mes": 1,
+   "total": 14217.44,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7391.08,
+    "PASSAGEM AÉREA - SIGEPA": 6826.36
+   },
+   "documentos": 11
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2026,
+   "mes": 2,
+   "total": 9138.48,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2597.87,
+    "PASSAGEM AÉREA - SIGEPA": 6540.61
+   },
+   "documentos": 5
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2026,
+   "mes": 3,
+   "total": 34483.04,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2623.09,
+    "PASSAGEM AÉREA - SIGEPA": 31859.95
+   },
+   "documentos": 34
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2026,
+   "mes": 4,
+   "total": 14155.83,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 2669.85,
+    "PASSAGEM AÉREA - SIGEPA": 11485.98
+   },
+   "documentos": 13
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2026,
+   "mes": 5,
+   "total": 32781.48,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12003.45,
+    "PASSAGEM AÉREA - SIGEPA": 20778.03
+   },
+   "documentos": 25
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2026,
+   "mes": 6,
+   "total": 45977.32,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 20422.74,
+    "PASSAGEM AÉREA - SIGEPA": 25554.58
+   },
+   "documentos": 32
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2026,
+   "mes": 7,
+   "total": 53040.1,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 20148.24,
+    "PASSAGEM AÉREA - SIGEPA": 32891.86
+   },
+   "documentos": 19
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2026,
+   "mes": 8,
+   "total": 20635.58,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 18017.67,
+    "TELEFONIA": 199.9,
+    "PASSAGEM AÉREA - SIGEPA": 2418.01
+   },
+   "documentos": 9
+  },
+  {
+   "camaraId": 204536,
+   "ano": 2026,
+   "mes": 9,
+   "total": 23076.92,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 18487.54,
+    "PASSAGEM AÉREA - SIGEPA": 4589.38
+   },
+   "documentos": 10
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2025,
+   "mes": 1,
+   "total": 28665.52,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 10000.3,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2351.69,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 3073.63,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 12000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1239.9
+   },
+   "documentos": 11
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2025,
+   "mes": 2,
+   "total": 51527.38,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 13457.14,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3679.74,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 16354.27,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 968.18,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 12000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1283.3,
+    "PASSAGEM AÉREA - SIGEPA": 3784.75
+   },
+   "documentos": 27
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2025,
+   "mes": 3,
+   "total": 44577.43,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11642.7,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4196.22,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 7740,
+    "PASSAGEM AÉREA - REEMBOLSO": 3168.88,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 3237.03,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 12000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1215.8,
+    "PASSAGEM AÉREA - SIGEPA": 1376.8
+   },
+   "documentos": 27
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2025,
+   "mes": 4,
+   "total": 44971.16,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11642.7,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5476.06,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 7364.04,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 12000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1152.86,
+    "PASSAGEM AÉREA - SIGEPA": 7335.5
+   },
+   "documentos": 34
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2025,
+   "mes": 5,
+   "total": 48105.99,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11310.9,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5003.54,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 15967.46,
+    "TELEFONIA": 296.08,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 12000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1480.5,
+    "PASSAGEM AÉREA - SIGEPA": 2047.51
+   },
+   "documentos": 24
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2025,
+   "mes": 6,
+   "total": 46847.92,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11510.9,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3214.01,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 16700,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 523.26,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 12000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1611,
+    "PASSAGEM AÉREA - SIGEPA": 1288.75
+   },
+   "documentos": 21
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2025,
+   "mes": 7,
+   "total": 56253.4,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11790.26,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5984.08,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 7500,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 5123.45,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 12000,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 712.85,
+    "PASSAGEM AÉREA - SIGEPA": 13142.76
+   },
+   "documentos": 39
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2025,
+   "mes": 8,
+   "total": 41518.95,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11860.2,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5407.13,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 15500,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 3500,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 65.8,
+    "PASSAGEM AÉREA - SIGEPA": 5185.82
+   },
+   "documentos": 23
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2025,
+   "mes": 9,
+   "total": 49494.98,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11568.49,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4790.19,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 17400,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 14000,
+    "PASSAGEM AÉREA - SIGEPA": 1736.3
+   },
+   "documentos": 17
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2025,
+   "mes": 10,
+   "total": 47054.16,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12445.05,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5075.67,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 10500,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 1432.81,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 14000,
+    "PASSAGEM AÉREA - SIGEPA": 3600.63
+   },
+   "documentos": 20
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2025,
+   "mes": 11,
+   "total": 34499.79,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11772.11,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3227.68,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 9000,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 10500
+   },
+   "documentos": 11
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2025,
+   "mes": 12,
+   "total": 24251.52,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11596.2,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 454.66,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 10500,
+    "PASSAGEM AÉREA - SIGEPA": 1700.66
+   },
+   "documentos": 11
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2026,
+   "mes": 1,
+   "total": 60860.29,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11510.9,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2732.31,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 24500,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 480.9,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 14600,
+    "PASSAGEM AÉREA - SIGEPA": 7036.18
+   },
+   "documentos": 20
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2026,
+   "mes": 2,
+   "total": 44917.94,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12555.47,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4030.23,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 10500,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 293.9,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 14600,
+    "PASSAGEM AÉREA - SIGEPA": 2938.34
+   },
+   "documentos": 22
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2026,
+   "mes": 3,
+   "total": 57079.06,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12409.4,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 6819.93,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 19500.92,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 14600,
+    "PASSAGEM AÉREA - SIGEPA": 3748.81
+   },
+   "documentos": 21
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2026,
+   "mes": 4,
+   "total": 49228.81,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 13101.41,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3427.97,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 19492.05,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 14600,
+    "PASSAGEM AÉREA - SIGEPA": -1392.62
+   },
+   "documentos": 19
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2026,
+   "mes": 5,
+   "total": 84793.14,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12487.49,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5927.93,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 49846.49,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 14600,
+    "PASSAGEM AÉREA - SIGEPA": 1931.23
+   },
+   "documentos": 21
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2026,
+   "mes": 6,
+   "total": 36278.48,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12680.84,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4639.1,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 14600,
+    "PASSAGEM AÉREA - SIGEPA": 4358.54
+   },
+   "documentos": 16
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2026,
+   "mes": 7,
+   "total": 35287.77,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12602.54,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5043.87,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 14600,
+    "PASSAGEM AÉREA - SIGEPA": 3041.36
+   },
+   "documentos": 16
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2026,
+   "mes": 8,
+   "total": 32016.68,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12100.6,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5316.08,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 14600
+   },
+   "documentos": 10
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2026,
+   "mes": 9,
+   "total": 35820.86,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12815.47,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 7384.7,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 14600,
+    "PASSAGEM AÉREA - SIGEPA": 1020.69
+   },
+   "documentos": 15
+  },
+  {
+   "camaraId": 220642,
+   "ano": 2026,
+   "mes": 10,
+   "total": 26134.13,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12100.6,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3533.53,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 10500
+   },
+   "documentos": 5
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2025,
+   "mes": 1,
+   "total": 39662.57,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 987.29,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 9373,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5951.66,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 392.88,
+    "PASSAGEM AÉREA - SIGEPA": 14257.74
+   },
+   "documentos": 44
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2025,
+   "mes": 2,
+   "total": 47729.77,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 600.87,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 3173,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 525.42,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 8232.7,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 351.33,
+    "PASSAGEM AÉREA - SIGEPA": 26146.45
+   },
+   "documentos": 36
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2025,
+   "mes": 3,
+   "total": 38863.82,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 265.44,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 700,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 7743.9,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 20.68,
+    "PASSAGEM AÉREA - SIGEPA": 21433.8
+   },
+   "documentos": 30
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2025,
+   "mes": 4,
+   "total": 30455.99,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 545.3,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6100.86,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 115.26,
+    "PASSAGEM AÉREA - SIGEPA": 14994.57
+   },
+   "documentos": 22
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2025,
+   "mes": 5,
+   "total": 48293.72,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 268.75,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 1852,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 414.12,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 805.13,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 118.8,
+    "PASSAGEM AÉREA - SIGEPA": 36134.92
+   },
+   "documentos": 51
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2025,
+   "mes": 6,
+   "total": 35137.07,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 422.18,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 2008,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 698.94,
+    "PASSAGEM AÉREA - SIGEPA": 23307.95
+   },
+   "documentos": 52
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2025,
+   "mes": 7,
+   "total": 48639.26,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1327.19,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 21690,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 530,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 2015.8,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 260.02,
+    "PASSAGEM AÉREA - SIGEPA": 14116.25
+   },
+   "documentos": 37
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2025,
+   "mes": 8,
+   "total": 34829.67,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 392.56,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 3831.15,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 320,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 1539.85,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 532.59,
+    "PASSAGEM AÉREA - SIGEPA": 19513.52
+   },
+   "documentos": 38
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2025,
+   "mes": 9,
+   "total": 44223.37,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 220,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 5692,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 901.44,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1047.77,
+    "PASSAGEM AÉREA - SIGEPA": 27662.16
+   },
+   "documentos": 69
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2025,
+   "mes": 10,
+   "total": 44400.02,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1498.24,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 2132,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 1540,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 2895.62,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 906.83,
+    "PASSAGEM AÉREA - SIGEPA": 26727.33
+   },
+   "documentos": 81
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2025,
+   "mes": 11,
+   "total": 27243.53,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1873.71,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 392,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 1692.01,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 713.84,
+    "PASSAGEM AÉREA - SIGEPA": 13871.97
+   },
+   "documentos": 45
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2025,
+   "mes": 12,
+   "total": 36261.11,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1728.76,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 299.19,
+    "PASSAGEM AÉREA - SIGEPA": 25533.16
+   },
+   "documentos": 27
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2026,
+   "mes": 1,
+   "total": 33200.4,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2441.95,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 8392,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 540,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 1436.94,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 138.02,
+    "PASSAGEM AÉREA - SIGEPA": 11551.49
+   },
+   "documentos": 35
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2026,
+   "mes": 2,
+   "total": 33825.53,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1148.19,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 392,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 1510,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 2470.35,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 451.78,
+    "PASSAGEM AÉREA - SIGEPA": 19153.21
+   },
+   "documentos": 58
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2026,
+   "mes": 3,
+   "total": 41346.08,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1812.76,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 392,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 845.77,
+    "PASSAGEM AÉREA - SIGEPA": 29595.55
+   },
+   "documentos": 41
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2026,
+   "mes": 4,
+   "total": 65482.99,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2456.36,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 5400,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 340,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 3373.01,
+    "PASSAGENS TERRESTRES, MARÍTIMAS OU FLUVIAIS": 273.52,
+    "PASSAGEM AÉREA - SIGEPA": 44940.1
+   },
+   "documentos": 60
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2026,
+   "mes": 5,
+   "total": 49255.2,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1000.21,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 850,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 2287.33,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 240.03,
+    "PASSAGENS TERRESTRES, MARÍTIMAS OU FLUVIAIS": 57.27,
+    "PASSAGEM AÉREA - SIGEPA": 36120.36
+   },
+   "documentos": 51
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2026,
+   "mes": 6,
+   "total": 51136.06,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1166.72,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "PASSAGENS TERRESTRES, MARÍTIMAS OU FLUVIAIS": 396.45,
+    "PASSAGEM AÉREA - SIGEPA": 40872.89
+   },
+   "documentos": 41
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2026,
+   "mes": 7,
+   "total": 35717.58,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1870,
+    "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA.": 8700,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 134.66,
+    "PASSAGEM AÉREA - SIGEPA": 25012.92
+   },
+   "documentos": 32
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2026,
+   "mes": 8,
+   "total": 9897.1,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1345.54,
+    "PASSAGEM AÉREA - SIGEPA": 8551.56
+   },
+   "documentos": 16
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2026,
+   "mes": 9,
+   "total": 609.96,
+   "porCategoria": {
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 609.96
+   },
+   "documentos": 8
+  },
+  {
+   "camaraId": 220645,
+   "ano": 2026,
+   "mes": 10,
+   "total": 8000,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 8000
+   },
+   "documentos": 1
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2025,
+   "mes": 1,
+   "total": 36155.89,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 17896.53,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790,
+    "PASSAGEM AÉREA - SIGEPA": 11469.36
+   },
+   "documentos": 23
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2025,
+   "mes": 2,
+   "total": 33692.56,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 19589.6,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790,
+    "PASSAGEM AÉREA - SIGEPA": 7312.96
+   },
+   "documentos": 19
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2025,
+   "mes": 3,
+   "total": 38692.43,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 13250,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790,
+    "PASSAGEM AÉREA - SIGEPA": 18652.43
+   },
+   "documentos": 20
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2025,
+   "mes": 4,
+   "total": 40555.52,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 18000,
+    "PASSAGEM AÉREA - SIGEPA": 22555.52
+   },
+   "documentos": 38
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2025,
+   "mes": 5,
+   "total": 33143.67,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 28382.8,
+    "PASSAGEM AÉREA - SIGEPA": 4760.87
+   },
+   "documentos": 12
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2025,
+   "mes": 6,
+   "total": 30719.95,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 22184.47,
+    "PASSAGEM AÉREA - SIGEPA": 8535.48
+   },
+   "documentos": 11
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2025,
+   "mes": 7,
+   "total": 39218.19,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 28009.2,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790,
+    "PASSAGEM AÉREA - SIGEPA": 4418.99
+   },
+   "documentos": 17
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2025,
+   "mes": 8,
+   "total": 46064.54,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 21496.19,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790,
+    "PASSAGEM AÉREA - SIGEPA": 17778.35
+   },
+   "documentos": 22
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2025,
+   "mes": 9,
+   "total": 45537,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 33808.3,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790,
+    "PASSAGEM AÉREA - SIGEPA": 4938.7
+   },
+   "documentos": 10
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2025,
+   "mes": 10,
+   "total": 39816.03,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 17500,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790,
+    "PASSAGEM AÉREA - SIGEPA": 15526.03
+   },
+   "documentos": 12
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2025,
+   "mes": 11,
+   "total": 53785.12,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 41921.2,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790,
+    "PASSAGEM AÉREA - SIGEPA": 5073.92
+   },
+   "documentos": 13
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2025,
+   "mes": 12,
+   "total": 64466.94,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 47650,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790,
+    "PASSAGEM AÉREA - SIGEPA": 10026.94
+   },
+   "documentos": 10
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2026,
+   "mes": 1,
+   "total": 30354.61,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 17500,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790,
+    "PASSAGEM AÉREA - SIGEPA": 6064.61
+   },
+   "documentos": 8
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2026,
+   "mes": 2,
+   "total": 47309.76,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 35500,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790,
+    "PASSAGEM AÉREA - SIGEPA": 5019.76
+   },
+   "documentos": 9
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2026,
+   "mes": 3,
+   "total": 17617.33,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 5500,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790,
+    "PASSAGEM AÉREA - SIGEPA": 5327.33
+   },
+   "documentos": 6
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2026,
+   "mes": 4,
+   "total": 32281,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 20500,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790,
+    "PASSAGEM AÉREA - SIGEPA": 4991
+   },
+   "documentos": 5
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2026,
+   "mes": 5,
+   "total": 42290,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 35500,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790
+   },
+   "documentos": 4
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2026,
+   "mes": 6,
+   "total": 44000,
+   "porCategoria": {
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 37210,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 6790
+   },
+   "documentos": 3
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2026,
+   "mes": 7,
+   "total": 8790,
+   "porCategoria": {
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 8790
+   },
+   "documentos": 1
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2026,
+   "mes": 8,
+   "total": 8790,
+   "porCategoria": {
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 8790
+   },
+   "documentos": 1
+  },
+  {
+   "camaraId": 220647,
+   "ano": 2026,
+   "mes": 9,
+   "total": 8790,
+   "porCategoria": {
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 8790
+   },
+   "documentos": 1
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2025,
+   "mes": 1,
+   "total": 38069.34,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11922.73,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1264.64,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 15000,
+    "TELEFONIA": 402.95,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 52.72,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5800,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 578,
+    "PASSAGEM AÉREA - SIGEPA": 3048.3
+   },
+   "documentos": 59
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2025,
+   "mes": 2,
+   "total": 34367.71,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12925.62,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1408.96,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 15000,
+    "TELEFONIA": 412,
+    "PASSAGEM AÉREA - SIGEPA": 4621.13
+   },
+   "documentos": 24
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2025,
+   "mes": 3,
+   "total": 45026.86,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11643.96,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2171.23,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 14000,
+    "TELEFONIA": 412,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 888.92,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5800,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1729.91,
+    "PASSAGEM AÉREA - SIGEPA": 4858.99,
+    "PASSAGEM AÉREA - RPA": 3521.85
+   },
+   "documentos": 65
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2025,
+   "mes": 4,
+   "total": 36844.13,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12196.99,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3046.41,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 12000,
+    "TELEFONIA": 720,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 729.99,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5800,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1689.32,
+    "PASSAGEM AÉREA - SIGEPA": 661.42
+   },
+   "documentos": 69
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2025,
+   "mes": 5,
+   "total": 40929.25,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12094.54,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3381.62,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 14000,
+    "TELEFONIA": 420,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 684.82,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5800,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1384.32,
+    "PASSAGEM AÉREA - SIGEPA": 3163.95
+   },
+   "documentos": 57
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2025,
+   "mes": 6,
+   "total": 33492.44,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 13950.79,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3148.4,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 12000,
+    "TELEFONIA": 720,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5800,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 880.55,
+    "PASSAGEM AÉREA - SIGEPA": -3007.3
+   },
+   "documentos": 29
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2025,
+   "mes": 7,
+   "total": 48548.78,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 13774,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4960.11,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 12000,
+    "TELEFONIA": 420,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 11700,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1154.03,
+    "PASSAGEM AÉREA - SIGEPA": 4540.64
+   },
+   "documentos": 56
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2025,
+   "mes": 8,
+   "total": 35297.71,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11782.63,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3603.94,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 12000,
+    "TELEFONIA": 720,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 864.14,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5900,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 427
+   },
+   "documentos": 46
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2025,
+   "mes": 9,
+   "total": 42998.05,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 9968.14,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4400.02,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 12000,
+    "TELEFONIA": 720,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 459.98,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 600,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5900,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 2700,
+    "PASSAGEM AÉREA - SIGEPA": 6249.91
+   },
+   "documentos": 61
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2025,
+   "mes": 10,
+   "total": 50226.85,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 12609.6,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5597.52,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 12000,
+    "TELEFONIA": 720,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 409.65,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5900,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 2495,
+    "PASSAGEM AÉREA - SIGEPA": 10495.08
+   },
+   "documentos": 75
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2025,
+   "mes": 11,
+   "total": 43592.07,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 13829.83,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 5191.18,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 12000,
+    "TELEFONIA": 720,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 134,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 652,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5900,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1440.4,
+    "PASSAGEM AÉREA - SIGEPA": 3724.66
+   },
+   "documentos": 51
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2025,
+   "mes": 12,
+   "total": 32814.46,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 9614.93,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 901.04,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 12000,
+    "TELEFONIA": 735.97,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5900,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 200,
+    "PASSAGEM AÉREA - SIGEPA": 3462.52
+   },
+   "documentos": 23
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2026,
+   "mes": 1,
+   "total": 37697.58,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 13392.42,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 3025.34,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 12000,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 347.53,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5900,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 939.1,
+    "PASSAGEM AÉREA - SIGEPA": 2093.19
+   },
+   "documentos": 25
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2026,
+   "mes": 2,
+   "total": 28628.94,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 14278.8,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2731.03,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 448.88,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5900,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 660.83,
+    "PASSAGEM AÉREA - SIGEPA": 4609.4
+   },
+   "documentos": 25
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2026,
+   "mes": 3,
+   "total": 42404.71,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 14493.38,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4357.18,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 15000,
+    "TELEFONIA": 1200,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 291.17,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5900,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1162.98
+   },
+   "documentos": 39
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2026,
+   "mes": 4,
+   "total": 42826.18,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 14251.01,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4202.22,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 15000,
+    "TELEFONIA": 1199.96,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 99.37,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5900,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 1096.39,
+    "PASSAGEM AÉREA - SIGEPA": 1077.23
+   },
+   "documentos": 36
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2026,
+   "mes": 5,
+   "total": 44099.77,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11202.5,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4801.47,
+    "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR.": 20000,
+    "TELEFONIA": 1200,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5900,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 995.8
+   },
+   "documentos": 27
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2026,
+   "mes": 6,
+   "total": 36325.07,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 11391.18,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 4247.54,
+    "TELEFONIA": 1200,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 141.36,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5900,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 680,
+    "PASSAGEM AÉREA - SIGEPA": 12764.99
+   },
+   "documentos": 36
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2026,
+   "mes": 7,
+   "total": 31082.46,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 13333.8,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 7075.72,
+    "TELEFONIA": 1200,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 97.8,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 2910.14,
+    "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES": 5900,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 565
+   },
+   "documentos": 48
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2026,
+   "mes": 8,
+   "total": 8364.98,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 4644.22,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 2520.76,
+    "TELEFONIA": 1200
+   },
+   "documentos": 13
+  },
+  {
+   "camaraId": 220652,
+   "ano": 2026,
+   "mes": 10,
+   "total": 10151.7,
+   "porCategoria": {
+    "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR": 7000,
+    "COMBUSTÍVEIS E LUBRIFICANTES.": 1968.57,
+    "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR": 142.13,
+    "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL.": 475,
+    "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO": 566
+   },
+   "documentos": 14
+  }
+ ],
+ "mediaUf": [
+  {
+   "uf": "SP",
+   "ano": 2025,
+   "mes": 1,
+   "media": 30614.65,
+   "deputados": 64,
+   "total": 1959337.89
+  },
+  {
+   "uf": "SP",
+   "ano": 2025,
+   "mes": 2,
+   "media": 38608.97,
+   "deputados": 64,
+   "total": 2470974.09
+  },
+  {
+   "uf": "SP",
+   "ano": 2025,
+   "mes": 3,
+   "media": 36787.38,
+   "deputados": 64,
+   "total": 2354392.02
+  },
+  {
+   "uf": "SP",
+   "ano": 2025,
+   "mes": 4,
+   "media": 38044.22,
+   "deputados": 64,
+   "total": 2434829.78
+  },
+  {
+   "uf": "SP",
+   "ano": 2025,
+   "mes": 5,
+   "media": 39528.15,
+   "deputados": 64,
+   "total": 2529801.65
+  },
+  {
+   "uf": "SP",
+   "ano": 2025,
+   "mes": 6,
+   "media": 37649.57,
+   "deputados": 64,
+   "total": 2409572.19
+  },
+  {
+   "uf": "SP",
+   "ano": 2025,
+   "mes": 7,
+   "media": 40373.13,
+   "deputados": 64,
+   "total": 2583880.27
+  },
+  {
+   "uf": "SP",
+   "ano": 2025,
+   "mes": 8,
+   "media": 41799.2,
+   "deputados": 64,
+   "total": 2675148.77
+  },
+  {
+   "uf": "SP",
+   "ano": 2025,
+   "mes": 9,
+   "media": 42490.89,
+   "deputados": 64,
+   "total": 2719417.05
+  },
+  {
+   "uf": "SP",
+   "ano": 2025,
+   "mes": 10,
+   "media": 41722.28,
+   "deputados": 64,
+   "total": 2670225.66
+  },
+  {
+   "uf": "SP",
+   "ano": 2025,
+   "mes": 11,
+   "media": 38219.94,
+   "deputados": 64,
+   "total": 2446076.04
+  },
+  {
+   "uf": "SP",
+   "ano": 2025,
+   "mes": 12,
+   "media": 38656.68,
+   "deputados": 65,
+   "total": 2512684.15
+  },
+  {
+   "uf": "SP",
+   "ano": 2026,
+   "mes": 1,
+   "media": 37259.68,
+   "deputados": 64,
+   "total": 2384619.27
+  },
+  {
+   "uf": "SP",
+   "ano": 2026,
+   "mes": 2,
+   "media": 40875.99,
+   "deputados": 65,
+   "total": 2656939.17
+  },
+  {
+   "uf": "SP",
+   "ano": 2026,
+   "mes": 3,
+   "media": 45796.55,
+   "deputados": 67,
+   "total": 3068369.14
+  },
+  {
+   "uf": "SP",
+   "ano": 2026,
+   "mes": 4,
+   "media": 47385.75,
+   "deputados": 70,
+   "total": 3317002.55
+  },
+  {
+   "uf": "SP",
+   "ano": 2026,
+   "mes": 5,
+   "media": 52072.49,
+   "deputados": 70,
+   "total": 3645074.33
+  },
+  {
+   "uf": "SP",
+   "ano": 2026,
+   "mes": 6,
+   "media": 31498.5,
+   "deputados": 70,
+   "total": 2204895.32
+  },
+  {
+   "uf": "SP",
+   "ano": 2026,
+   "mes": 7,
+   "media": 29393.39,
+   "deputados": 69,
+   "total": 2028144.08
+  },
+  {
+   "uf": "SP",
+   "ano": 2026,
+   "mes": 8,
+   "media": 22634.2,
+   "deputados": 69,
+   "total": 1561759.68
+  },
+  {
+   "uf": "SP",
+   "ano": 2026,
+   "mes": 9,
+   "media": 17254.32,
+   "deputados": 64,
+   "total": 1104276.6
+  },
+  {
+   "uf": "SP",
+   "ano": 2026,
+   "mes": 10,
+   "media": 9831.29,
+   "deputados": 56,
+   "total": 550552.2
+  }
+ ]
+}

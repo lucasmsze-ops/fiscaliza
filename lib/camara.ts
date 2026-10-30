@@ -287,3 +287,40 @@ export async function getVotos(id: string): Promise<VotoCamara[]> {
     return { votacaoId: id, camaraId: v.deputado_.id, voto, partido: v.deputado_.siglaPartido, uf: v.deputado_.siglaUf, dataHora: v.dataRegistroVoto };
   });
 }
+
+// ======================= despesas (CEAP) =======================
+
+export interface DespesaCamara {
+  camaraId: number;
+  /** Identificador do documento na Câmara; vazio nas passagens SIGEPA. */
+  codDocumento: string;
+  /** Número da parcela (0 = à vista). O mesmo codDocumento pode ter várias parcelas em meses diferentes. */
+  parcela: number;
+  ano: number;
+  mes: number;
+  tipo: string;
+  valorDocumento: number;
+  valorGlosa: number;
+  valorLiquido: number;
+  fornecedor: string;
+  dataDocumento: string | null;
+  urlDocumento: string | null;
+}
+
+interface RawDespesa {
+  codDocumento: string; parcela: number; ano: number; mes: number; tipoDespesa: string; valorDocumento: number; valorGlosa: number;
+  valorLiquido: number; nomeFornecedor: string; dataDocumento: string | null; urlDocumento: string | null;
+}
+
+/**
+ * Despesas da cota parlamentar de um deputado num ano. `ano` sozinho devolve vazio (observado em
+ * 2026-10-29); só funciona junto com `idLegislatura`. `mes` é o mês de competência.
+ */
+export async function listarDespesas(camaraId: number, legislatura: number, ano: number, mes?: number): Promise<DespesaCamara[]> {
+  const q = `idLegislatura=${legislatura}&ano=${ano}${mes ? `&mes=${mes}` : ""}`;
+  const raw = await paginar<RawDespesa>(`/deputados/${camaraId}/despesas?${q}`, "camara:/deputados/{id}/despesas");
+  return raw.map((d) => ({
+    camaraId, codDocumento: d.codDocumento, parcela: d.parcela, ano: d.ano, mes: d.mes, tipo: d.tipoDespesa, valorDocumento: d.valorDocumento, valorGlosa: d.valorGlosa,
+    valorLiquido: d.valorLiquido, fornecedor: d.nomeFornecedor, dataDocumento: d.dataDocumento, urlDocumento: d.urlDocumento,
+  }));
+}

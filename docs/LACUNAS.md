@@ -12,3 +12,5 @@ Nunca preencher com dado sintético.
 | 2026-10-29 | Câmara | 17 votações com placar na descrição mas sem votos em `/votos` (vazio ou 404) | Fora da lista de nominais; não entram em nenhum número |
 | 2026-10-29 | Câmara | `tipoVoto: null` em votações de pessoa (voto não divulgado) | Conta como participação; não conta no governismo; rotulado "voto não informado" |
 | 2026-10-29 | Câmara | Político sem mandato no período (João Paulo Cunha) | "Sem mandato no período" em vez de 0% (modelar na E8) |
+| 2026-10-29 | Câmara | CEAP dos últimos ~3 meses está incompleta (lançamentos em aberto); CSV anual omite passagens SIGEPA | Card usa o último mês fechado (regra: ≥90% da bancada com lançamento) e avisa "mês em aberto" nos demais |
+| 2026-10-29 | Câmara | 6 dos 70 de SP sem nenhum gasto em 2025 (assumiram em 2026) | Média do mês conta só deputados com lançamento no mês |

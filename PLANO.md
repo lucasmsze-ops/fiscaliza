@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E5** (atualizar esta linha ao avançar)
+**Etapa atual: E6** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -75,10 +75,10 @@ Calendário externo que afeta o plano:
   dos 10 reeleitos.
 
 ### E5 · Câmara: CEAP e média da bancada de SP
-- [ ] `/deputados/{id}/despesas?ano&mes` para os 10 reeleitos, 2025-01 até hoje.
-- [ ] Média da bancada SP: precisa de todos os deputados de SP em exercício. Medir o
-      custo em chamadas; se for alto, limitar a sonda aos últimos 3 meses.
-- [ ] `data/sonda/despesas.json` com `por_categoria`.
+- [x] `/deputados/{id}/despesas?ano&mes` para os 10 reeleitos, 2025-01 até hoje.
+- [x] Média da bancada SP: precisa de todos os deputados de SP em exercício. Medido: 538
+      chamadas para 70 × 2 anos, 44 s. Feito para 2025→hoje inteiro.
+- [x] `data/sonda/despesas.json` com `por_categoria`.
 - Pronto quando: para um mês qualquer, o JSON responde "CEAP do político" e
   "média SP" sem cálculo na interface.
 

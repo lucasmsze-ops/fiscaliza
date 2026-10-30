@@ -15,6 +15,19 @@ Modelo:
 
 ---
 
+## 2026-10-29 · E5
+**Feito:** `listarDespesas()` em `lib/camara.ts`; `scripts/sonda/despesas.ts` busca a CEAP dos 70
+deputados de SP (2025→hoje, 538 chamadas, 0 falhas) e grava `data/sonda/despesas.json` com os
+meses da amostra (`total`, `porCategoria`, `documentos`) e `mediaUf` (SP, por mês). CSVs anuais
+oficiais baixados em `data/raw/ceap/` só para comparação. `docs/SONDA.md`, `CLAUDE.md`, `LACUNAS.md`.
+**Decidido:** média da bancada vem da API, não do CSV (o CSV omite passagens SIGEPA). Não deduplicar
+`codDocumento` (linhas SIGEPA). Somar `valorLiquido` com estornos negativos. Média do mês conta só
+quem tem lançamento. Mês a exibir: último fechado (regra provisória ≥90% da bancada; definitiva
+no cron por estabilidade entre execuções).
+**Lacunas:** últimos ~3 meses incompletos; `ano=` sozinho vazio na API (documentado).
+**Próximo passo:** E6 — ler `legis.senado.leg.br/dadosabertos/docs/` e confirmar o path das
+votações do plenário antes de codar; `lib/senado.ts`; join dos 5 senadores pelo hash de CPF.
+
 ## 2026-10-29 · E4
 **Feito:** `scripts/sonda/votos.ts` chamou `/votos` das 6.537 votações (cache em `data/raw/apoio/votos-cache/`),
 fixou a lista exata de **1.107 nominais** em `votacoes.json` (+`totalVotos`), completou `orientacoes.json`
