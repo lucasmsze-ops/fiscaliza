@@ -9,3 +9,6 @@ Nunca preencher com dado sintético.
 | 2026-10-29 | TSE | Senadores em exercício (2018/2022) não têm registro em 2026; partido/foto desatualizados no TSE | Partido e foto virão do Senado na E6 |
 | 2026-10-29 | Câmara | 4 novos (Nantes, Pavanato, Renato Bolsonaro, Cortez) não existem na API até 01/02/2027 | Card sem foto oficial, sem e-mail de gabinete, "primeiro voto em fevereiro"; botão Cobrar oculto até ter e-mail |
 | 2026-10-29 | Câmara | João Paulo Cunha tem registro antigo (leg. 54) com `gabinete.email` nulo e situação "Vacância" | Mesmo tratamento dos novos até 01/02/2027; foto oficial antiga existe |
+| 2026-10-29 | Câmara | 17 votações com placar na descrição mas sem votos em `/votos` (vazio ou 404) | Fora da lista de nominais; não entram em nenhum número |
+| 2026-10-29 | Câmara | `tipoVoto: null` em votações de pessoa (voto não divulgado) | Conta como participação; não conta no governismo; rotulado "voto não informado" |
+| 2026-10-29 | Câmara | Político sem mandato no período (João Paulo Cunha) | "Sem mandato no período" em vez de 0% (modelar na E8) |

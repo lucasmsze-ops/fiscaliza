@@ -4,7 +4,7 @@
  * Único lugar que conhece o shape cru da API. Tudo sai daqui em tipos internos.
  * Só é chamado por scripts (sonda e cron), nunca em requisição de usuário.
  */
-import { fetchJson } from "./http";
+import { fetchJson, HttpError } from "./http";
 import type { TipoVoto } from "./types";
 
 export const CAMARA_API = "https://dadosabertos.camara.leg.br/api/v2";
@@ -206,7 +206,7 @@ interface RawVotacaoDetalhe extends RawVotacao {
 }
 interface RawOrientacao { orientacaoVoto: string; codTipoLideranca: string; siglaPartidoBloco: string }
 interface RawVoto {
-  tipoVoto: string; dataRegistroVoto: string;
+  tipoVoto: string | null; dataRegistroVoto: string;
   deputado_: { id: number; siglaPartido: string; siglaUf: string };
 }
 
@@ -269,11 +269,20 @@ const TIPO_VOTO: Record<string, Exclude<TipoVoto, "ausente">> = {
   "Sim": "sim", "Não": "nao", "Abstenção": "abstencao", "Obstrução": "obstrucao", "Artigo 17": "art17",
 };
 
-/** Votos nominais. Array vazio = votação simbólica. Quem não aparece = ausente (decidido por quem calcula). */
+/**
+ * Votos nominais. Array vazio = votação simbólica. Quem não aparece = ausente (decidido por quem calcula).
+ * A API responde 404 em ~1% das votações listadas: tratado como "sem votos", não como falha.
+ */
 export async function getVotos(id: string): Promise<VotoCamara[]> {
-  const { dados } = await fetchJson<Envelope<RawVoto[]>>(`${CAMARA_API}/votacoes/${id}/votos`, { label: "camara:/votacoes/{id}/votos" });
+  let dados: RawVoto[];
+  try {
+    ({ dados } = await fetchJson<Envelope<RawVoto[]>>(`${CAMARA_API}/votacoes/${id}/votos`, { label: "camara:/votacoes/{id}/votos" }));
+  } catch (e) {
+    if (e instanceof HttpError && e.status === 404) return [];
+    throw e;
+  }
   return dados.map((v) => {
-    const voto = TIPO_VOTO[v.tipoVoto];
+    const voto = v.tipoVoto === null ? "nao_informado" : TIPO_VOTO[v.tipoVoto];
     if (!voto) throw new Error(`tipoVoto desconhecido em ${id}: ${v.tipoVoto}`);
     return { votacaoId: id, camaraId: v.deputado_.id, voto, partido: v.deputado_.siglaPartido, uf: v.deputado_.siglaUf, dataHora: v.dataRegistroVoto };
   });

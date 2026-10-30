@@ -15,6 +15,21 @@ Modelo:
 
 ---
 
+## 2026-10-29 · E4
+**Feito:** `scripts/sonda/votos.ts` chamou `/votos` das 6.537 votações (cache em `data/raw/apoio/votos-cache/`),
+fixou a lista exata de **1.107 nominais** em `votacoes.json` (+`totalVotos`), completou `orientacoes.json`
+(11.669) e gravou `votos.json` (8.476 votos dos 12 com `camaraId`). `lib/indicadores.ts` com
+`participacao()`, `governismo()` e `concordancia()`; 13 testes vitest (8 de lógica + 5 em fixture
+real do Kim Kataguiri). Tabela dos dois números dos reeleitos em `docs/SONDA.md`.
+**Decidido:** 404 em `/votos` = sem votos (não é falha); `tipoVoto: null` → `nao_informado`
+(conta na participação, não no governismo); art. 17 conta na participação. Governismo exclui
+orientação vazia/"Liberado". Heurística do placar fica só como diagnóstico; a lista é por `/votos`.
+**Lacunas:** 17 votações com placar mas sem votos na API; João Paulo Cunha sem mandato → "sem
+mandato no período", não 0%. Duas questões de metodologia abertas no `SONDA.md` (licença como
+ausência; denominador por mandato) para decidir antes do protótipo.
+**Próximo passo:** E5 — `/deputados/{id}/despesas?ano&mes` dos 10 reeleitos (2025-01→hoje) e
+média da bancada SP; medir custo em chamadas e decidir a janela.
+
 ## 2026-10-29 · E3
 **Feito:** `lib/camara.ts` ganhou votações (lista por janelas de 90 dias, detalhe, orientações,
 votos) e `lib/async.ts` (`mapLimite`). `scripts/sonda/votacoes.ts` gerou `data/sonda/votacoes.json`

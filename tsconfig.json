@@ -7,9 +7,20 @@
     "noUncheckedIndexedAccess": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "noEmit": true,
-    "paths": { "@/*": ["./*"] }
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    "resolveJsonModule": true
   },
-  "include": ["lib/**/*.ts", "scripts/**/*.ts"]
+  "include": [
+    "lib/**/*.ts",
+    "scripts/**/*.ts",
+    "tests/**/*.ts"
+  ]
 }

@@ -1,0 +1,162 @@
+{
+ "politico": {
+  "camaraId": 204536,
+  "nome": "Kim Kataguiri"
+ },
+ "votacoes": [
+  {
+   "idExterno": "2162802-89",
+   "data": "2025-02-11",
+   "objeto": "SBT 1/0",
+   "proposicao": "PL 9133/2017",
+   "descricao": "Aprovado o Substitutivo ao Projeto de Lei nº 9.133, de 2017, adotado pela relatora da Comissão de Educação. Sim: 297; Não: 107; Abstenção: 1; Total: 405."
+  },
+  {
+   "idExterno": "2438467-41",
+   "data": "2025-02-12",
+   "objeto": "PPP 1/0",
+   "proposicao": "PL 2215/2024",
+   "descricao": "Rejeitado o Requerimento. Sim: 125; Não: 236; Abstenção: 2; Total: 363."
+  },
+  {
+   "idExterno": "2438467-47",
+   "data": "2025-02-12",
+   "objeto": "PPP 1/0",
+   "proposicao": "PL 2215/2024",
+   "descricao": "Aprovado o Projeto de Lei nº 2.215, de 2024. Sim: 273; Não: 136; Total: 409."
+  },
+  {
+   "idExterno": "2397890-54",
+   "data": "2025-02-18",
+   "objeto": "ERD 1/0",
+   "proposicao": "PLP 223/2023",
+   "descricao": "Rejeitado o Substitutivo ao Projeto de Lei Complementar nº 223, de 2023, da Comissão de Indústria, Comércio e Serviços. Sim: 34; Não: 356; Abstenção: 1; Total: 391."
+  },
+  {
+   "idExterno": "2397890-55",
+   "data": "2025-02-18",
+   "objeto": "ERD 1/0",
+   "proposicao": "PLP 223/2023",
+   "descricao": "Aprovado o Projeto de Lei Complementar nº 223, de 2023. Sim: 407; Não: 6; Total: 413."
+  },
+  {
+   "idExterno": "2484059-7",
+   "data": "2025-02-18",
+   "objeto": null,
+   "proposicao": "PL 4187/2024",
+   "descricao": "Aprovado o Requerimento de Urgência (Art. 155 do RICD). Sim: 266; Não: 140; Abstenção: 2; Total: 408."
+  },
+  {
+   "idExterno": "2463712-40",
+   "data": "2025-02-25",
+   "objeto": "SSP 1/0",
+   "proposicao": "PLP 167/2024",
+   "descricao": "Aprovada a Subemenda Substitutiva Global ao Projeto de Lei Complementar nº 167, de 2024, adotada pelo relator da Comissão de Indústria, Comércio e Serviços. Sim: 399; Total: 399."
+  },
+  {
+   "idExterno": "2466108-28",
+   "data": "2025-02-25",
+   "objeto": "RPD 12/0",
+   "proposicao": "PL 4187/2024",
+   "descricao": "Rejeitado o Requerimento. Sim: 138; Não: 266; Total: 404."
+  },
+  {
+   "idExterno": "2379209-53",
+   "data": "2025-03-25",
+   "objeto": "RPD 8/0",
+   "proposicao": "PL 3914/2023",
+   "descricao": "Rejeitado o Requerimento. Sim: 93; Não: 292; Total: 385."
+  },
+  {
+   "idExterno": "2379209-61",
+   "data": "2025-03-25",
+   "objeto": "DTQ 1/0",
+   "proposicao": "PL 3914/2023",
+   "descricao": "Mantido o texto. Sim: 300; Não: 99; Total: 399."
+  }
+ ],
+ "orientacoesGoverno": [
+  {
+   "votacaoId": "2162802-89",
+   "orientacao": "Sim"
+  },
+  {
+   "votacaoId": "2438467-41",
+   "orientacao": "Não"
+  },
+  {
+   "votacaoId": "2438467-47",
+   "orientacao": "Sim"
+  },
+  {
+   "votacaoId": "2397890-54",
+   "orientacao": "Não"
+  },
+  {
+   "votacaoId": "2397890-55",
+   "orientacao": "Sim"
+  },
+  {
+   "votacaoId": "2484059-7",
+   "orientacao": "Sim"
+  },
+  {
+   "votacaoId": "2463712-40",
+   "orientacao": "Sim"
+  },
+  {
+   "votacaoId": "2466108-28",
+   "orientacao": "Não"
+  },
+  {
+   "votacaoId": "2379209-53",
+   "orientacao": ""
+  },
+  {
+   "votacaoId": "2379209-61",
+   "orientacao": ""
+  }
+ ],
+ "votos": [
+  {
+   "votacaoId": "2162802-89",
+   "voto": "sim"
+  },
+  {
+   "votacaoId": "2379209-53",
+   "voto": "sim"
+  },
+  {
+   "votacaoId": "2379209-61",
+   "voto": "nao"
+  },
+  {
+   "votacaoId": "2397890-54",
+   "voto": "nao"
+  },
+  {
+   "votacaoId": "2397890-55",
+   "voto": "sim"
+  },
+  {
+   "votacaoId": "2438467-41",
+   "voto": "sim"
+  },
+  {
+   "votacaoId": "2438467-47",
+   "voto": "nao"
+  },
+  {
+   "votacaoId": "2463712-40",
+   "voto": "sim"
+  },
+  {
+   "votacaoId": "2466108-28",
+   "voto": "sim"
+  },
+  {
+   "votacaoId": "2484059-7",
+   "voto": "nao"
+  }
+ ]
+}

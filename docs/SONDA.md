@@ -145,3 +145,54 @@ necessária.
 ### URL oficial
 `https://www.camara.leg.br/propostas-legislativas/{proposicaoId}` da proposição afetada.
 A votação em si não tem página pública estável; quando não há proposição, fica a URI da API.
+
+## E4 · Câmara: votos nominais e os dois primeiros números (2026-10-29)
+
+### `/votos` em todas as 6.537 listadas
+- 6.537 chamadas (+ cache em `data/raw/apoio/votos-cache/` para reexecução). Primeira passada:
+  83 × **404** (a API não tem `/votos` para ~1,3% das votações listadas; tratado como "sem votos"),
+  3 × **429** (primeiro rate limit observado, com 6 em voo; resolvido no retry de 1 s),
+  2 × `tipoVoto: null`. Segunda passada com cache: 0 falhas em 32 s.
+- **Lista exata: 1.107 nominais** (a heurística do placar dava 1.117: 17 falsos positivos com
+  placar na descrição mas `/votos` vazio ou 404, e 7 falsos negativos sem placar). O cron
+  sempre confirma por `/votos`.
+- `tipoVoto: null` aparece em votações de pessoa (ex.: `2576389-4`, `2645346-18`): voto
+  registrado sem valor divulgado. Mapeado para `nao_informado`: conta na participação, não
+  no governismo.
+- Tipos de voto nos 8.476 votos da amostra: sim 4.648, não 3.693, obstrução 83, abstenção 36,
+  não informado 15, art. 17 1.
+
+### Os dois números (2023-01-01 → 2026-10-29, período de governo único)
+| Político | Partido | Participação | Governismo |
+|---|---|---|---|
+| Kiko Celeguim | PT | 82,7% (916/1107) | 97,9% (699/714) |
+| Erika Hilton | PSOL | 71,0% (786/1107) | 85,9% (532/619) |
+| Sâmia Bomfim | PSOL | 77,6% (859/1107) | 82,2% (539/656) |
+| Kim Kataguiri | MISSÃO | 79,6% (881/1107) | 24,4% (172/706) |
+| Tabata Amaral | PSB | 84,6% (937/1107) | 86,9% (639/735) |
+| Delegado Palumbo | PODE | 99,3% (1099/1107) | 25,5% (219/860) |
+| Mauricio Neves | PP | 57,4% (635/1107) | 77,3% (382/494) |
+| Marcio Alvino | PL | 89,0% (985/1107) | 22,3% (172/772) |
+| Baleia Rossi | MDB | 57,5% (637/1107) | 83,9% (412/491) |
+| Delegado Bruno Lima | PODE | 56,7% (628/1107) | 78,1% (381/488) |
+| Guilherme Derrite | PP | 10,2% (113/1107) | 21,3% (19/89) |
+| João Paulo Cunha | PT | sem mandato no período | — |
+
+Gerado por `scripts/sonda/_numeros.ts` com `lib/indicadores.ts`.
+
+### Metodologia fixada (espelhar em `/como-funciona`)
+- **Participação** = votações nominais do plenário no período em que o político registrou
+  Sim, Não, Abstenção, Obstrução, Art. 17 ou voto não informado ÷ total de nominais no período.
+- **Governismo** = votos Sim/Não/Obstrução coincidentes com a orientação "Governo" ÷ votos
+  Sim/Não/Obstrução em votações onde o Governo orientou Sim, Não ou Obstrução. Orientação
+  "Liberado" ou vazia, abstenção, ausência e art. 17 ficam fora do denominador.
+- Período de governo: corte em 01/01/2027.
+
+### Questões de metodologia que o dado levantou (decidir antes do protótipo)
+1. **Licença conta como ausência?** Derrite (licenciado para a Secretaria de Segurança de SP)
+   tem 10,2%; Baleia Rossi, Mauricio Neves e Bruno Lima ~57%. O número é verdadeiro ("registrou
+   voto em X% das votações"), mas sem contexto parece punição. Opção simples e honesta: manter o
+   número e mostrar ao lado "licenciado N dias no período", vindo de `/historico`.
+2. **Denominador por mandato.** João Paulo Cunha dá 0/1107 porque não tinha mandato. O card
+   deve mostrar "sem mandato no período", não 0%. A E8 modela `mandatos` e a participação
+   passa a usar só as votações dentro do mandato.

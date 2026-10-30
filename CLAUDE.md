@@ -75,8 +75,9 @@ Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por esta
 - Nominal tem placar na `descricao` (`Sim: N; Não: M`): precisão 100%, recall 99% (medido). O cron confirma por `/votos` mesmo assim.
 - `orientacaoVoto` ∈ {`Sim`, `Não`, `Obstrução`, `Liberado`, `""`}. Vazio e `Liberado` ficam fora do denominador do governismo. `aprovacao` vem `null` em ~17% das nominais.
 - `/proposicoes?idDeputadoAutor` retorna **coautorias**. Filtrar por `/proposicoes/{id}/autores` com `proponente = true`.
-- `tipoVoto` tem 5 valores: `Sim`, `Não`, `Abstenção`, `Obstrução`, `Artigo 17`. Quem não aparece no array = `ausente`. Tratar todos explicitamente.
-- Votação simbólica = array de votos vazio. Ignorar.
+- `tipoVoto` tem 5 valores: `Sim`, `Não`, `Abstenção`, `Obstrução`, `Artigo 17`, e vem **`null`** em votações de pessoa (→ `nao_informado`: conta na participação, não no governismo). Quem não aparece no array = `ausente`. Tratar todos explicitamente.
+- `/votacoes/{id}/votos` responde **404** em ~1% das votações listadas: tratar como "sem votos". Com 6 chamadas em voo apareceram 429 (3 em 6,5k): o retry resolve.
+- Votação simbólica = array de votos vazio. Ignorar. Medido 2023→out/2026: 6.537 votações do plenário, 1.107 nominais.
 - API instável, sem rate limit documentado (observado: ~3% das chamadas falham e passam no retry). Retry com backoff, timeout de 30s, log por endpoint. Falha num endpoint não aborta o job.
 - Eleitos em 2026 só existem aqui a partir de 01/02/2027. Até lá, dado vem do TSE.
 

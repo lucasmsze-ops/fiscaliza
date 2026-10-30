@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E4** (atualizar esta linha ao avançar)
+**Etapa atual: E5** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -65,11 +65,11 @@ Calendário externo que afeta o plano:
 - Pronto quando: o JSON cobre 2023-01-01 até hoje e as falhas estão logadas, não escondidas.
 
 ### E4 · Câmara: votos nominais e os dois primeiros números
-- [ ] `/votacoes/{id}/votos` para **todas as 6.537 listadas** (a heurística do placar perde ~1%);
+- [x] `/votacoes/{id}/votos` para **todas as 6.537 listadas** (a heurística do placar perde ~1%);
       a lista exata de nominais substitui `votacoes.json`. Tratar os 5 `tipoVoto`
       explicitamente e inferir `ausente` para quem não aparece.
-- [ ] `data/sonda/votos.json` só com os 10 reeleitos (reduz tamanho).
-- [ ] `lib/indicadores.ts`: `participacao()` e `governismo()` com testes
+- [x] `data/sonda/votos.json` só com os 10 reeleitos (reduz tamanho).
+- [x] `lib/indicadores.ts`: `participacao()` e `governismo()` com testes
       (`vitest`, fixtures de dado real). Governismo por período de governo.
 - Pronto quando: os testes passam e `docs/SONDA.md` tem a tabela com os dois números
   dos 10 reeleitos.

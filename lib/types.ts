@@ -94,8 +94,9 @@ export interface Votacao {
 }
 
 /**
- * Os 5 valores de `tipoVoto` da Câmara mais `ausente` (quem não aparece no
- * array de votos). Todos tratados explicitamente no cálculo de participação.
+ * Os 5 valores de `tipoVoto` da Câmara, mais `nao_informado` (voto registrado com
+ * `tipoVoto: null`, visto em votações de pessoa) e `ausente` (quem não aparece no array
+ * de votos). Todos tratados explicitamente no cálculo de participação.
  */
 export type TipoVoto =
   | "sim"
@@ -103,6 +104,7 @@ export type TipoVoto =
   | "abstencao"
   | "obstrucao"
   | "art17"
+  | "nao_informado"
   | "ausente";
 
 export interface Voto {
