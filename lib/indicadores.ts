@@ -4,6 +4,11 @@
  */
 import type { Orientacao, TipoVoto, Votacao, Voto } from "./types";
 
+/** O que os indicadores precisam de cada tabela. `Voto.votacaoId` casa com `Votacao.id`. */
+export type VotacaoBase = Pick<Votacao, "id" | "data">;
+export type VotoBase = Pick<Voto, "votacaoId" | "voto">;
+export type OrientacaoBase = Pick<Orientacao, "votacaoId" | "bancada" | "orientacao">;
+
 /**
  * Votos que contam como "registrou voto". `art17` é o presidente da sessão, que não vota mas
  * está presente; `nao_informado` é voto registrado cujo valor a API não divulga; `secreto` é
@@ -32,20 +37,26 @@ function indicador(numerador: number, denominador: number): Indicador {
 
 export interface Periodo { inicio: string; fim: string } // ISO, inclusivo
 
-const noPeriodo = (v: Votacao, p?: Periodo) => !p || (v.data >= p.inicio && v.data <= p.fim);
+/** Período em exercício do mandato; `fim` null = em curso. Ver `Mandato`. */
+export interface Exercicio { inicio: string; fim: string | null }
+
+const noPeriodo = (v: VotacaoBase, p?: Periodo) => !p || (v.data >= p.inicio && v.data <= p.fim);
+const emExercicio = (v: VotacaoBase, ex?: Exercicio[]) => !ex || ex.some((e) => v.data >= e.inicio && (e.fim === null || v.data <= e.fim));
 
 /**
- * Participação em votações: % das votações nominais do plenário (no período) em que o político
- * registrou voto. Quem não aparece na lista de votos é `ausente`. Votação secreta (Senado) conta:
- * o painel registra que votou, só não diz como.
+ * Participação em votações: % das votações nominais do plenário (no período e dentro de algum
+ * mandato em exercício, se `exercicio` for informado) em que o político registrou voto. Quem não
+ * aparece na lista de votos é `ausente`. Votação secreta (Senado) conta: o painel registra que
+ * votou, só não diz como. Sem mandato no período: denominador 0 → percentual null
+ * ("sem mandato no período", nunca 0%). Licença dentro do mandato não é descontada.
  */
-export function participacao(votacoes: Votacao[], votosDoPolitico: Voto[], periodo?: Periodo): Indicador {
+export function participacao(votacoes: VotacaoBase[], votosDoPolitico: VotoBase[], periodo?: Periodo, exercicio?: Exercicio[]): Indicador {
   const porVotacao = new Map(votosDoPolitico.map((v) => [v.votacaoId, v.voto]));
   let n = 0, d = 0;
   for (const v of votacoes) {
-    if (!noPeriodo(v, periodo)) continue;
+    if (!noPeriodo(v, periodo) || !emExercicio(v, exercicio)) continue;
     d++;
-    const voto = porVotacao.get(v.idExterno) ?? "ausente";
+    const voto = porVotacao.get(v.id) ?? "ausente";
     if (REGISTRA_VOTO.has(voto)) n++;
   }
   return indicador(n, d);
@@ -56,15 +67,15 @@ export function participacao(votacoes: Votacao[], votosDoPolitico: Voto[], perio
  * nas votações em que o Governo orientou Sim, Não ou Obstrução. Ausência, abstenção, art. 17,
  * orientação "Liberado" ou vazia ficam fora do denominador. Calcular por período de governo.
  */
-export function governismo(votacoes: Votacao[], votosDoPolitico: Voto[], orientacoes: Orientacao[], periodo?: Periodo): Indicador {
+export function governismo(votacoes: VotacaoBase[], votosDoPolitico: VotoBase[], orientacoes: OrientacaoBase[], periodo?: Periodo): Indicador {
   const orientacaoGoverno = new Map<string, string>();
   for (const o of orientacoes) if (o.bancada === "Governo" && ORIENTACAO_POSICIONAL.has(o.orientacao)) orientacaoGoverno.set(o.votacaoId, o.orientacao);
   const porVotacao = new Map(votosDoPolitico.map((v) => [v.votacaoId, v.voto]));
   let n = 0, d = 0;
   for (const v of votacoes) {
     if (!noPeriodo(v, periodo)) continue;
-    const ori = orientacaoGoverno.get(v.idExterno);
-    const voto = porVotacao.get(v.idExterno);
+    const ori = orientacaoGoverno.get(v.id);
+    const voto = porVotacao.get(v.id);
     if (!ori || !voto || !VOTO_POSICIONAL.has(voto)) continue;
     d++;
     if (ORIENTACAO_PARA_VOTO[ori] === voto) n++;
@@ -79,7 +90,7 @@ export type RespostaQuiz = "sim" | "nao";
  * Concordância com você: % das votações do quiz respondidas em que o voto do político
  * (Sim/Não) coincide com a resposta. Sem resposta: null. Político sem voto posicional: fora do denominador.
  */
-export function concordancia(respostas: Record<string, RespostaQuiz>, votosDoPolitico: Voto[]): Indicador {
+export function concordancia(respostas: Record<string, RespostaQuiz>, votosDoPolitico: VotoBase[]): Indicador {
   const porVotacao = new Map(votosDoPolitico.map((v) => [v.votacaoId, v.voto]));
   let n = 0, d = 0;
   for (const [votacaoId, resposta] of Object.entries(respostas)) {

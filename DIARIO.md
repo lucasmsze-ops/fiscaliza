@@ -15,6 +15,24 @@ Modelo:
 
 ---
 
+## 2026-11-01 · E8
+**Feito:** `lib/types.ts` reescrito (12 tabelas, `Linha<T>` snake_case) e `lib/linhas.ts`.
+`participacao()` aceita mandatos ("sem mandato no período", nunca 0%); indicadores casam por
+`Votacao.id`. `scripts/sonda/bancada.ts` (70 deputados de SP, join por CPF em memória, 69 ok);
+`votos.ts` e `despesas.ts` cobrem a bancada inteira e gravam placar exato; `senadores.ts` grava
+placar das abertas. `scripts/sonda/consolidar.ts` → `data/*.json` (438 políticos, 1.533 votações,
+49.949 votos, 20.365 linhas de top-20, 9,6 MB). `scripts/sonda/validar.ts` passa (e pega 3 defeitos
+plantados). `docs/QUIZ.md` com critério e 10 votações propostas. 33 testes.
+**Decidido:** nenhum CPF nem hash gravado (join só no cron). Um registro por pessoa, id = slug.
+Participação restrita ao mandato; licença não descontada. Quiz: mérito, aberta, minoria ≥ 20%,
+duas Casas quando o texto é o mesmo (PL 5582/2025 ficou só Câmara). Ampliação: dados completos
+para toda a bancada de SP em exercício que aparece nos top-20.
+**Lacunas:** 1 perfil da Câmara com 504 persistente (não afeta o site); 373 políticos só com dado
+do TSE; 187 votações sem resultado explícito.
+**Próximo passo:** E9 — primeiro o usuário decide as 6 questões abertas do fim da E8 em
+`docs/SONDA.md`; depois `create-next-app`, `lib/repo.ts` (`JsonRepo` lendo `data/*.json` com
+`deLinha`) e deploy inicial na Vercel.
+
 ## 2026-11-01 · E7
 **Feito:** `lib/quociente.ts` (QE, QP com exigência de 10%, sobras 80/20 e fase aberta, frase
 "seu voto contou para") com 12 testes de borda e 5 em dado real (30 no total). `scripts/sonda/

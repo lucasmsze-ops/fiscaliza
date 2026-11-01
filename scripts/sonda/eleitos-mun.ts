@@ -46,11 +46,22 @@ console.log(`[${marca()}] ${top.length} linhas · listas com empate na borda (> 
 
 // Candidatos que aparecem em algum top-20, com o que o card precisa da fonte.
 const sqs = [...new Set(top.map((t) => t.sq))];
-const cand = await rows<{ sq: string; nomeUrna: string; numero: string; cargo: string; partido: string; federacao: string | null; situacao: string }>(`
-  SELECT SQ_CANDIDATO sq, NM_URNA_CANDIDATO "nomeUrna", NR_CANDIDATO numero, DS_CARGO cargo, SG_PARTIDO partido,
-         CASE WHEN NR_FEDERACAO = '-1' THEN NULL ELSE NM_FEDERACAO END federacao, DS_SIT_TOT_TURNO situacao
-  FROM ${csv("consulta_cand/consulta_cand_2026_SP.csv")} WHERE SQ_CANDIDATO IN (${sqs.map((s) => `'${s}'`).join(",")})`);
-const candidatos = Object.fromEntries(cand.map((x) => [x.sq, { nomeUrna: x.nomeUrna, numero: x.numero, cargo: CARGO[x.cargo === "SENADOR" ? "Senador" : "Deputado Federal"], partido: x.partido, federacao: x.federacao, situacao: x.situacao }]));
+const cand = await rows<{ sq: string; nome: string; nomeUrna: string; numero: string; cargo: string; partido: string; federacao: string | null; lista: string; situacao: string; votos: string }>(`
+  SELECT c.SQ_CANDIDATO sq, NM_CANDIDATO nome, NM_URNA_CANDIDATO "nomeUrna", NR_CANDIDATO numero, DS_CARGO cargo, SG_PARTIDO partido,
+         CASE WHEN NR_FEDERACAO = '-1' THEN NULL ELSE NM_FEDERACAO END federacao,
+         CASE WHEN NR_FEDERACAO = '-1' THEN 'P' || NR_PARTIDO ELSE 'F' || NR_FEDERACAO END lista,
+         DS_SIT_TOT_TURNO situacao, t.votos
+  FROM ${csv("consulta_cand/consulta_cand_2026_SP.csv")} c
+  JOIN (SELECT sq, sum(votos) votos FROM v GROUP BY sq) t ON t.sq = c.SQ_CANDIDATO
+  WHERE c.SQ_CANDIDATO IN (${sqs.map((s) => `'${s}'`).join(",")})`);
+// `lista` usa o mesmo id de scripts/sonda/quociente.ts (P + nº do partido isolado, F + nº da federação).
+const candidatos = Object.fromEntries(cand.map((x) => [x.sq, {
+  nome: x.nome, nomeUrna: x.nomeUrna, numero: x.numero, cargo: CARGO[x.cargo === "SENADOR" ? "Senador" : "Deputado Federal"],
+  partido: x.partido, federacao: x.federacao, lista: x.lista, situacao: x.situacao, votosUf: Number(x.votos),
+}]));
+const situacoes = new Map<string, number>();
+for (const x of cand) situacoes.set(`${x.cargo}: ${x.situacao}`, (situacoes.get(`${x.cargo}: ${x.situacao}`) ?? 0) + 1);
+console.log(`[${marca()}] situação no TSE dos candidatos do top-20:`, Object.fromEntries(situacoes));
 const semCadastro = sqs.filter((s) => !candidatos[s]);
 
 // Código IBGE pelo nome (sem acento, maiúsculas, hífen e apóstrofo como espaço).

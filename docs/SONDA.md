@@ -412,3 +412,69 @@ aberta a todos não foi usada em 2026.
 6. **Nome da lista no card.** O nome oficial da federação é longo e em maiúsculas
    ("FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL (PT/PC do B/PV)"). Decidir na E10 entre o nome
    oficial e a composição curta ("PT/PCdoB/PV"), sem inventar apelido.
+
+## E8 · Consolidação (2026-11-01)
+
+### O que foi para `data/` (shape final, `scripts/sonda/consolidar.ts`)
+
+| Tabela | Linhas | Observação |
+|---|---|---|
+| politicos | 438 | 435 candidatos de algum top-20 (E7) + 3 senadores em exercício |
+| mandatos | 149 | posse → saída, do histórico da Câmara e dos exercícios do Senado |
+| afastamentos | 185 | licenças dentro do mandato (secretaria, saúde, missão) |
+| listas | 20 | partidos e federações do quociente (E7) |
+| municipios | 645 | TSE + IBGE |
+| eleitos_mun | 20.365 | top-20 + empatados, posição compartilhada no empate |
+| despesas_mes | 1.273 | CEAP dos deputados em exercício que estão em `politicos` |
+| despesas_media_uf | 22 | média SP por mês (os 70) |
+| votacoes | 1.533 | 1.107 Câmara + 426 Senado; 16 marcadas para o quiz |
+| votos | 49.949 | 62 deputados + 3 senadores |
+| orientacoes | 13.712 | as duas Casas |
+| quiz | 10 | ver `docs/QUIZ.md` |
+
+Status: 40 reeleitos, 30 eleitos, 321 suplentes e 32 não eleitos (deputado); 2 eleitos, 10 não
+eleitos e 3 em exercício (senador). Foto para os 438 (Câmara/Senado para quem está em exercício,
+URL do TSE para os demais); e-mail oficial para 65.
+
+### Ampliação de escopo: a bancada de SP inteira
+O top-20 por cidade traz deputados em exercício fora da amostra de 20. Para que todo card de
+deputado em exercício tenha os mesmos dados, a E8 buscou perfil e histórico dos 70 de SP
+(`scripts/sonda/bancada.ts`, 69 ok, 1 com 504 persistente), recalculou os votos dos 69 a partir
+do cache da E4 (sem nova chamada a `/votos`) e a CEAP dos 70 (140 chamadas, 0 falhas).
+O consulta_cand de 2026 não tem campo de reeleição: "reeleito" sai deste join, que bateu com
+o da E2 (40 dos 70 eleitos já em exercício).
+
+### Decisões de modelo
+- **Sem CPF nem hash em lugar nenhum.** O join por hash é feito em memória pelo cron a cada
+  execução; só o par de ids é gravado. Resolve a pendência da E1 (hash sem sal é reversível) da
+  forma mais simples: não há o que proteger. `validar.ts` falha se aparecer um hash SHA-256.
+- **Uma pessoa, um registro**, `id` = slug do nome de urna (colisão: + número de urna). Derrite é
+  `senador · eleito` e os números vêm dos mandatos de deputado.
+- **`data/*.json` = linhas do Supabase em snake_case**; o código usa camelCase. `Linha<T>` deriva o
+  tipo da linha, `paraLinha`/`deLinha` convertem; um só lugar para os nomes de coluna.
+- **Votação com id `casa:id_externo`**: os ids das duas Casas não têm relação.
+- **Placar exato** contado dos votos (Câmara: cache de `/votos`; Senado: 81 votos da `/votacao`),
+  null em votação secreta.
+- **Senado guarda a ausência com o motivo** (`votos.detalhe` = sigla do painel); a Câmara não
+  informa motivo, a ausência é implícita.
+
+### Metodologia (espelhar em `/como-funciona`)
+- **Participação por mandato** (questão 2 da E4, decidida): o denominador são as votações
+  nominais do plenário no período que caem dentro de algum mandato em exercício. Sem mandato no
+  período, o número não existe ("sem mandato no período"), nunca 0%. Licença dentro do mandato
+  **não** é descontada (questão 1 da E4 continua aberta; os dados estão em `afastamentos`).
+- Os números da amostra não mudaram com isso, exceto João Paulo Cunha (de 0/1.107 para "sem
+  mandato no período"): os demais estiveram no mandato o período todo.
+
+### CEAP: a evidência para o "mês fechado"
+Duas coletas com 3 dias de diferença (29/10 e 01/11): a média de SP de jan/2025 a mai/2026 ficou
+idêntica; jun–out/2026 subiu (ago: R$ 22.634 → R$ 22.669; out: R$ 9.831 → R$ 11.215). Reforça a
+proposta da E5: mês fechado = total da bancada estável entre duas execuções do cron.
+
+### Decisões que continuam abertas (antes do protótipo)
+1. Licença conta como ausência na participação? (E4, E6) — dados prontos em `afastamentos`.
+2. Votações secretas do Senado no denominador da participação? (E6)
+3. "Presente, não registrou voto" (P-NRV) como ausência? (E6)
+4. Qual mês da CEAP o card mostra (E5) — regra provisória e evidência acima.
+5. Nome da federação no card (E7).
+6. A seleção do quiz (`docs/QUIZ.md`) é uma proposta editorial para revisão.

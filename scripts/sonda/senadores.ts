@@ -15,7 +15,8 @@ import {
   getLicencas, getMandatos, getSenador, listarOrientacoesPlenario, listarSenadoresAtuais, listarVotacoesPlenario,
   type LicencaSenado, type MandatoSenado, type SenadorPerfil, type VotacaoSenado, type VotoSenado,
 } from "../../lib/senado";
-import type { Orientacao, TipoVoto, Votacao, Voto } from "../../lib/types";
+import type { TipoVoto } from "../../lib/types";
+import type { OrientacaoBase, VotacaoBase, VotoBase } from "../../lib/indicadores";
 import type { PoliticoTse } from "./tse";
 import { readFileSync } from "node:fs";
 
@@ -37,7 +38,7 @@ export interface SenadorSonda extends SenadorPerfil {
   /** Licenças oficiais desde o início da legislatura. */
   licencas: LicencaSenado[];
 }
-export interface VotacaoSenadoSonda extends Omit<VotacaoSenado, "votos"> { totalVotos: number }
+export interface VotacaoSenadoSonda extends Omit<VotacaoSenado, "votos"> { totalVotos: number; placar: { sim: number; nao: number; abstencao: number; obstrucao: number } | null }
 export interface VotoSenadoSonda { votacaoId: string; senadoCodigo: string; sigla: string; voto: TipoVoto }
 export interface OrientacaoSenadoSonda { votacaoId: string; bancada: string; orientacao: string }
 
@@ -83,7 +84,11 @@ console.log(`  votações sem nenhuma orientação: ${semOrient.length} (sequenc
 
 const codigos = new Set(senadores.map((s) => s.senadoCodigo));
 const votos: VotoSenadoSonda[] = votacoes.flatMap((v) => v.votos.filter((x) => codigos.has(x.senadoCodigo)).map((x) => ({ votacaoId: x.votacaoId, senadoCodigo: x.senadoCodigo, sigla: x.sigla, voto: x.voto })));
-const votacoesSaida: VotacaoSenadoSonda[] = votacoes.map(({ votos: vs, ...v }) => ({ ...v, totalVotos: vs.filter((x) => x.voto !== "ausente").length }));
+// Placar só existe em votação aberta; na secreta a API diz apenas "Votou".
+const votacoesSaida: VotacaoSenadoSonda[] = votacoes.map(({ votos: vs, ...v }) => {
+  const conta = (t: TipoVoto) => vs.filter((x) => x.voto === t).length;
+  return { ...v, totalVotos: vs.filter((x) => x.voto !== "ausente").length, placar: v.secreta ? null : { sim: conta("sim"), nao: conta("nao"), abstencao: conta("abstencao"), obstrucao: conta("obstrucao") } };
+});
 
 writeFileSync("data/sonda/senadores.json", JSON.stringify(senadores, null, 1) + "\n");
 writeFileSync("data/sonda/votacoes-senado.json", JSON.stringify(votacoesSaida, null, 1) + "\n");
@@ -92,14 +97,14 @@ writeFileSync("data/sonda/votos-senado.json", JSON.stringify(votos) + "\n");
 console.log(`[${marca()}] gravados ${senadores.length} senadores, ${votacoesSaida.length} votações, ${orientacoes.length} orientações, ${votos.length} votos`);
 
 // 3. Os dois números, com as mesmas funções da Câmara.
-const vInt: Votacao[] = votacoesSaida.map((v) => ({ idExterno: v.idExterno, casa: "senado", data: v.data, objeto: v.proposicao?.identificacao ?? v.descricao, resultado: v.resultado, urlOficial: v.urlOficial, quiz: false }));
-const oInt: Orientacao[] = orientacoes;
+const vInt: VotacaoBase[] = votacoesSaida.map((v) => ({ id: v.idExterno, data: v.data }));
+const oInt: OrientacaoBase[] = orientacoes;
 const periodo = { inicio: INICIO, fim: "2026-12-31" };
 const f = (x: { percentual: number | null; numerador: number; denominador: number }) => `${x.percentual === null ? "—" : x.percentual.toFixed(1) + "%"} (${x.numerador}/${x.denominador})`;
 const dias = (l: LicencaSenado) => (Date.parse(l.fim ?? HOJE) - Date.parse(l.inicio)) / 86_400_000 + 1;
 console.log("\n| Senador | Partido | Participação | Governismo | Ausências por sigla | Licenças (dias) |\n|---|---|---|---|---|---|");
 for (const s of senadores) {
-  const meus: Voto[] = votos.filter((v) => v.senadoCodigo === s.senadoCodigo).map((v) => ({ votacaoId: v.votacaoId, politicoId: s.senadoCodigo, voto: v.voto }));
+  const meus: VotoBase[] = votos.filter((v) => v.senadoCodigo === s.senadoCodigo).map((v) => ({ votacaoId: v.votacaoId, voto: v.voto }));
   const aus = new Map<string, number>();
   for (const v of votos) if (v.senadoCodigo === s.senadoCodigo && v.voto === "ausente") aus.set(v.sigla, (aus.get(v.sigla) ?? 0) + 1);
   const lic = s.licencas.filter((l) => l.inicio >= INICIO);

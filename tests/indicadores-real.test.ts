@@ -5,12 +5,12 @@
  */
 import { describe, expect, it } from "vitest";
 import fixture from "./fixtures/indicadores-real.json";
-import { governismo, participacao } from "../lib/indicadores";
-import type { Orientacao, Votacao, Voto } from "../lib/types";
+import { governismo, participacao, type OrientacaoBase, type VotacaoBase, type VotoBase } from "../lib/indicadores";
 
-const votacoes: Votacao[] = fixture.votacoes.map((v) => ({ idExterno: v.idExterno, casa: "camara", data: v.data, objeto: v.objeto ?? "", resultado: null, urlOficial: "", quiz: false }));
-const orientacoes: Orientacao[] = fixture.orientacoesGoverno.map((o) => ({ votacaoId: o.votacaoId, bancada: "Governo", orientacao: o.orientacao ?? "" }));
-const votos: Voto[] = fixture.votos.map((v) => ({ votacaoId: v.votacaoId, politicoId: String(fixture.politico.camaraId), voto: v.voto as Voto["voto"] }));
+
+const votacoes: VotacaoBase[] = fixture.votacoes.map((v) => ({ id: v.idExterno, data: v.data }));
+const orientacoes: OrientacaoBase[] = fixture.orientacoesGoverno.map((o) => ({ votacaoId: o.votacaoId, bancada: "Governo", orientacao: o.orientacao ?? "" }));
+const votos: VotoBase[] = fixture.votos.map((v) => ({ votacaoId: v.votacaoId, voto: v.voto as VotoBase["voto"] }));
 
 describe("indicadores com dado real (Kim Kataguiri, 2025)", () => {
   it("a fixture tem 10 votações, 8 com orientação posicional do Governo e 10 votos", () => {

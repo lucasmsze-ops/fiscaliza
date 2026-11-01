@@ -6,12 +6,12 @@
  */
 import { describe, expect, it } from "vitest";
 import fixture from "./fixtures/indicadores-senado-real.json";
-import { concordancia, governismo, participacao } from "../lib/indicadores";
-import type { Orientacao, Votacao, Voto } from "../lib/types";
+import { concordancia, governismo, participacao, type OrientacaoBase, type VotacaoBase, type VotoBase } from "../lib/indicadores";
 
-const votacoes: Votacao[] = fixture.votacoes.map((v) => ({ idExterno: v.idExterno, casa: "senado", data: v.data, objeto: v.proposicao ?? "", resultado: null, urlOficial: "", quiz: false }));
-const orientacoes: Orientacao[] = fixture.orientacoesGoverno.map((o) => ({ votacaoId: o.votacaoId, bancada: "Governo", orientacao: o.orientacao ?? "" }));
-const votos: Voto[] = fixture.votos.map((v) => ({ votacaoId: v.votacaoId, politicoId: fixture.politico.senadoCodigo, voto: v.voto as Voto["voto"] }));
+
+const votacoes: VotacaoBase[] = fixture.votacoes.map((v) => ({ id: v.idExterno, data: v.data }));
+const orientacoes: OrientacaoBase[] = fixture.orientacoesGoverno.map((o) => ({ votacaoId: o.votacaoId, bancada: "Governo", orientacao: o.orientacao ?? "" }));
+const votos: VotoBase[] = fixture.votos.map((v) => ({ votacaoId: v.votacaoId, voto: v.voto as VotoBase["voto"] }));
 
 describe("indicadores com dado real do Senado (Marcos Pontes, 2025)", () => {
   it("a fixture tem 10 votações: 6 abertas com orientação do Governo, 2 secretas e 2 ausências", () => {
@@ -32,7 +32,7 @@ describe("indicadores com dado real do Senado (Marcos Pontes, 2025)", () => {
     expect(governismo(votacoes, votos, comOrientacaoNasSecretas)).toEqual({ numerador: 3, denominador: 6, percentual: 50 });
   });
   it("concordância: respondendo Sim em todas, só os 6 votos Sim/Não contam → 4/6", () => {
-    const respostas = Object.fromEntries(votacoes.map((v) => [v.idExterno, "sim" as const]));
+    const respostas = Object.fromEntries(votacoes.map((v) => [v.id, "sim" as const]));
     expect(concordancia(respostas, votos)).toEqual({ numerador: 4, denominador: 6, percentual: 66.7 });
   });
 });

@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E8** (atualizar esta linha ao avançar)
+**Etapa atual: E9** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -103,20 +103,26 @@ Calendário externo que afeta o plano:
 - Pronto quando: para 3 municípios de tamanhos diferentes o top-20 bate com o TSE.
 
 ### E8 · Consolidação da sonda
-- [ ] Reescrever `lib/types.ts` com o que o dado real mostrou.
-- [ ] `data/*.json` no shape final do modelo (`politicos`, `mandatos`, `eleitos_mun`,
+- [x] Reescrever `lib/types.ts` com o que o dado real mostrou. (+ `Linha<T>` e `lib/linhas.ts`.)
+- [x] `data/*.json` no shape final do modelo (`politicos`, `mandatos`, `eleitos_mun`,
       `despesas_mes`, `votacoes`, `votos`, `orientacoes`). Mesmo shape que irá ao Supabase.
-- [ ] Escolher 8–12 votações para o quiz com critério escrito em `docs/QUIZ.md`
-      (votação nominal, relevância pública, resultado apertado ou tema claro).
-- [ ] `docs/SONDA.md`: o que o dado real ensinou, o que mudou no `CLAUDE.md`.
-- [ ] `fotoUrl` de quem não tem foto da Câmara/Senado pela URL pública do TSE (`lib/tse.ts#fotoUrlTse`).
-- [ ] Levar ao shape final o que a E7 gerou (`quociente.json` por lista, `eleitos-mun.json`).
+      (+ `afastamentos`, `listas`, `municipios`, `despesas_media_uf`, `quiz`; 12 tabelas.)
+- [x] Escolher 8–12 votações para o quiz com critério escrito em `docs/QUIZ.md`
+      (votação nominal, relevância pública, resultado apertado ou tema claro). (10, proposta.)
+- [x] `docs/SONDA.md`: o que o dado real ensinou, o que mudou no `CLAUDE.md`.
+- [x] `fotoUrl` de quem não tem foto da Câmara/Senado pela URL pública do TSE (`lib/tse.ts#fotoUrlTse`).
+- [x] Levar ao shape final o que a E7 gerou (`quociente.json` por lista, `eleitos-mun.json`).
+- [x] Participação restrita aos mandatos em exercício ("sem mandato no período").
+- [x] Bancada de SP inteira (perfis, votos, CEAP) para todo deputado em exercício do top-20.
 - Pronto quando: um script `scripts/sonda/validar.ts` confirma que todo `politico_id`
   referenciado existe e nenhum campo obrigatório está vazio.
 
 ## Passo 2 — Protótipo (site lendo `data/*.json`)
 
 ### E9 · Next.js e camada de dados
+- [ ] **Antes de começar**: decidir as questões abertas listadas no fim da E8 em `docs/SONDA.md`
+      (licença, secretas, P-NRV, mês da CEAP, nome da federação, quiz). Next.js e shadcn/ui são
+      dependências previstas no `CLAUDE.md`; confirmar mesmo assim antes de instalar.
 - [ ] `create-next-app` (App Router, TS, Tailwind) + shadcn/ui mínimo (Button, Card, Tooltip).
 - [ ] `lib/repo.ts`: interface `Repo` (`getPolitico`, `buscarPorCidade`, `buscarPorNome`,
       `getVotacoesQuiz`, ...) com implementação `JsonRepo`. A E17 troca por `SupabaseRepo`

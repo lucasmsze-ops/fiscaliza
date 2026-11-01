@@ -1,12 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { concordancia, governismo, participacao } from "../lib/indicadores";
-import type { Orientacao, Votacao, Voto } from "../lib/types";
+import { concordancia, governismo, participacao, type OrientacaoBase, type VotacaoBase, type VotoBase } from "../lib/indicadores";
 
 // Casos de borda com dados mínimos (não são dados de interface; só exercitam a aritmética).
-const vot = (id: string, data = "2025-01-01"): Votacao =>
-  ({ idExterno: id, casa: "camara", data, objeto: "", resultado: null, urlOficial: "", quiz: false });
-const voto = (votacaoId: string, v: Voto["voto"]): Voto => ({ votacaoId, politicoId: "p", voto: v });
-const ori = (votacaoId: string, orientacao: string, bancada = "Governo"): Orientacao => ({ votacaoId, bancada, orientacao });
+const vot = (id: string, data = "2025-01-01"): VotacaoBase => ({ id, data });
+const voto = (votacaoId: string, v: VotoBase["voto"]): VotoBase => ({ votacaoId, voto: v });
+const ori = (votacaoId: string, orientacao: string, bancada = "Governo"): OrientacaoBase => ({ votacaoId, bancada, orientacao });
 
 describe("participacao", () => {
   it("conta Sim/Não/Abstenção/Obstrução/Art.17/não informado/secreto como voto registrado; ausente e quem não aparece, não", () => {
@@ -19,6 +17,16 @@ describe("participacao", () => {
   });
   it("ignora votos em votações fora da lista", () => {
     expect(participacao([vot("a")], [voto("zzz", "sim")]).percentual).toBe(0);
+  });
+  it("com mandatos, só conta votações dentro do exercício; sem mandato no período → null", () => {
+    const votacoes = [vot("a", "2023-03-01"), vot("b", "2024-06-01"), vot("c", "2026-05-01")];
+    const votos = [voto("b", "sim")];
+    // Exercício de 2024-01-01 em diante (fim em curso): só b e c entram.
+    expect(participacao(votacoes, votos, undefined, [{ inicio: "2024-01-01", fim: null }])).toEqual({ numerador: 1, denominador: 2, percentual: 50 });
+    // Dois períodos com intervalo: a e c.
+    expect(participacao(votacoes, votos, undefined, [{ inicio: "2023-01-01", fim: "2023-12-31" }, { inicio: "2026-01-01", fim: null }]).denominador).toBe(2);
+    // Nenhum mandato: denominador 0, percentual null ("sem mandato no período").
+    expect(participacao(votacoes, votos, undefined, [])).toEqual({ numerador: 0, denominador: 0, percentual: null });
   });
 });
 

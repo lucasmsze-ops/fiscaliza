@@ -4,7 +4,7 @@
  * - Número do político e média da bancada vêm da mesma fonte (API), porque o CSV anual oficial
  *   (camara.leg.br/cotas/Ano-{ano}.csv.zip) não inclui "PASSAGEM AÉREA - SIGEPA" e a API não
  *   inclui os micro-itens de TELEFONIA do CSV (ver docs/SONDA.md).
- * - Saída: data/sonda/despesas.json = { despesas (só a amostra), mediaUf (SP, por mês) }.
+ * - Saída: data/sonda/despesas.json = { despesas (os 70 de SP, desde a E8), mediaUf (SP, por mês) }.
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { mapLimite } from "../../lib/async";
@@ -52,8 +52,7 @@ for (const ano of ANOS) for (let mes = 1; mes <= 12; mes++) {
   mediaUf.push({ uf: "SP", ano, mes, media: r2(total / ms.length), deputados: ms.length, total });
 }
 
-const idsAmostra = new Set(amostra.map((p) => p.camaraId));
-const despesas = [...porMes.values()].filter((e) => idsAmostra.has(e.camaraId)).sort((a, b) => a.camaraId - b.camaraId || a.ano - b.ano || a.mes - b.mes);
+const despesas = [...porMes.values()].sort((a, b) => a.camaraId - b.camaraId || a.ano - b.ano || a.mes - b.mes);
 writeFileSync("data/sonda/despesas.json", JSON.stringify({ fonte: "API /deputados/{id}/despesas?idLegislatura=57&ano", geradoEm: new Date().toISOString().slice(0, 10), despesas, mediaUf }, null, 1) + "\n");
 
 console.log(`\nmédia SP por mês (API, ${bancadaSP.length} deputados em exercício):`);

@@ -22,3 +22,7 @@ Nunca preencher com dado sintético.
 | 2026-11-01 | TSE | Em 81 das 1.290 listas de top-20 (cidades pequenas) há empate de votos com o 20º colocado | A lista inclui todos os empatados (até 23 nomes); ordem dentro do empate por número de urna, sem significado |
 | 2026-11-01 | TSE | Votação municipal não traz código IBGE; 1 município de SP com grafia diferente no IBGE | Código IBGE por nome normalizado + de-para revisado (São Luís/Luiz do Paraitinga) |
 | 2026-11-01 | TSE | Senador é eleito por maioria; não há lista nem quociente | Card de senador sem a frase "seu voto contou para"; mostra só os votos no município |
+| 2026-11-01 | TSE | `consulta_cand` 2026 não indica quem concorre à reeleição | "reeleito" vem do join por CPF com a Câmara (em memória; nada de CPF gravado) |
+| 2026-11-01 | Câmara | `/deputados/220651` (Simone Marquetto) devolve 504 persistente; `/historico` responde | Bancada com 69 de 70 perfis; ela não concorreu em SP em 2026 e não aparece em nenhum top-20, então nada no site depende dela |
+| 2026-11-01 | TSE | 373 dos 438 políticos (suplentes, não eleitos e novos) não têm registro na Câmara/Senado | Card com foto do TSE, nome, partido, status e votos 2026; sem e-mail (Cobrar oculto), sem os três números ("primeiro voto em fevereiro" para eleitos) |
+| 2026-11-01 | Câmara | 187 votações sem resultado explícito (`aprovacao` nulo e descrição sem "Aprovad"/"Rejeitad", ex.: "Mantido o texto") | `resultado` null; nenhuma delas está no quiz |

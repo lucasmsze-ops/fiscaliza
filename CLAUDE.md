@@ -60,7 +60,7 @@ Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por esta
 ## Fontes de dados e armadilhas conhecidas
 
 ### TSE — `dadosabertos.tse.jus.br` (CSV, download único) e `resultados.tse.jus.br` (JSON de divulgação)
-- `consulta_cand`: candidatos, nome de urna, partido, federação, situação de totalização, nascimento, CPF (guardar **apenas hash SHA-256**, nunca o CPF). Não tem coluna de foto.
+- `consulta_cand`: candidatos, nome de urna, partido, federação, situação de totalização, nascimento, CPF. **CPF nunca é persistido, nem em hash**: o join por SHA-256 do CPF acontece em memória no cron, a cada execução, e só o par de ids (`tse_sq_candidato` ↔ `camara_id`) é gravado. Não tem coluna de foto nem indica quem concorre à reeleição (em 2026 não há `ST_REELEICAO`): "reeleito" sai do join com a Câmara/Senado.
 - **Foto**: URL pública por candidato em `https://resultados.tse.jus.br/oficial/ele2026/6259/fotos/{uf}/{sq_candidato}.jpeg` (JPEG ~6 KB; 17/17 da amostra de 2026). `lib/tse.ts#fotoUrlTse`. O zip `foto_cand{ano}_{UF}_div.zip` só serve para conferência. O DivulgaCand bloqueia acesso automatizado; não usar.
 - Zips só por ano (um CSV por UF dentro). Catálogo via API CKAN: `dadosabertos.tse.jus.br/api/3/action/package_show?id=candidatos-2026` e `?id=resultados-2026`.
 - CSV latin-1, `;`. Nulos: `#NULO`, `#NE` (2026) e `#NULO#`, `#NE#` (2018). `DS_CARGO` é MAIÚSCULO em `consulta_cand` e Capitalizado em `votacao_*_munzona`. `SG_FEDERACAO` em 2026 é a composição, não uma sigla.
@@ -87,7 +87,7 @@ Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por esta
 - `tipoVoto` tem 5 valores: `Sim`, `Não`, `Abstenção`, `Obstrução`, `Artigo 17`, e vem **`null`** em votações de pessoa (→ `nao_informado`: conta na participação, não no governismo). Quem não aparece no array = `ausente`. Tratar todos explicitamente.
 - `/votacoes/{id}/votos` responde **404** em ~1% das votações listadas: tratar como "sem votos". Com 6 chamadas em voo apareceram 429 (3 em 6,5k): o retry resolve.
 - Votação simbólica = array de votos vazio. Ignorar. Medido 2023→out/2026: 6.537 votações do plenário, 1.107 nominais.
-- API instável, sem rate limit documentado (observado: ~3% das chamadas falham e passam no retry). Retry com backoff, timeout de 30s, log por endpoint. Falha num endpoint não aborta o job.
+- API instável, sem rate limit documentado (observado: ~3% das chamadas falham e passam no retry). Em 01/11/2026, `/deputados/{id}` devolveu 504 após 15 s em rajadas, e de forma persistente para um id (220651) cujo `/historico` respondia: scripts de coleta são incrementais (só buscam o que falta). Retry com backoff, timeout de 30s, log por endpoint. Falha num endpoint não aborta o job.
 - Eleitos em 2026 só existem aqui a partir de 01/02/2027. Até lá, dado vem do TSE.
 
 ### Senado — `https://legis.senado.leg.br/dadosabertos` (JSON via header `Accept: application/json`; o sufixo `.json` só redireciona)
@@ -104,20 +104,29 @@ Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por esta
 
 ## Modelo de dados (Supabase)
 
+Definido em `lib/types.ts` (camelCase); `data/*.json` e as tabelas guardam as mesmas linhas em snake_case (`Linha<T>`, `lib/linhas.ts`). Validado por `scripts/sonda/validar.ts`.
+
 ```
-politicos      id, cargo, nome, nome_urna, slug, uf, partido, federacao, foto_url,
-               cpf_hash, tse_sq_candidato, camara_id, senado_codigo,
-               status, votos_2026, updated_at
-mandatos       politico_id, cargo, inicio, fim, titular bool
-eleitos_mun    municipio_ibge, cargo, politico_id, votos, posicao   (top-20 por município)
-despesas_mes   politico_id, ano, mes, total, por_categoria jsonb
-proposicoes    id_externo, casa, politico_id, tipo, numero, ano, ementa, data,
-               proponente bool, status, url_oficial
-votacoes       id_externo, casa, data, objeto, resultado, url_oficial, quiz bool
-votos          votacao_id, politico_id, voto enum(sim,nao,abstencao,obstrucao,art17,ausente)
-orientacoes    votacao_id, bancada, orientacao
+politicos         id (= slug), cargo, nome, nome_urna, slug, uf, partido, lista_id, federacao,
+                  numero_urna, foto_url, email, url_perfil, tse_sq_candidato, camara_id,
+                  senado_codigo, status, votos_2026, updated_at
+mandatos          politico_id, cargo, inicio, fim (null = em curso), titular bool
+afastamentos      politico_id, inicio, fim, motivo                  (licenças dentro do mandato)
+listas            id, uf, ano, cargo, nome, composicao, votos_validos, eleitos   (quociente)
+municipios        ibge, tse, nome, uf
+eleitos_mun       municipio_ibge, cargo, politico_id, votos, posicao   (top-20 + empatados no 20º)
+despesas_mes      politico_id, ano, mes, total, por_categoria jsonb
+despesas_media_uf uf, ano, mes, media, deputados, total
+proposicoes       id_externo, casa, politico_id, tipo, numero, ano, ementa, data,
+                  proponente bool, status, url_oficial
+votacoes          id (= casa:id_externo), id_externo, casa, data, proposicao, ementa, objeto,
+                  descricao, resultado, placar jsonb, secreta bool, url_oficial, quiz bool
+votos             votacao_id, politico_id, voto enum(sim,nao,abstencao,obstrucao,art17,
+                  nao_informado,secreto,ausente), detalhe (sigla do Senado)
+orientacoes       votacao_id, bancada, orientacao
+quiz              id, ordem, materia, ementa, votacao_camara_id, votacao_senado_id
 ```
-Tudo com `upsert` por chave externa. Tamanho esperado de uma legislatura inteira: < 50 MB.
+Tudo com `upsert` por chave externa. Nenhuma coluna de CPF ou hash de CPF. Tamanho na sonda (SP, 438 políticos, 2023–26): 9,6 MB de JSON; esperado < 50 MB por legislatura.
 
 ## Cron (`.github/workflows/`)
 

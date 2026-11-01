@@ -35,4 +35,11 @@ npx tsx scripts/sonda/senadores.ts        # Senado: senadores.json, votacoes-sen
 # E7: também votacao_partido_munzona_2026 e detalhe_votacao_munzona_2026 (SP) em data/raw/{votacao_partido,detalhe_munzona}/
 npx tsx scripts/sonda/quociente.ts        # vagas por lista (deputado federal SP), conferidas contra o relatório oficial
 npx tsx scripts/sonda/eleitos-mun.ts      # top-20 por município; --todos confere os 645 contra o JSON oficial do TSE
+# E8: bancada de SP inteira e consolidação no shape final
+npx tsx scripts/sonda/bancada.ts          # perfis + histórico dos 70 deputados de SP e join com 2026 (incremental)
+npx tsx scripts/sonda/votos.ts            # votos de toda a bancada a partir do cache da E4
+npx tsx scripts/sonda/despesas.ts         # CEAP dos 70
+npx tsx scripts/sonda/consolidar.ts       # data/*.json (12 tabelas, snake_case = Supabase)
+npx tsx scripts/sonda/validar.ts          # referências, obrigatórios, chaves; sai com 1 se algo falhar
+npx tsx scripts/sonda/_numeros.ts         # participação e governismo da amostra a partir de data/
 ```

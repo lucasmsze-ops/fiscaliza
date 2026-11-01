@@ -4,7 +4,8 @@
  * - Chama /votos das 6.5k votações listadas (a heurística do placar perde ~1%).
  * - Reescreve data/sonda/votacoes.json com a lista EXATA de nominais (+ totalVotos).
  * - Completa orientacoes.json para as nominais que a heurística não pegou.
- * - Grava data/sonda/votos.json só com os votos de quem tem camaraId na amostra.
+ * - Grava data/sonda/votos.json com os votos da amostra e da bancada de SP em exercício
+ *   (data/sonda/bancada-camara.json, E8).
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { mapLimite } from "../../lib/async";
@@ -19,10 +20,12 @@ const t0 = Date.now();
 const marca = () => `${((Date.now() - t0) / 1000).toFixed(0)}s`;
 
 export interface VotoSonda { votacaoId: string; camaraId: number; voto: VotoCamara["voto"] }
-export interface VotacaoSondaCompleta extends VotacaoSonda { totalVotos: number }
+export interface Placar { sim: number; nao: number; abstencao: number; obstrucao: number }
+export interface VotacaoSondaCompleta extends VotacaoSonda { totalVotos: number; placar: Placar }
 
 const amostra = JSON.parse(readFileSync("data/sonda/politicos-camara.json", "utf8")) as PoliticoCamara[];
-const idsAmostra = new Set(amostra.map((p) => p.camaraId));
+const bancada = JSON.parse(readFileSync("data/sonda/bancada-camara.json", "utf8")) as { camaraId: number }[];
+const idsAmostra = new Set([...amostra.map((p) => p.camaraId), ...bancada.map((d) => d.camaraId)]);
 const votacoesE3 = JSON.parse(readFileSync("data/sonda/votacoes.json", "utf8")) as VotacaoSonda[];
 const orientacoes = JSON.parse(readFileSync("data/sonda/orientacoes.json", "utf8")) as OrientacaoCamara[];
 const idsE3 = new Set(votacoesE3.map((v) => v.idExterno));
@@ -39,7 +42,9 @@ const res = await mapLimite(lista, EM_VOO, async (v) => {
   let todos: VotoCamara[];
   if (existsSync(arq)) { todos = JSON.parse(readFileSync(arq, "utf8")); doCache++; }
   else { todos = await getVotos(v.idExterno); writeFileSync(arq, JSON.stringify(todos)); }
-  return { v, n: todos.length, amostra: todos.filter((x) => idsAmostra.has(x.camaraId)) };
+  const conta = (t: string) => todos.filter((x) => x.voto === t).length;
+  const placar: Placar = { sim: conta("sim"), nao: conta("nao"), abstencao: conta("abstencao"), obstrucao: conta("obstrucao") };
+  return { v, n: todos.length, placar, amostra: todos.filter((x) => idsAmostra.has(x.camaraId)) };
 });
 console.log(`[${marca()}] votos vindos do cache: ${doCache}`);
 console.log(`[${marca()}] /votos: ${res.ok.length} ok, ${res.falhas.length} falhas`);
@@ -66,10 +71,11 @@ const comp = await mapLimite(faltam, EM_VOO, async (r) => {
 console.log(`[${marca()}] completadas ${comp.ok.length} votações que faltavam (${comp.falhas.length} falhas)`);
 
 const totais = new Map(nominais.map((r) => [r.v.idExterno, r.n]));
+const placares = new Map(nominais.map((r) => [r.v.idExterno, r.placar]));
 const idsNominais = new Set(totais.keys());
 const votacoes: VotacaoSondaCompleta[] = [...votacoesE3, ...comp.ok.map((c) => c.v)]
   .filter((v) => idsNominais.has(v.idExterno))
-  .map((v) => ({ ...v, totalVotos: totais.get(v.idExterno)! }))
+  .map((v) => ({ ...v, totalVotos: totais.get(v.idExterno)!, placar: placares.get(v.idExterno)! }))
   .sort((a, b) => a.data.localeCompare(b.data) || a.idExterno.localeCompare(b.idExterno));
 const orientacoesFinal = [...orientacoes, ...comp.ok.flatMap((c) => c.o)].filter((o) => idsNominais.has(o.votacaoId));
 const votos: VotoSonda[] = nominais.flatMap((r) => r.amostra.map((x) => ({ votacaoId: x.votacaoId, camaraId: x.camaraId, voto: x.voto })))
