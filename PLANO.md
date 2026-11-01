@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E12** (atualizar esta linha ao avançar)
+**Etapa atual: E13** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -162,11 +162,15 @@ Calendário externo que afeta o plano:
       menos de 1 minuto.)
 
 ### E12 · `/c/[ids]` — colinha e preview de compartilhamento
-- [ ] Cards + bloco "seu voto contou para" por político. (A página `/c/[ids]` já existe com os
-      cards e ISR sob demanda, da E11.)
-- [ ] OG image com `next/og` (fotos buscadas na hora, única exceção ao "nunca proxiar").
-- [ ] Botão compartilhar (Web Share API, fallback copiar link).
+- [x] Cards + bloco "seu voto contou para" por político. (Só deputados; nome curto da lista e
+      nome oficial no "?"; `CardDados.lista`.)
+- [x] OG image com `next/og` (fotos buscadas na hora, única exceção ao "nunca proxiar").
+      (`app/c/[ids]/opengraph-image.tsx`, 1200×630, 130–170 KB; Casa e período junto dos
+      números; título e descrição com os números em `generateMetadata`.)
+- [x] Botão compartilhar (Web Share API, fallback copiar link).
 - Pronto quando: colar o link no WhatsApp mostra a colinha com os números.
+      (Metatags og:* absolutas e imagem conferidas em produção; falta o usuário colar um link
+      no WhatsApp para ver o preview de fato.)
 
 ### E13 · `/votacoes` e quiz de concordância
 - [ ] Cada votação do quiz explicada em 3 parágrafos, com link oficial.

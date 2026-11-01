@@ -15,6 +15,21 @@ Modelo:
 
 ---
 
+## 2026-11-01 · E12
+**Feito:** `/c/[ids]` completa: frase "seu voto contou para" nos deputados (`CardDados.lista`,
+nome oficial no "?"), botão Compartilhar (menu nativo; sem ele, copia o link), `generateMetadata`
+com título e descrição contendo os números, `opengraph-image.tsx` (1200×630, 130–170 KB, layout
+para 1, 2 ou 3 políticos, rodapé com a fonte). `resumoNumeros()` em `lib/card.ts` (mesmo texto na
+descrição e na imagem). `metadataBase` pela URL de produção da Vercel. 54 testes.
+**Decidido:** a linha de números sempre diz a Casa e o período ("Câmara 2023–2026: …"), porque o
+Derrite é senador eleito com números da Câmara. Sem negrito na imagem (fonte padrão do `next/og` só
+tem regular; fonte externa na hora seria chamada externa).
+**Lacunas:** fotos do Senado pesadas: colinha com os 3 senadores em exercício leva ~2 s até a 1ª
+foto no 4G lento (típica: ~1 s). Registrado com alternativas em `LACUNAS.md`.
+**Próximo passo:** E13 — `/votacoes` com as 10 perguntas do quiz (pergunta e explicação em 3
+parágrafos a partir do texto oficial), respostas no localStorage, concordância no card e votação
+discordante no corpo do Cobrar.
+
 ## 2026-11-01 · E11
 **Feito:** `/` com uma caixa de busca (cidade ou nome, sem acento) → top-20 da cidade com o card
 compacto (mesmo `PoliticoCard`, variante `PoliticoCardCompacto`), posição e votos na cidade →

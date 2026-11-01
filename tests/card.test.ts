@@ -4,7 +4,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { AMOSTRA } from "../lib/amostra";
-import { hrefCobrar, montarCard, rotuloCargo, rotuloStatus, type CardDados } from "../lib/card";
+import { hrefCobrar, montarCard, resumoNumeros, rotuloCargo, rotuloStatus, type CardDados } from "../lib/card";
 import { JsonRepo } from "../lib/repo";
 import type { Politico } from "../lib/types";
 
@@ -55,6 +55,18 @@ describe("PoliticoCard com os 20 da sonda", () => {
     expect(cards.get("mara-gabrilli")!.ceap).toBeNull(); // Senado: cota não coletada
     expect(cards.get("lucas-pavanato")!.cobrar).toBeNull(); // sem e-mail oficial até a posse
     expect(cards.get("kiko-celeguim")!.ceap?.valor).toBeGreaterThan(0);
+  });
+  it("'seu voto contou para' só nos deputados, com a lista e o total de eleitos do quociente", () => {
+    expect(cards.get("kiko-celeguim")!.lista?.frase).toBe("seu voto contou para a Federação PT/PC do B/PV, que elegeu 11 em SP");
+    expect(cards.get("lucas-pavanato")!.lista?.frase).toBe("seu voto contou para PL, que elegeu 19 em SP");
+    expect(cards.get("erika-hilton")!.lista?.nomeOficial).toBe("FEDERAÇÃO PSOL REDE");
+    for (const id of ["andre-do-prado", "guilherme-derrite", "mara-gabrilli", "giordano", "astronauta-marcos-pontes"]) expect(cards.get(id)!.lista, id).toBeNull();
+    expect([...cards.values()].filter((c) => c.lista)).toHaveLength(15);
+  });
+  it("resumo dos números diz a Casa e o período (Derrite: senador eleito, números da Câmara)", () => {
+    expect(resumoNumeros(cards.get("guilherme-derrite")!)).toBe("Câmara 2023–2026: participação em votações 10,2%, governismo 21,3%");
+    expect(resumoNumeros(cards.get("mara-gabrilli")!)).toBe("Senado 2023–2026: participação em votações 38,3%, governismo 91,7%");
+    expect(resumoNumeros(cards.get("andre-do-prado")!)).toBe("primeiro voto em fevereiro de 2027");
   });
   it("concordância fica oculta sem respostas do quiz", () => {
     for (const c of cards.values()) expect(c.concordancia).toBeNull();

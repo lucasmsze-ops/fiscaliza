@@ -5,6 +5,7 @@
  */
 import { diasAfastado, governismo, participacao, type Indicador, type Periodo } from "./indicadores";
 import type { Repo } from "./repo";
+import { fraseVotoContou, nomeCurtoLista } from "./quociente";
 import { normalizar } from "./texto";
 import type { Cargo, Casa, DespesaMediaUf, Politico } from "./types";
 
@@ -57,8 +58,19 @@ export interface ItemBusca extends CardResumo {
 }
 export const itemBusca = (p: Politico): ItemBusca => ({ ...resumoCard(p), busca: normalizar(`${p.nomeUrna} ${p.nome}`) });
 
+/** "Seu voto contou para": só deputado federal de 2026 (sistema proporcional). Senador: null. */
+export interface ListaCard {
+  frase: string;
+  /** Nome curto exibido ("Federação PT/PC do B/PV" ou "PL"). */
+  nomeCurto: string;
+  /** Nome oficial completo do TSE, para o tooltip. */
+  nomeOficial: string;
+  eleitos: number;
+}
+
 export interface CardDados extends CardResumo {
   numeros: NumerosCard;
+  lista: ListaCard | null;
   /** Só existe quando o usuário respondeu o quiz (E13); até lá, oculto. */
   concordancia: Indicador | null;
   ceap: CeapCard | null;
@@ -138,11 +150,26 @@ export async function montarCard(repo: Repo, id: string, hoje = new Date().toISO
     }
   }
 
+  let lista: ListaCard | null = null;
+  if (p.cargo === "deputado_federal" && p.listaId) {
+    const l = await repo.getLista(p.listaId);
+    if (l) lista = { frase: fraseVotoContou(l, l.eleitos, l.uf), nomeCurto: nomeCurtoLista(l), nomeOficial: l.nome, eleitos: l.eleitos };
+  }
+
   return {
-    ...resumoCard(p), numeros, concordancia: null, ceap,
+    ...resumoCard(p), numeros, lista, concordancia: null, ceap,
     cobrar: p.email ? { email: p.email, href: hrefCobrar(p, p.email) } : null,
     urlPerfil: p.urlPerfil,
   };
+}
+
+/** Os números em uma linha, só com dado da fonte (texto do preview e da imagem OG). */
+export function resumoNumeros(c: CardDados): string {
+  const n = c.numeros;
+  if (n.tipo === "primeiro_voto") return "primeiro voto em fevereiro de 2027";
+  if (n.tipo === "sem_mandato") return `sem mandato no Congresso em ${n.periodo}`;
+  const gov = pct(n.governismo);
+  return `${n.casa === "senado" ? "Senado" : "Câmara"} ${n.periodo}: participação em votações ${pct(n.participacao)}${gov ? `, governismo ${gov}` : ""}`;
 }
 
 // Formatação pt-BR usada pelo card.

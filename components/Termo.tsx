@@ -5,7 +5,13 @@ import { GLOSSARIO, type TermoGlossario } from "@/lib/glossario";
  * Termo com explicação. Usa o popover nativo do HTML (sem JavaScript nem dependência): abre com
  * toque, clique ou teclado e fecha ao tocar fora ou no botão "Fechar". `id` precisa ser único na página.
  */
-export function Termo({ id, termo, children }: { id: string; termo: TermoGlossario; children?: ReactNode }) {
+export function Termo({ id, termo, explicacao, children }: {
+  id: string;
+  termo: TermoGlossario;
+  /** Texto específico do caso, mostrado antes da definição geral do termo. */
+  explicacao?: string;
+  children?: ReactNode;
+}) {
   const g = GLOSSARIO[termo];
   const alvo = `termo-${id}`;
   return (
@@ -25,6 +31,7 @@ export function Termo({ id, termo, children }: { id: string; termo: TermoGlossar
         className="m-auto max-w-[min(22rem,calc(100vw-2rem))] rounded-xl border border-black/10 bg-[var(--fundo)] p-4 text-left text-sm leading-relaxed text-[var(--texto)] shadow-xl backdrop:bg-black/40 dark:border-white/15"
       >
         <span className="block font-semibold">{g.titulo}</span>
+        {explicacao && <span className="mt-1 block">{explicacao}</span>}
         <span className="mt-1 block text-[var(--suave)]">{g.texto}</span>
         <button type="button" popoverTarget={alvo} popoverTargetAction="hide" className="mt-3 block text-xs underline underline-offset-2">
           Fechar

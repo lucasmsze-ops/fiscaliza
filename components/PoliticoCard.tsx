@@ -44,6 +44,15 @@ export function PoliticoCard({ d }: { d: CardDados }) {
     <article className="w-full max-w-sm rounded-2xl border border-black/10 p-4 dark:border-white/15" aria-labelledby={`nome-${d.id}`}>
       <Cabecalho r={d} />
 
+      {d.lista && (
+        <p className="mt-4 rounded-xl bg-black/[0.04] px-3 py-2 text-sm dark:bg-white/[0.06]">
+          <Termo id={`${d.id}-lista`} termo="quociente"
+            explicacao={`${d.lista.nomeCurto}: nome oficial no TSE "${d.lista.nomeOficial}". O voto num candidato a deputado conta para a lista; as vagas de cada lista vão aos mais votados dela.`}>
+            {d.lista.frase.charAt(0).toUpperCase() + d.lista.frase.slice(1)}.
+          </Termo>
+        </p>
+      )}
+
       <section className="mt-4 border-t border-black/10 pt-4 dark:border-white/15" aria-label="Números do mandato">
         {n.tipo === "mandato" && (
           <>

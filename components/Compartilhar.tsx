@@ -1,0 +1,36 @@
+"use client";
+
+import { useState } from "react";
+
+/** Compartilha a URL atual: menu nativo do celular (Web Share API) ou, sem ele, copia o link. */
+export function Compartilhar({ titulo, texto }: { titulo: string; texto: string }) {
+  const [aviso, setAviso] = useState<string | null>(null);
+
+  async function compartilhar() {
+    const url = location.href;
+    if (typeof navigator.share === "function") {
+      try {
+        await navigator.share({ title: titulo, text: texto, url });
+        return;
+      } catch (e) {
+        if (e instanceof DOMException && e.name === "AbortError") return; // a pessoa fechou o menu
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      setAviso("Link copiado.");
+    } catch {
+      setAviso("Não deu para copiar. Copie o endereço desta página.");
+    }
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      <button type="button" onClick={() => void compartilhar()}
+        className="rounded-full bg-[var(--texto)] px-6 py-3 text-sm font-semibold text-[var(--fundo)]">
+        Compartilhar colinha
+      </button>
+      {aviso && <span role="status" className="text-sm">{aviso}</span>}
+    </div>
+  );
+}

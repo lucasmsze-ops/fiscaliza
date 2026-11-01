@@ -27,4 +27,4 @@ Nunca preencher com dado sintético.
 | 2026-11-01 | TSE | 373 dos 438 políticos (suplentes, não eleitos e novos) não têm registro na Câmara/Senado | Card com foto do TSE, nome, partido, status e votos 2026; sem e-mail (Cobrar oculto), sem os três números ("primeiro voto em fevereiro" para eleitos) |
 | 2026-11-01 | Câmara | 187 votações sem resultado explícito (`aprovacao` nulo e descrição sem "Aprovad"/"Rejeitad", ex.: "Mantido o texto") | `resultado` null; nenhuma delas está no quiz |
 | 2026-11-01 | Senado | Cota dos senadores (CEAPS) não foi coletada na sonda | Card de senador sem o bloco de cota; coletar antes do lançamento ou documentar como fora do MVP |
-| 2026-11-01 | Senado | Fotos oficiais do Senado têm 107–307 KB (Câmara e TSE: 5–40 KB) | Carregam sob demanda; pesam na meta de < 1 s em 4G da colinha (medir na E12) |
+| 2026-11-01 | Senado | Fotos oficiais do Senado têm 105–299 KB (Câmara e TSE: 5–61 KB) | Medido na E12: colinha típica mostra conteúdo + 1ª foto em ~1 s no 4G lento; com os 3 senadores em exercício, ~2 s. Sem redimensionar (seria proxiar). Alternativas a decidir: foto do TSE da eleição deles, ou aceitar |
