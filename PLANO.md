@@ -158,8 +158,8 @@ Calendário externo que afeta o plano:
 - [x] Colinha salva no `localStorage` e refletida na URL `/c/[ids]` (ids separados por `+`;
       página mínima com os cards, que a E12 completa).
 - Pronto quando: você mesmo monta a colinha em menos de 1 minuto no celular.
-      (Automatizado a 375 px: 22 s com a latência das ferramentas. Falta o teste do usuário
-      no próprio celular.)
+      (Automatizado a 375 px: 22 s. Confirmado pelo usuário no próprio celular em 2026-11-01:
+      menos de 1 minuto.)
 
 ### E12 · `/c/[ids]` — colinha e preview de compartilhamento
 - [ ] Cards + bloco "seu voto contou para" por político. (A página `/c/[ids]` já existe com os

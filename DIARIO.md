@@ -23,7 +23,8 @@ leitura segura do localStorage; 5 testes). JSONs estáticos `/dados/politicos` (
 `/dados/cidade/[ibge]` (645 arquivos de ~0,6 KB gzip). `/c/[ids]` mínima com os cards completos e
 ISR sob demanda. 52 testes. Conferido a 375 px: Campinas → Erika Hilton → Derrite e André do Prado →
 colinha em 22 s (com latência da automação); colinha e cidade voltam ao reabrir; busca por nome
-troca o deputado; sem erro no console.
+troca o deputado; sem erro no console. **O usuário testou no próprio celular, em produção:
+colinha montada em menos de 1 minuto** (critério de pronto).
 **Decidido:** cidade carregada no navegador a partir de JSON estático (nada de servidor por
 requisição). Colinha segue a urna de 2026 (1 + 2); o terceiro senador substitui o mais antigo.
 Índice de busca com rótulos prontos (`itemBusca`).
