@@ -6,3 +6,5 @@ node_modules/
 .DS_Store
 # downloads brutos do TSE (grandes); o JSON derivado em data/ é versionado
 data/raw/
+next-env.d.ts
+*.tsbuildinfo
