@@ -120,9 +120,11 @@ Calendário externo que afeta o plano:
 ## Passo 2 — Protótipo (site lendo `data/*.json`)
 
 ### E9 · Next.js e camada de dados
-- [ ] **Antes de começar**: decidir as questões abertas listadas no fim da E8 em `docs/SONDA.md`
-      (licença, secretas, P-NRV, mês da CEAP, nome da federação, quiz). Next.js e shadcn/ui são
-      dependências previstas no `CLAUDE.md`; confirmar mesmo assim antes de instalar.
+- [x] **Antes de começar**: decidir as questões abertas listadas no fim da E8 em `docs/SONDA.md`
+      (licença, secretas, P-NRV, mês da CEAP, nome da federação, quiz). Decididas em 2026-11-01;
+      texto em `docs/METODOLOGIA.md`.
+- [ ] Next.js e shadcn/ui são dependências previstas no `CLAUDE.md`; confirmar mesmo assim
+      antes de instalar.
 - [ ] `create-next-app` (App Router, TS, Tailwind) + shadcn/ui mínimo (Button, Card, Tooltip).
 - [ ] `lib/repo.ts`: interface `Repo` (`getPolitico`, `buscarPorCidade`, `buscarPorNome`,
       `getVotacoesQuiz`, ...) com implementação `JsonRepo`. A E17 troca por `SupabaseRepo`

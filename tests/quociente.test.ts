@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { distribuirVagas, fraseVotoContou, quocienteEleitoral, type Lista } from "../lib/quociente";
+import { distribuirVagas, fraseVotoContou, nomeCurtoLista, quocienteEleitoral, type Lista } from "../lib/quociente";
 
 // Casos de borda com dados mínimos (não são dados de interface; só exercitam a aritmética).
 const lista = (id: string, legenda: number, ...votos: number[]): Lista =>
@@ -59,9 +59,14 @@ describe("distribuirVagas", () => {
   });
 });
 
-describe("fraseVotoContou", () => {
+describe("fraseVotoContou e nomeCurtoLista", () => {
+  const fe = { nome: "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL", composicao: "PT/PC do B/PV" };
   it("usa a lista, nunca o candidato", () => {
-    expect(fraseVotoContou("PL", 19, "SP")).toBe("seu voto contou para PL, que elegeu 19 em SP");
-    expect(fraseVotoContou("DC", 0, "SP")).toBe("seu voto contou para DC, que não elegeu ninguém em SP");
+    expect(fraseVotoContou({ nome: "PL", composicao: null }, 19, "SP")).toBe("seu voto contou para PL, que elegeu 19 em SP");
+    expect(fraseVotoContou({ nome: "DC", composicao: null }, 0, "SP")).toBe("seu voto contou para DC, que não elegeu ninguém em SP");
+  });
+  it("federação pela composição do TSE; o nome oficial fica para o tooltip", () => {
+    expect(nomeCurtoLista(fe)).toBe("Federação PT/PC do B/PV");
+    expect(fraseVotoContou(fe, 11, "SP")).toBe("seu voto contou para a Federação PT/PC do B/PV, que elegeu 11 em SP");
   });
 });

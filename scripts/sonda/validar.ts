@@ -29,7 +29,7 @@ const ESQUEMA: Record<string, { pk: string[]; obrig: string[]; opc: string[] }> 
   municipios: { pk: ["ibge"], obrig: ["ibge", "tse", "nome", "uf"], opc: [] },
   eleitos_mun: { pk: ["municipio_ibge", "cargo", "politico_id"], obrig: ["municipio_ibge", "cargo", "politico_id", "votos", "posicao"], opc: [] },
   despesas_mes: { pk: ["politico_id", "ano", "mes"], obrig: ["politico_id", "ano", "mes", "total", "por_categoria"], opc: [] },
-  despesas_media_uf: { pk: ["uf", "ano", "mes"], obrig: ["uf", "ano", "mes", "media", "deputados", "total"], opc: [] },
+  despesas_media_uf: { pk: ["uf", "ano", "mes"], obrig: ["uf", "ano", "mes", "media", "deputados", "total", "fechado"], opc: [] },
   votacoes: { pk: ["id"], obrig: ["id", "id_externo", "casa", "data", "descricao", "secreta", "url_oficial", "quiz"], opc: ["proposicao", "ementa", "objeto", "resultado", "placar"] },
   votos: { pk: ["votacao_id", "politico_id"], obrig: ["votacao_id", "politico_id", "voto"], opc: ["detalhe"] },
   orientacoes: { pk: ["votacao_id", "bancada"], obrig: ["votacao_id", "bancada"], opc: ["orientacao"] },
@@ -108,6 +108,10 @@ for (const p of ps) {
 const texto = ["politicos", "mandatos", "votos", "despesas_mes"].map((t) => readFileSync(`${DIR}/${t}.json`, "utf8")).join("");
 if (/cpf/i.test(texto)) erro("algum arquivo menciona CPF");
 if (/\b[0-9a-f]{64}\b/.test(texto)) erro("há um hash SHA-256 nos dados");
+
+// Mês fechado: contíguo desde o primeiro mês (não pode haver aberto antes de fechado).
+const meds = [...dados.despesas_media_uf!].sort((a, b) => (a.ano as number) * 100 + (a.mes as number) - ((b.ano as number) * 100 + (b.mes as number)));
+if (meds.some((m, i) => m.fechado && meds.slice(0, i).some((x) => !x.fechado))) erro("despesas_media_uf: mês fechado depois de um aberto");
 
 // Avisos: opcionais nulos que o card vai precisar tratar (não são erro: a fonte não tem).
 const nulos = (k: keyof Linha<Politico>) => ps.filter((p) => p[k] === null).length;

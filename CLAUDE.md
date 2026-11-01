@@ -55,6 +55,8 @@ Foto · nome de urna · partido-UF · status (eleito / reeleito / não eleito / 
 2. **Governismo** — % de votos alinhados à orientação "Governo". Calculado por período de governo (corte em 01/01/2027), não por legislatura.
 3. **Concordância com você** — % das votações do quiz em que o voto do político coincide com a resposta do usuário. Sem resposta do usuário: oculto. Político sem voto: "primeiro voto em fevereiro".
 
+Metodologia detalhada (o que conta como voto, licença, secretas, mês da CEAP, nome da federação): `docs/METODOLOGIA.md`, texto-fonte de `/como-funciona`. Ao lado da participação, "afastado N dias no período" (licença não é descontada).
+
 Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por estado; nunca comparar com média nacional). Abaixo: botão **Cobrar** (`mailto:` para o e-mail oficial do gabinete, assunto e corpo pré-preenchidos com a votação discordante, se houver).
 
 ## Fontes de dados e armadilhas conhecidas
@@ -147,7 +149,7 @@ Diário, em ordem, cada job idempotente e isolado: `politicos` → `despesas` (s
 - Antes de implementar algo novo, verificar se está em "Fora de escopo". Se estiver, não fazer e dizer por quê.
 - Antes de adicionar dependência, perguntar se é necessária. Preferir a plataforma (Next, Postgres) a biblioteca.
 - Na sonda e no protótipo, nunca gerar dado sintético para preencher lacuna. Mostrar a lacuna.
-- Ao tocar em cálculo de indicador, atualizar `/como-funciona` no mesmo commit.
+- Ao tocar em cálculo de indicador, atualizar `/como-funciona` no mesmo commit (até a E14, o texto-fonte `docs/METODOLOGIA.md`).
 - Se uma API retornar algo diferente do documentado aqui, atualizar esta seção do CLAUDE.md no mesmo PR.
 
 ## Definição de pronto do MVP

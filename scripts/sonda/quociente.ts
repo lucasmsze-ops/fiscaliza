@@ -13,7 +13,7 @@
  */
 import { DuckDBInstance } from "@duckdb/node-api";
 import { readFileSync, writeFileSync } from "node:fs";
-import { distribuirVagas, fraseVotoContou, type Lista } from "../../lib/quociente";
+import { distribuirVagas, fraseVotoContou, nomeCurtoLista, type Lista } from "../../lib/quociente";
 import type { PoliticoTse } from "./tse";
 
 const VAGAS = 70;
@@ -94,14 +94,14 @@ for (const x of candRaw) {
 console.log(`\nlistas divergentes: ${divergencias} · candidatos divergentes: ${difCand} · empates de votos dentro de lista: ${empates.length}`);
 console.log("sobras, na ordem:", d.eleitos.filter((e) => e.por !== "qp").map((e) => `${e.rodada}:${nome.get(e.listaId)}:${candRaw.find((x) => x.sq === e.candidatoId)!.urna}(${e.por})`).join(" · "));
 
-const nomeLista = (id: string) => (composicao.get(id) ? `${nome.get(id)} (${composicao.get(id)})` : nome.get(id)!);
+const listaNome = (id: string) => ({ nome: nome.get(id)!, composicao: composicao.get(id) ?? null });
 const saida = {
   fonte: "TSE — votacao_partido_munzona_2026, votacao_candidato_munzona_2026, consulta_cand_2026 (SP); conferido contra o Relatório de Resultado da Totalização SP 2026",
   geradoEm: new Date().toISOString(), uf: UF, cargo: "deputado_federal", vagas: d.vagas, votosValidos: d.votosValidos, qe: d.qe,
   conferencia: { listasDivergentes: divergencias, candidatosDivergentes: difCand },
   listas: [...d.listas].sort((a, b) => b.votosValidos - a.votosValidos).map((l) => ({
-    ...l, nome: nome.get(l.id)!, composicao: composicao.get(l.id) ?? null, nomeLista: nomeLista(l.id),
-    frase: fraseVotoContou(nomeLista(l.id), l.total, UF),
+    ...l, nome: nome.get(l.id)!, composicao: composicao.get(l.id) ?? null, nomeCurto: nomeCurtoLista(listaNome(l.id)),
+    frase: fraseVotoContou(listaNome(l.id), l.total, UF),
   })),
   eleitos: d.eleitos.map((e) => ({ tseSqCandidato: e.candidatoId, listaId: e.listaId, por: e.por, rodada: e.rodada })),
 };

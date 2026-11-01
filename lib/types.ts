@@ -129,6 +129,8 @@ export interface DespesaMediaUf {
   media: number;
   deputados: number;
   total: number;
+  /** Total idêntico em duas coletas, e todos os meses anteriores também (`lib/ceap.ts`). O card usa o último fechado. */
+  fechado: boolean;
 }
 
 export interface Placar {

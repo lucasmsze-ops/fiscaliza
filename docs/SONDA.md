@@ -467,14 +467,23 @@ o da E2 (40 dos 70 eleitos já em exercício).
   mandato no período"): os demais estiveram no mandato o período todo.
 
 ### CEAP: a evidência para o "mês fechado"
-Duas coletas com 3 dias de diferença (29/10 e 01/11): a média de SP de jan/2025 a mai/2026 ficou
-idêntica; jun–out/2026 subiu (ago: R$ 22.634 → R$ 22.669; out: R$ 9.831 → R$ 11.215). Reforça a
-proposta da E5: mês fechado = total da bancada estável entre duas execuções do cron.
+Duas coletas com 3 dias de diferença (30/10 e 01/11): o total de SP de jan/2025 a **jul/2026**
+ficou idêntico ao centavo; ago–out/2026 mudaram (ago: R$ 1.561.760 → R$ 1.564.126; out:
+R$ 550.552 → R$ 639.257). Reforça a proposta da E5: mês fechado = total da bancada estável entre
+duas coletas. (Correção: uma versão anterior deste texto dizia "jun–out subiu"; a comparação
+mês a mês mostra que junho e julho não mudaram.)
 
-### Decisões que continuam abertas (antes do protótipo)
-1. Licença conta como ausência na participação? (E4, E6) — dados prontos em `afastamentos`.
-2. Votações secretas do Senado no denominador da participação? (E6)
-3. "Presente, não registrou voto" (P-NRV) como ausência? (E6)
-4. Qual mês da CEAP o card mostra (E5) — regra provisória e evidência acima.
-5. Nome da federação no card (E7).
-6. A seleção do quiz (`docs/QUIZ.md`) é uma proposta editorial para revisão.
+### Decisões tomadas em 2026-11-01 (antes do protótipo)
+Texto canônico em `docs/METODOLOGIA.md`.
+1. **Licença não é descontada** da participação; o card mostra "afastado N dias no período"
+   (`lib/indicadores.ts#diasAfastado`). Derrite: 10,2% e 1.041 dias; Mara Gabrilli: 38,3% e 246.
+2. **Votações secretas do Senado entram** no denominador da participação, com aviso em
+   `/como-funciona`.
+3. **P-NRV conta como ausência**.
+4. **CEAP: último mês fechado** (`lib/ceap.ts#mesesFechados`, coluna `despesas_media_uf.fechado`).
+   Com as coletas de 30/10 e 01/11, o mês de referência é **jul/2026**. Ressalva: 3 dias entre
+   coletas é evidência fraca; no cron, as coletas são mensais.
+5. **Federação no card**: "Federação " + composição do TSE ("Federação PT/PC do B/PV"), nome
+   oficial completo no tooltip (`lib/quociente.ts#nomeCurtoLista`).
+6. **Quiz aprovado** como proposto em `docs/QUIZ.md` (10 perguntas: 6 com votação de mérito nas
+   duas Casas e 4 só na Câmara).

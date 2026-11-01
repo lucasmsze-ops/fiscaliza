@@ -15,6 +15,20 @@ Modelo:
 
 ---
 
+## 2026-11-01 · Decisões de metodologia (pré-E9)
+**Feito:** as 6 questões abertas da E8 decididas com o usuário e aplicadas no código e nos dados:
+`diasAfastado()` em `lib/indicadores.ts`, `nomeCurtoLista()` e frase com nome curto em
+`lib/quociente.ts`, `lib/ceap.ts#mesesFechados` e coluna `despesas_media_uf.fechado`
+(coleta anterior guardada em `data/sonda/despesas-coleta-anterior.json`). `docs/METODOLOGIA.md`
+como texto-fonte de `/como-funciona`. 38 testes; `validar.ts` ok.
+**Decidido:** licença não descontada + "afastado N dias"; secretas do Senado no denominador;
+P-NRV é ausência; CEAP no último mês fechado (hoje jul/2026); federação como "Federação" +
+composição do TSE, nome oficial no tooltip; quiz de 10 aprovado (6 nas duas Casas, 4 só Câmara).
+**Lacunas:** nenhuma nova. Corrigido no `SONDA.md`: só ago–out/2026 mudaram entre as coletas
+(não jun–out), por isso o mês de referência é jul/2026 e não mai/2026.
+**Próximo passo:** E9 — confirmar a instalação do Next.js e do shadcn/ui; `create-next-app`,
+`lib/repo.ts` (`JsonRepo` com `deLinha`) e deploy inicial na Vercel.
+
 ## 2026-11-01 · E8
 **Feito:** `lib/types.ts` reescrito (12 tabelas, `Linha<T>` snake_case) e `lib/linhas.ts`.
 `participacao()` aceita mandatos ("sem mandato no período", nunca 0%); indicadores casam por

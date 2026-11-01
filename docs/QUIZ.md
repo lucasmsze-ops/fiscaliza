@@ -1,7 +1,8 @@
 # Quiz de concordância — seleção das votações
 
-Proposta da E8 (2026-11-01), **para revisão**: a seleção é editorial e pode ser trocada antes da
-E13 sem mexer em código além da lista `QUIZ` em `scripts/sonda/consolidar.ts`. Dados em
+Proposta da E8, **aprovada em 2026-11-01**. A seleção é editorial e pode ser revista sem mexer
+em código além da lista `QUIZ` em `scripts/sonda/consolidar.ts`. São 10 perguntas: 6 com votação
+de mérito nas duas Casas e 4 só na Câmara. Dados em
 `data/quiz.json` e `data/votacoes.json` (`quiz: true`).
 
 ## Para que serve
@@ -31,7 +32,7 @@ Fontes do cruzamento: as 1.107 votações nominais da Câmara e as 186 abertas d
 a lista de candidatas veio de 323 votações de mérito (218 Câmara, 105 Senado), das quais 97 com
 divisão ≥ 20% e orientação Sim/Não do Governo.
 
-## Proposta (10 perguntas, ordem cronológica)
+## Seleção (10 perguntas, ordem cronológica)
 
 | # | Matéria | Do que trata (da ementa oficial) | Câmara: data · Sim×Não · Governo | Senado: data · Sim×Não · Governo |
 |---|---|---|---|---|

@@ -134,12 +134,25 @@ export function distribuirVagas(vagas: number, listas: Lista[]): Distribuicao {
   };
 }
 
+/** Lista como o TSE descreve: sigla do partido isolado, ou nome oficial + composição da federação. */
+export interface ListaNome {
+  nome: string;
+  /** Composição da federação como o TSE escreve (ex.: "PT/PC do B/PV"); null para partido isolado. */
+  composicao: string | null;
+}
+
 /**
- * A frase do card. Nunca "ajudou a eleger Z": o voto vai para a lista, não para um candidato.
- * `nomeLista`: sigla do partido isolado ou nome oficial da federação.
+ * Nome curto para o card (decisão de 2026-11-01): partido isolado pela sigla; federação por
+ * "Federação " + a composição do TSE. O nome oficial completo vai no tooltip (`lista.nome`).
  */
-export function fraseVotoContou(nomeLista: string, eleitos: number, uf: string): string {
+export function nomeCurtoLista(l: ListaNome): string {
+  return l.composicao ? `Federação ${l.composicao}` : l.nome;
+}
+
+/** A frase do card. Nunca "ajudou a eleger Z": o voto vai para a lista, não para um candidato. */
+export function fraseVotoContou(l: ListaNome, eleitos: number, uf: string): string {
+  const quem = l.composicao ? `a ${nomeCurtoLista(l)}` : nomeCurtoLista(l);
   return eleitos === 0
-    ? `seu voto contou para ${nomeLista}, que não elegeu ninguém em ${uf}`
-    : `seu voto contou para ${nomeLista}, que elegeu ${eleitos} em ${uf}`;
+    ? `seu voto contou para ${quem}, que não elegeu ninguém em ${uf}`
+    : `seu voto contou para ${quem}, que elegeu ${eleitos} em ${uf}`;
 }

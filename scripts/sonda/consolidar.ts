@@ -9,6 +9,7 @@
  * Não grava CPF nem hash de CPF: o join entre fontes é refeito pelo cron a cada execução.
  */
 import { readFileSync, writeFileSync } from "node:fs";
+import { mesesFechados } from "../../lib/ceap";
 import { paraLinha } from "../../lib/linhas";
 import { fotoUrlTse } from "../../lib/tse";
 import type {
@@ -152,7 +153,12 @@ const eleitosMun: EleitoMunicipio[] = mun.municipios.flatMap((m) => (["deputado_
 // ------------------------------------------------------------------ CEAP
 const despesasMes: DespesaMes[] = despesas.despesas.filter((d) => porCamara.has(d.camaraId))
   .map((d) => ({ politicoId: porCamara.get(d.camaraId)!, ano: d.ano, mes: d.mes, total: d.total, porCategoria: d.porCategoria }));
-const mediasUf: DespesaMediaUf[] = despesas.mediaUf.map((m) => ({ uf: m.uf, ano: m.ano, mes: m.mes, media: m.media, deputados: m.deputados, total: m.total }));
+// Mês fechado: total da bancada idêntico entre esta coleta e a anterior (data/sonda/despesas-coleta-anterior.json).
+const anterior = ler<{ geradoEm: string; mediaUf: MediaUfMes[] }>("despesas-coleta-anterior.json");
+const fechados = mesesFechados(despesas.mediaUf, anterior.mediaUf);
+const mediasUf: DespesaMediaUf[] = despesas.mediaUf.map((m) => ({ uf: m.uf, ano: m.ano, mes: m.mes, media: m.media, deputados: m.deputados, total: m.total, fechado: fechados.has(m.ano * 100 + m.mes) }));
+const ref = mediasUf.filter((m) => m.fechado).at(-1);
+console.log(`CEAP: coleta anterior ${anterior.geradoEm} · mês de referência (último fechado): ${ref ? `${ref.ano}-${String(ref.mes).padStart(2, "0")}` : "nenhum"}`);
 
 // ------------------------------------------------------------------ quiz (critério em docs/QUIZ.md)
 /** [matéria na Câmara, votação de mérito na Câmara, votação de mérito no Senado ou null]. Ordem cronológica. */

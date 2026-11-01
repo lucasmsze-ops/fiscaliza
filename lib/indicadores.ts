@@ -101,3 +101,23 @@ export function concordancia(respostas: Record<string, RespostaQuiz>, votosDoPol
   }
   return indicador(n, d);
 }
+
+/**
+ * Dias afastado no período: união dos afastamentos oficiais (licenças dentro do mandato),
+ * recortada a [periodo.inicio, min(periodo.fim, hoje)], contando dias inteiros e inclusivos.
+ * Mostrado ao lado da participação, que não desconta licença (decisão de 2026-11-01).
+ */
+export function diasAfastado(afastamentos: Exercicio[], periodo: Periodo, hoje: string): number {
+  const dia = (iso: string) => Math.floor(Date.parse(`${iso}T00:00:00Z`) / 86_400_000);
+  const ini = dia(periodo.inicio), fim = Math.min(dia(periodo.fim), dia(hoje));
+  const faixas = afastamentos
+    .map((a) => [Math.max(dia(a.inicio), ini), Math.min(a.fim === null ? fim : dia(a.fim), fim)] as [number, number])
+    .filter(([a, b]) => a <= b)
+    .sort((x, y) => x[0] - y[0]);
+  let total = 0, aberto: [number, number] | null = null;
+  for (const f of faixas) {
+    if (aberto && f[0] <= aberto[1] + 1) aberto[1] = Math.max(aberto[1], f[1]);
+    else { if (aberto) total += aberto[1] - aberto[0] + 1; aberto = [f[0], f[1]]; }
+  }
+  return aberto ? total + aberto[1] - aberto[0] + 1 : total;
+}
