@@ -481,8 +481,11 @@ Texto canônico em `docs/METODOLOGIA.md`.
    `/como-funciona`.
 3. **P-NRV conta como ausência**.
 4. **CEAP: último mês fechado** (`lib/ceap.ts#mesesFechados`, coluna `despesas_media_uf.fechado`).
-   Com as coletas de 30/10 e 01/11, o mês de referência é **jul/2026**. Ressalva: 3 dias entre
-   coletas é evidência fraca; no cron, as coletas são mensais.
+   Com as coletas de 30/10 e 01/11, o mês de referência é **jul/2026**. Sem intervalo mínimo
+   entre coletas (decidido em 2026-11-01): exigir 28 dias deixaria o card sem CEAP até a
+   segunda coleta mensal, e no cron o intervalo mensal já vem naturalmente. Também ficou de
+   fora uma trava pelo prazo de 90 dias para apresentar comprovantes (Ato da Mesa 43/2009, não
+   conferido).
 5. **Federação no card**: "Federação " + composição do TSE ("Federação PT/PC do B/PV"), nome
    oficial completo no tooltip (`lib/quociente.ts#nomeCurtoLista`).
 6. **Quiz aprovado** como proposto em `docs/QUIZ.md` (10 perguntas: 6 com votação de mérito nas
