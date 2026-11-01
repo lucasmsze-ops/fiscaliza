@@ -22,6 +22,16 @@ npm run ping   # testa o acesso às APIs da Câmara e do Senado
 - Dados derivados em `data/`: [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.pt-br).
   Fontes originais: TSE, Câmara dos Deputados e Senado Federal (dados abertos).
 
+## Site (protótipo)
+
+```bash
+npm run dev        # http://localhost:3000 (lê data/*.json)
+npm run build      # build de produção; data/*.json vai junto com as funções
+npm run validar    # confere data/*.json antes de publicar
+```
+
+Deploy: Vercel, a cada push na `main` de `github.com/lucasmsze-ops/fiscaliza` (privado).
+
 ## Sonda (Passo 1)
 
 Os CSVs do TSE ficam em `data/raw/` (ignorado no git). Para reproduzir a E1:

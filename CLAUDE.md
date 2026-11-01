@@ -16,7 +16,7 @@ Escopo: deputados federais e senadores eleitos em 2026 (e os em exercício). Pre
 
 ## Stack
 
-- Next.js (App Router) + TypeScript + Tailwind + shadcn/ui
+- Next.js (App Router) + TypeScript + Tailwind + shadcn/ui. Instalados (versões fixas): next 16.4.3, react 19.3.1, tailwindcss 4.3.3; `next build` funciona com o TypeScript 7 do projeto. shadcn/ui entra na E10, só o Tooltip. Páginas leem dados só por `lib/repo.ts` (`repo`).
 - Supabase Postgres (só a partir do passo 3; antes disso, JSON em `data/`)
 - Cron: GitHub Actions, scripts em `scripts/` (Node/TypeScript). DuckDB para processar CSVs do TSE.
 - Deploy: Vercel via push na `main`. Páginas de político com ISR (`revalidate` 24h).

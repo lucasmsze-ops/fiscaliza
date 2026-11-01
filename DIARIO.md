@@ -15,6 +15,21 @@ Modelo:
 
 ---
 
+## 2026-11-01 · E9 (parcial: falta o deploy)
+**Feito:** next 16.4.3 + react 19.3.1 + tailwindcss 4.3.3 no projeto existente (versões fixas,
+0 vulnerabilidades). `lib/repo.ts` (interface `Repo` + `JsonRepo` com `deLinha`, cache por
+tabela). `app/` com layout pt-BR e página `/` lendo dado real (mais votado na capital: Lucas
+Pavanato, 785.870). `next.config.ts`: `Referrer-Policy: same-origin` e `data/*.json` no pacote do
+servidor (sem `data/raw` e `data/sonda`). `next build` ok com TypeScript 7; testado em
+`next start` (porta 3107): 200, header presente, sem erro no console. Repositório privado
+`github.com/lucasmsze-ops/fiscaliza` criado e `main` enviada.
+**Decidido:** shadcn/ui só na E10 (Tooltip); repositório privado até limpar os hashes de CPF do
+histórico de `data/sonda/` (abrir o código é decisão do lançamento). Sem `create-next-app`.
+**Lacunas:** nenhuma.
+**Próximo passo:** o usuário importa o repositório na Vercel (vercel.com/new → Import →
+lucasmsze-ops/fiscaliza → Deploy). Depois: abrir a URL de produção, conferir o nome do político
+e o header, marcar a E9 e avançar para a E10.
+
 ## 2026-11-01 · Decisões de metodologia (pré-E9)
 **Feito:** as 6 questões abertas da E8 decididas com o usuário e aplicadas no código e nos dados:
 `diasAfastado()` em `lib/indicadores.ts`, `nomeCurtoLista()` e frase com nome curto em

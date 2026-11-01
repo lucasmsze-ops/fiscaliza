@@ -123,13 +123,16 @@ Calendário externo que afeta o plano:
 - [x] **Antes de começar**: decidir as questões abertas listadas no fim da E8 em `docs/SONDA.md`
       (licença, secretas, P-NRV, mês da CEAP, nome da federação, quiz). Decididas em 2026-11-01;
       texto em `docs/METODOLOGIA.md`.
-- [ ] Next.js e shadcn/ui são dependências previstas no `CLAUDE.md`; confirmar mesmo assim
-      antes de instalar.
-- [ ] `create-next-app` (App Router, TS, Tailwind) + shadcn/ui mínimo (Button, Card, Tooltip).
-- [ ] `lib/repo.ts`: interface `Repo` (`getPolitico`, `buscarPorCidade`, `buscarPorNome`,
+- [x] Next.js e shadcn/ui são dependências previstas no `CLAUDE.md`; confirmar mesmo assim
+      antes de instalar. (Confirmado: Next + Tailwind agora; shadcn/ui na E10, só o Tooltip.)
+- [x] Next.js 16 (App Router, TS, Tailwind 4) no projeto existente, sem `create-next-app`
+      (o repositório já tinha package.json e tsconfig). shadcn/ui adiado para a E10.
+- [x] `lib/repo.ts`: interface `Repo` (`getPolitico`, `buscarPorCidade`, `buscarPorNome`,
       `getVotacoesQuiz`, ...) com implementação `JsonRepo`. A E17 troca por `SupabaseRepo`
       sem tocar nos componentes.
+- [x] Repositório privado `github.com/lucasmsze-ops/fiscaliza` com a `main`.
 - [ ] Deploy inicial na Vercel (Hobby) a partir da `main`. Headers `Referrer-Policy`.
+      (Header pronto em `next.config.ts`; falta o usuário importar o repositório na Vercel.)
 - Pronto quando: `/` abre em produção mostrando o nome de um político vindo do JSON.
 
 ### E10 · `PoliticoCard`
