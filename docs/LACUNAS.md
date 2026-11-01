@@ -5,7 +5,7 @@ Nunca preencher com dado sintético.
 
 | Data | Fonte | Campo / caso | Como aparece na interface |
 |------|-------|--------------|---------------------------|
-| 2026-10-29 | TSE | `consulta_cand` não tem coluna de foto; fotos vêm em zip separado por UF, sem URL pública por candidato | Novos sem foto até decisão na E10 (ver `docs/SONDA.md`) |
+| 2026-10-29 | TSE | `consulta_cand` não tem coluna de foto; fotos vêm em zip separado por UF | **Resolvido na E7**: URL pública por candidato em `resultados.tse.jus.br/oficial/ele2026/6259/fotos/{uf}/{sq}.jpeg` |
 | 2026-10-29 | TSE | Senadores em exercício (2018/2022) não têm registro em 2026; partido/foto desatualizados no TSE | Partido e foto virão do Senado na E6 |
 | 2026-10-29 | Câmara | 4 novos (Nantes, Pavanato, Renato Bolsonaro, Cortez) não existem na API até 01/02/2027 | Card sem foto oficial, sem e-mail de gabinete, "primeiro voto em fevereiro"; botão Cobrar oculto até ter e-mail |
 | 2026-10-29 | Câmara | João Paulo Cunha tem registro antigo (leg. 54) com `gabinete.email` nulo e situação "Vacância" | Mesmo tratamento dos novos até 01/02/2027; foto oficial antiga existe |
@@ -19,3 +19,6 @@ Nunca preencher com dado sintético.
 | 2026-10-29 | Senado | 10 votações com `sequencialVotacao` nulo não casam com a orientação de bancada | Fora do governismo (sem orientação); seguem na participação |
 | 2026-10-29 | Senado / Câmara | Vetos são votados em sessão conjunta do CN e não estão em `/votacao` (Senado) nem em `/votacoes?idOrgao=180` (Câmara) | Fora dos números do MVP; dizer em `/como-funciona` |
 | 2026-10-29 | Senado | André do Prado e Derrite (eleitos 2026) não existem na API até 01/02/2027 | Perfil só do TSE; "primeiro voto em fevereiro" |
+| 2026-11-01 | TSE | Em 81 das 1.290 listas de top-20 (cidades pequenas) há empate de votos com o 20º colocado | A lista inclui todos os empatados (até 23 nomes); ordem dentro do empate por número de urna, sem significado |
+| 2026-11-01 | TSE | Votação municipal não traz código IBGE; 1 município de SP com grafia diferente no IBGE | Código IBGE por nome normalizado + de-para revisado (São Luís/Luiz do Paraitinga) |
+| 2026-11-01 | TSE | Senador é eleito por maioria; não há lista nem quociente | Card de senador sem a frase "seu voto contou para"; mostra só os votos no município |

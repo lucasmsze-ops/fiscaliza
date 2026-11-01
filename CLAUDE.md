@@ -59,13 +59,19 @@ Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por esta
 
 ## Fontes de dados e armadilhas conhecidas
 
-### TSE — `dadosabertos.tse.jus.br` (CSV, download único)
-- `consulta_cand`: candidatos, nome de urna, partido, federação, situação de totalização, CPF (guardar **apenas hash SHA-256**, nunca o CPF). **Não tem foto**: fotos vêm em `foto_cand{ano}_{UF}_div.zip` (arquivos `F{UE}{SQ_CANDIDATO}_div.jpg`), sem URL por candidato. O DivulgaCand bloqueia acesso automatizado; não usar.
-- Zips só por ano (um CSV por UF dentro). Catálogo via API CKAN: `dadosabertos.tse.jus.br/api/3/action/package_show?id=candidatos-2026`.
-- CSV latin-1, `;`. Nulos: `#NULO`, `#NE` (2026) e `#NULO#`, `#NE#` (2018). `DS_CARGO` é MAIÚSCULO em `consulta_cand` e Capitalizado em `votacao_candidato_munzona`. `SG_FEDERACAO` em 2026 é a composição, não uma sigla.
-- `votacao_candidato_munzona`: votos por município e zona (SP: 884 MB, 1,9 M linhas). Agregar por município e guardar só o top-20 por cargo/município. Usar `QT_VOTOS_NOMINAIS_VALIDOS` (exclui "anulado sub judice").
+### TSE — `dadosabertos.tse.jus.br` (CSV, download único) e `resultados.tse.jus.br` (JSON de divulgação)
+- `consulta_cand`: candidatos, nome de urna, partido, federação, situação de totalização, nascimento, CPF (guardar **apenas hash SHA-256**, nunca o CPF). Não tem coluna de foto.
+- **Foto**: URL pública por candidato em `https://resultados.tse.jus.br/oficial/ele2026/6259/fotos/{uf}/{sq_candidato}.jpeg` (JPEG ~6 KB; 17/17 da amostra de 2026). `lib/tse.ts#fotoUrlTse`. O zip `foto_cand{ano}_{UF}_div.zip` só serve para conferência. O DivulgaCand bloqueia acesso automatizado; não usar.
+- Zips só por ano (um CSV por UF dentro). Catálogo via API CKAN: `dadosabertos.tse.jus.br/api/3/action/package_show?id=candidatos-2026` e `?id=resultados-2026`.
+- CSV latin-1, `;`. Nulos: `#NULO`, `#NE` (2026) e `#NULO#`, `#NE#` (2018). `DS_CARGO` é MAIÚSCULO em `consulta_cand` e Capitalizado em `votacao_*_munzona`. `SG_FEDERACAO` em 2026 é a composição, não uma sigla.
+- **O TSE regenera os arquivos sem aviso** (novo `DT_GERACAO`, linhas reordenadas, zip de outro tamanho) sem mudar o conteúdo: em 01/11/2026 os 1.058 candidatos a deputado federal e senador de SP tinham votos e situação idênticos aos de 29/10. O cron compara conteúdo agregado, nunca bytes ou data.
+- `votacao_candidato_munzona`: votos por município e zona (SP: 884 MB, 1,9 M linhas). Usar `QT_VOTOS_NOMINAIS_VALIDOS` (exclui "anulado sub judice"). Top-20 por município e cargo: `scripts/sonda/eleitos-mun.ts`.
+- `votacao_partido_munzona`: votos de legenda por lista. Legenda válida = `QT_TOTAL_VOTOS_LEG_VALIDOS` (legenda + nominais convertidos em legenda). `detalhe_votacao_munzona`: totais de válidos, brancos, nulos por município.
+- JSON de resultado por município e cargo: `resultados.tse.jus.br/oficial/ele2026/6259/dados/{uf}/{uf}{cd_municipio}-c{cargo:4}-e{eleicao:6}-u.json` (cargo 5 = senador, 6 = deputado federal; paths em `/oficial/comum/config/ele-c.json`). Bateu com o CSV em 1.290/1.290 listas de SP. `lib/tse.ts#getResultadoMunicipio`.
+- Relatório de Resultado da Totalização (`relatorio_resultado_totalizacao`, PDF por UF): Anexos VI (QE/QP), VII (sobras, média a média) e VIII (resumo) são o gabarito do quociente.
+- `CD_MUNICIPIO` é código do TSE, não do IBGE. Código IBGE pela API de localidades do IBGE por nome normalizado; SP tem 1 grafia divergente (TSE "São Luís do Paraitinga", IBGE "São Luiz"), resolvida em de-para explícito.
 - `bem_candidato`: bens declarados (para v1.2).
-- Quociente eleitoral: tratar **federação** como lista única. Frase na interface: "seu voto contou para [partido/federação], que elegeu N em [UF]". Nunca "ajudou a eleger Z".
+- Quociente eleitoral (`lib/quociente.ts`): QE com fração ≤ 0,5 desprezada; QP desprezando a fração; vaga de QP só para quem tem ≥ 10% do QE (a sobra vai para as médias); sobras primeiro entre listas com ≥ 80% do QE e candidato com ≥ 20%, depois entre todas (STF, ADIs 7228/7263/7325); divisor da média = vagas **obtidas** por QP + médias + 1. Tratar **federação** como lista única. Frase na interface: "seu voto contou para [partido/federação], que elegeu N em [UF]". Nunca "ajudou a eleger Z". Senador é eleição majoritária: sem frase de lista.
 
 ### Câmara — `https://dadosabertos.camara.leg.br/api/v2` (JSON, sem chave)
 - `/deputados`, `/deputados/{id}` (tem CPF para o join com o TSE, confirmado em 70/70 de SP). E-mail oficial em `ultimoStatus.gabinete.email` (o `email` do topo vem nulo); foto em `ultimoStatus.urlFoto`; `redeSocial` é array de URLs.

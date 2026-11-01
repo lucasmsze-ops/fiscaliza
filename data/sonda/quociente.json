@@ -1,0 +1,717 @@
+{
+ "fonte": "TSE — votacao_partido_munzona_2026, votacao_candidato_munzona_2026, consulta_cand_2026 (SP); conferido contra o Relatório de Resultado da Totalização SP 2026",
+ "geradoEm": "2026-11-01T19:37:36.005Z",
+ "uf": "SP",
+ "cargo": "deputado_federal",
+ "vagas": 70,
+ "votosValidos": 23674188,
+ "qe": 338203,
+ "conferencia": {
+  "listasDivergentes": 0,
+  "candidatosDivergentes": 0
+ },
+ "listas": [
+  {
+   "id": "P22",
+   "votosNominais": 6278173,
+   "votosLegenda": 151324,
+   "votosValidos": 6429497,
+   "vagasQP": 19,
+   "preenchidasQP": 19,
+   "vagasMedia": 0,
+   "total": 19,
+   "nome": "PL",
+   "composicao": null,
+   "nomeLista": "PL",
+   "frase": "seu voto contou para PL, que elegeu 19 em SP"
+  },
+  {
+   "id": "F102",
+   "votosNominais": 3005395,
+   "votosLegenda": 55356,
+   "votosValidos": 3060751,
+   "vagasQP": 9,
+   "preenchidasQP": 6,
+   "vagasMedia": 0,
+   "total": 6,
+   "nome": "FEDERAÇÃO PSOL REDE",
+   "composicao": "PSOL/REDE",
+   "nomeLista": "FEDERAÇÃO PSOL REDE (PSOL/REDE)",
+   "frase": "seu voto contou para FEDERAÇÃO PSOL REDE (PSOL/REDE), que elegeu 6 em SP"
+  },
+  {
+   "id": "F101",
+   "votosNominais": 2571256,
+   "votosLegenda": 272286,
+   "votosValidos": 2843542,
+   "vagasQP": 8,
+   "preenchidasQP": 8,
+   "vagasMedia": 3,
+   "total": 11,
+   "nome": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL",
+   "composicao": "PT/PC do B/PV",
+   "nomeLista": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL (PT/PC do B/PV)",
+   "frase": "seu voto contou para FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL (PT/PC do B/PV), que elegeu 11 em SP"
+  },
+  {
+   "id": "P20",
+   "votosNominais": 1904268,
+   "votosLegenda": 8780,
+   "votosValidos": 1913048,
+   "vagasQP": 5,
+   "preenchidasQP": 5,
+   "vagasMedia": 1,
+   "total": 6,
+   "nome": "PODE",
+   "composicao": null,
+   "nomeLista": "PODE",
+   "frase": "seu voto contou para PODE, que elegeu 6 em SP"
+  },
+  {
+   "id": "F104",
+   "votosNominais": 1768810,
+   "votosLegenda": 41201,
+   "votosValidos": 1810011,
+   "vagasQP": 5,
+   "preenchidasQP": 5,
+   "vagasMedia": 0,
+   "total": 5,
+   "nome": "FEDERAÇÃO UNIÃO PROGRESSISTA",
+   "composicao": "UNIÃO/PP",
+   "nomeLista": "FEDERAÇÃO UNIÃO PROGRESSISTA (UNIÃO/PP)",
+   "frase": "seu voto contou para FEDERAÇÃO UNIÃO PROGRESSISTA (UNIÃO/PP), que elegeu 5 em SP"
+  },
+  {
+   "id": "P55",
+   "votosNominais": 1560406,
+   "votosLegenda": 10437,
+   "votosValidos": 1570843,
+   "vagasQP": 4,
+   "preenchidasQP": 4,
+   "vagasMedia": 2,
+   "total": 6,
+   "nome": "PSD",
+   "composicao": null,
+   "nomeLista": "PSD",
+   "frase": "seu voto contou para PSD, que elegeu 6 em SP"
+  },
+  {
+   "id": "P10",
+   "votosNominais": 1473799,
+   "votosLegenda": 27804,
+   "votosValidos": 1501603,
+   "vagasQP": 4,
+   "preenchidasQP": 4,
+   "vagasMedia": 2,
+   "total": 6,
+   "nome": "REPUBLICANOS",
+   "composicao": null,
+   "nomeLista": "REPUBLICANOS",
+   "frase": "seu voto contou para REPUBLICANOS, que elegeu 6 em SP"
+  },
+  {
+   "id": "P15",
+   "votosNominais": 1173591,
+   "votosLegenda": 14138,
+   "votosValidos": 1187729,
+   "vagasQP": 3,
+   "preenchidasQP": 3,
+   "vagasMedia": 1,
+   "total": 4,
+   "nome": "MDB",
+   "composicao": null,
+   "nomeLista": "MDB",
+   "frase": "seu voto contou para MDB, que elegeu 4 em SP"
+  },
+  {
+   "id": "P40",
+   "votosNominais": 940365,
+   "votosLegenda": 23919,
+   "votosValidos": 964284,
+   "vagasQP": 2,
+   "preenchidasQP": 2,
+   "vagasMedia": 0,
+   "total": 2,
+   "nome": "PSB",
+   "composicao": null,
+   "nomeLista": "PSB",
+   "frase": "seu voto contou para PSB, que elegeu 2 em SP"
+  },
+  {
+   "id": "P14",
+   "votosNominais": 640258,
+   "votosLegenda": 16133,
+   "votosValidos": 656391,
+   "vagasQP": 1,
+   "preenchidasQP": 1,
+   "vagasMedia": 0,
+   "total": 1,
+   "nome": "MISSÃO",
+   "composicao": null,
+   "nomeLista": "MISSÃO",
+   "frase": "seu voto contou para MISSÃO, que elegeu 1 em SP"
+  },
+  {
+   "id": "P30",
+   "votosNominais": 585331,
+   "votosLegenda": 11165,
+   "votosValidos": 596496,
+   "vagasQP": 1,
+   "preenchidasQP": 1,
+   "vagasMedia": 1,
+   "total": 2,
+   "nome": "NOVO",
+   "composicao": null,
+   "nomeLista": "NOVO",
+   "frase": "seu voto contou para NOVO, que elegeu 2 em SP"
+  },
+  {
+   "id": "F100",
+   "votosNominais": 364690,
+   "votosLegenda": 14615,
+   "votosValidos": 379305,
+   "vagasQP": 1,
+   "preenchidasQP": 1,
+   "vagasMedia": 0,
+   "total": 1,
+   "nome": "FEDERAÇÃO PSDB CIDADANIA",
+   "composicao": "PSDB/CIDADANIA",
+   "nomeLista": "FEDERAÇÃO PSDB CIDADANIA (PSDB/CIDADANIA)",
+   "frase": "seu voto contou para FEDERAÇÃO PSDB CIDADANIA (PSDB/CIDADANIA), que elegeu 1 em SP"
+  },
+  {
+   "id": "F103",
+   "votosNominais": 354336,
+   "votosLegenda": 6201,
+   "votosValidos": 360537,
+   "vagasQP": 1,
+   "preenchidasQP": 1,
+   "vagasMedia": 0,
+   "total": 1,
+   "nome": "FEDERAÇÃO RENOVAÇÃO SOLIDÁRIA",
+   "composicao": "PRD/SOLIDARIEDADE",
+   "nomeLista": "FEDERAÇÃO RENOVAÇÃO SOLIDÁRIA (PRD/SOLIDARIEDADE)",
+   "frase": "seu voto contou para FEDERAÇÃO RENOVAÇÃO SOLIDÁRIA (PRD/SOLIDARIEDADE), que elegeu 1 em SP"
+  },
+  {
+   "id": "P70",
+   "votosNominais": 190184,
+   "votosLegenda": 5314,
+   "votosValidos": 195498,
+   "vagasQP": 0,
+   "preenchidasQP": 0,
+   "vagasMedia": 0,
+   "total": 0,
+   "nome": "AVANTE",
+   "composicao": null,
+   "nomeLista": "AVANTE",
+   "frase": "seu voto contou para AVANTE, que não elegeu ninguém em SP"
+  },
+  {
+   "id": "P12",
+   "votosNominais": 128372,
+   "votosLegenda": 19928,
+   "votosValidos": 148300,
+   "vagasQP": 0,
+   "preenchidasQP": 0,
+   "vagasMedia": 0,
+   "total": 0,
+   "nome": "PDT",
+   "composicao": null,
+   "nomeLista": "PDT",
+   "frase": "seu voto contou para PDT, que não elegeu ninguém em SP"
+  },
+  {
+   "id": "P27",
+   "votosNominais": 26743,
+   "votosLegenda": 665,
+   "votosValidos": 27408,
+   "vagasQP": 0,
+   "preenchidasQP": 0,
+   "vagasMedia": 0,
+   "total": 0,
+   "nome": "DC",
+   "composicao": null,
+   "nomeLista": "DC",
+   "frase": "seu voto contou para DC, que não elegeu ninguém em SP"
+  },
+  {
+   "id": "P80",
+   "votosNominais": 11004,
+   "votosLegenda": 2472,
+   "votosValidos": 13476,
+   "vagasQP": 0,
+   "preenchidasQP": 0,
+   "vagasMedia": 0,
+   "total": 0,
+   "nome": "UP",
+   "composicao": null,
+   "nomeLista": "UP",
+   "frase": "seu voto contou para UP, que não elegeu ninguém em SP"
+  },
+  {
+   "id": "P16",
+   "votosNominais": 5862,
+   "votosLegenda": 2150,
+   "votosValidos": 8012,
+   "vagasQP": 0,
+   "preenchidasQP": 0,
+   "vagasMedia": 0,
+   "total": 0,
+   "nome": "PSTU",
+   "composicao": null,
+   "nomeLista": "PSTU",
+   "frase": "seu voto contou para PSTU, que não elegeu ninguém em SP"
+  },
+  {
+   "id": "P35",
+   "votosNominais": 2652,
+   "votosLegenda": 1471,
+   "votosValidos": 4123,
+   "vagasQP": 0,
+   "preenchidasQP": 0,
+   "vagasMedia": 0,
+   "total": 0,
+   "nome": "DEMOCRATA",
+   "composicao": null,
+   "nomeLista": "DEMOCRATA",
+   "frase": "seu voto contou para DEMOCRATA, que não elegeu ninguém em SP"
+  },
+  {
+   "id": "P36",
+   "votosNominais": 2813,
+   "votosLegenda": 521,
+   "votosValidos": 3334,
+   "vagasQP": 0,
+   "preenchidasQP": 0,
+   "vagasMedia": 0,
+   "total": 0,
+   "nome": "AGIR",
+   "composicao": null,
+   "nomeLista": "AGIR",
+   "frase": "seu voto contou para AGIR, que não elegeu ninguém em SP"
+  }
+ ],
+ "eleitos": [
+  {
+   "tseSqCandidato": "250002539713",
+   "listaId": "P55",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002541120",
+   "listaId": "P55",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002541102",
+   "listaId": "P55",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002541149",
+   "listaId": "P55",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002539612",
+   "listaId": "F102",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002539604",
+   "listaId": "F102",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002539620",
+   "listaId": "F102",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002539622",
+   "listaId": "F102",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002539624",
+   "listaId": "F102",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002539593",
+   "listaId": "F102",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002534930",
+   "listaId": "F103",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002530115",
+   "listaId": "P30",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002533647",
+   "listaId": "P15",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002533664",
+   "listaId": "P15",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002533624",
+   "listaId": "P15",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002539435",
+   "listaId": "P40",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002539399",
+   "listaId": "P40",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002550394",
+   "listaId": "F100",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002544357",
+   "listaId": "P20",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002544330",
+   "listaId": "P20",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002544341",
+   "listaId": "P20",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002544340",
+   "listaId": "P20",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002544326",
+   "listaId": "P20",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535995",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535947",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535980",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535972",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535958",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535986",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535954",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535940",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535951",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535968",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535965",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535982",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535948",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535955",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535959",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535991",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535975",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535994",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002535936",
+   "listaId": "P22",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002537942",
+   "listaId": "P10",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002537979",
+   "listaId": "P10",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002537969",
+   "listaId": "P10",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002537953",
+   "listaId": "P10",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002536727",
+   "listaId": "F101",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002536736",
+   "listaId": "F101",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002536757",
+   "listaId": "F101",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002536752",
+   "listaId": "F101",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002536719",
+   "listaId": "F101",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002536737",
+   "listaId": "F101",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002536743",
+   "listaId": "F101",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002536764",
+   "listaId": "F101",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002532342",
+   "listaId": "F104",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002532379",
+   "listaId": "F104",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002532353",
+   "listaId": "F104",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002532355",
+   "listaId": "F104",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002532378",
+   "listaId": "F104",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002546642",
+   "listaId": "P14",
+   "por": "qp",
+   "rodada": null
+  },
+  {
+   "tseSqCandidato": "250002544355",
+   "listaId": "P20",
+   "por": "media",
+   "rodada": 1
+  },
+  {
+   "tseSqCandidato": "250002536722",
+   "listaId": "F101",
+   "por": "media",
+   "rodada": 2
+  },
+  {
+   "tseSqCandidato": "250002541114",
+   "listaId": "P55",
+   "por": "media",
+   "rodada": 3
+  },
+  {
+   "tseSqCandidato": "250002537973",
+   "listaId": "P10",
+   "por": "media",
+   "rodada": 4
+  },
+  {
+   "tseSqCandidato": "250002530167",
+   "listaId": "P30",
+   "por": "media",
+   "rodada": 5
+  },
+  {
+   "tseSqCandidato": "250002533666",
+   "listaId": "P15",
+   "por": "media",
+   "rodada": 6
+  },
+  {
+   "tseSqCandidato": "250002536734",
+   "listaId": "F101",
+   "por": "media",
+   "rodada": 7
+  },
+  {
+   "tseSqCandidato": "250002541112",
+   "listaId": "P55",
+   "por": "media",
+   "rodada": 8
+  },
+  {
+   "tseSqCandidato": "250002536733",
+   "listaId": "F101",
+   "por": "media",
+   "rodada": 9
+  },
+  {
+   "tseSqCandidato": "250002537943",
+   "listaId": "P10",
+   "por": "media",
+   "rodada": 10
+  }
+ ]
+}

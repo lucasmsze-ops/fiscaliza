@@ -15,6 +15,26 @@ Modelo:
 
 ---
 
+## 2026-11-01 · E7
+**Feito:** `lib/quociente.ts` (QE, QP com exigência de 10%, sobras 80/20 e fase aberta, frase
+"seu voto contou para") com 12 testes de borda e 5 em dado real (30 no total). `scripts/sonda/
+quociente.ts` → `data/sonda/quociente.json`: as 70 vagas de deputado federal de SP batem com o
+Relatório de Resultado da Totalização (QE 338.203, 20 listas, 70 eleitos um a um, ordem das
+sobras). `lib/tse.ts` (JSON oficial de resultado por município e URL da foto).
+`scripts/sonda/eleitos-mun.ts` → `data/sonda/eleitos-mun.json` (645 municípios, 2 cargos, código
+IBGE): 1.290/1.290 listas iguais ao JSON oficial, incluindo São Paulo, Santos e Borá.
+`_comparar-munzona.ts` para comparar gerações do CSV. `CLAUDE.md` (seção TSE), `SONDA.md`,
+`LACUNAS.md`, `README.md`.
+**Decidido:** federação como lista única; divisor da média com vagas obtidas por QP. Top-20
+inclui quem empata com o 20º. Frase com N = 0: "que não elegeu ninguém em SP"; senador sem
+frase. Foto de candidato pela URL pública do TSE (resolve a pendência da E1, sem hospedar nada).
+Gabarito lido do PDF oficial com PDFKit do macOS, sem dependência nova.
+**Lacunas:** empates na borda do top-20 (81 listas); 1 grafia TSE≠IBGE; o TSE regenera os CSVs
+sem mudar conteúdo (cron compara conteúdo). Questão aberta: nome da federação no card (E10).
+**Próximo passo:** E8 — reescrever `lib/types.ts` e gerar `data/*.json` no shape final
+(`politicos`, `mandatos`, `eleitos_mun`, `despesas_mes`, `votacoes`, `votos`, `orientacoes`);
+escolher 8–12 votações do quiz em `docs/QUIZ.md`; `scripts/sonda/validar.ts`.
+
 ## 2026-10-29 · E6
 **Feito:** `lib/senado.ts` (lista atual, perfil, mandatos, licenças, `/votacao`, orientação de
 bancada; normaliza o XML→JSON e as siglas do painel). `scripts/sonda/senadores.ts` gerou

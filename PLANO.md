@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E7** (atualizar esta linha ao avançar)
+**Etapa atual: E8** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -94,11 +94,12 @@ Calendário externo que afeta o plano:
 - Pronto quando: `participacao()` e `governismo()` rodam igual para senador e deputado.
 
 ### E7 · Quociente eleitoral e "seu voto contou para"
-- [ ] A partir do TSE: cadeiras por partido/federação em SP, tratando federação como
-      lista única. Conferir contra o resultado oficial.
-- [ ] Top-20 por município e cargo → `data/sonda/eleitos-mun.json`.
-- [ ] `lib/quociente.ts` com testes.
-- [ ] Frase exata: "seu voto contou para [partido/federação], que elegeu N em SP".
+- [x] A partir do TSE: cadeiras por partido/federação em SP, tratando federação como
+      lista única. Conferir contra o resultado oficial. (70/70 iguais ao relatório de totalização.)
+- [x] Top-20 por município e cargo → `data/sonda/eleitos-mun.json`. (1.290/1.290 iguais ao JSON
+      oficial de resultados; empatados com o 20º entram.)
+- [x] `lib/quociente.ts` com testes.
+- [x] Frase exata: "seu voto contou para [partido/federação], que elegeu N em SP".
 - Pronto quando: para 3 municípios de tamanhos diferentes o top-20 bate com o TSE.
 
 ### E8 · Consolidação da sonda
@@ -108,6 +109,8 @@ Calendário externo que afeta o plano:
 - [ ] Escolher 8–12 votações para o quiz com critério escrito em `docs/QUIZ.md`
       (votação nominal, relevância pública, resultado apertado ou tema claro).
 - [ ] `docs/SONDA.md`: o que o dado real ensinou, o que mudou no `CLAUDE.md`.
+- [ ] `fotoUrl` de quem não tem foto da Câmara/Senado pela URL pública do TSE (`lib/tse.ts#fotoUrlTse`).
+- [ ] Levar ao shape final o que a E7 gerou (`quociente.json` por lista, `eleitos-mun.json`).
 - Pronto quando: um script `scripts/sonda/validar.ts` confirma que todo `politico_id`
   referenciado existe e nenhum campo obrigatório está vazio.
 

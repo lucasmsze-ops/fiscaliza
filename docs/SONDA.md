@@ -335,3 +335,80 @@ nao 82, abstencao 1.
 5. **Licença no Senado** reforça a questão 1 da E4: Mara Gabrilli tem 132 ausências por licença
    saúde e 43 licenças (248 dias) no período. O dado oficial já está em `senadores.json`
    (`licencas`) para mostrar "licenciada N dias no período" ao lado do número.
+
+## E7 · Quociente eleitoral e top-20 por município (2026-11-01)
+
+### Fontes
+- `votacao_partido_munzona_2026` (votos de legenda por lista), `votacao_candidato_munzona_2026`,
+  `consulta_cand_2026` e `detalhe_votacao_munzona_2026`, todos de SP.
+- Gabarito do quociente: Relatório de Resultado da Totalização SP 2026 (PDF do TSE, 475 páginas),
+  Anexos VI (QE e QP), VII (sobras, média a média) e VIII (resumo). Texto extraído com PDFKit
+  do macOS, sem dependência nova.
+- Gabarito do top-20: JSON oficial de divulgação por município e cargo em `resultados.tse.jus.br`.
+- **O TSE regenerou os CSVs em 01/11** (zip de outro tamanho, linhas reordenadas, nova
+  `DT_GERACAO`). Comparação por candidato: votos e situação idênticos aos de 29/10.
+
+### Quociente: deputado federal SP 2026
+
+| | Valor |
+|---|---|
+| Vagas | 70 |
+| Votos válidos (nominais 22.988.308 + legenda 685.880) | 23.674.188 |
+| QE | 338.203 |
+| Preenchidas por QP / por média | 60 / 10 |
+
+`lib/quociente.ts` reproduz o relatório oficial sem diferença: QE, as 20 listas e os 70 eleitos
+um a um (`DS_SIT_TOT_TURNO`), inclusive a ordem das sobras (1ª média PODE, 2ª FE Brasil).
+Os CSVs de partido e de candidato batem entre si e com o PDF em todas as listas.
+
+| Lista | QP obtidas | QP preenchidas | Média | Total |
+|---|---|---|---|---|
+| PL | 19 | 19 | 0 | 19 |
+| Federação PSOL REDE | 9 | 6 | 0 | 6 |
+| Federação Brasil da Esperança (PT/PCdoB/PV) | 8 | 8 | 3 | 11 |
+| PODE | 5 | 5 | 1 | 6 |
+| Federação União Progressista (UNIÃO/PP) | 5 | 5 | 0 | 5 |
+| PSD | 4 | 4 | 2 | 6 |
+| REPUBLICANOS | 4 | 4 | 2 | 6 |
+| MDB | 3 | 3 | 1 | 4 |
+| PSB | 2 | 2 | 0 | 2 |
+| MISSÃO, Federação PSDB Cidadania, Federação Renovação Solidária | 1 | 1 | 0 | 1 cada |
+| NOVO | 1 | 1 | 1 | 2 |
+| AVANTE, PDT, DC, UP, PSTU, DEMOCRATA, AGIR | 0 | 0 | 0 | 0 |
+
+**Caso de borda real:** a Federação PSOL REDE obteve 9 vagas por QP (3.060.751 ÷ 338.203) mas só
+tinha 6 candidatos com 10% do QE. As 3 vagas foram para as sobras, e ela não entrou nas médias
+porque não tinha candidato restante com 20% do QE. O divisor da média usa as vagas *obtidas*
+por QP (9), não as preenchidas. Todas as 10 sobras saíram na fase com exigência 80/20; a fase
+aberta a todos não foi usada em 2026.
+
+### Metodologia (espelhar em `/como-funciona`)
+- QE = válidos ÷ vagas, fração ≤ 0,5 desprezada. QP = válidos da lista ÷ QE, fração desprezada.
+- Vaga de QP só para candidato com ≥ 10% do QE; a que sobrar vai para as médias.
+- Sobras: maior média = válidos da lista ÷ (vagas obtidas por QP + vagas por média + 1);
+  primeiro entre listas com ≥ 80% do QE e candidato não eleito com ≥ 20%; depois entre todas,
+  sem votação mínima (STF, 2024). Empate de média: lista mais votada; de candidatos: mais idoso.
+- Federação é uma lista só. A frase é da lista: "seu voto contou para [lista], que elegeu N em
+  SP" (N = total da lista; com N = 0, "que não elegeu ninguém em SP"). Senador: sem frase.
+
+### Top-20 por município (`data/sonda/eleitos-mun.json`, 547 KB)
+- 645 municípios × {deputado federal, senador}: 20.365 linhas, 435 candidatos distintos.
+- **Empate na borda**: em 81 listas há quem empate com o 20º (cidades pequenas, 2–3 votos).
+  Decisão: incluir todos os empatados (maior lista: 23), em vez de cortar por um critério que a
+  fonte não tem. Senador tem só 13 candidatos; em Borá, 7 com voto.
+- Código IBGE pela API de localidades do IBGE: 644 por nome normalizado, 1 por de-para
+  (São Luís do Paraitinga).
+- **Conferência**: São Paulo (9,1 mi de eleitores), Santos (348 mil) e Borá (1.094) iguais ao JSON
+  oficial nos dois cargos; depois os 645 municípios: **1.290/1.290 iguais**, 1.290 chamadas em
+  104 s, 0 falhas.
+
+### Foto dos candidatos (resolve a pendência da E1)
+- O JSON de divulgação aponta um diretório de fotos: `resultados.tse.jus.br/oficial/ele2026/6259/
+  fotos/{uf}/{sq_candidato}.jpeg`. Respondeu JPEG (~6 KB) para os 17 candidatos de 2026 da
+  amostra, inclusive os novos. É URL oficial e pública: o card usa direto, sem hospedar nem
+  proxiar. A E8 preenche `fotoUrl` com ela para quem não tem foto da Câmara/Senado.
+
+### Questões que o dado levantou
+6. **Nome da lista no card.** O nome oficial da federação é longo e em maiúsculas
+   ("FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL (PT/PC do B/PV)"). Decidir na E10 entre o nome
+   oficial e a composição curta ("PT/PCdoB/PV"), sem inventar apelido.

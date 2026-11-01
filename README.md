@@ -32,4 +32,7 @@ Os CSVs do TSE ficam em `data/raw/` (ignorado no git). Para reproduzir a E1:
 npx tsx scripts/sonda/_listas-atuais.ts   # quem está em exercício em SP (Câmara/Senado)
 npx tsx scripts/sonda/tse.ts              # gera data/sonda/politicos-tse.json
 npx tsx scripts/sonda/senadores.ts        # Senado: senadores.json, votacoes-senado.json, orientacoes-senado.json, votos-senado.json
+# E7: também votacao_partido_munzona_2026 e detalhe_votacao_munzona_2026 (SP) em data/raw/{votacao_partido,detalhe_munzona}/
+npx tsx scripts/sonda/quociente.ts        # vagas por lista (deputado federal SP), conferidas contra o relatório oficial
+npx tsx scripts/sonda/eleitos-mun.ts      # top-20 por município; --todos confere os 645 contra o JSON oficial do TSE
 ```
