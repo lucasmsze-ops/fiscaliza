@@ -63,9 +63,11 @@ describe("PoliticoCard com os 20 da sonda", () => {
     for (const id of ["andre-do-prado", "guilherme-derrite", "mara-gabrilli", "giordano", "astronauta-marcos-pontes"]) expect(cards.get(id)!.lista, id).toBeNull();
     expect([...cards.values()].filter((c) => c.lista)).toHaveLength(15);
   });
-  it("resumo dos números diz a Casa e o período (Derrite: senador eleito, números da Câmara)", () => {
-    expect(resumoNumeros(cards.get("guilherme-derrite")!)).toBe("Câmara 2023–2026: participação em votações 10,2%, governismo 21,3%");
-    expect(resumoNumeros(cards.get("mara-gabrilli")!)).toBe("Senado 2023–2026: participação em votações 38,3%, governismo 91,7%");
+  it("resumo dos números diz a Casa, o período e os dias afastado (Derrite: senador eleito, números da Câmara)", () => {
+    expect(resumoNumeros(cards.get("guilherme-derrite")!)).toBe("Câmara 2023–2026: participação em votações 10,2% (afastado 1.041 dias), governismo 21,3%");
+    expect(resumoNumeros(cards.get("mara-gabrilli")!)).toBe("Senado 2023–2026: participação em votações 38,3% (afastada 246 dias), governismo 91,7%");
+    expect(resumoNumeros(cards.get("kiko-celeguim")!)).toBe("Câmara 2023–2026: participação em votações 82,7%, governismo 97,9%");
+    expect(resumoNumeros(cards.get("guilherme-derrite")!, true)).toBe("Câmara 2023–2026 · participação 10,2% · afastado 1.041 dias · governismo 21,3%");
     expect(resumoNumeros(cards.get("andre-do-prado")!)).toBe("primeiro voto em fevereiro de 2027");
   });
   it("concordância fica oculta sem respostas do quiz", () => {

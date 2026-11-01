@@ -163,13 +163,20 @@ export async function montarCard(repo: Repo, id: string, hoje = new Date().toISO
   };
 }
 
-/** Os números em uma linha, só com dado da fonte (texto do preview e da imagem OG). */
-export function resumoNumeros(c: CardDados): string {
+/**
+ * Os números em uma linha, só com dado da fonte, com os dias afastado (mesma regra do card).
+ * `curto`: versão da imagem OG, que precisa caber numa linha ("participação" em vez de
+ * "participação em votações"; o rótulo completo fica na descrição e no card).
+ */
+export function resumoNumeros(c: CardDados, curto = false): string {
   const n = c.numeros;
   if (n.tipo === "primeiro_voto") return "primeiro voto em fevereiro de 2027";
   if (n.tipo === "sem_mandato") return `sem mandato no Congresso em ${n.periodo}`;
+  const casa = `${n.casa === "senado" ? "Senado" : "Câmara"} ${n.periodo}`;
   const gov = pct(n.governismo);
-  return `${n.casa === "senado" ? "Senado" : "Câmara"} ${n.periodo}: participação em votações ${pct(n.participacao)}${gov ? `, governismo ${gov}` : ""}`;
+  if (curto) return [casa, `participação ${pct(n.participacao)}`, n.textoAfastado, gov && `governismo ${gov}`].filter(Boolean).join(" · ");
+  const afast = n.textoAfastado ? ` (${n.textoAfastado})` : "";
+  return `${casa}: participação em votações ${pct(n.participacao)}${afast}${gov ? `, governismo ${gov}` : ""}`;
 }
 
 // Formatação pt-BR usada pelo card.

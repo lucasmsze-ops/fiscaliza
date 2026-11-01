@@ -16,7 +16,7 @@ export default async function Imagem({ params }: { params: Promise<{ ids: string
   const ids = idsDaUrl((await params).ids);
   const cs = (await Promise.all(ids.map((id) => montarCard(repo, id)))).filter((c) => c !== null);
   // Medidas por quantidade de linhas, para tudo caber em 630 px com o rodapé da fonte.
-  const m = cs.length <= 1 ? { foto: 220, nome: 56, sub: 30, num: 30, gap: 0 } : cs.length === 2 ? { foto: 160, nome: 44, sub: 26, num: 26, gap: 20 } : { foto: 112, nome: 36, sub: 22, num: 25, gap: 12 };
+  const m = cs.length <= 1 ? { foto: 220, nome: 56, sub: 30, num: 30, gap: 0 } : cs.length === 2 ? { foto: 160, nome: 44, sub: 26, num: 26, gap: 20 } : { foto: 112, nome: 36, sub: 22, num: 23, gap: 12 };
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", background: COR.fundo, color: COR.texto, padding: "32px 56px 28px" }}>
@@ -31,7 +31,7 @@ export default async function Imagem({ params }: { params: Promise<{ ids: string
               <div style={{ display: "flex", flexDirection: "column", flex: 1, minWidth: 0 }}>
                 <div style={{ display: "flex", fontSize: m.nome, letterSpacing: -0.5 }}>{c.nomeUrna}</div>
                 <div style={{ display: "flex", fontSize: m.sub, color: COR.suave, marginTop: 2 }}>{`${c.cargo} · ${c.partidoUf} · ${c.status}`}</div>
-                <div style={{ display: "flex", fontSize: m.num, marginTop: 6 }}>{resumoNumeros(c).replace(/^./, (x) => x.toUpperCase())}</div>
+                <div style={{ display: "flex", fontSize: m.num, marginTop: 6 }}>{resumoNumeros(c, true).replace(/^./, (x) => x.toUpperCase())}</div>
               </div>
             </div>
           ))}

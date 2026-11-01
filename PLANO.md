@@ -169,8 +169,7 @@ Calendário externo que afeta o plano:
       números; título e descrição com os números em `generateMetadata`.)
 - [x] Botão compartilhar (Web Share API, fallback copiar link).
 - Pronto quando: colar o link no WhatsApp mostra a colinha com os números.
-      (Metatags og:* absolutas e imagem conferidas em produção; falta o usuário colar um link
-      no WhatsApp para ver o preview de fato.)
+      (Confirmado pelo usuário no WhatsApp em 2026-11-01: imagem, título e números aparecem.)
 
 ### E13 · `/votacoes` e quiz de concordância
 - [ ] Cada votação do quiz explicada em 3 parágrafos, com link oficial.

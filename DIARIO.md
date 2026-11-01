@@ -24,8 +24,12 @@ descrição e na imagem). `metadataBase` pela URL de produção da Vercel. 54 te
 **Decidido:** a linha de números sempre diz a Casa e o período ("Câmara 2023–2026: …"), porque o
 Derrite é senador eleito com números da Câmara. Sem negrito na imagem (fonte padrão do `next/og` só
 tem regular; fonte externa na hora seria chamada externa).
+O usuário colou uma colinha no WhatsApp e o preview apareceu (critério de pronto). O exemplo dele
+(Marina Silva, 4,9%) mostrou que a imagem e a descrição omitiam os dias afastado que o card mostra:
+corrigido (`resumoNumeros` com "afastada 1.154 dias"; versão curta na imagem para caber numa linha).
 **Lacunas:** fotos do Senado pesadas: colinha com os 3 senadores em exercício leva ~2 s até a 1ª
-foto no 4G lento (típica: ~1 s). Registrado com alternativas em `LACUNAS.md`.
+foto no 4G lento (típica: ~1 s). Registrado com alternativas em `LACUNAS.md`. O WhatsApp guarda o
+preview de links já enviados: a correção só aparece em links novos.
 **Próximo passo:** E13 — `/votacoes` com as 10 perguntas do quiz (pergunta e explicação em 3
 parágrafos a partir do texto oficial), respostas no localStorage, concordância no card e votação
 discordante no corpo do Cobrar.
