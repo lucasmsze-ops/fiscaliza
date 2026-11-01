@@ -29,7 +29,7 @@ const HOJE = AGORA.slice(0, 10);
 const UF = "SP", ANO = 2026, CICLO = "ele2026", ELEICAO = "6259";
 
 // ------------------------------------------------------------------ entradas
-interface CandidatoMun { nome: string; nomeUrna: string; numero: string; cargo: Cargo; partido: string; federacao: string | null; lista: string; situacao: string; votosUf: number }
+interface CandidatoMun { nome: string; nomeUrna: string; numero: string; cargo: Cargo; partido: string; federacao: string | null; lista: string; situacao: string; votosUf: number; genero: "feminino" | "masculino" | null }
 const mun = ler<{ candidatos: Record<string, CandidatoMun>; municipios: { tse: string; ibge: number | null; nome: string; deputado_federal: [string, number][]; senador: [string, number][] }[] }>("eleitos-mun.json");
 const quoc = ler<{ listas: { id: string; nome: string; composicao: string | null; votosValidos: number; total: number }[] }>("quociente.json");
 const tse = ler<PoliticoTse[]>("politicos-tse.json");
@@ -71,7 +71,7 @@ for (const [sq, c] of Object.entries(mun.candidatos).sort((a, b) => b[1].votosUf
   const antigo = antigoPorSq.get(sq); // ex-deputado (registro de outra legislatura)
   const slug = novoSlug(c.nomeUrna, c.numero);
   politicos.push({
-    id: slug, slug, cargo: c.cargo, nome: c.nome, nomeUrna: c.nomeUrna, uf: UF,
+    id: slug, slug, cargo: c.cargo, nome: c.nome, nomeUrna: c.nomeUrna, genero: c.genero, uf: UF,
     partido: dep?.partido ?? c.partido,
     listaId: c.cargo === "deputado_federal" ? listaId(c.lista) : null,
     federacao: c.federacao, numeroUrna: c.numero,
@@ -88,6 +88,7 @@ for (const s of senadores) {
   const slug = novoSlug(t?.nomeUrna ?? s.nome, null);
   politicos.push({
     id: slug, slug, cargo: "senador", nome: s.nomeCompleto, nomeUrna: t?.nomeUrna ?? s.nome, uf: UF, partido: s.partido,
+    genero: s.sexo === "Feminino" ? "feminino" : s.sexo === "Masculino" ? "masculino" : null,
     listaId: null, federacao: null, numeroUrna: null, fotoUrl: s.fotoUrl, email: s.email, urlPerfil: s.urlPagina,
     tseSqCandidato: s.tseSqCandidato, camaraId: null, senadoCodigo: s.senadoCodigo, status: "em_exercicio", votos2026: null, updatedAt: AGORA,
   });

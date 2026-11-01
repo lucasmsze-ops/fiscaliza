@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E10** (atualizar esta linha ao avançar)
+**Etapa atual: E11** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -136,12 +136,18 @@ Calendário externo que afeta o plano:
 - Pronto quando: `/` abre em produção mostrando o nome de um político vindo do JSON.
 
 ### E10 · `PoliticoCard`
-- [ ] O único card: foto oficial, nome de urna, partido-UF, status, três números.
+- [x] O único card: foto oficial, nome de urna, partido-UF, status, três números.
       "Concordância" oculta sem resposta; "primeiro voto em fevereiro" para quem não votou.
-- [ ] CEAP do mês vs média SP, com link para a página oficial da despesa.
-- [ ] Botão **Cobrar** (`mailto:` com assunto e corpo pré-preenchidos).
-- [ ] Tooltips para PEC, PL, MP, obstrução, quociente.
+      (`lib/card.ts` monta, `components/PoliticoCard.tsx` só exibe; rótulos flexionados pelo
+      gênero oficial do TSE/Senado; "afastado N dias" ao lado da participação.)
+- [x] CEAP do mês vs média SP, com link para a página oficial da despesa (mês de referência,
+      página de transparência da Câmara filtrada por deputado e mês).
+- [x] Botão **Cobrar** (`mailto:` com assunto e corpo pré-preenchidos; a votação discordante
+      entra na E13).
+- [x] Tooltips para PEC, PL, MP, obstrução, quociente (+ os termos do card), com o popover
+      nativo do HTML, sem dependência (`lib/glossario.ts`, `components/Termo.tsx`).
 - Pronto quando: o card renderiza os 20 da sonda sem nenhum campo vazio ou inventado.
+      (`/amostra`; `tests/card.test.ts`.)
 
 ### E11 · `/` — montar a colinha
 - [ ] Busca por cidade (lista de municípios SP do TSE) e por nome de urna.

@@ -31,6 +31,8 @@ export interface Politico {
   nome: string;
   /** Nome de urna do TSE, como a fonte escreve. */
   nomeUrna: string;
+  /** Gênero declarado ao TSE (`DS_GENERO`) ou no Senado (`SexoParlamentar`); flexiona os rótulos do card. */
+  genero: "feminino" | "masculino" | null;
   slug: string;
   uf: string;
   /** Partido mais recente: Câmara/Senado para quem está em exercício, TSE 2026 para os demais. */

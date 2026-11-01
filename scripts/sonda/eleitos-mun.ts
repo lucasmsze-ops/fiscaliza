@@ -46,8 +46,8 @@ console.log(`[${marca()}] ${top.length} linhas · listas com empate na borda (> 
 
 // Candidatos que aparecem em algum top-20, com o que o card precisa da fonte.
 const sqs = [...new Set(top.map((t) => t.sq))];
-const cand = await rows<{ sq: string; nome: string; nomeUrna: string; numero: string; cargo: string; partido: string; federacao: string | null; lista: string; situacao: string; votos: string }>(`
-  SELECT c.SQ_CANDIDATO sq, NM_CANDIDATO nome, NM_URNA_CANDIDATO "nomeUrna", NR_CANDIDATO numero, DS_CARGO cargo, SG_PARTIDO partido,
+const cand = await rows<{ sq: string; nome: string; nomeUrna: string; numero: string; cargo: string; partido: string; federacao: string | null; lista: string; situacao: string; votos: string; genero: string }>(`
+  SELECT c.SQ_CANDIDATO sq, NM_CANDIDATO nome, DS_GENERO genero, NM_URNA_CANDIDATO "nomeUrna", NR_CANDIDATO numero, DS_CARGO cargo, SG_PARTIDO partido,
          CASE WHEN NR_FEDERACAO = '-1' THEN NULL ELSE NM_FEDERACAO END federacao,
          CASE WHEN NR_FEDERACAO = '-1' THEN 'P' || NR_PARTIDO ELSE 'F' || NR_FEDERACAO END lista,
          DS_SIT_TOT_TURNO situacao, t.votos
@@ -58,6 +58,7 @@ const cand = await rows<{ sq: string; nome: string; nomeUrna: string; numero: st
 const candidatos = Object.fromEntries(cand.map((x) => [x.sq, {
   nome: x.nome, nomeUrna: x.nomeUrna, numero: x.numero, cargo: CARGO[x.cargo === "SENADOR" ? "Senador" : "Deputado Federal"],
   partido: x.partido, federacao: x.federacao, lista: x.lista, situacao: x.situacao, votosUf: Number(x.votos),
+  genero: x.genero === "FEMININO" ? "feminino" : x.genero === "MASCULINO" ? "masculino" : null,
 }]));
 const situacoes = new Map<string, number>();
 for (const x of cand) situacoes.set(`${x.cargo}: ${x.situacao}`, (situacoes.get(`${x.cargo}: ${x.situacao}`) ?? 0) + 1);

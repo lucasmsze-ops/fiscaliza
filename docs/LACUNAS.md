@@ -26,3 +26,5 @@ Nunca preencher com dado sintético.
 | 2026-11-01 | Câmara | `/deputados/220651` (Simone Marquetto) devolve 504 persistente; `/historico` responde | Bancada com 69 de 70 perfis; ela não concorreu em SP em 2026 e não aparece em nenhum top-20, então nada no site depende dela |
 | 2026-11-01 | TSE | 373 dos 438 políticos (suplentes, não eleitos e novos) não têm registro na Câmara/Senado | Card com foto do TSE, nome, partido, status e votos 2026; sem e-mail (Cobrar oculto), sem os três números ("primeiro voto em fevereiro" para eleitos) |
 | 2026-11-01 | Câmara | 187 votações sem resultado explícito (`aprovacao` nulo e descrição sem "Aprovad"/"Rejeitad", ex.: "Mantido o texto") | `resultado` null; nenhuma delas está no quiz |
+| 2026-11-01 | Senado | Cota dos senadores (CEAPS) não foi coletada na sonda | Card de senador sem o bloco de cota; coletar antes do lançamento ou documentar como fora do MVP |
+| 2026-11-01 | Senado | Fotos oficiais do Senado têm 107–307 KB (Câmara e TSE: 5–40 KB) | Carregam sob demanda; pesam na meta de < 1 s em 4G da colinha (medir na E12) |

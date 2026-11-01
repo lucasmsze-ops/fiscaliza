@@ -109,7 +109,7 @@ Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por esta
 Definido em `lib/types.ts` (camelCase); `data/*.json` e as tabelas guardam as mesmas linhas em snake_case (`Linha<T>`, `lib/linhas.ts`). Validado por `scripts/sonda/validar.ts`.
 
 ```
-politicos         id (= slug), cargo, nome, nome_urna, slug, uf, partido, lista_id, federacao,
+politicos         id (= slug), cargo, nome, nome_urna, genero, slug, uf, partido, lista_id, federacao,
                   numero_urna, foto_url, email, url_perfil, tse_sq_candidato, camara_id,
                   senado_codigo, status, votos_2026, updated_at
 mandatos          politico_id, cargo, inicio, fim (null = em curso), titular bool
@@ -137,7 +137,7 @@ Diário, em ordem, cada job idempotente e isolado: `politicos` → `despesas` (s
 ## Convenções de código
 
 - Um adapter por fonte em `lib/{tse,camara,senado}.ts`, retornando tipos internos (`Politico`, `Votacao`, `Voto`). Nenhum componente conhece o shape das APIs.
-- Componentes em `components/`. `PoliticoCard` é o único card; reutilizado em busca, colinha, página e OG.
+- Componentes em `components/`. `PoliticoCard` é o único card; reutilizado em busca, colinha, página e OG. Ele só exibe `CardDados` de `lib/card.ts#montarCard`. Fotos com `<img>` direto da URL oficial (nunca `next/image`, que passaria pela Vercel). Explicação de termos com `components/Termo.tsx` (popover nativo do HTML, sem biblioteca).
 - Textos de interface em português do Brasil, sem jargão legislativo sem tooltip (PEC, PL, MP, obstrução, quociente).
 - Links externos com `rel="noreferrer noopener"`. Header `Referrer-Policy: same-origin`.
 - Mobile-first. A colinha e a página do político têm que carregar em < 1s em 4G.

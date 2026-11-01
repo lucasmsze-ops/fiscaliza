@@ -15,6 +15,22 @@ Modelo:
 
 ---
 
+## 2026-11-01 · E10
+**Feito:** `lib/card.ts` (`montarCard`: rótulos de cargo e status flexionados, três números com
+denominador por mandato, "afastado N dias", CEAP do mês de referência vs média SP com link oficial,
+`mailto:` do Cobrar). `components/PoliticoCard.tsx` (só exibe; `<img>` direto da fonte),
+`components/Termo.tsx` + `lib/glossario.ts` (popover nativo, 13 termos). Coluna `genero` em
+`politicos` (TSE `DS_GENERO`, Senado `SexoParlamentar`). `/amostra` com os 20 cards (noindex).
+`tests/card.test.ts`: os 20 sem campo vazio/NaN/undefined, 14 com mandato e 6 com "primeiro voto",
+valores iguais ao SONDA. 47 testes. Conferido no navegador a 375 px, claro e escuro: sem rolagem
+lateral, 20 fotos ok, popover abre e fecha (toque fora, Esc, "Fechar").
+**Decidido:** popover nativo em vez do shadcn/ui (sem dependência; usuário sem preferência).
+Gênero oficial para flexionar ("Deputada", "Reeleita", "afastada"); sem gênero, cai para o nome
+da Casa. Nome de urna exibido como o TSE escreve (maiúsculas). Senador sem bloco de cota.
+**Lacunas:** CEAPS do Senado não coletada; fotos do Senado pesadas (107–307 KB).
+**Próximo passo:** E11 — página `/`: busca por cidade (autocomplete dos 645 municípios) ou por
+nome, mostrando o top-20 com `PoliticoCard` compacto e seleção para a colinha.
+
 ## 2026-11-01 · E9
 **Feito:** next 16.4.3 + react 19.3.1 + tailwindcss 4.3.3 no projeto existente (versões fixas,
 0 vulnerabilidades). `lib/repo.ts` (interface `Repo` + `JsonRepo` com `deLinha`, cache por
