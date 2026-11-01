@@ -22,6 +22,7 @@ export interface EleitoNaCidade {
 
 export interface Repo {
   getPolitico(id: string): Promise<Politico | null>;
+  listarPoliticos(): Promise<Politico[]>;
   /** Busca por nome de urna ou nome civil, sem acento nem caixa. */
   buscarPorNome(termo: string, limite?: number): Promise<Politico[]>;
   listarMunicipios(): Promise<Municipio[]>;
@@ -40,8 +41,8 @@ export interface Repo {
   getVotacoesQuiz(): Promise<{ item: QuizItem; camara: Votacao | null; senado: Votacao | null }[]>;
 }
 
-export const normalizar = (s: string) =>
-  s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+export { normalizar } from "./texto";
+import { normalizar } from "./texto";
 
 type Tabelas = {
   politicos: Politico; mandatos: Mandato; afastamentos: Afastamento; listas: ListaEleitoral; municipios: Municipio;
@@ -66,6 +67,9 @@ export class JsonRepo implements Repo {
 
   async getPolitico(id: string) {
     return (await this.tabela("politicos")).find((p) => p.id === id) ?? null;
+  }
+  async listarPoliticos() {
+    return this.tabela("politicos");
   }
   async buscarPorNome(termo: string, limite = 20) {
     const t = normalizar(termo);

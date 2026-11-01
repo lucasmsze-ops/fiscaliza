@@ -47,6 +47,7 @@ Presidente como entidade com feed · presença literal em sessões · feed por j
 /votacoes           as votações do quiz de concordância, explicadas em 3 parágrafos
 /como-funciona      metodologia, fontes, licença, código
 ```
+Apoio (não são páginas): `/dados/politicos` e `/dados/cidade/[ibge]` são JSONs estáticos gerados no build (índice de busca e top-20 por cidade), servidos pela CDN. `/amostra` é a vitrine dos 20 da sonda (noindex). A colinha usa ids separados por `+` (`/c/kiko-celeguim+andre-do-prado`): 1 deputado e até 2 senadores.
 
 ## O card do político (objeto central)
 

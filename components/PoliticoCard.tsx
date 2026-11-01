@@ -1,7 +1,38 @@
-import { inteiro, pct, reais, type CardDados } from "@/lib/card";
+import { inteiro, pct, reais, type CardDados, type CardResumo } from "@/lib/card";
 import { Termo } from "./Termo";
 
 const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
+
+/** Foto, nome, cargo, partido e status: igual nas duas variantes do card. */
+function Cabecalho({ r, compacto = false }: { r: CardResumo; compacto?: boolean }) {
+  return (
+    <header className={`flex ${compacto ? "gap-3" : "gap-4"}`}>
+      {r.fotoUrl && (
+        // <img> de propósito: a foto vem direto da URL oficial, sem passar pela Vercel (CLAUDE.md).
+        <img src={r.fotoUrl} alt={`Foto oficial de ${r.nomeUrna}`} width={compacto ? 48 : 72} height={compacto ? 64 : 96} loading="lazy" decoding="async"
+          className={`${compacto ? "h-16 w-12" : "h-24 w-[4.5rem]"} shrink-0 rounded-lg bg-black/5 object-cover dark:bg-white/10`} />
+      )}
+      <div className="min-w-0">
+        <h2 id={`nome-${r.id}`} className={`${compacto ? "text-base" : "text-lg"} font-semibold leading-tight break-words`}>{r.nomeUrna}</h2>
+        <p className={`${compacto ? "mt-0.5 text-xs" : "mt-1 text-sm"} text-[var(--suave)]`}>{r.cargo} · {r.partidoUf}</p>
+        <p className={`${compacto ? "mt-0.5 text-xs" : "mt-1 text-sm"}`}>{r.status}</p>
+      </div>
+    </header>
+  );
+}
+
+/**
+ * Variante compacta do mesmo card, para busca e lista da cidade: só o cabeçalho e uma linha de
+ * contexto opcional (ex.: votos no município). Sem números: eles ficam no card completo.
+ */
+export function PoliticoCardCompacto({ r, contexto }: { r: CardResumo; contexto?: string }) {
+  return (
+    <div className="w-full text-left" aria-labelledby={`nome-${r.id}`}>
+      <Cabecalho r={r} compacto />
+      {contexto && <p className="mt-2 text-xs text-[var(--suave)] tabular-nums">{contexto}</p>}
+    </div>
+  );
+}
 
 /**
  * O único card do site (busca, colinha, página do político e OG). Recebe `CardDados` prontos
@@ -11,18 +42,7 @@ export function PoliticoCard({ d }: { d: CardDados }) {
   const n = d.numeros;
   return (
     <article className="w-full max-w-sm rounded-2xl border border-black/10 p-4 dark:border-white/15" aria-labelledby={`nome-${d.id}`}>
-      <header className="flex gap-4">
-        {d.fotoUrl && (
-          // <img> de propósito: a foto vem direto da URL oficial, sem passar pela Vercel (CLAUDE.md).
-          <img src={d.fotoUrl} alt={`Foto oficial de ${d.nomeUrna}`} width={72} height={96} loading="lazy" decoding="async"
-            className="h-24 w-[4.5rem] shrink-0 rounded-lg bg-black/5 object-cover dark:bg-white/10" />
-        )}
-        <div className="min-w-0">
-          <h2 id={`nome-${d.id}`} className="text-lg font-semibold leading-tight break-words">{d.nomeUrna}</h2>
-          <p className="mt-1 text-sm text-[var(--suave)]">{d.cargo} · {d.partidoUf}</p>
-          <p className="mt-1 text-sm">{d.status}</p>
-        </div>
-      </header>
+      <Cabecalho r={d} />
 
       <section className="mt-4 border-t border-black/10 pt-4 dark:border-white/15" aria-label="Números do mandato">
         {n.tipo === "mandato" && (

@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E11** (atualizar esta linha ao avançar)
+**Etapa atual: E12** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -150,13 +150,20 @@ Calendário externo que afeta o plano:
       (`/amostra`; `tests/card.test.ts`.)
 
 ### E11 · `/` — montar a colinha
-- [ ] Busca por cidade (lista de municípios SP do TSE) e por nome de urna.
-- [ ] Da cidade: mostra os eleitos do top-20; o usuário marca em quem votou.
-- [ ] Colinha salva no `localStorage` e refletida na URL `/c/[ids]`.
+- [x] Busca por cidade (lista de municípios SP do TSE) e por nome de urna. (Uma caixa só,
+      sem acento nem caixa; índice de nomes em `/dados/politicos`, estático.)
+- [x] Da cidade: mostra os eleitos do top-20; o usuário marca em quem votou. (Card compacto,
+      posição e votos na cidade; 1 deputado e até 2 senadores, como na urna de 2026;
+      `/dados/cidade/[ibge]`, 645 JSONs estáticos de ~0,6 KB.)
+- [x] Colinha salva no `localStorage` e refletida na URL `/c/[ids]` (ids separados por `+`;
+      página mínima com os cards, que a E12 completa).
 - Pronto quando: você mesmo monta a colinha em menos de 1 minuto no celular.
+      (Automatizado a 375 px: 22 s com a latência das ferramentas. Falta o teste do usuário
+      no próprio celular.)
 
 ### E12 · `/c/[ids]` — colinha e preview de compartilhamento
-- [ ] Cards + bloco "seu voto contou para" por político.
+- [ ] Cards + bloco "seu voto contou para" por político. (A página `/c/[ids]` já existe com os
+      cards e ISR sob demanda, da E11.)
 - [ ] OG image com `next/og` (fotos buscadas na hora, única exceção ao "nunca proxiar").
 - [ ] Botão compartilhar (Web Share API, fallback copiar link).
 - Pronto quando: colar o link no WhatsApp mostra a colinha com os números.

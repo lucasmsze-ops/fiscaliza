@@ -5,7 +5,8 @@
  */
 import { diasAfastado, governismo, participacao, type Indicador, type Periodo } from "./indicadores";
 import type { Repo } from "./repo";
-import type { Casa, DespesaMediaUf, Politico } from "./types";
+import { normalizar } from "./texto";
+import type { Cargo, Casa, DespesaMediaUf, Politico } from "./types";
 
 /** Período de governo atual: o corte do governismo é 01/01/2027. */
 export const PERIODO_GOVERNO: Periodo = { inicio: "2023-01-01", fim: "2026-12-31" };
@@ -33,13 +34,30 @@ export interface CobrarCard {
   href: string;
 }
 
-export interface CardDados {
+/** Cabeçalho do card: o que a busca e a lista da cidade mostram (variante compacta). */
+export interface CardResumo {
   id: string;
   nomeUrna: string;
   fotoUrl: string | null;
+  /** Rótulo flexionado ("Deputada federal"). */
   cargo: string;
+  cargoChave: Cargo;
   partidoUf: string;
   status: string;
+}
+
+export function resumoCard(p: Politico): CardResumo {
+  return { id: p.id, nomeUrna: p.nomeUrna, fotoUrl: p.fotoUrl, cargo: rotuloCargo(p), cargoChave: p.cargo, partidoUf: `${p.partido}-${p.uf}`, status: rotuloStatus(p) };
+}
+
+/** Entrada do índice de busca por nome (JSON estático /dados/politicos). */
+export interface ItemBusca extends CardResumo {
+  /** Nome de urna + nome civil normalizados (sem acento, minúsculas). */
+  busca: string;
+}
+export const itemBusca = (p: Politico): ItemBusca => ({ ...resumoCard(p), busca: normalizar(`${p.nomeUrna} ${p.nome}`) });
+
+export interface CardDados extends CardResumo {
   numeros: NumerosCard;
   /** Só existe quando o usuário respondeu o quiz (E13); até lá, oculto. */
   concordancia: Indicador | null;
@@ -121,8 +139,7 @@ export async function montarCard(repo: Repo, id: string, hoje = new Date().toISO
   }
 
   return {
-    id: p.id, nomeUrna: p.nomeUrna, fotoUrl: p.fotoUrl, cargo: rotuloCargo(p), partidoUf: `${p.partido}-${p.uf}`,
-    status: rotuloStatus(p), numeros, concordancia: null, ceap,
+    ...resumoCard(p), numeros, concordancia: null, ceap,
     cobrar: p.email ? { email: p.email, href: hrefCobrar(p, p.email) } : null,
     urlPerfil: p.urlPerfil,
   };

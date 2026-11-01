@@ -15,6 +15,24 @@ Modelo:
 
 ---
 
+## 2026-11-01 · E11
+**Feito:** `/` com uma caixa de busca (cidade ou nome, sem acento) → top-20 da cidade com o card
+compacto (mesmo `PoliticoCard`, variante `PoliticoCardCompacto`), posição e votos na cidade →
+marcar 1 deputado e até 2 senadores → barra "Ver colinha". `lib/colinha.ts` (regras, URL com `+`,
+leitura segura do localStorage; 5 testes). JSONs estáticos `/dados/politicos` (20 KB gzip) e
+`/dados/cidade/[ibge]` (645 arquivos de ~0,6 KB gzip). `/c/[ids]` mínima com os cards completos e
+ISR sob demanda. 52 testes. Conferido a 375 px: Campinas → Erika Hilton → Derrite e André do Prado →
+colinha em 22 s (com latência da automação); colinha e cidade voltam ao reabrir; busca por nome
+troca o deputado; sem erro no console.
+**Decidido:** cidade carregada no navegador a partir de JSON estático (nada de servidor por
+requisição). Colinha segue a urna de 2026 (1 + 2); o terceiro senador substitui o mais antigo.
+Índice de busca com rótulos prontos (`itemBusca`).
+**Lacunas:** nenhuma nova. Bug achado e corrigido no teste: a lista da cidade era recriada a cada
+toque (componente definido dentro de outro).
+**Próximo passo:** E12 — em `/c/[ids]`: frase "seu voto contou para" por deputado, botão
+compartilhar (Web Share API, fallback copiar link) e imagem OG com `next/og`; medir o peso das
+fotos do Senado na meta de < 1 s.
+
 ## 2026-11-01 · E10
 **Feito:** `lib/card.ts` (`montarCard`: rótulos de cargo e status flexionados, três números com
 denominador por mandato, "afastado N dias", CEAP do mês de referência vs média SP com link oficial,
