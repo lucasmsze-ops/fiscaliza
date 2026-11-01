@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E9** (atualizar esta linha ao avançar)
+**Etapa atual: E10** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -131,8 +131,8 @@ Calendário externo que afeta o plano:
       `getVotacoesQuiz`, ...) com implementação `JsonRepo`. A E17 troca por `SupabaseRepo`
       sem tocar nos componentes.
 - [x] Repositório privado `github.com/lucasmsze-ops/fiscaliza` com a `main`.
-- [ ] Deploy inicial na Vercel (Hobby) a partir da `main`. Headers `Referrer-Policy`.
-      (Header pronto em `next.config.ts`; falta o usuário importar o repositório na Vercel.)
+- [x] Deploy inicial na Vercel (Hobby) a partir da `main`. Headers `Referrer-Policy`.
+      (Produção: https://fiscaliza-rho.vercel.app, servida de gru1.)
 - Pronto quando: `/` abre em produção mostrando o nome de um político vindo do JSON.
 
 ### E10 · `PoliticoCard`

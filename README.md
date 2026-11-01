@@ -31,6 +31,7 @@ npm run validar    # confere data/*.json antes de publicar
 ```
 
 Deploy: Vercel, a cada push na `main` de `github.com/lucasmsze-ops/fiscaliza` (privado).
+Produção: https://fiscaliza-rho.vercel.app
 
 ## Sonda (Passo 1)
 
