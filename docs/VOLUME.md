@@ -110,3 +110,16 @@ no Postgres. A margem dura de 2 a 3 anos antes de ser preciso arquivar anos anti
    extenso estava numa descrição oficial de votação da Câmara e foi ocultado (`lib/texto.ts#semCpf`).
    O texto antigo continua nos commits anteriores.
 5. **Vercel Hobby "pessoal e não comercial":** pendente; o usuário lê os termos de uso justo.
+
+## Medido com o Congresso no Brasil inteiro (E21c, 2026-11-02)
+
+| Tabela | Linhas | No Postgres |
+|---|---|---|
+| `votos` | 456.387 | 78,1 MB |
+| `eleitos_mun` | 172.329 | 27,2 MB |
+| `resumos` | 3.724 | 6,0 MB |
+| demais | | 15,8 MB |
+| **Total** | | **121 MB de 500 MB (24%)** |
+
+Ainda faltam a cota nacional (E21d) e as proposições (E21e), estimadas acima em ~60–100 MB.
+

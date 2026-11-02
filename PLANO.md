@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E21c** (atualizar esta linha ao avançar)
+**Etapa atual: E21d** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -316,11 +316,17 @@ colinha não funciona fora de SP. Dividida em E21a–E21e; o desenho do cron est
       apareceria com "primeiro voto em fevereiro" e suplente que exerceu, "sem mandato".
 
 ### E21c · Parlamentares em exercício no Brasil inteiro
-- [ ] 513 deputados e 81 senadores em `politicos`, `mandatos` e `afastamentos`, ligados ao TSE pelo
+- [x] 513 deputados e 81 senadores em `politicos`, `mandatos` e `afastamentos`, ligados ao TSE pelo
       CPF em memória (Câmara) e pelo nome completo + UF (Senado).
-- [ ] Votos de todos desde 2023: arquivos anuais da Câmara (`votacoesVotos`) e `/votacao` do Senado.
-- [ ] Publicar junto as tabelas da E21b (estado/fontes/tse-2026), com o status "reeleito" vindo do
+      (`scripts/cron/parlamentares.ts`: 648 da legislatura 57 e 81 senadores, todos ligados; 3.724
+      políticos, 92 além do TSE 2026. Regras de mandato em `lib/linhas-mandato.ts`.)
+- [x] Votos de todos desde 2023: arquivos anuais da Câmara (`votacoesVotos`) e `/votacao` do Senado.
+      (Pelas respostas brutas por votação (Câmara, cache da sonda) e do `/votacao` ano a ano (Senado),
+      sem os arquivos anuais: 456.387 votos de 578 políticos com camaraId e 81 senadores.)
+- [x] Publicar junto as tabelas da E21b (estado/fontes/tse-2026), com o status "reeleito" vindo do
       cruzamento; conferir a colinha a partir de cidades de vários estados.
+      (Publicado em 2026-11-02 em 2 min 20 s: 570 mil linhas, 3.293 resumos; 11 de 11 contagens
+      batem; banco com 121 MB. Site: páginas de político e cidades geradas na primeira visita.)
 - Pronto quando: a colinha funciona a partir de qualquer cidade do país e a página de qualquer
       parlamentar em exercício abre com os números.
 

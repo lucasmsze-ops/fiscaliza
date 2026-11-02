@@ -42,3 +42,7 @@ Nunca preencher com dado sintético.
 | 2026-11-02 | TSE | Uma deputada eleita por média (RJ) não está no top-20 de nenhuma cidade | Todos os eleitos entram em `politicos`, além de quem aparece em algum top-20: tem página e busca, não aparece na lista de nenhuma cidade |
 | 2026-11-02 | TSE | Status "reeleito" não está no TSE 2026 | Fora de SP, até a E21c, os eleitos ficam como "eleito" nas tabelas geradas; nada é publicado antes do cruzamento |
 | 2026-11-02 | Senado | `/senador/{codigo}/licencas` repete a mesma licença (mesmo início e motivo) com fins diferentes: prorrogação ou correção (5 casos em 2023–26) | Fica o fim mais tardio (`lib/linhas-mandato.ts#deSenado`); os dias afastado não contam a mesma licença duas vezes |
+| 2026-11-02 | TSE | 421 candidaturas a deputado federal e senador em 2026 com situação de totalização `#NULO` | Status desconhecido: quem está em exercício entra como "em exercício"; ninguém aparece como "não eleito" sem a fonte dizer |
+| 2026-11-02 | Senado | Só os 81 em exercício são consultados; quem exerceu no período e saiu (ex.: suplente convocado por um tempo) e disputou 2026 não ganha o vínculo com o Senado | O card desses mostraria "sem mandato" ou "primeiro voto"; ampliar para os senadores da legislatura 57 quando houver endpoint por legislatura |
+| 2026-11-02 | Câmara | Cota (CEAP) carregada só para os deputados de SP | Card de quem não é deputado por SP sem o bloco de cota; `/como-funciona` avisa; entra na E21d |
+

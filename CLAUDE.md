@@ -8,7 +8,9 @@ o que estão fazendo? → como cobro? → com quem compartilho?
 ao presidente, com praticamente as mesmas funcionalidades do politicometro.org (inventário em
 `docs/REFERENCIA-POLITICOMETRO.md`), menos o que está em "Fora de escopo". A expansão é por fases:
 primeiro Congresso (deputados federais e senadores) no Brasil inteiro, depois os demais cargos.
-O protótipo cobre só SP (438 políticos de 2026).
+Desde a E21c (2026-11-02), o Congresso no Brasil inteiro: 3.724 políticos (candidatos de 2026 no top-20
+de alguma cidade, todos os eleitos e os 594 parlamentares em exercício) e as 5.571 cidades. `data/*.json`
+continua sendo o recorte de SP da sonda (testes e modo JSON); o estado do cron está em `estado/`.
 
 ## Princípios inegociáveis
 
@@ -71,7 +73,7 @@ Planejadas (detalhar no PLANO ao chegar): `/votacoes` (lista do Plenário, E30),
 
 A colinha tem `opengraph-image.tsx` (preview com foto, cargo, status e números; Casa e período sempre explícitos, porque um senador eleito pode ter números da Câmara). `metadataBase` vem de `VERCEL_PROJECT_PRODUCTION_URL` (ou `NEXT_PUBLIC_SITE_URL`). A fonte padrão do `next/og` só tem peso regular; buscar fonte externa na hora não é permitido.
 
-Apoio (não são páginas): `/dados/politicos` e `/dados/cidade/[ibge]` são JSONs estáticos gerados no build (índice de busca, mais votados primeiro, com nome de urna, nome civil e número de urna; e top-20 por cidade), servidos pela CDN. O top-20 cobre ~2/3 dos votos para deputado: a busca por nome ou número é o caminho do resto. `/amostra` é a vitrine dos 20 da sonda (noindex). A colinha usa ids separados por `+` (`/c/kiko-celeguim+andre-do-prado`): 1 deputado e até 2 senadores.
+Apoio (não são páginas): `/dados/municipios` (as 5.571 cidades, baixada quando a pessoa toca na busca), `/dados/politicos` (índice de busca por nome, mais votados primeiro, com nome de urna, nome civil e número de urna; ~190 KB comprimido) e `/dados/cidade/[ibge]` (top-20 da cidade com o cabeçalho do card de cada um, gerado na primeira busca, ISR), servidos pela CDN. No build, só as páginas de quem tem mandato (659); as demais, na primeira visita. O top-20 cobre ~2/3 dos votos para deputado: a busca por nome ou número é o caminho do resto. `/amostra` é a vitrine dos 20 da sonda (noindex). A colinha usa ids separados por `+` (`/c/kiko-celeguim+andre-do-prado`): 1 deputado e até 2 senadores.
 
 ## O card do político (objeto central)
 
@@ -88,7 +90,7 @@ A página do político segue o inventário (`docs/REFERENCIA-POLITICOMETRO.md`, 
 ## Fontes de dados e armadilhas conhecidas
 
 ### TSE — `dadosabertos.tse.jus.br` (CSV, download único) e `resultados.tse.jus.br` (JSON de divulgação)
-- `consulta_cand`: candidatos, nome de urna, partido, federação, situação de totalização, nascimento, CPF. **CPF nunca é persistido, nem em hash**: o join por SHA-256 do CPF acontece em memória no cron, a cada execução, e só o par de ids (`tse_sq_candidato` ↔ `camara_id`) é gravado. Não tem coluna de foto nem indica quem concorre à reeleição (em 2026 não há `ST_REELEICAO`): "reeleito" sai do join com a Câmara/Senado.
+- `consulta_cand`: candidatos, nome de urna, partido, federação, situação de totalização (`#NULO` em 421 candidaturas a deputado federal e senador de 2026: status desconhecido, nunca inventado), nascimento, CPF. **CPF nunca é persistido, nem em hash**: o join por SHA-256 do CPF acontece em memória no cron, a cada execução, e só o par de ids (`tse_sq_candidato` ↔ `camara_id`) é gravado. Não tem coluna de foto nem indica quem concorre à reeleição (em 2026 não há `ST_REELEICAO`): "reeleito" sai do join com a Câmara/Senado.
 - **Foto**: URL pública por candidato em `https://resultados.tse.jus.br/oficial/ele2026/6259/fotos/{uf}/{sq_candidato}.jpeg` (JPEG ~6 KB; 17/17 da amostra de 2026). `lib/tse.ts#fotoUrlTse`. O zip `foto_cand{ano}_{UF}_div.zip` só serve para conferência. O DivulgaCand bloqueia acesso automatizado; não usar.
 - Zips só por ano (um CSV por UF dentro). Catálogo via API CKAN: `dadosabertos.tse.jus.br/api/3/action/package_show?id=candidatos-2026` e `?id=resultados-2026`.
 - CSV latin-1, `;`. Nulos: `#NULO`, `#NE` (2026) e `#NULO#`, `#NE#` (2018). `DS_CARGO` é MAIÚSCULO em `consulta_cand` e Capitalizado em `votacao_*_munzona`. `SG_FEDERACAO` em 2026 é a composição, não uma sigla.
@@ -104,7 +106,7 @@ A página do político segue o inventário (`docs/REFERENCIA-POLITICOMETRO.md`, 
 ### Câmara — `https://dadosabertos.camara.leg.br/api/v2` (JSON, sem chave)
 - `/deputados`, `/deputados/{id}` (tem CPF para o join com o TSE, confirmado em 70/70 de SP). E-mail oficial em `ultimoStatus.gabinete.email` (o `email` do topo vem nulo); foto em `ultimoStatus.urlFoto`; `redeSocial` é array de URLs.
 - `/deputados?nome=` sem `idLegislatura` só busca em exercício; com `idLegislatura=N` busca quem passou pela legislatura N. Ids são estáveis entre legislaturas. Eleitos pela 1ª vez em 2026 não existem até 01/02/2027; ex-deputados existem com registro antigo.
-- `/deputados/{id}/orgaos`, `/frentes`, `/historico`, `/despesas`.
+- `/deputados/{id}/orgaos`, `/frentes`, `/historico`, `/despesas`. Em `/historico`, a `descricaoStatus` pode vir com uma anotação livre antes do evento, separada por " / " ("SGM Adjunta ... / Entrada - Posse de Eleito Titular"): procurar o evento em cada trecho (`lib/linhas-mandato.ts`).
 - `/despesas?ano=` **sozinho devolve vazio**; usar `?idLegislatura=57&ano=` (+`mes` opcional). ~10 páginas de 100 por deputado-ano; 70 deputados × 2 anos = 538 chamadas, 0 falhas. Somar `valorLiquido` (estornos vêm negativos). `codDocumento` repetido não é duplicata (passagens SIGEPA têm várias linhas por código): nunca deduplicar.
 - O CSV anual `camara.leg.br/cotas/Ano-{ano}.csv.zip` **não serve** para a média: omite "PASSAGEM AÉREA - SIGEPA" (até 75% do gasto de alguns deputados). Média da bancada vem da API, mesma fonte do número do político.
 - Lançamento da cota atrasa ~3 meses: a média de SP cai de R$ 48k (mai/26) para R$ 10k (out/26). O card mostra o último mês fechado, não o corrente.
@@ -120,7 +122,7 @@ A página do político segue o inventário (`docs/REFERENCIA-POLITICOMETRO.md`, 
 
 ### Senado — `https://legis.senado.leg.br/dadosabertos` (JSON via header `Accept: application/json`; o sufixo `.json` só redireciona)
 - Doc: Swagger UI em `/dadosabertos/docs/`; o OpenAPI está em `/dadosabertos/v3/api-docs` (v4.1.3 em 2026-10-29, 157 paths).
-- `/senador/lista/atual?uf=`, `/senador/{codigo}` (v6), `/senador/{codigo}/mandatos`, `/senador/{codigo}/licencas?dataInicio=AAAAMMDD`, `/comissoes`, `/autorias`.
+- `/senador/lista/atual?uf=`, `/senador/{codigo}` (v6), `/senador/{codigo}/mandatos`, `/senador/{codigo}/licencas?dataInicio=AAAAMMDD`, `/comissoes`, `/autorias`. `/licencas` repete a mesma licença (início e motivo iguais) com fins diferentes: ficar com o fim mais tardio.
 - **Votos nominais do plenário: `GET /votacao?dataInicio&dataFim` (ISO, janela ≤ 1 ano; 400 acima).** `/senador/{codigo}/votacoes`, `/plenario/lista/votacao/...` e `/plenario/votacao/nominal/{ano}` estão DEPRECATED e apontam para este. Cada votação lista **os 81 senadores** com `siglaVotoParlamentar`: Sim/Não/Abstenção; "Votou" (votação secreta — 56% das nominais 2023–26, sabatinas MSF/OFS); "Presidente (art. 51 RISF)"; NA (dispositivo não citado); e siglas de comparecimento (P-NRV, AP, MIS, LS, LP, NCom..., lista em `/plenario/lista/tiposComparecimento`) que viram `ausente`. `idExterno` = `codigoSessaoVotacao`. Só sessões do SF: vetos (sessão conjunta do CN) não aparecem.
 - Orientação de bancada: `GET /plenario/votacao/orientacaoBancada/{AAAAMMDD}/{AAAAMMDD}` (aceitou o período inteiro numa chamada). Junta com `/votacao` por `sequencialVotacao` (nulo em ~2% das votações → sem orientação). Bancadas: partidos na grafia da API ("Republica", "Podemos", "UNIÃO"), "Governo", "Oposição", "Maioria", "Minoria", "Banc Fem". Valores SIM/NÃO/LIVRE/OBSTRUÇÃO/null, normalizados no adapter para Sim/Não/Liberado/Obstrução/"" (vocabulário da Câmara).
 - XML→JSON: objeto em vez de array quando há um só item (`Partidos.Partido`), chave ausente quando vazio. Normalizar em `lib/senado.ts`; nunca usar o shape cru fora dele.

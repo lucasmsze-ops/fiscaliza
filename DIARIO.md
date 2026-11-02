@@ -15,6 +15,24 @@ Modelo:
 
 ---
 
+## 2026-11-02 · E21c
+**Feito:** `scripts/cron/parlamentares.ts` (Câmara: 648 da legislatura 57, CPF comparado em memória
+com o TSE 2026 e 2022; Senado: 81 por nome completo + UF, todos ligados) e `votacoes.ts` derivando
+os votos de todos em todas as votações a partir das respostas brutas (Senado ano a ano, reproduz o
+publicado sem diferença). `lib/linhas-mandato.ts` (regra do consolidar, mesmos arquivos). Ensaio
+`--sem-publicar` e conferências antes de publicar: 513 de 513 deputados e 81 de 81 senadores em
+exercício; 594 de 594 cards com números e "Como cobrar". Site: páginas de político e JSON de cidade
+na primeira visita, JSON da cidade com o cabeçalho de cada um, lista de cidades fora do HTML (home de
+59 para 2,5 KB), UF na busca. Testado no navegador com o estado nacional (Feira de Santana/BA). Push do
+código, depois publicação: 570 mil linhas e 3.293 resumos em 2 min 20 s; 11 de 11 contagens; 121 MB.
+**Decidido:** push antes de publicar (o código antigo só conhecia as páginas de SP). Votos sem os
+arquivos anuais da Câmara: as respostas por votação bastam e já estavam em cache. 7 políticos de SP
+ganharam vínculo com a Câmara (passaram pela legislatura e não estão em exercício). Correções nas
+regras: anotação antes do evento no histórico da Câmara (1 deputado de RO sem mandato) e licença
+repetida no Senado (5 casos).
+**Lacunas:** ver `docs/LACUNAS.md` (`#NULO` no TSE, senadores que saíram, cota só de SP).
+**Próximo passo:** E21d — cota da Câmara nas 27 UFs (API, média por UF) e CEAPS do Senado.
+
 ## 2026-11-02 · E21b
 **Feito:** `scripts/tse/municipios.ts` → `data/municipios-ibge.json` (5.571 cidades; 13 grafias no
 de-para; SP igual ao atual). `scripts/tse/nacional.ts` → `estado/fontes/tse-2026/`: 3.632 políticos
