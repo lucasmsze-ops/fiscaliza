@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { CidadeJson } from "@/app/dados/cidade/[ibge]/route";
 import type { ItemBusca } from "@/lib/card";
 import { alternar, caminhoColinha, CHAVE_STORAGE, COLINHA_VAZIA, idsDaColinha, lerColinha, MAX_SENADORES, type Colinha } from "@/lib/colinha";
+import { hrefSecao } from "@/lib/glossario";
 import { normalizar } from "@/lib/texto";
 import { PoliticoCardCompacto } from "./PoliticoCard";
 
@@ -134,7 +135,7 @@ export function MontarColinha({ municipios }: { municipios: MunicipioBusca[] }) 
       {cidade && !carregando && (
         <section className="mt-8" aria-labelledby="titulo-cidade">
           <h2 id="titulo-cidade" className="text-xl font-semibold">Mais votados em {cidade.nome}</h2>
-          <p className="mt-1 text-sm text-[var(--suave)]">Toque em quem recebeu seu voto em 2026. Fonte: TSE.</p>
+          <p className="mt-1 text-sm text-[var(--suave)]">Toque em quem recebeu seu voto em 2026. <Link href={hrefSecao("cidade")} className="underline underline-offset-2">Fonte: TSE</Link>.</p>
 
           <h3 className="mt-6 font-semibold">Deputado federal <span className="text-sm font-normal text-[var(--suave)]">· escolha 1</span></h3>
           <ListaCidade cargo="deputado_federal" linhas={cidade.deputado_federal} cidade={cidade.nome} indice={indice} marcado={marcado} marcar={marcar} />
@@ -145,7 +146,7 @@ export function MontarColinha({ municipios }: { municipios: MunicipioBusca[] }) 
       )}
 
       {caminho && (
-        <div className="fixed inset-x-0 bottom-0 border-t border-black/10 bg-[var(--fundo)] px-4 py-3 dark:border-white/15">
+        <div className="barra-fixa fixed inset-x-0 bottom-0 border-t border-black/10 bg-[var(--fundo)] px-4 py-3 dark:border-white/15">
           <div className="mx-auto flex max-w-xl items-center justify-between gap-3">
             <p className="min-w-0 truncate text-sm"><span className="text-[var(--suave)]">Sua colinha:</span> {escolhidos.join(", ")}</p>
             <Link href={caminho} className="shrink-0 rounded-full bg-[var(--texto)] px-5 py-2 text-sm font-semibold text-[var(--fundo)]">Ver colinha</Link>

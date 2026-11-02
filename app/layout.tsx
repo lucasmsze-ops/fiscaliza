@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Rodape } from "@/components/Rodape";
 import "./globals.css";
 
 // URL absoluta para og:image (o WhatsApp não aceita relativa). Na Vercel vem da variável do projeto.
@@ -16,7 +17,10 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body className="min-h-dvh antialiased">{children}</body>
+      <body className="min-h-dvh antialiased">
+        {children}
+        <Rodape />
+      </body>
     </html>
   );
 }

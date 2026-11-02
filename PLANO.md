@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E15** (atualizar esta linha ao avançar)
+**Etapa atual: E16** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -192,10 +192,18 @@ Calendário externo que afeta o plano:
       e `/p/kiko-celeguim-sp`: LCP abaixo de 1 s.)
 
 ### E15 · `/como-funciona` e acabamento
-- [ ] Metodologia de cada número, fontes com link, licenças, link para o código.
-- [ ] Analytics cookieless (Vercel Web Analytics, plano free) ou nenhum.
-- [ ] Revisão de textos: sem adjetivo sobre político em lugar nenhum.
+- [x] Metodologia de cada número, fontes com link, licenças, link para o código.
+      (`app/como-funciona/page.tsx`, 12 seções com âncora em `lib/glossario.ts#SECOES`; os números
+      da página saem do `repo`, nada digitado à mão. Rodapé global `components/Rodape.tsx`.)
+- [x] Analytics cookieless (Vercel Web Analytics, plano free) ou nenhum. (Nenhum nesta versão:
+      exigiria a dependência `@vercel/analytics`; a página de privacidade diz "sem medição de
+      audiência". Rever se o usuário quiser medir o teste da E16.)
+- [x] Revisão de textos: sem adjetivo sobre político em lugar nenhum. (Busca por qualificativos em
+      `app/`, `components/`, `lib/` e nos 14 textos do quiz: nenhum; só nomes de variável.)
 - Pronto quando: toda métrica da interface linka para a seção correspondente.
+      (O popover de cada termo do card tem "Como calculamos" → `/como-funciona#secao`; as seções
+      da página do político têm "como contamos"; a lista da cidade e o quiz linkam a sua seção.
+      Conferido em `/p/kiko-celeguim-sp`, `/`, `/votacoes` a 375 px.)
 
 ### E16 · Teste com 5 pessoas
 - [ ] Roteiro: "digite sua cidade e monte sua colinha". Cronometrar.

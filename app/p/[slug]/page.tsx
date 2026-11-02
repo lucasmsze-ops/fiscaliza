@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { PoliticoCard } from "@/components/PoliticoCard";
 import { Termo } from "@/components/Termo";
 import { inteiro, reais, resumoNumeros } from "@/lib/card";
+import { hrefSecao, type Secao as SecaoComoFunciona } from "@/lib/glossario";
 import { montarPagina } from "@/lib/pagina";
 import { repo } from "@/lib/repo";
 import type { TipoVoto } from "@/lib/types";
@@ -34,10 +35,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-function Secao({ titulo, children }: { titulo: string; children: React.ReactNode }) {
+/** `secao`: seção de /como-funciona com a regra de cálculo; só para blocos com número. */
+function Secao({ titulo, secao, children }: { titulo: string; secao?: SecaoComoFunciona; children: React.ReactNode }) {
   return (
     <section className="mt-10" aria-label={titulo}>
-      <h2 className="text-lg font-semibold">{titulo}</h2>
+      <div className="flex items-baseline justify-between gap-3">
+        <h2 className="text-lg font-semibold">{titulo}</h2>
+        {secao && <Link href={hrefSecao(secao)} className="shrink-0 text-xs text-[var(--suave)] underline underline-offset-2">como contamos</Link>}
+      </div>
       <div className="mt-3 text-sm">{children}</div>
     </section>
   );
@@ -55,7 +60,7 @@ export default async function PaginaPolitico({ params }: Props) {
       <div className="mt-4 grid justify-items-center"><PoliticoCard d={c} /></div>
 
       {c.quiz && c.quiz.length > 0 && (
-        <Secao titulo="Como votou nas perguntas do quiz">
+        <Secao titulo="Como votou nas perguntas do quiz" secao="concordancia">
           <ul className="grid gap-2">
             {c.quiz.map((q) => (
               <li key={q.itemId} className="flex items-baseline justify-between gap-3 border-b border-black/10 pb-2 dark:border-white/15">
@@ -69,7 +74,7 @@ export default async function PaginaPolitico({ params }: Props) {
       )}
 
       {v && (
-        <Secao titulo={`Votações nominais do plenário ${casaNome}, 2023–2026`}>
+        <Secao titulo={`Votações nominais do plenário ${casaNome}, 2023–2026`} secao="participacao">
           <p className="text-[var(--suave)]">{inteiro(v.total)} votações durante o mandato. Como votou:</p>
           <dl className="mt-3 grid grid-cols-2 gap-x-6 gap-y-1 tabular-nums">
             {(Object.entries(v.totais) as [TipoVoto, number][]).filter(([, n]) => n > 0).map(([t, n]) => (
@@ -92,7 +97,7 @@ export default async function PaginaPolitico({ params }: Props) {
       )}
 
       {ceap && (
-        <Secao titulo="Cota parlamentar (CEAP) mês a mês">
+        <Secao titulo="Cota parlamentar (CEAP) mês a mês" secao="ceap">
           <p className="text-[var(--suave)]">Valor líquido do mês e <Termo id="pg-media" termo="mediaUf">média da bancada de {ceap.uf}</Termo>. Meses em aberto ainda recebem lançamentos.</p>
           <table className="mt-3 w-full tabular-nums">
             <thead><tr className="text-left text-xs text-[var(--suave)]"><th className="font-normal">Mês</th><th className="text-right font-normal">Valor</th><th className="text-right font-normal">Média {ceap.uf}</th></tr></thead>
@@ -121,7 +126,7 @@ export default async function PaginaPolitico({ params }: Props) {
       )}
 
       {(pg.mandatos.length > 0 || pg.afastamentos.length > 0) && (
-        <Secao titulo="Mandatos e afastamentos">
+        <Secao titulo="Mandatos e afastamentos" secao="participacao">
           <ul className="grid gap-1">
             {pg.mandatos.map((m) => (
               <li key={`${m.cargo}-${m.inicio}`}>{m.cargo === "senador" ? "Senado" : "Câmara"}{m.titular ? "" : " (suplente)"}: {dataBr(m.inicio)} a {m.fim ? dataBr(m.fim) : "hoje"}</li>
@@ -149,7 +154,6 @@ export default async function PaginaPolitico({ params }: Props) {
         </Secao>
       )}
 
-      <p className="mt-10 text-xs text-[var(--suave)]">Fontes: TSE, Câmara dos Deputados e Senado Federal (dados abertos).</p>
     </main>
   );
 }

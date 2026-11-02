@@ -17,7 +17,7 @@ Nunca preencher com dado sintético.
 | 2026-10-29 | Senado | Nenhum endpoint expõe CPF | Join com o TSE por nome completo + UF, método gravado em `join`; revisar à mão se houver homônimo |
 | 2026-10-29 | Senado | 240 das 426 votações nominais do plenário (2023-02→2026-10) são secretas: a API diz só "Votou" | Conta na participação (tipo `secreto`); fora de governismo e concordância; quiz só usa abertas |
 | 2026-10-29 | Senado | 10 votações com `sequencialVotacao` nulo não casam com a orientação de bancada | Fora do governismo (sem orientação); seguem na participação |
-| 2026-10-29 | Senado / Câmara | Vetos são votados em sessão conjunta do CN e não estão em `/votacao` (Senado) nem em `/votacoes?idOrgao=180` (Câmara) | Fora dos números do MVP; dizer em `/como-funciona` |
+| 2026-10-29 | Senado / Câmara | Vetos são votados em sessão conjunta do CN e não estão em `/votacao` (Senado) nem em `/votacoes?idOrgao=180` (Câmara) | Fora dos números do MVP; dito em `/como-funciona#fora` (E15) |
 | 2026-10-29 | Senado | André do Prado e Derrite (eleitos 2026) não existem na API até 01/02/2027 | Perfil só do TSE; "primeiro voto em fevereiro" |
 | 2026-11-01 | TSE | Em 81 das 1.290 listas de top-20 (cidades pequenas) há empate de votos com o 20º colocado | A lista inclui todos os empatados (até 23 nomes); ordem dentro do empate por número de urna, sem significado |
 | 2026-11-01 | TSE | Votação municipal não traz código IBGE; 1 município de SP com grafia diferente no IBGE | Código IBGE por nome normalizado + de-para revisado (São Luís/Luiz do Paraitinga) |
@@ -30,3 +30,5 @@ Nunca preencher com dado sintético.
 | 2026-11-01 | Senado | Fotos oficiais do Senado têm 105–299 KB (Câmara e TSE: 5–61 KB) | Medido na E12: colinha típica mostra conteúdo + 1ª foto em ~1 s no 4G lento; com os 3 senadores em exercício, ~2 s. Sem redimensionar (seria proxiar). Alternativas a decidir: foto do TSE da eleição deles, ou aceitar |
 | 2026-11-01 | Câmara / Senado | Ementas que não dizem o que a matéria faz (ex.: PLP 177/2023: "Altera a redação da Lei Complementar nº 78") | Explicação do quiz usa a ementa do texto aprovado no Senado e as palavras-chave da Câmara; nenhum número que não esteja nas fontes (ex.: a nova quantidade de deputados não aparece) |
 | 2026-11-01 | Senado | PL 2162/2023: situação "VETADA" e, ao mesmo tempo, norma gerada Lei nº 15.402/2026; Câmara ainda mostra "Aguardando Envio ao Senado" | O quiz relata os dois registros do Senado como estão, sem interpretar |
+| 2026-11-01 | Repositório | `github.com/lucasmsze-ops/fiscaliza` é privado; `/como-funciona#licencas` linka para ele como código-fonte (AGPL) | Link dá 404 para quem não está logado até o repo virar público; decidir antes da E16 |
+| 2026-11-01 | Senado | CEAPS (cota dos senadores) continua fora | `/como-funciona#ceap` e `#fora` dizem que não está nesta versão |

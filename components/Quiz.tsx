@@ -58,7 +58,7 @@ export function Quiz({ itens }: { itens: QuizItem[] }) {
         ))}
       </ol>
 
-      <div className="fixed inset-x-0 bottom-0 border-t border-black/10 bg-[var(--fundo)] px-4 py-3 dark:border-white/15">
+      <div className="barra-fixa fixed inset-x-0 bottom-0 border-t border-black/10 bg-[var(--fundo)] px-4 py-3 dark:border-white/15">
         <div className="mx-auto flex max-w-xl items-center justify-between gap-3">
           <p className="text-sm tabular-nums" aria-live="polite">{respondidas} de {itens.length} respondidas</p>
           {colinha && respondidas > 0 ? (

@@ -80,7 +80,7 @@ export function PoliticoCard({ d, linkPagina = false }: { d: CardDados; linkPagi
 
             </dl>
             <p className="mt-3 text-xs text-[var(--suave)]">
-              Votações nominais do plenário {n.casa === "senado" ? "do Senado" : "da Câmara"}, {n.periodo}.
+              <Termo id={`${d.id}-nominal`} termo="nominal">Votações nominais</Termo> do plenário {n.casa === "senado" ? "do Senado" : "da Câmara"}, {n.periodo}.
             </p>
             {d.quiz && <ConcordanciaNoCard id={d.id} votos={d.quiz} />}
           </>

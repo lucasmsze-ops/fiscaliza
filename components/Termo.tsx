@@ -1,9 +1,10 @@
 import type { ReactNode } from "react";
-import { GLOSSARIO, type TermoGlossario } from "@/lib/glossario";
+import { GLOSSARIO, hrefSecao, type TermoGlossario } from "@/lib/glossario";
 
 /**
  * Termo com explicação. Usa o popover nativo do HTML (sem JavaScript nem dependência): abre com
  * toque, clique ou teclado e fecha ao tocar fora ou no botão "Fechar". `id` precisa ser único na página.
+ * Toda métrica linka daqui para a seção correspondente de /como-funciona (CLAUDE.md, princípio 4).
  */
 export function Termo({ id, termo, explicacao, children }: {
   id: string;
@@ -33,9 +34,12 @@ export function Termo({ id, termo, explicacao, children }: {
         <span className="block font-semibold">{g.titulo}</span>
         {explicacao && <span className="mt-1 block">{explicacao}</span>}
         <span className="mt-1 block text-[var(--suave)]">{g.texto}</span>
-        <button type="button" popoverTarget={alvo} popoverTargetAction="hide" className="mt-3 block text-xs underline underline-offset-2">
-          Fechar
-        </button>
+        <span className="mt-3 flex items-center justify-between gap-3 text-xs">
+          <a href={hrefSecao(g.secao)} className="underline underline-offset-2">{g.secao === "glossario" ? "Outros termos" : "Como calculamos"}</a>
+          <button type="button" popoverTarget={alvo} popoverTargetAction="hide" className="underline underline-offset-2">
+            Fechar
+          </button>
+        </span>
       </span>
     </span>
   );

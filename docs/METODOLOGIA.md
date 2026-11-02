@@ -1,7 +1,9 @@
 # Metodologia
 
-Texto-fonte da página `/como-funciona` (E14). Toda mudança em `lib/indicadores.ts`,
-`lib/quociente.ts` ou `lib/ceap.ts` atualiza este arquivo no mesmo commit. Decisões de
+Nota técnica da metodologia. Desde a E15 o texto para o eleitor é a própria página
+`/como-funciona` (`app/como-funciona/page.tsx`), cujos números saem do `repo`; este arquivo guarda
+o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/indicadores.ts`,
+`lib/quociente.ts` ou `lib/ceap.ts` atualiza a página e este arquivo no mesmo commit. Decisões de
 2026-11-01, com o dado real da sonda (ver `docs/SONDA.md`).
 
 ## Participação em votações

@@ -15,6 +15,28 @@ Modelo:
 
 ---
 
+## 2026-11-01 · E15
+**Feito:** `/como-funciona` (`app/como-funciona/page.tsx`): 12 seções com âncora (cobertura, lista da
+cidade, participação, governismo, concordância, "seu voto contou para", CEAP, o que fica fora, fontes,
+privacidade, código e licenças, termos). Todos os números da página (438 políticos, 1.107 + 426
+votações, 240 secretas, 866/129 com orientação do Governo, 14 perguntas com 5 Sim/5 Não/4 sem
+orientação, mês de referência, data da coleta) saem do `repo`. `lib/glossario.ts` ganhou `SECOES`,
+`secao` por termo e o termo "votação nominal"; o popover do `Termo` mostra "Como calculamos" → a
+seção. Página do político com "como contamos" por seção; "Fonte: TSE" da lista da cidade e
+"Como as votações foram escolhidas" do quiz linkam. Rodapé global (`components/Rodape.tsx`, no
+layout; sobe quando há barra fixa via `body:has(.barra-fixa)`). 65 testes, build ok.
+**Decidido:** sem analytics nesta versão (dependência nova e nada a medir antes da E16); a página
+diz isso. A página em TSX é o texto canônico da metodologia; `docs/METODOLOGIA.md` fica como nota
+técnica (nomes de campos, decisões datadas) e é atualizado junto. Revisão de adjetivos: nenhum
+achado. O servidor `next start` da sessão anterior continuava na porta 3107 (não pude matá-lo);
+o preview rodou em 3108 (`fiscaliza-3108` no launch.json do $HOME).
+**Lacunas:** o repositório é privado, então o link "código-fonte no GitHub" da página dá 404 para
+quem não está logado; a AGPL pede o fonte acessível. Tornar público antes do teste com pessoas.
+Data da coleta vem do `updated_at` em UTC; a página converte para o fuso de Brasília.
+**Próximo passo:** E16 — roteiro "digite sua cidade e monte sua colinha" com 5 pessoas, cronometrar,
+registrar em `docs/TESTE-USUARIOS.md`. Antes: tornar o repo público (ou tirar o link) e decidir se
+quer Vercel Web Analytics para medir o teste.
+
 ## 2026-11-01 · E14
 **Feito:** slug nome de urna + UF (decisão do usuário; colinha no localStorage v2). Colunas
 `telefone` e `redes_sociais` em `politicos`. `lib/pagina.ts` (votos por tipo e últimas 10 no
