@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E14** (atualizar esta linha ao avançar)
+**Etapa atual: E15** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -188,9 +188,8 @@ Calendário externo que afeta o plano:
 - [x] Slug estável: nome de urna + UF (`kiko-celeguim-sp`), sem o cargo, por decisão do usuário
       (o cargo muda entre eleições). Homônimo na mesma UF vira erro, não sufixo por ordem.
 - Pronto quando: LCP < 1 s em 4G simulado (Lighthouse mobile) na página mais pesada.
-      (**Pendente.** PageSpeed Insights sem chave: cota esgotada (429); `npx lighthouse` local
-      bloqueado pela política de segurança da sessão. Estimativa por bytes: HTML 11–13 KB e CSS
-      4 KB comprimidos, foto exibida pequena (72×96); falta a medição.)
+      (Medido pelo usuário em 2026-11-01 com o Lighthouse mobile do Chrome em `/p/giordano-sp`
+      e `/p/kiko-celeguim-sp`: LCP abaixo de 1 s.)
 
 ### E15 · `/como-funciona` e acabamento
 - [ ] Metodologia de cada número, fontes com link, licenças, link para o código.
