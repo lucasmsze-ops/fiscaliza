@@ -6,6 +6,8 @@
  * Uma tentativa por endpoint, sem retry, timeout de 30 s: o objetivo é ver bloqueio ou lentidão,
  * não buscar dado. Sai com 1 se alguma fonte obrigatória falhar.
  */
+export {}; // módulo ES: permite await no topo
+
 const CAMARA = "https://dadosabertos.camara.leg.br/api/v2";
 const SENADO = "https://legis.senado.leg.br/dadosabertos";
 const JSON_ = { Accept: "application/json" };

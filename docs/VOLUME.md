@@ -90,13 +90,15 @@ no Postgres. A margem dura de 2 a 3 anos antes de ser preciso arquivar anos anti
   ano, e versionada em `data/`; o cron só a lê. Indicadores do IBGE (Passo 7) terão o mesmo
   tratamento ou outra fonte.
 
-## Decisões para o usuário (antes da E19)
+## Decisões (usuário, 2026-11-02)
 
-1. **Cota:** agregada por fornecedor e por mês, com link para as notas na página oficial (cabe), ou
-   nota a nota (não cabe no free).
-2. **Proposições:** texto completo só das que podem virar lei e contagem do resto (cabe com
-   margem), ou tudo (cabe, sem margem).
-3. **Histórico:** só a legislatura atual em diante.
-4. **Repositório público:** Actions grátis e o link do código em `/como-funciona` para de dar 404.
-5. **Vercel Hobby "pessoal e não comercial":** o Fiscaliza é sem fins lucrativos, mas é um projeto
-   público de duas pessoas. Ler os termos de uso justo da Vercel e decidir se está confortável.
+1. **Cota: agregada** por mês, categoria e fornecedor (Câmara e Senado), com link para as notas
+   na página oficial. Nota a nota fica fora.
+2. **Proposições: só as que podem virar lei** (PL, PLP, PEC, PDL, PRC) com texto completo;
+   requerimentos, indicações e emendas como contagem por político, ano e tipo, com link.
+3. **Histórico: desde 2023** (legislatura atual em diante).
+4. **Repositório público:** sim. A troca é feita pelo usuário nas configurações do GitHub. Antes,
+   o histórico foi varrido: nenhum segredo, nenhum CPF nem hash de CPF gravado; o único CPF por
+   extenso estava numa descrição oficial de votação da Câmara e foi ocultado (`lib/texto.ts#semCpf`).
+   O texto antigo continua nos commits anteriores.
+5. **Vercel Hobby "pessoal e não comercial":** pendente; o usuário lê os termos de uso justo.

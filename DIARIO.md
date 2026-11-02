@@ -15,6 +15,19 @@ Modelo:
 
 ---
 
+## 2026-11-02 · decisões de volume
+**Feito:** usuário decidiu as questões de `docs/VOLUME.md`: cota agregada, íntegra só das
+proposições que podem virar lei, dados desde 2023, repositório público. Antes de abrir o repo,
+varri o histórico: nenhum segredo, nenhum CPF nem hash de CPF; achei um CPF por extenso numa
+descrição oficial de votação da Câmara (prisão de deputado) e passei a ocultá-lo
+(`lib/texto.ts#semCpf`, aplicado no `consolidar.ts` e nos dados; o script reproduz o mesmo
+`votacoes.json`). `scripts/rede.ts` virou módulo (typecheck). 55 testes ok.
+**Decidido:** o texto antigo com o CPF continua nos commits anteriores; reescrever o histórico
+fica a critério do usuário (o dado já é público na Câmara). Termos da Vercel Hobby: pendente,
+o usuário lê.
+**Lacunas:** ver `docs/LACUNAS.md` (CPF em texto oficial).
+**Próximo passo:** o usuário torna o repositório público nas configurações do GitHub; depois, E19.
+
 ## 2026-11-02 · E18 (fechamento)
 **Feito:** push de `4dcdb23`; `gh workflow run rede.yml` duas vezes. Runner do GitHub (Linux x64):
 14 de 15 fontes. Câmara, Senado (inclusive CEAPS), TSE e Portal da Transparência ok; IBGE com

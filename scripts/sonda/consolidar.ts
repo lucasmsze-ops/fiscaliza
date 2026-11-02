@@ -11,6 +11,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { mesesFechados } from "../../lib/ceap";
 import { paraLinha } from "../../lib/linhas";
+import { semCpf } from "../../lib/texto";
 import { fotoUrlTse } from "../../lib/tse";
 import type {
   Afastamento, Cargo, DespesaMediaUf, DespesaMes, EleitoMunicipio, ListaEleitoral, Mandato, Municipio,
@@ -173,12 +174,12 @@ const votacoes: Votacao[] = [
   ...vCam.map((v): Votacao => ({
     id: `camara:${v.idExterno}`, idExterno: v.idExterno, casa: "camara", data: v.data,
     proposicao: v.proposicao ? `${v.proposicao.tipo} ${v.proposicao.numero}/${v.proposicao.ano}` : null,
-    ementa: v.proposicao?.ementa?.trim() || null, objeto: v.objeto, descricao: v.descricao.trim(), resultado: resultadoCamara(v),
+    ementa: v.proposicao?.ementa?.trim() ? semCpf(v.proposicao.ementa.trim()) : null, objeto: v.objeto, descricao: semCpf(v.descricao.trim()), resultado: resultadoCamara(v),
     placar: v.placar, secreta: false, urlOficial: v.urlOficial,
   })),
   ...vSen.map((v): Votacao => ({
     id: `senado:${v.idExterno}`, idExterno: v.idExterno, casa: "senado", data: v.data, proposicao: v.proposicao?.identificacao ?? null,
-    ementa: v.ementa, objeto: null, descricao: v.descricao.trim(), resultado: v.resultado, placar: v.placar, secreta: v.secreta,
+    ementa: v.ementa ? semCpf(v.ementa) : null, objeto: null, descricao: semCpf(v.descricao.trim()), resultado: v.resultado, placar: v.placar, secreta: v.secreta,
     urlOficial: v.urlOficial,
   })),
 ].sort((a, b) => a.data.localeCompare(b.data) || a.id.localeCompare(b.id));

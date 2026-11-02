@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E19** (atualizar esta linha ao avançar; antes, o usuário decide as 5 questões do fim de `docs/VOLUME.md`)
+**Etapa atual: E19** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -300,13 +300,17 @@ Patrimônio por eleição, sem descrição dos bens; arrecadado, gasto e % de di
 
 ### E25 · Propostas de autoria
 Autor principal vs coautoria, "podem virar lei" vs pedidos, quantas viraram lei, filtro por ano.
+Decisão de 2026-11-02: texto completo só de PL, PLP, PEC, PDL e PRC; o resto como contagem por
+ano e tipo, com link. Carga inicial pelos arquivos anuais da Câmara (`proposicoesAutores`).
 Decidir aqui se entram temas por palavra-chave da ementa.
 
 ### E26 · Todos os votos e fidelidade ao partido
 Lista completa com filtros (ano, voto, busca); % de votos iguais à orientação do partido.
 
 ### E27 · Cota completa
-Câmara e Senado: por mês, categoria, maiores fornecedores e notas.
+Câmara e Senado: por mês, categoria e maiores fornecedores. Decisão de 2026-11-02: agregada, sem
+nota a nota (não cabe no free); link para as notas na página oficial. CPF de fornecedor pessoa
+física nunca é gravado.
 
 ### E28 · Comissões e equipe do gabinete
 Participação em comissões (não as votações delas); pessoas, folha do mês e % do limite.

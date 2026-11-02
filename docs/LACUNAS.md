@@ -37,3 +37,4 @@ Nunca preencher com dado sintético.
 | 2026-11-01 | Senado | CEAPS traz CPF de fornecedor pessoa física (306 de 23.850 despesas em 2025) | CPF nunca é gravado; o fornecedor pessoa física aparece só pelo nome, como a fonte publica, ou fica agregado |
 | 2026-11-01 | Câmara | Cota nota a nota do Brasil inteiro (~1 milhão de linhas em 2023–26) não cabe no Supabase free | A decidir: agregado por fornecedor e mês, com link para as notas na página oficial (`docs/VOLUME.md`) |
 | 2026-11-02 | IBGE | `servicodados.ibge.gov.br` não aceita conexão a partir de runners do GitHub Actions (2 execuções, timeout de conexão) | Municípios e códigos IBGE gerados na máquina local e versionados; o cron só lê |
+| 2026-11-02 | Câmara | Descrição oficial de uma votação (prisão de deputado) traz o CPF dele por extenso | Ocultado como "[CPF omitido]" (`lib/texto.ts#semCpf`); o restante do texto fica como a fonte publica |
