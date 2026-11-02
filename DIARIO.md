@@ -15,6 +15,21 @@ Modelo:
 
 ---
 
+## 2026-11-01 · mudança de escopo
+**Feito:** `CLAUDE.md` reescrito (escopo, princípios, fases, fora de escopo, rotas, card,
+definição de pronto) e `PLANO.md` refeito a partir da E16: Passo 3 (E17 remoção, E18 volume e
+custo, E19–E22 infra), Passo 4 (E23–E34, Congresso completo no Brasil inteiro) e Passos 5–7 em
+bloco. Nada de código mudou.
+**Decidido (pelo usuário):** ter praticamente todas as funcionalidades do politicometro.org, menos
+presença em sessões, discursos, conta e avisos reais (só fake door, em todos os lugares onde fizer
+sentido) e régua esquerda–direita. Sair do Fiscaliza: quiz de concordância, botão Cobrar e "seu
+voto contou para". **Decidido (premissas minhas, a confirmar):** colinha continua como entrada;
+Cobrar vira "Como cobrar" com canais oficiais; fake door sem nenhum campo de contato, só contagem
+anônima; custo zero continua, com a E18 como porteira; STF só com fonte aberta (sem scraping);
+expansão começa pelo Congresso no Brasil inteiro; E16 suspensa até o redesenho (volta na E34).
+**Lacunas:** não medimos ainda se o Brasil inteiro cabe nos planos free (é a E18).
+**Próximo passo:** E17 — tirar quiz, Cobrar e "seu voto contou para"; Como cobrar e fake door.
+
 ## 2026-11-01 · referência (fora do plano)
 **Feito:** mapa do politicometro.org pelo navegador, como visitante: home, página de deputado e
 de senador, estado, cidade, "quem me representa", Congresso e detalhe de votação, e as ~20 seções

@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E16** (atualizar esta linha ao avançar)
+**Etapa atual: E17** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -205,7 +205,7 @@ Calendário externo que afeta o plano:
       da página do político têm "como contamos"; a lista da cidade e o quiz linkam a sua seção.
       Conferido em `/p/kiko-celeguim-sp`, `/`, `/votacoes` a 375 px.)
 
-### E16 · Teste com 5 pessoas
+### E16 · Teste com 5 pessoas (suspensa em 2026-11-01)
 - [ ] Roteiro: "digite sua cidade e monte sua colinha". Cronometrar.
       (Roteiro, critério de sucesso e ficha prontos em `docs/TESTE-USUARIOS.md`; falta aplicar
       com as 5 pessoas e cronometrar.)
@@ -216,48 +216,137 @@ Calendário externo que afeta o plano:
 - Pronto quando: 4 de 5 conseguem em < 1 min sem ajuda.
       (Rodada 1, relato do usuário em 2026-11-01: menos de 5 pessoas, todas em < 1 min sem ajuda,
       todas acharam o deputado na lista da cidade. Falta: completar 5 e alguém que use a busca.)
+      **Suspensa** pela mudança de escopo de 2026-11-01: o teste volta na E34, sobre o site
+      redesenhado, com o mesmo roteiro (`docs/TESTE-USUARIOS.md`).
 
-## Passo 3 — Infra (Supabase + cron)
+## Mudança de escopo (2026-11-01)
 
-### E17 · Supabase e schema
-- [ ] Projeto free. `supabase/migrations/0001_init.sql` com as 7 tabelas, chaves externas
-      para `upsert` e RLS: anon só lê.
+Decisão do usuário, a partir de `docs/REFERENCIA-POLITICOMETRO.md`: ter praticamente todas as
+funcionalidades do politicometro.org, menos presença em sessões, discursos, conta e avisos reais
+(só *fake door*) e régua esquerda–direita; e tirar do Fiscaliza o quiz de concordância, o botão
+Cobrar e "seu voto contou para". O `CLAUDE.md` foi reescrito (escopo, princípios 1, 3, 4, 5 e 6,
+fases, fora de escopo, card). As etapas antigas E17–E21 viraram E19–E22.
+
+## Passo 3 — Redirecionamento e infra
+
+### E17 · Tirar quiz, Cobrar e "seu voto contou para"
+- [ ] Remover `/votacoes` (quiz), `components/{Quiz,QuizNoCard,useRespostas}.tsx`, `lib/quiz.ts`,
+      `CardDados.quiz`, `CardDados.lista`, `CardDados.cobrar`, `data/quiz.json`, `votacoes.quiz`, e
+      os testes e textos correspondentes (`/como-funciona`, glossário, OG, `docs/METODOLOGIA.md`).
+      `lib/quociente.ts` fica (linha do tempo de candidaturas, E29).
+- [ ] **Como cobrar** no card e na página: contato do gabinete e canais oficiais (ouvidoria da
+      Câmara ou do Senado, Fala.BR, MPF e TCU), com os endereços conferidos nas páginas oficiais.
+- [ ] **Receber avisos** (fake door) no card, na página do político e na colinha: toque abre a
+      explicação "ainda não existe"; nenhum campo de contato. A contagem anônima entra com o
+      Supabase (E19).
+- Pronto quando: build e testes passam, nenhuma tela cita quiz, concordância, Cobrar com e-mail
+  pronto ou "seu voto contou para", e o card mostra dois números, Como cobrar e Receber avisos.
+
+### E18 · Volume e custo do Brasil inteiro (porteira do princípio 1)
+- [ ] Estimar linhas e MB por tabela para 513 deputados e 81 senadores, a partir da sonda de SP:
+      votos, orientações, despesas (Câmara e CEAPS), proposições, patrimônio, contas de campanha,
+      equipe de gabinete, candidaturas.
+- [ ] Conferir nas páginas oficiais os limites atuais do Supabase free, da Vercel Hobby (build,
+      ISR, banda) e do GitHub Actions (repo público vs privado).
+- [ ] Testar se as APIs oficiais respondem a partir de um runner do GitHub (fora do Brasil).
+- Pronto quando: tabela volume × limite, com margem, e a lista do que cabe; o que não couber vira
+  decisão do usuário antes da E19.
+
+### E19 · Supabase e schema
+- [ ] Projeto free. Migrações com as tabelas atuais (sem `quiz`) e `avisos_interesse`
+      (página, tipo, dia, contagem; sem nada que identifique quem tocou). RLS: anon só lê, exceto
+      incrementar a contagem por função.
 - [ ] `scripts/seed.ts`: carrega `data/*.json` nas tabelas.
 - Pronto quando: `select count(*)` de cada tabela bate com o JSON.
 
-### E18 · `SupabaseRepo`
+### E20 · `SupabaseRepo`
 - [ ] Implementar a interface `Repo` sobre o Supabase. Trocar por variável de ambiente.
 - [ ] Nenhum componente muda. Rodar o site inteiro nos dois modos.
 - Pronto quando: o site em produção lê do Supabase e as páginas continuam < 1 s.
 
-### E19 · Scripts de cron
+### E21 · Cron do Congresso, Brasil inteiro
 - [ ] `scripts/cron/{politicos,despesas,proposicoes,votacoes}.ts`, cada um idempotente,
       reaproveitando os adapters da sonda. `upsert` por chave externa.
-- [ ] Expandir da amostra para todos: 513 deputados + 81 senadores. Medir tempo total.
+- [ ] 513 deputados + 81 senadores. CEAPS (cota dos senadores) entra aqui. Medir tempo total.
 - [ ] `proposicoes`: filtrar coautorias via `/proposicoes/{id}/autores` (`proponente = true`).
 - Pronto quando: rodar duas vezes seguidas não duplica nada.
 
-### E20 · GitHub Actions
-- [ ] Workflow diário: `politicos` → `despesas` (dias 1–5) → `proposicoes` → `votacoes`.
-      Jobs isolados; falha num não bloqueia o seguinte. Log só no output do Actions.
+### E22 · GitHub Actions
+- [ ] Workflow diário: `politicos` → `despesas` → `proposicoes` → `votacoes`. Jobs isolados;
+      falha num não bloqueia o seguinte. Log só no output do Actions.
 - [ ] Secrets do Supabase. O cron é também o keep-alive do plano free.
+- [ ] Data da última carga por fonte gravada (base da página `/atualizacoes`).
 - Pronto quando: o primeiro run agendado termina verde e o site reflete dado novo.
 
-### E21 · Fechamento do MVP
-- [ ] Passar a "Definição de pronto do MVP" do `CLAUDE.md` item por item, no celular.
-- [ ] `README.md` final; dados derivados publicados com CC-BY 4.0.
-- [ ] Preparar o join dos eleitos para 01/02/2027 (o cron `politicos` precisa casar os
-      novos `camara_id`/`senado_codigo` com o TSE automaticamente).
-- Pronto quando: todos os itens da definição de pronto estão marcados.
+## Passo 4 — Congresso completo, Brasil inteiro
 
----
+Referência: `docs/REFERENCIA-POLITICOMETRO.md`, seções 1 e 2. Detalhar cada etapa ao chegar nela.
 
-## Backlog (não detalhar antes do MVP)
+### E23 · Página do político: resumo do topo
+Mandato atual e próximo, salário e "quanto custa o mandato" (ato legal), data da coleta,
+"o que está e o que não está nesta página", redes declaradas ao TSE.
 
-**v1.1 (março/2027):** emendas por município (Portal da Transparência, chave única no cron) ·
-alerta pré-votação (web push) · "votação da semana".
+### E24 · Patrimônio e contas de campanha (TSE)
+Patrimônio por eleição, sem descrição dos bens; arrecadado, gasto e % de dinheiro público.
 
-**v1.2:** fidelidade partidária · efetividade · comparador · quem vota como eu · suplentes ·
-patrimônio 2022→2026 (`bem_candidato`) · RSS/ICS · seguir tema · dados abertos.
+### E25 · Propostas de autoria
+Autor principal vs coautoria, "podem virar lei" vs pedidos, quantas viraram lei, filtro por ano.
+Decidir aqui se entram temas por palavra-chave da ementa.
+
+### E26 · Todos os votos e fidelidade ao partido
+Lista completa com filtros (ano, voto, busca); % de votos iguais à orientação do partido.
+
+### E27 · Cota completa
+Câmara e Senado: por mês, categoria, maiores fornecedores e notas.
+
+### E28 · Comissões e equipe do gabinete
+Participação em comissões (não as votações delas); pessoas, folha do mês e % do limite.
+
+### E29 · Linha do tempo de candidaturas
+TSE 2008–2026: cargo, votos, eleito por QP ou média (`lib/quociente.ts`).
+
+### E30 · Votações do Plenário
+`/votacoes` com todas as votações do período, filtros por Casa, data, tipo e busca.
+
+### E31 · Detalhe da votação
+`/votacoes/[id]`: o que é, o que foi votado, quórum, placar, voto e orientação de cada partido,
+filtro por UF, caminho da proposta.
+
+### E32 · Agenda e pauta do Plenário
+Pela rotina do cron, nunca consulta ao vivo (princípio 2).
+
+### E33 · Compartilhar e corrigir
+Card por político para baixar (feed e stories, `next/og`), "reportar erro" e "direito de resposta"
+por `mailto:`, página `/atualizacoes`.
+
+### E34 · Fechamento do Passo 4 e teste com 5 pessoas
+Definição de pronto do `CLAUDE.md`, item por item, no celular; roteiro da E16 com 5 pessoas de
+estados diferentes; preparar o join dos eleitos para a posse de 01/02/2027.
+
+## Passo 5 — Todos os eleitos (detalhar ao chegar)
+Governadores, deputados estaduais, prefeitos, vereadores e presidente pelo TSE; páginas de estado
+e de cidade com "quem me representa"; diretório; resultados de eleições.
+
+## Passo 6 — Legislativos estaduais e municipais (detalhar ao chegar)
+Presença fica fora; votos e propostas só onde há dado aberto por API (ex.: SAPL). Fonte sem dado
+aberto aparece como lacuna, com o porquê.
+
+## Passo 7 — Contexto (detalhar ao chegar)
+Comparar (2 a 5 lado a lado) · governos e indicadores · partidos (sem régua) · cargos ·
+dicionário · mais vistos (analytics cookieless) · impostômetro · STF (só com fonte aberta) ·
+ouvir a página · tema claro/escuro · servidor MCP.
+
+Calendário: a posse é em 01/02/2027. Até lá, o Passo 3 e o Passo 4 cabem no ritmo de uma etapa
+por dia (18 etapas).
+
+## Backlog (encaixar nos passos quando chegar a hora)
+
+Emendas parlamentares (Portal da Transparência, chave única no cron) · "votação da semana" como
+destaque em `/votacoes` · efetividade · suplentes · RSS/ICS · seguir tema (sem conta: no
+localStorage) · dados abertos para download.
+
+Já viraram etapas: fidelidade partidária (E26), patrimônio (E24), comparador (Passo 7).
+Saíram com a mudança de escopo: alerta pré-votação (aviso real) e "quem vota como eu" (dependia
+do quiz).
 
 Fora de escopo permanece como está no `CLAUDE.md`.

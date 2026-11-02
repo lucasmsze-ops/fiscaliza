@@ -1,18 +1,27 @@
 # Fiscaliza — CLAUDE.md
 
-Plataforma cívica, sem fins lucrativos, feita por duas pessoas. Responde cinco perguntas para o eleitor:
-em quem eu votei? → o que estão fazendo? → me representam? → como cobro? → com quem compartilho?
+Plataforma cívica, sem fins lucrativos, feita por duas pessoas. Mostra, com dado oficial, quem
+representa o eleitor e o que cada um fez no mandato: em quem eu votei? → quem me representa? →
+o que estão fazendo? → como cobro? → com quem compartilho?
 
-Escopo: deputados federais e senadores eleitos em 2026 (e os em exercício). Presidente aparece só como card estático.
+**Escopo (decisão de 2026-11-01):** todos os eleitos em exercício e os eleitos de 2026, do vereador
+ao presidente, com praticamente as mesmas funcionalidades do politicometro.org (inventário em
+`docs/REFERENCIA-POLITICOMETRO.md`), menos o que está em "Fora de escopo". A expansão é por fases:
+primeiro Congresso (deputados federais e senadores) no Brasil inteiro, depois os demais cargos.
+O protótipo cobre só SP (438 políticos de 2026).
 
 ## Princípios inegociáveis
 
-1. **Custo zero.** Vercel Hobby, Supabase free, GitHub Actions. Nenhuma assinatura, nenhum serviço pago. Se uma solução exige plano pago, ela está errada.
-2. **Nenhuma requisição de usuário chama LLM ou API externa.** Toda página lê do Supabase (ou de JSON estático na fase de protótipo). APIs da Câmara/Senado/TSE são tocadas apenas pelo cron.
-3. **Sem conta, sem e-mail, sem dado pessoal.** A colinha vive na URL (`/c/[ids]`) e no localStorage. Não existe tabela de usuários. Analytics só cookieless.
-4. **Dado oficial, zero adjetivo.** O site mostra número e fonte; nunca qualifica um político. Toda métrica tem link para a metodologia em `/como-funciona` e para a página oficial de origem.
-5. **Nenhum dado inventado, nem em protótipo.** Se o campo não veio da fonte, não entra na interface. Placeholders são proibidos.
-6. **Simplicidade sobre completude.** O concorrente é a enciclopédia; nós somos um card com três números e um botão. Antes de adicionar algo, perguntar: cabe no card?
+1. **Custo zero.** Vercel Hobby, Supabase free, GitHub Actions. Nenhuma assinatura, nenhum serviço pago. Se uma solução exige plano pago, ela está errada. Cada fase de expansão mede o volume contra os limites free antes de coletar.
+2. **Nenhuma requisição de usuário chama LLM ou API externa.** Toda página lê do Supabase (ou de JSON estático na fase de protótipo). APIs oficiais são tocadas apenas pelo cron.
+3. **Sem conta, sem e-mail, sem dado pessoal.** A colinha vive na URL (`/c/[ids]`) e no localStorage. Não existe tabela de usuários nem login. Analytics só cookieless. Avisos são só *fake door* (ver abaixo): nenhum campo de contato.
+4. **Dado oficial, zero adjetivo.** O site mostra número e fonte; nunca qualifica um político nem um partido (sem nota, ranking, "melhores e piores" ou régua ideológica). Toda métrica tem link para a metodologia em `/como-funciona` e para a página oficial de origem.
+5. **Nenhum dado inventado, nem em protótipo.** Se o campo não veio da fonte, não entra na interface. Placeholders são proibidos. Dado não publicado aparece como "—" com o porquê, nunca zero.
+6. **Completo, mas legível.** Cada página abre com um resumo de poucos números com fonte; o detalhe vem abaixo, em seções que a pessoa abre. Antes de adicionar algo, perguntar: a pessoa entende em 10 segundos o que é?
+
+**Fake door de avisos:** botão "Receber avisos" nos lugares onde um aviso faria sentido (página do
+político, votação, cidade, colinha). Ao tocar, explica que ainda não existe e conta o toque de
+forma anônima (cookieless, só página e tipo). Nunca pede e-mail, telefone ou qualquer contato.
 
 ## Stack
 
@@ -25,43 +34,57 @@ Escopo: deputados federais e senadores eleitos em 2026 (e os em exercício). Pre
 
 ## Fases
 
-**Passo 1 — Sonda (sem infra).** `scripts/sonda/` gera JSON estático com ~20 políticos reais (10 deputados reeleitos SP, 5 novos, 5 senadores): perfil, votos nominais 2023–26, orientações, CEAP mensal, resultado TSE por município em SP. Objetivo: ver o dado real antes de desenhar.
+**Passo 1 — Sonda (feito).** JSON estático com dado real de SP para ver o dado antes de desenhar.
 
-**Passo 2 — Protótipo (JSON estático).** Site completo lendo `data/*.json`. Testar com 5 pessoas que não acompanham política. Critério: montar a colinha a partir da cidade em menos de 1 minuto.
+**Passo 2 — Protótipo (feito).** Site lendo `data/*.json` (SP). O teste com 5 pessoas (E16) fica
+suspenso até o redesenho.
 
-**Passo 3 — Infra.** Trocar a origem dos dados de JSON para Supabase. Mesmo shape, mesmos componentes. Cron diário.
+**Passo 3 — Redirecionamento e infra.** Tirar quiz, Cobrar e "seu voto contou para"; Supabase; cron.
 
-**v1.1 (março/2027):** emendas parlamentares por município (Portal da Transparência), alerta pré-votação (web push), "votação da semana".
-**v1.2:** fidelidade partidária, efetividade, comparador, quem vota como eu, suplentes, patrimônio 2022→2026, RSS/ICS, seguir tema, dados abertos.
+**Passo 4 — Congresso completo, Brasil inteiro.** 513 deputados e 81 senadores com a página
+completa (inventário, seção 1) e as votações do Plenário (seção 2).
+
+**Passo 5 — Todos os eleitos.** Governadores, deputados estaduais, prefeitos, vereadores e
+presidente pelo TSE; mapa, estado, cidade e "quem me representa"; eleições.
+
+**Passo 6 — Legislativos estaduais e municipais.** Só onde há dado aberto por API (ex.: SAPL).
+
+**Passo 7 — Contexto.** Governos e indicadores, partidos (sem régua), cargos, dicionário,
+comparar, mais vistos, impostômetro, STF (só se houver fonte aberta).
 
 ## Fora de escopo (não implementar, não sugerir)
 
-Presidente como entidade com feed · presença literal em sessões · feed por janela fixa de dias · e-mail transacional, newsletter, tabela de assinantes · votações de comissões · discursos · deputados estaduais e governadores · qualquer scraping de HTML · resumo de ementa por LLM em tempo de requisição.
+Presença literal em sessões · discursos · conta, login, "monitorar" com cadastro · e-mail, WhatsApp, newsletter ou qualquer aviso real (só a fake door) · tabela de usuários ou assinantes · régua ideológica (esquerda/direita) de partidos ou pessoas · nota, ranking ou "melhores e piores" · recomendação de voto · votações de comissões · feed por janela fixa de dias · qualquer scraping de HTML (fonte sem dado aberto fica de fora, com o porquê) · resumo de ementa por LLM em tempo de requisição · geolocalização (exige serviço externo) · quiz de concordância · botão Cobrar com e-mail pronto · "seu voto contou para" (removidos em 2026-11-01).
 
-## Rotas (MVP)
+## Rotas
 
+Hoje (protótipo, SP):
 ```
 /                   entrada: cidade ou nome → monta a colinha
-/c/[ids]            colinha: cards + "seu voto contou para" + concordância + OG image
-/p/[slug]           página do político (ISR): card, histórico 2023–26, CEAP, contatos, cobrar
-                    (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
-/votacoes           as votações do quiz de concordância, explicadas em 3 parágrafos
+/c/[ids]            colinha: cards + OG image
+/p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
+/votacoes           hoje: as votações do quiz (sai na E17; volta como lista do Plenário no Passo 4)
 /como-funciona      metodologia, fontes, licença, código
 ```
+Planejadas (detalhar no PLANO ao chegar): `/votacoes/[id]` (detalhe com placar por partido),
+`/uf/[uf]`, `/cidade/[ibge]` ("quem me representa"), `/comparar`, `/eleicoes`, `/governos`,
+`/partidos`, `/cargos`, `/dicionario`, `/mais-vistos`, `/atualizacoes`.
+
 A colinha tem `opengraph-image.tsx` (preview com foto, cargo, status e números; Casa e período sempre explícitos, porque um senador eleito pode ter números da Câmara). `metadataBase` vem de `VERCEL_PROJECT_PRODUCTION_URL` (ou `NEXT_PUBLIC_SITE_URL`). A fonte padrão do `next/og` só tem peso regular; buscar fonte externa na hora não é permitido.
 
 Apoio (não são páginas): `/dados/politicos` e `/dados/cidade/[ibge]` são JSONs estáticos gerados no build (índice de busca, mais votados primeiro, com nome de urna, nome civil e número de urna; e top-20 por cidade), servidos pela CDN. O top-20 cobre ~2/3 dos votos para deputado: a busca por nome ou número é o caminho do resto. `/amostra` é a vitrine dos 20 da sonda (noindex). A colinha usa ids separados por `+` (`/c/kiko-celeguim+andre-do-prado`): 1 deputado e até 2 senadores.
 
 ## O card do político (objeto central)
 
-Foto · nome de urna · partido-UF · status (eleito / reeleito / não eleito / suplente / em exercício) · três números:
+Foto · nome de urna · partido-UF · status (eleito / reeleito / não eleito / suplente / em exercício) · mandato atual e próximo · dois números do mandato no Congresso:
 1. **Participação em votações** — % de votações nominais do plenário em que registrou voto (Sim/Não/Abstenção/Obstrução). Rótulo: "participação em votações", nunca "presença".
 2. **Governismo** — % de votos alinhados à orientação "Governo". Calculado por período de governo (corte em 01/01/2027), não por legislatura.
-3. **Concordância com você** — % das votações do quiz em que o voto do político coincide com a resposta do usuário. Sem resposta do usuário: oculto. Político sem voto: "primeiro voto em fevereiro". Sempre com a base ("6 de 11"); percentual só com ≥ 3 votações comparáveis. Calculada no navegador (respostas no localStorage, `lib/quiz.ts`).
 
-Metodologia detalhada (o que conta como voto, licença, secretas, mês da CEAP, nome da federação): `/como-funciona` (texto para o eleitor) e `docs/METODOLOGIA.md` (nota técnica). Ao lado da participação, "afastado N dias no período" (licença não é descontada).
+Metodologia detalhada (o que conta como voto, licença, secretas, mês da CEAP): `/como-funciona` (texto para o eleitor) e `docs/METODOLOGIA.md` (nota técnica). Ao lado da participação, "afastado N dias no período" (licença não é descontada).
 
-Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por estado; nunca comparar com média nacional). Abaixo: botão **Cobrar** (`mailto:` para o e-mail oficial do gabinete, assunto e corpo pré-preenchidos com a votação discordante, se houver).
+Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por estado; nunca comparar com média nacional). Abaixo: **Como cobrar**, com os canais oficiais (contato do gabinete, ouvidoria da Casa, Fala.BR, MPF/TCU), sem texto pronto; e **Receber avisos** (fake door).
+
+A página do político segue o inventário (`docs/REFERENCIA-POLITICOMETRO.md`, seção 1): resumo no topo, seções abaixo.
 
 ## Fontes de dados e armadilhas conhecidas
 
@@ -77,7 +100,7 @@ Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por esta
 - Relatório de Resultado da Totalização (`relatorio_resultado_totalizacao`, PDF por UF): Anexos VI (QE/QP), VII (sobras, média a média) e VIII (resumo) são o gabarito do quociente.
 - `CD_MUNICIPIO` é código do TSE, não do IBGE. Código IBGE pela API de localidades do IBGE por nome normalizado; SP tem 1 grafia divergente (TSE "São Luís do Paraitinga", IBGE "São Luiz"), resolvida em de-para explícito.
 - `bem_candidato`: bens declarados (para v1.2).
-- Quociente eleitoral (`lib/quociente.ts`): QE com fração ≤ 0,5 desprezada; QP desprezando a fração; vaga de QP só para quem tem ≥ 10% do QE (a sobra vai para as médias); sobras primeiro entre listas com ≥ 80% do QE e candidato com ≥ 20%, depois entre todas (STF, ADIs 7228/7263/7325); divisor da média = vagas **obtidas** por QP + médias + 1. Tratar **federação** como lista única. Frase na interface: "seu voto contou para [partido/federação], que elegeu N em [UF]". Nunca "ajudou a eleger Z". Senador é eleição majoritária: sem frase de lista.
+- Quociente eleitoral (`lib/quociente.ts`): QE com fração ≤ 0,5 desprezada; QP desprezando a fração; vaga de QP só para quem tem ≥ 10% do QE (a sobra vai para as médias); sobras primeiro entre listas com ≥ 80% do QE e candidato com ≥ 20%, depois entre todas (STF, ADIs 7228/7263/7325); divisor da média = vagas **obtidas** por QP + médias + 1. Tratar **federação** como lista única. A frase "seu voto contou para" saiu da interface (2026-11-01); o cálculo fica para mostrar como cada um foi eleito (QP ou média) na linha do tempo de candidaturas. Senador é eleição majoritária.
 
 ### Câmara — `https://dadosabertos.camara.leg.br/api/v2` (JSON, sem chave)
 - `/deputados`, `/deputados/{id}` (tem CPF para o join com o TSE, confirmado em 70/70 de SP). E-mail oficial em `ultimoStatus.gabinete.email` (o `email` do topo vem nulo); foto em `ultimoStatus.urlFoto`; `redeSocial` é array de URLs.
@@ -126,13 +149,12 @@ despesas_media_uf uf, ano, mes, media, deputados, total
 proposicoes       id_externo, casa, politico_id, tipo, numero, ano, ementa, data,
                   proponente bool, status, url_oficial
 votacoes          id (= casa:id_externo), id_externo, casa, data, proposicao, ementa, objeto,
-                  descricao, resultado, placar jsonb, secreta bool, url_oficial, quiz bool
+                  descricao, resultado, placar jsonb, secreta bool, url_oficial
 votos             votacao_id, politico_id, voto enum(sim,nao,abstencao,obstrucao,art17,
                   nao_informado,secreto,ausente), detalhe (sigla do Senado)
 orientacoes       votacao_id, bancada, orientacao
-quiz              id, ordem, materia, titulo, ementa, explicacao jsonb (3 parágrafos),
-                  fontes jsonb, votacao_camara_id, votacao_senado_id
 ```
+A tabela `quiz` e a coluna `votacoes.quiz` saem na E17; o modelo cresce a cada passo (detalhar no PLANO).
 Tudo com `upsert` por chave externa. Nenhuma coluna de CPF ou hash de CPF. Tamanho na sonda (SP, 438 políticos, 2023–26): 9,6 MB de JSON; esperado < 50 MB por legislatura.
 
 ## Cron (`.github/workflows/`)
@@ -146,7 +168,7 @@ Diário, em ordem, cada job idempotente e isolado: `politicos` → `despesas` (s
 - Textos de interface em português do Brasil, sem jargão legislativo sem tooltip (PEC, PL, MP, obstrução, quociente).
 - Links externos com `rel="noreferrer noopener"`. Header `Referrer-Policy: same-origin`.
 - Mobile-first. A colinha e a página do político têm que carregar em < 1s em 4G.
-- Testes só onde há aritmética: cálculo de participação, governismo, concordância, quociente. Fixtures com dado real da sonda.
+- Testes só onde há aritmética: cálculo de participação, governismo, quociente, somas de cota, salário e patrimônio. Fixtures com dado real da sonda.
 - Commits pequenos, mensagens em português.
 
 ## Como trabalhar comigo neste repositório
@@ -157,9 +179,9 @@ Diário, em ordem, cada job idempotente e isolado: `politicos` → `despesas` (s
 - Ao tocar em cálculo de indicador, atualizar `/como-funciona` (`app/como-funciona/page.tsx`, texto canônico desde a E15) e a nota técnica `docs/METODOLOGIA.md` no mesmo commit. Termos do card e âncoras das seções em `lib/glossario.ts`.
 - Se uma API retornar algo diferente do documentado aqui, atualizar esta seção do CLAUDE.md no mesmo PR.
 
-## Definição de pronto do MVP
+## Definição de pronto (Passo 4, Congresso no Brasil inteiro)
 
-Uma pessoa que não lembra em quem votou digita a cidade, reconhece os rostos, monta a colinha em < 1 min, vê os três números de cada político, responde o quiz e vê a concordância, clica em Cobrar e sai um e-mail pronto, compartilha e a preview no WhatsApp mostra a colinha com os números. Tudo sem conta e sem custo.
+Uma pessoa de qualquer estado digita a cidade ou um nome, reconhece os rostos, monta a colinha em < 1 min, abre a página de cada um e entende em 10 segundos o resumo do mandato, vê como votou em qualquer votação do Plenário, acha os canais oficiais para cobrar e compartilha a colinha com preview e números. Tudo sem conta e sem custo.
 
 ## Retomada de sessão
 
