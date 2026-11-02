@@ -15,6 +15,16 @@ Modelo:
 
 ---
 
+## 2026-11-02 · E18 (fechamento)
+**Feito:** push de `4dcdb23`; `gh workflow run rede.yml` duas vezes. Runner do GitHub (Linux x64):
+14 de 15 fontes. Câmara, Senado (inclusive CEAPS), TSE e Portal da Transparência ok; IBGE com
+timeout de conexão nas duas execuções.
+**Decidido:** tabela de municípios (códigos IBGE) gerada localmente e versionada; o cron não chama
+o IBGE. `CLAUDE.md` e `docs/VOLUME.md` atualizados.
+**Lacunas:** IBGE inacessível do runner (registrado em `docs/LACUNAS.md`).
+**Próximo passo:** o usuário decide as 5 questões do fim de `docs/VOLUME.md`; depois, E19 (Supabase
+e schema, medindo o tamanho real com `pg_total_relation_size`).
+
 ## 2026-11-01 · E18 (parcial)
 **Feito:** E17 publicada (push de `bd404da`, conferida em produção). `docs/VOLUME.md`: limites free
 lidos nas páginas oficiais (Supabase 500 MB e 5 GB de egress; Vercel Hobby 1 M de leituras e 200 mil

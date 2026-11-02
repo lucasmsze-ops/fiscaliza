@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E18** (atualizar esta linha ao avançar)
+**Etapa atual: E19** (atualizar esta linha ao avançar; antes, o usuário decide as 5 questões do fim de `docs/VOLUME.md`)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -255,8 +255,9 @@ fases, fora de escopo, card). As etapas antigas E17–E21 viraram E19–E22.
       Postgres, sem cota nota a nota e sem a íntegra das proposições não legislativas.)
 - [x] Conferir nas páginas oficiais os limites atuais do Supabase free, da Vercel Hobby (build,
       ISR, banda) e do GitHub Actions (repo público vs privado).
-- [ ] Testar se as APIs oficiais respondem a partir de um runner do GitHub (fora do Brasil).
-      (`scripts/rede.ts` + `.github/workflows/rede.yml`; local: 15 de 15. Falta rodar no runner.)
+- [x] Testar se as APIs oficiais respondem a partir de um runner do GitHub (fora do Brasil).
+      (`scripts/rede.ts` + `.github/workflows/rede.yml`; local: 15 de 15; runner: 14 de 15 em duas
+      execuções. O IBGE não aceita conexão do runner: municípios gerados localmente e versionados.)
 - Pronto quando: tabela volume × limite, com margem, e a lista do que cabe; o que não couber vira
   decisão do usuário antes da E19.
 

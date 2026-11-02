@@ -83,7 +83,12 @@ no Postgres. A margem dura de 2 a 3 anos antes de ser preciso arquivar anos anti
   ano de download, minutos de processamento com DuckDB.
 - **Rede:** `scripts/rede.ts` testa as 15 fontes que o cron usa. Da máquina local (Brasil):
   15 de 15 responderam, a mais lenta foi a CEAPS do ano inteiro (3,4 s, 6,5 MB). Do runner do
-  GitHub: `.github/workflows/rede.yml`, a rodar depois do push.
+  GitHub (`.github/workflows/rede.yml`, Linux x64, duas execuções seguidas): **14 de 15**. Câmara,
+  Senado, TSE e Portal da Transparência responderam (a primeira chamada à Câmara levou 7,6 s);
+  **o IBGE (`servicodados.ibge.gov.br`) não aceitou conexão nas duas**, com timeout de conexão em
+  10 s. Consequência: a tabela de municípios (códigos IBGE) é gerada na máquina local, uma vez por
+  ano, e versionada em `data/`; o cron só a lê. Indicadores do IBGE (Passo 7) terão o mesmo
+  tratamento ou outra fonte.
 
 ## Decisões para o usuário (antes da E19)
 
