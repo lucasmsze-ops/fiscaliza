@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: "Fiscaliza",
   description: "Em quem você votou, o que está fazendo e como cobrar. Dados oficiais do TSE, da Câmara e do Senado.",
+  // Origem dos dados desta versão (diagnóstico; não aparece na tela): `json` ou `supabase` (lib/repo.ts).
+  other: { "fiscaliza-dados": process.env.FISCALIZA_DADOS === "supabase" ? "supabase" : "json" },
 };
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1 };
