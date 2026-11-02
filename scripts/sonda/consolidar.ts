@@ -11,6 +11,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { mesesFechados } from "../../lib/ceap";
 import { paraLinha } from "../../lib/linhas";
+import { deHistoricoCamara, deSenado } from "../../lib/linhas-mandato";
 import { linhaOrientacao, linhaVotacaoCamara, linhaVotacaoSenado, linhaVotoCamara, linhaVotoSenado } from "../../lib/linhas-votacao";
 import { fotoUrlTse } from "../../lib/tse";
 import type {
@@ -106,42 +107,12 @@ const porSenado = new Map(politicos.filter((p) => p.senadoCodigo).map((p) => [p.
 const porSq = new Map(politicos.map((p) => [p.tseSqCandidato, p.id]));
 
 // ------------------------------------------------------------------ mandatos e afastamentos
-// Legislatura N da Câmara: 1º/fev do ano 2023 − 4·(57 − N) até 31/jan quatro anos depois (CF, art. 44).
-const fimLegislatura = (n: number) => `${2027 - 4 * (57 - n)}-01-31`;
 const mandatos: Mandato[] = [];
 const afastamentos: Afastamento[] = [];
-
-function deHistorico(politicoId: string, historico: DeputadoBancada["historico"]) {
-  const ev = historico.filter((h) => h.situacao && h.descricao).sort((a, b) => a.dataHora.localeCompare(b.dataHora));
-  for (const leg of [...new Set(ev.map((h) => h.legislatura))].sort()) {
-    const doLeg = ev.filter((h) => h.legislatura === leg);
-    const posse = doLeg.find((h) => h.descricao!.startsWith("Entrada") && !/Reassun/.test(h.descricao!));
-    if (!posse) continue;
-    const saida = doLeg.find((h) => h.descricao!.startsWith("Saída - Afastamento definitivo"));
-    const fimLeg = fimLegislatura(leg);
-    const fim = saida ? saida.dataHora.slice(0, 10) : fimLeg < HOJE ? fimLeg : null;
-    mandatos.push({ politicoId, cargo: "deputado_federal", inicio: posse.dataHora.slice(0, 10), fim, titular: posse.condicaoEleitoral !== "Suplente" });
-    let aberto: { inicio: string; motivo: string } | null = null;
-    for (const h of doLeg) {
-      if (h.descricao!.startsWith("Saída - Afastamento") && !h.descricao!.startsWith("Saída - Afastamento definitivo")) {
-        aberto = { inicio: h.dataHora.slice(0, 10), motivo: h.descricao!.split(" - ").at(-1)! };
-      } else if (aberto && /Reassun/.test(h.descricao!)) {
-        afastamentos.push({ politicoId, ...aberto, fim: h.dataHora.slice(0, 10) }); aberto = null;
-      }
-    }
-    if (aberto) afastamentos.push({ politicoId, ...aberto, fim });
-  }
-}
-for (const d of bancada) { const id = porCamara.get(d.camaraId); if (id) deHistorico(id, d.historico); }
-for (const p of camaraAmostra.filter((x) => !x.emExercicio)) { const id = porCamara.get(p.camaraId); if (id) deHistorico(id, p.historico); }
-for (const s of senadores) {
-  const id = porSenado.get(s.senadoCodigo)!;
-  for (const m of s.mandatos) {
-    const fimMandato = m.legislaturas.map((l) => l.fim).sort().at(-1)!;
-    for (const e of m.exercicios) mandatos.push({ politicoId: id, cargo: "senador", inicio: e.inicio, fim: e.fim ?? (fimMandato < HOJE ? fimMandato : null), titular: m.titular });
-  }
-  for (const l of s.licencas) afastamentos.push({ politicoId: id, inicio: l.inicio, fim: l.fim, motivo: l.descricao });
-}
+const juntar = (r: { mandatos: Mandato[]; afastamentos: Afastamento[] }) => { mandatos.push(...r.mandatos); afastamentos.push(...r.afastamentos); };
+for (const d of bancada) { const id = porCamara.get(d.camaraId); if (id) juntar(deHistoricoCamara(id, d.historico, HOJE)); }
+for (const p of camaraAmostra.filter((x) => !x.emExercicio)) { const id = porCamara.get(p.camaraId); if (id) juntar(deHistoricoCamara(id, p.historico, HOJE)); }
+for (const s of senadores) juntar(deSenado(porSenado.get(s.senadoCodigo)!, s.mandatos, s.licencas, HOJE));
 
 // ------------------------------------------------------------------ listas, municípios, top-20
 const listas: ListaEleitoral[] = quoc.listas.map((l) => ({

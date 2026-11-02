@@ -84,9 +84,10 @@ export default async function ComoFunciona() {
 
       <Secao id="cobertura">
         <p>
-          Nesta versão, o site cobre São Paulo: {n(politicos.length)} pessoas, sendo {n(eleitos + suplentes + naoEleitos)} que disputaram
-          deputado federal ou o Senado em 2026 ({n(eleitos)} eleitas, {n(suplentes)} suplentes e {n(naoEleitos)} não eleitas)
-          e {n(emExercicio)} senadores em exercício que não disputaram. Os {n(municipios.length)} municípios do estado têm lista de mais votados.
+          O site cobre o Brasil inteiro: {n(politicos.length)} pessoas. São {n(eleitos + suplentes + naoEleitos)} que disputaram
+          deputado federal ou o Senado em 2026 e aparecem entre os 20 mais votados de alguma cidade, ou foram eleitas ({n(eleitos)} eleitas,
+          {n(suplentes)} suplentes e {n(naoEleitos)} não eleitas), e {n(emExercicio)} parlamentares em exercício sem candidatura de 2026
+          a esses cargos com resultado no TSE. Os {n(municipios.length)} municípios do país têm lista de mais votados.
         </p>
         <p>
           Votações: {n(camara.length)} <Termo id="cf-nominal" termo="nominal">votações nominais</Termo> do plenário da Câmara ({faixa(camara)})
@@ -188,7 +189,8 @@ export default async function ComoFunciona() {
           própria Câmara.
         </p>
         <p>
-          <strong>Senado:</strong> a cota dos senadores (CEAPS) não está nesta versão. O card de senador não tem o bloco de cota.
+          <strong>Por enquanto, só São Paulo:</strong> a cota está carregada para os deputados de São Paulo; os outros 26 estados e a
+          cota dos senadores (CEAPS) entram na próxima atualização. Até lá, o card de quem não é deputado por São Paulo não tem o bloco de cota.
         </p>
       </Secao>
 

@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CidadeJson } from "@/app/dados/cidade/[ibge]/route";
-import type { ItemBusca } from "@/lib/card";
+import type { MunicipioJson } from "@/app/dados/municipios/route";
+import type { CardResumo, ItemBusca } from "@/lib/card";
 import { alternar, caminhoColinha, CHAVE_STORAGE, COLINHA_VAZIA, idsDaColinha, lerColinha, MAX_SENADORES, type Colinha } from "@/lib/colinha";
 import { hrefSecao } from "@/lib/glossario";
 import { normalizar } from "@/lib/texto";
 import { PoliticoCardCompacto } from "./PoliticoCard";
 
-export interface MunicipioBusca { ibge: number; nome: string }
+export interface MunicipioBusca { ibge: number; nome: string; uf: string }
 
 const inteiro = (n: number) => n.toLocaleString("pt-BR");
 const CHAVE_CIDADE = "fiscaliza.cidade.v1";
@@ -24,14 +25,14 @@ function gravarStorage(chave: string, valor: string) {
 type Cargo2026 = "deputado_federal" | "senador";
 
 /** Top-20 de um cargo na cidade. Componente de módulo (não recriado a cada render: mantém DOM, foco e fotos). */
-function ListaCidade({ cargo, linhas, cidade, indice, marcado, marcar }: {
-  cargo: Cargo2026; linhas: [string, number, number][]; cidade: string; indice: Map<string, ItemBusca> | null;
+function ListaCidade({ cargo, linhas, cidade, pessoas, marcado, marcar }: {
+  cargo: Cargo2026; linhas: [string, number, number][]; cidade: string; pessoas: Record<string, CardResumo>;
   marcado: (id: string) => boolean; marcar: (cargo: Cargo2026, id: string) => void;
 }) {
   return (
     <ul className="mt-3 grid gap-2">
       {linhas.map(([id, votos, posicao]) => {
-        const p = indice?.get(id);
+        const p = pessoas[id];
         if (!p) return null;
         const sel = marcado(id);
         return (
@@ -51,8 +52,18 @@ function ListaCidade({ cargo, linhas, cidade, indice, marcado, marcar }: {
  * Entrada do site: cidade ou nome → marcar em quem votou → colinha. Tudo no navegador; os dados
  * vêm de JSON estático (/dados/politicos e /dados/cidade/[ibge]) servido pela CDN.
  */
-export function MontarColinha({ municipios }: { municipios: MunicipioBusca[] }) {
+export function MontarColinha() {
   const [termo, setTermo] = useState("");
+  const [municipios, setMunicipios] = useState<MunicipioBusca[]>([]);
+  const pedidoMunicipios = useRef<Promise<void> | null>(null);
+  /** Lista das cidades (~45 KB comprimida): baixada na primeira vez que a pessoa toca na busca. */
+  function carregarMunicipios() {
+    pedidoMunicipios.current ??= fetch("/dados/municipios").then(async (r) => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      setMunicipios((await r.json() as MunicipioJson[]).map(([ibge, nome, uf]) => ({ ibge, nome, uf })));
+    }).catch(() => { pedidoMunicipios.current = null; setErro("Não foi possível carregar a lista de cidades."); });
+    return pedidoMunicipios.current;
+  }
   const [indice, setIndice] = useState<Map<string, ItemBusca> | null>(null);
   const [cidade, setCidade] = useState<CidadeJson | null>(null);
   const [carregando, setCarregando] = useState(false);
@@ -78,7 +89,7 @@ export function MontarColinha({ municipios }: { municipios: MunicipioBusca[] }) 
   async function escolherCidade(ibge: number) {
     setCarregando(true); setErro(null);
     try {
-      const [r] = await Promise.all([fetch(`/dados/cidade/${ibge}`), carregarIndice()]);
+      const r = await fetch(`/dados/cidade/${ibge}`);
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       setCidade(await r.json() as CidadeJson);
       setTermo("");
@@ -120,21 +131,22 @@ export function MontarColinha({ municipios }: { municipios: MunicipioBusca[] }) 
   }, [t, indice]);
 
   const caminho = caminhoColinha(colinha);
-  const escolhidos = idsDaColinha(colinha).map((id) => indice?.get(id)?.nomeUrna ?? id);
+  const escolhidos = idsDaColinha(colinha).map((id) => cidade?.pessoas[id]?.nomeUrna ?? indice?.get(id)?.nomeUrna ?? id);
   const marcado = (id: string) => colinha.deputado === id || colinha.senadores.includes(id);
 
   return (
     <div className="pb-28">
       <label htmlFor="busca" className="block text-sm font-medium">Sua cidade ou o nome de quem recebeu seu voto</label>
       <input id="busca" ref={campo} type="search" inputMode="search" autoComplete="off" value={termo}
-        onChange={(e) => { setTermo(e.target.value); if (e.target.value.length >= 3) void carregarIndice().catch(() => setErro("Não foi possível carregar a busca.")); }}
+        onFocus={() => void carregarMunicipios()}
+        onChange={(e) => { setTermo(e.target.value); void carregarMunicipios(); if (e.target.value.length >= 3) void carregarIndice().catch(() => setErro("Não foi possível carregar a busca.")); }}
         className="mt-2 w-full rounded-xl border border-black/20 bg-transparent px-4 py-3 text-base dark:border-white/25" />
 
       {(cidadesAchadas.length > 0 || pessoasAchadas.length > 0) && (
         <div className="mt-2 rounded-xl border border-black/10 p-2 dark:border-white/15">
           {cidadesAchadas.map((m) => (
             <button key={m.ibge} type="button" onClick={() => void escolherCidade(m.ibge)} className="block w-full rounded-lg px-3 py-2 text-left hover:bg-black/5 dark:hover:bg-white/10">
-              {m.nome} <span className="text-xs text-[var(--suave)]">· cidade</span>
+              {m.nome} <span className="text-xs text-[var(--suave)]">· cidade · {m.uf}</span>
             </button>
           ))}
           {pessoasAchadas.map((p) => (
@@ -155,14 +167,14 @@ export function MontarColinha({ municipios }: { municipios: MunicipioBusca[] }) 
           <p className="mt-1 text-sm text-[var(--suave)]">Toque em quem recebeu seu voto em 2026. <Link href={hrefSecao("cidade")} className="underline underline-offset-2">Fonte: TSE</Link>.</p>
 
           <h3 className="mt-6 font-semibold">Deputado federal <span className="text-sm font-normal text-[var(--suave)]">· escolha 1</span></h3>
-          <ListaCidade cargo="deputado_federal" linhas={cidade.deputado_federal} cidade={cidade.nome} indice={indice} marcado={marcado} marcar={marcar} />
+          <ListaCidade cargo="deputado_federal" linhas={cidade.deputado_federal} cidade={cidade.nome} pessoas={cidade.pessoas} marcado={marcado} marcar={marcar} />
           <p className="mt-3 text-sm text-[var(--suave)]">
             Não está na lista?{" "}
             <button type="button" onClick={irParaBusca} className="underline underline-offset-2">Busque pelo nome ou pelo número de urna</button>.
           </p>
 
           <h3 className="mt-8 font-semibold">Senado <span className="text-sm font-normal text-[var(--suave)]">· escolha até {MAX_SENADORES}</span></h3>
-          <ListaCidade cargo="senador" linhas={cidade.senador} cidade={cidade.nome} indice={indice} marcado={marcado} marcar={marcar} />
+          <ListaCidade cargo="senador" linhas={cidade.senador} cidade={cidade.nome} pessoas={cidade.pessoas} marcado={marcado} marcar={marcar} />
         </section>
       )}
 

@@ -184,6 +184,18 @@ console.log(`  SP politicos: ${spPol.size} candidatos do top-20 · ids atuais se
 mkdirSync(SAIDA, { recursive: true });
 const gravar = (nome: string, ls: Record<string, unknown>[]) => writeFileSync(`${SAIDA}/${nome}.json`, `[\n${ls.map((l) => JSON.stringify(l)).join(",\n")}\n]\n`);
 gravar("politicos", linhas(politicos)); gravar("listas", linhas(listas)); gravar("municipios", linhas(municipios)); gravar("eleitos_mun", linhas(eleitosMun));
+// Todos os candidatos a deputado federal e senador (sem CPF): base para quem está em exercício e
+// disputou 2026 sem aparecer em nenhum top-20 (E21c). Mesmos campos de um político do TSE, sem id.
+const todos = cand.map((x) => {
+  const cargo = cargoDe(x.cargo);
+  return {
+    tse_sq_candidato: x.sq, cargo, nome: x.nome, nome_urna: x.nomeUrna, genero: x.genero === "FEMININO" ? "feminino" : x.genero === "MASCULINO" ? "masculino" : null,
+    uf: x.uf, partido: x.partido, lista_id: cargo === "deputado_federal" ? listaId(x.uf, x.lista) : null, federacao: x.federacao, numero_urna: x.numero,
+    // 421 candidaturas vêm com situação "#NULO" (sem resultado na totalização): status desconhecido, nunca inventado.
+    foto_url: fotoUrlTse(CICLO, ELEICAO, x.uf, x.sq), status: x.situacao === "#NULO" ? null : statusDe(x.situacao), votos_2026: votosUf.get(x.sq) ?? null,
+  };
+});
+gravar("candidatos", todos);
 const porCargo = (c: Cargo) => politicos.filter((p) => p.cargo === c).length;
 console.log(`[${marca()}] gravado ${SAIDA}: ${politicos.length} políticos (${porCargo("deputado_federal")} dep. federal, ${porCargo("senador")} senador), ${listas.length} listas, ${municipios.length} municípios, ${eleitosMun.length} linhas de top-20`);
 const ok = divergentes === 0 && iguais === tarefas.length && conf.falhas.length === 0 && spOk && faltamSp.length === 0;

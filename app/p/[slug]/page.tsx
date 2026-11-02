@@ -9,10 +9,12 @@ import { repo } from "@/lib/repo";
 import type { TipoVoto } from "@/lib/types";
 
 export const revalidate = 86400;
-export const dynamicParams = false;
+// No build, só quem tem mandato (Câmara ou Senado); os demais (~3 mil suplentes e não eleitos) são
+// gerados na primeira visita e ficam em cache (ISR). Slug inexistente: notFound().
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  return (await repo.listarPoliticos()).map((p) => ({ slug: p.id }));
+  return (await repo.listarPoliticos()).filter((p) => p.camaraId || p.senadoCodigo).map((p) => ({ slug: p.id }));
 }
 
 type Props = { params: Promise<{ slug: string }> };

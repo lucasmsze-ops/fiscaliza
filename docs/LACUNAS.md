@@ -41,3 +41,4 @@ Nunca preencher com dado sintético.
 | 2026-11-02 | TSE / IBGE | 13 municípios com grafia diferente entre TSE e IBGE (um com o nome antigo no TSE: "Boa Saúde", hoje Januário Cicco/RN) | De-para explícito em `scripts/tse/municipios.ts`; o site mostra o nome do IBGE |
 | 2026-11-02 | TSE | Uma deputada eleita por média (RJ) não está no top-20 de nenhuma cidade | Todos os eleitos entram em `politicos`, além de quem aparece em algum top-20: tem página e busca, não aparece na lista de nenhuma cidade |
 | 2026-11-02 | TSE | Status "reeleito" não está no TSE 2026 | Fora de SP, até a E21c, os eleitos ficam como "eleito" nas tabelas geradas; nada é publicado antes do cruzamento |
+| 2026-11-02 | Senado | `/senador/{codigo}/licencas` repete a mesma licença (mesmo início e motivo) com fins diferentes: prorrogação ou correção (5 casos em 2023–26) | Fica o fim mais tardio (`lib/linhas-mandato.ts#deSenado`); os dias afastado não contam a mesma licença duas vezes |

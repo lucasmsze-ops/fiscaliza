@@ -62,6 +62,23 @@ export class JsonRepo implements Repo {
   private cache = new Map<keyof Tabelas, Promise<unknown[]>>();
   constructor(private dir = path.join(process.cwd(), "data")) {}
 
+  private indices = new Map<string, Promise<Map<unknown, unknown[]>>>();
+
+  /** Linhas agrupadas por um campo, montado uma vez: no Brasil inteiro, filtrar ~500 mil votos a cada página seria lento. */
+  private async por<K extends keyof Tabelas>(nome: K, campo: keyof Tabelas[K]): Promise<Map<unknown, Tabelas[K][]>> {
+    const chave = `${String(nome)}.${String(campo)}`;
+    let p = this.indices.get(chave);
+    if (!p) {
+      p = this.tabela(nome).then((ls) => {
+        const m = new Map<unknown, Tabelas[K][]>();
+        for (const l of ls) { const k = l[campo]; const a = m.get(k); if (a) a.push(l); else m.set(k, [l]); }
+        return m as Map<unknown, unknown[]>;
+      });
+      this.indices.set(chave, p);
+    }
+    return p as Promise<Map<unknown, Tabelas[K][]>>;
+  }
+
   private tabela<K extends keyof Tabelas>(nome: K): Promise<Tabelas[K][]> {
     let p = this.cache.get(nome);
     if (!p) {
@@ -79,7 +96,7 @@ export class JsonRepo implements Repo {
     return montarPagina(this, id);
   }
   async getPolitico(id: string) {
-    return (await this.tabela("politicos")).find((p) => p.id === id) ?? null;
+    return (await this.por("politicos", "id")).get(id)?.[0] ?? null;
   }
   async listarPoliticos() {
     return this.tabela("politicos");
@@ -99,9 +116,9 @@ export class JsonRepo implements Repo {
     return (await this.tabela("municipios")).find((m) => m.ibge === ibge) ?? null;
   }
   async buscarPorCidade(ibge: number) {
-    const [linhas, politicos] = await Promise.all([this.tabela("eleitos_mun"), this.tabela("politicos")]);
-    const porId = new Map(politicos.map((p) => [p.id, p]));
-    return linhas.filter((l) => l.municipioIbge === ibge)
+    const [porCidade, politicos] = await Promise.all([this.por("eleitos_mun", "municipioIbge"), this.por("politicos", "id")]);
+    const porId = new Map([...politicos].map(([id, [p]]) => [id, p!]));
+    return (porCidade.get(ibge) ?? [])
       .map((l) => ({ cargo: l.cargo, posicao: l.posicao, votos: l.votos, politico: porId.get(l.politicoId)! }))
       .sort(ordemNaCidade);
   }
@@ -109,22 +126,22 @@ export class JsonRepo implements Repo {
     return (await this.tabela("listas")).find((l) => l.id === id) ?? null;
   }
   async getMandatos(politicoId: string) {
-    return (await this.tabela("mandatos")).filter((m) => m.politicoId === politicoId);
+    return (await this.por("mandatos", "politicoId")).get(politicoId) ?? [];
   }
   async getAfastamentos(politicoId: string) {
-    return (await this.tabela("afastamentos")).filter((a) => a.politicoId === politicoId);
+    return (await this.por("afastamentos", "politicoId")).get(politicoId) ?? [];
   }
   async getVotacoes(casa: Casa) {
     return (await this.tabela("votacoes")).filter((v) => v.casa === casa);
   }
   async getVotos(politicoId: string) {
-    return (await this.tabela("votos")).filter((v) => v.politicoId === politicoId);
+    return (await this.por("votos", "politicoId")).get(politicoId) ?? [];
   }
   async getOrientacoes(casa: Casa, bancada: string) {
     return (await this.tabela("orientacoes")).filter((o) => o.bancada === bancada && o.votacaoId.startsWith(`${casa}:`));
   }
   async getDespesas(politicoId: string) {
-    return (await this.tabela("despesas_mes")).filter((d) => d.politicoId === politicoId);
+    return (await this.por("despesas_mes", "politicoId")).get(politicoId) ?? [];
   }
   async getMediasUf(uf: string) {
     return (await this.tabela("despesas_media_uf")).filter((m) => m.uf === uf);
@@ -133,6 +150,9 @@ export class JsonRepo implements Repo {
 
 /**
  * A origem de dados do site, num lugar só: FISCALIZA_DADOS=supabase lê do Supabase (precisa de
- * SUPABASE_URL e SUPABASE_PUBLISHABLE_KEY); sem a variável, lê data/*.json.
+ * SUPABASE_URL e SUPABASE_PUBLISHABLE_KEY); sem a variável, lê data/*.json (ou FISCALIZA_JSON_DIR).
  */
-export const repo: Repo = process.env.FISCALIZA_DADOS === "supabase" ? new SupabaseRepo() : new JsonRepo();
+export const repo: Repo = process.env.FISCALIZA_DADOS === "supabase"
+  ? new SupabaseRepo()
+  // FISCALIZA_JSON_DIR: outra pasta no formato de data/ (ex.: estado/dados do cron, para testar o site com ele).
+  : new JsonRepo(process.env.FISCALIZA_JSON_DIR ? path.resolve(process.env.FISCALIZA_JSON_DIR) : undefined);

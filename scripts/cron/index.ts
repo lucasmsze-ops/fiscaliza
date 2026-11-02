@@ -7,8 +7,12 @@
 import { spawnSync } from "node:child_process";
 import { DADOS, gravarTabela, iniciarEstado, lerTabela, mesclar, type LinhaBruta } from "./estado";
 import { publicar } from "./publicar";
+import { jobParlamentares } from "./parlamentares";
 import { gravarResumos } from "./resumos";
 import { jobVotacoes } from "./votacoes";
+
+/** --sem-publicar: coleta, mescla e valida em estado/dados, mas não envia nada ao Supabase (ensaio). */
+const SEM_PUBLICAR = process.argv.includes("--sem-publicar");
 
 const t0 = Date.now();
 const seg = () => `${((Date.now() - t0) / 1000).toFixed(0)}s`;
@@ -17,6 +21,8 @@ if (iniciarEstado()) console.log(`[${seg()}] estado novo em ${DADOS}, a partir d
 
 type Job = { nome: string; rodar: () => Promise<{ tabelas: Record<string, LinhaBruta[]>; relatorio: string[]; falhas: number }> };
 const jobs: Job[] = [
+  // Ordem: políticos antes das votações (os votos de quem acabou de entrar vêm do histórico).
+  { nome: "parlamentares", rodar: () => jobParlamentares(hoje) },
   { nome: "votacoes", rodar: async () => { const r = await jobVotacoes(hoje); return { tabelas: { votacoes: r.votacoes, votos: r.votos, orientacoes: r.orientacoes }, relatorio: r.relatorio, falhas: r.falhas }; } },
 ];
 
@@ -42,6 +48,7 @@ const v = spawnSync("npx", ["tsx", "scripts/sonda/validar.ts"], { env: { ...proc
 console.log(`[${seg()}] validação: ${(v.stdout + v.stderr).trim().split("\n").at(-1)}`);
 if (v.status !== 0) { console.error(v.stdout + v.stderr); console.error("dado inválido: nada foi publicado"); process.exit(1); }
 
+if (SEM_PUBLICAR) { console.log(`[${seg()}] --sem-publicar: nada enviado ao Supabase`); process.exit(falhou ? 1 : 0); }
 for (const p of await publicar()) console.log(`[${seg()}] publicar ${p.tabela.padEnd(18)} ${String(p.enviadas).padStart(6)} enviadas, ${p.semMudanca} sem mudança${p.soNoPublicado ? `, ${p.soNoPublicado} só no publicado (não apagadas)` : ""}`);
 const r = await gravarResumos(DADOS, hoje);
 console.log(`[${seg()}] resumos: ${r.gravados} de ${r.politicos} gravados (os demais não mudaram)`);
