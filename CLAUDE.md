@@ -28,7 +28,7 @@ forma anônima (cookieless, só página e tipo). Nunca pede e-mail, telefone ou 
 - Next.js (App Router) + TypeScript + Tailwind + shadcn/ui. Instalados (versões fixas): next 16.4.3, react 19.3.1, tailwindcss 4.3.3; `next build` funciona com o TypeScript 7 do projeto. shadcn/ui entra na E10, só o Tooltip. Páginas leem dados só por `lib/repo.ts` (`repo`).
 - Supabase Postgres, pela API REST com `fetch` (`lib/supabase.ts`, sem `supabase-js`). Origem dos dados por `FISCALIZA_DADOS=supabase` (`lib/repo-supabase.ts`); sem a variável, `data/*.json`. Card e página vêm pré-calculados da tabela `resumos` (`npm run precalcular`), nunca de todas as votações por página (egress). Migrações em `supabase/migrations/`, rodadas à mão no SQL Editor; `npm run seed` e `npm run supabase:conferir`. PostgREST devolve no máximo 1.000 linhas por pedido: `selecionar()` pagina e exige `order=`. `jsonb` não preserva a ordem das chaves: nunca exibir na ordem de `Object.entries` de um objeto vindo do banco.
 - Cron: GitHub Actions, scripts em `scripts/` (Node/TypeScript). DuckDB para processar CSVs do TSE.
-- Deploy: Vercel via push na `main`. Páginas de político com ISR (`revalidate` 24h).
+- Deploy: Vercel via push na `main`. Páginas de político com ISR (`revalidate` 24h). Funções em São Paulo (`vercel.json`, `regions: ["gru1"]`; o Hobby permite uma região), junto do Supabase: com o padrão (`iad1`, Washington) cada consulta ao banco cruzava o continente e a colinha nova levava ~1 s.
 - Fotos: servidas direto das URLs oficiais (Câmara/Senado/TSE). Nunca proxiar pela Vercel. Exceção: `next/og` busca fotos na hora de gerar a imagem de compartilhamento.
 - Licença: AGPL-3.0 (código), CC-BY 4.0 (dados derivados).
 
