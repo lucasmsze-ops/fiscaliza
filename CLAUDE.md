@@ -156,9 +156,9 @@ orientacoes       votacao_id, bancada, orientacao
 A tabela `quiz` e a coluna `votacoes.quiz` saem na E17; o modelo cresce a cada passo (detalhar no PLANO).
 Tudo com `upsert` por chave externa. Nenhuma coluna de CPF ou hash de CPF; CPF que apareça em texto oficial (descrição de votação, ementa) é ocultado com `lib/texto.ts#semCpf`. Volume e limites: `docs/VOLUME.md` (decisões de 2026-11-02: dados desde 2023, cota agregada por mês/categoria/fornecedor sem nota a nota, íntegra só das proposições que podem virar lei; as páginas leem números pré-calculados pelo cron, não as votações inteiras). Tamanho na sonda (SP, 438 políticos, 2023–26): 9,6 MB de JSON; esperado < 50 MB por legislatura.
 
-## Cron (`.github/workflows/`)
+## Cron (`scripts/cron/`, `npm run cron`; Actions na E22)
 
-Diário, em ordem, cada job idempotente e isolado: `politicos` → `despesas` (só dia 1–5 do mês) → `proposicoes` → `votacoes` (votos + orientações). Um job falhando não impede o seguinte. Log em `logs/` commitado? Não — log no output do Actions apenas. O cron também é o keep-alive do Supabase free.
+Desenho em `docs/CRON.md`. Estado em `estado/` (fora do git; no Actions, no cache do Actions): coleta incremental de cada job → validação → publicação só das linhas novas ou alteradas (diff contra `estado/publicado`, sem ler o banco) → resumos só onde mudou. Jobs isolados; um falhando não impede o seguinte e o processo sai com 1. Log só no output do Actions. O cron também é o keep-alive do Supabase free. Linhas de votação, voto e orientação só por `lib/linhas-votacao.ts` (a mesma regra da sonda).
 
 ## Convenções de código
 

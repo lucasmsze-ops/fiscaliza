@@ -8,3 +8,5 @@ node_modules/
 data/raw/
 next-env.d.ts
 *.tsbuildinfo
+# estado do cron (no Actions vai para o cache)
+estado/

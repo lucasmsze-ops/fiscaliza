@@ -15,7 +15,8 @@
     "seed": "tsx --env-file-if-exists=.env.local scripts/seed.ts",
     "supabase:conferir": "tsx --env-file-if-exists=.env.local scripts/supabase-conferir.ts",
     "rede": "node scripts/rede.ts",
-    "precalcular": "tsx --env-file-if-exists=.env.local scripts/precalcular.ts"
+    "precalcular": "tsx --env-file-if-exists=.env.local scripts/precalcular.ts",
+    "cron": "tsx --env-file-if-exists=.env.local scripts/cron/index.ts"
   },
   "devDependencies": {
     "@duckdb/node-api": "^2.0.0-r.1",

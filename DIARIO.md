@@ -15,6 +15,22 @@ Modelo:
 
 ---
 
+## 2026-11-02 · E21a
+**Feito:** E21 dividida em E21a–E21e (PLANO): a original juntava cinco trabalhos e não tinha o TSE
+nacional, sem o qual a colinha só funciona em SP. `scripts/cron/`: `estado.ts` (estado/dados,
+publicado, fontes; começa de data/*.json), `votacoes.ts` (Câmara e Senado incremental, cache das
+respostas), `publicar.ts` (só linhas novas ou alteradas, sem ler o banco), `resumos.ts` (usado
+também por `npm run precalcular`), `index.ts` (jobs isolados, validação antes de publicar, sai com 1
+em falha). `lib/linhas-votacao.ts`: montagem das linhas extraída do `consolidar.ts`, que gera os
+mesmos arquivos. `npm run cron`; `supabase:conferir` aceita `DATA_DIR`. `docs/CRON.md`.
+**Decidido:** o cron compara com uma cópia local do que publicou, não com o banco (egress). Nunca
+apaga linha. Janela da última data − 14 dias. Votos de novos políticos nas votações antigas virão
+dos arquivos anuais (E21c), não do job diário.
+**Lacunas:** nenhuma nova. Não havia votação nominal nova desde 14/10 (as sessões de 27–28/10 na
+Câmara foram simbólicas). O banco está em 26,5 MB, quase tudo espaço da carga dupla da E19.
+**Próximo passo:** E21b — TSE 2026 nas 27 UFs: candidatos, top-20 das 5.570 cidades, listas e
+quociente por estado, municípios gerados localmente.
+
 ## 2026-11-02 · E20 (fechamento)
 **Feito:** usuário criou as três variáveis na Vercel (`FISCALIZA_DADOS`, `SUPABASE_URL`,
 `SUPABASE_PUBLISHABLE_KEY`, Production e Preview); copiei para a área de transferência a partir do

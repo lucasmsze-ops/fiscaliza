@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E21** (atualizar esta linha ao avançar)
+**Etapa atual: E21b** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -288,14 +288,42 @@ fases, fora de escopo, card). As etapas antigas E17–E21 viraram E19–E22.
       páginas em cache 0,05–0,08 s; só a primeira visita depois de um deploy, com a função fria,
       levou 1,7 s. Antes, com as funções em Washington: 0,9–1,1 s.)
 
-### E21 · Cron do Congresso, Brasil inteiro
-- [ ] `scripts/cron/{politicos,despesas,proposicoes,votacoes}.ts`, cada um idempotente,
-      reaproveitando os adapters da sonda. `upsert` por chave externa, **só das linhas novas ou
-      alteradas** (medido na E19: regravar tudo levou o banco de 14 para 26 MB sem mudar dado;
-      votações, votos e orientações passadas são imutáveis: inserir ignorando as existentes).
-- [ ] 513 deputados + 81 senadores. CEAPS (cota dos senadores) entra aqui. Medir tempo total.
-- [ ] `proposicoes`: filtrar coautorias via `/proposicoes/{id}/autores` (`proponente = true`).
+### E21 · Cron do Congresso, Brasil inteiro (dividida em 2026-11-02)
+A etapa original juntava cinco trabalhos de um dia cada e não incluía o TSE nacional, sem o qual a
+colinha não funciona fora de SP. Dividida em E21a–E21e; o desenho do cron está em `docs/CRON.md`.
+
+### E21a · Estado do cron, publicação por diferença e votações
+- [x] `scripts/cron/`: estado local (`estado/dados`, `estado/publicado`, `estado/fontes`), validação
+      antes de publicar, publicação só das linhas novas ou alteradas, resumos só onde mudaram.
+- [x] Job `votacoes`: Câmara e Senado, incremental (última data − 14 dias), respostas brutas em
+      cache. Montagem das linhas em `lib/linhas-votacao.ts`, a mesma da consolidação da sonda.
 - Pronto quando: rodar duas vezes seguidas não duplica nada.
+      (2026-11-02: com 19 votações retiradas do estado, o cron as rebaixou e publicou, e as contagens
+      do Supabase continuaram iguais às do estado; a segunda execução enviou 0 linhas e 0 resumos,
+      em 5 s. Primeira execução com estado limpo: 8 s.)
+
+### E21b · TSE 2026 no Brasil inteiro
+- [ ] Candidatos a deputado federal e senador das 27 UFs; top-20 de cada uma das 5.570 cidades;
+      listas e quociente dos 27 estados, conferidos contra os relatórios oficiais de totalização.
+- [ ] Municípios e códigos IBGE gerados localmente e versionados (o IBGE não responde ao runner).
+- Pronto quando: a colinha funciona a partir de qualquer cidade do país.
+
+### E21c · Parlamentares em exercício no Brasil inteiro
+- [ ] 513 deputados e 81 senadores em `politicos`, `mandatos` e `afastamentos`, ligados ao TSE pelo
+      CPF em memória (Câmara) e pelo nome completo + UF (Senado).
+- [ ] Votos de todos desde 2023: arquivos anuais da Câmara (`votacoesVotos`) e `/votacao` do Senado.
+- Pronto quando: a página de qualquer parlamentar em exercício abre com os números.
+
+### E21d · Cota parlamentar no Brasil inteiro
+- [ ] Câmara pela API (27 UFs, média por UF; mês fechado = total igual ao da coleta anterior, que
+      agora é o publicado) e Senado pela CEAPS (API `adm.senado.gov.br`). Sem CPF de fornecedor.
+- Pronto quando: o card de senador ganha a cota e as médias das 27 bancadas batem com a soma.
+
+### E21e · Proposições
+- [ ] Migração 0003; íntegra só de PL, PLP, PEC, PDL e PRC, contagem do resto (decisão de 2026-11-02).
+      Câmara pelos arquivos anuais (`proposicoes`, `proposicoesAutores`, com `proponente`); Senado
+      pelas autorias. Medir tempo e tamanho.
+- Pronto quando: rodar duas vezes seguidas não duplica nada e o tamanho bate com `docs/VOLUME.md`.
 
 ### E22 · GitHub Actions
 - [ ] Workflow diário: `politicos` → `despesas` → `proposicoes` → `votacoes`. Jobs isolados;
@@ -367,7 +395,7 @@ dicionário · mais vistos (analytics cookieless) · impostômetro · STF (só c
 ouvir a página · tema claro/escuro · servidor MCP.
 
 Calendário: a posse é em 01/02/2027. Até lá, o Passo 3 e o Passo 4 cabem no ritmo de uma etapa
-por dia (18 etapas).
+por dia (22 etapas depois da divisão da E21).
 
 ## Backlog (encaixar nos passos quando chegar a hora)
 

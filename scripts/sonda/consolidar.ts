@@ -11,7 +11,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { mesesFechados } from "../../lib/ceap";
 import { paraLinha } from "../../lib/linhas";
-import { semCpf } from "../../lib/texto";
+import { linhaOrientacao, linhaVotacaoCamara, linhaVotacaoSenado, linhaVotoCamara, linhaVotoSenado } from "../../lib/linhas-votacao";
 import { fotoUrlTse } from "../../lib/tse";
 import type {
   Afastamento, Cargo, DespesaMediaUf, DespesaMes, EleitoMunicipio, ListaEleitoral, Mandato, Municipio,
@@ -168,31 +168,19 @@ const ref = mediasUf.filter((m) => m.fechado).at(-1);
 console.log(`CEAP: coleta anterior ${anterior.geradoEm} · mês de referência (último fechado): ${ref ? `${ref.ano}-${String(ref.mes).padStart(2, "0")}` : "nenhum"}`);
 
 // ------------------------------------------------------------------ votações, votos, orientações
-const resultadoCamara = (v: VotacaoSondaCompleta): Votacao["resultado"] =>
-  v.aprovacao === 1 ? "aprovada" : v.aprovacao === 0 ? "rejeitada" : /^Aprovad/i.test(v.descricao) ? "aprovada" : /^Rejeitad/i.test(v.descricao) ? "rejeitada" : null;
 const votacoes: Votacao[] = [
-  ...vCam.map((v): Votacao => ({
-    id: `camara:${v.idExterno}`, idExterno: v.idExterno, casa: "camara", data: v.data,
-    proposicao: v.proposicao ? `${v.proposicao.tipo} ${v.proposicao.numero}/${v.proposicao.ano}` : null,
-    ementa: v.proposicao?.ementa?.trim() ? semCpf(v.proposicao.ementa.trim()) : null, objeto: v.objeto, descricao: semCpf(v.descricao.trim()), resultado: resultadoCamara(v),
-    placar: v.placar, secreta: false, urlOficial: v.urlOficial,
-  })),
-  ...vSen.map((v): Votacao => ({
-    id: `senado:${v.idExterno}`, idExterno: v.idExterno, casa: "senado", data: v.data, proposicao: v.proposicao?.identificacao ?? null,
-    ementa: v.ementa ? semCpf(v.ementa) : null, objeto: null, descricao: semCpf(v.descricao.trim()), resultado: v.resultado, placar: v.placar, secreta: v.secreta,
-    urlOficial: v.urlOficial,
-  })),
+  ...vCam.map((v) => linhaVotacaoCamara(v, v.placar)),
+  ...vSen.map((v) => linhaVotacaoSenado(v, v.placar)),
 ].sort((a, b) => a.data.localeCompare(b.data) || a.id.localeCompare(b.id));
 const idsVotacao = new Set(votacoes.map((v) => v.id));
 
-const DETALHE_OMITIDO = new Set(["Sim", "Não", "Abstenção", "Votou"]);
 const votos: Voto[] = [
-  ...votosCam.filter((v) => porCamara.has(v.camaraId)).map((v) => ({ votacaoId: `camara:${v.votacaoId}`, politicoId: porCamara.get(v.camaraId)!, voto: v.voto as TipoVoto, detalhe: null })),
-  ...votosSen.map((v) => ({ votacaoId: `senado:${v.votacaoId}`, politicoId: porSenado.get(v.senadoCodigo)!, voto: v.voto, detalhe: DETALHE_OMITIDO.has(v.sigla) ? null : v.sigla })),
+  ...votosCam.filter((v) => porCamara.has(v.camaraId)).map((v) => linhaVotoCamara(v, porCamara.get(v.camaraId)!)),
+  ...votosSen.map((v) => linhaVotoSenado(v, porSenado.get(v.senadoCodigo)!)),
 ];
 const orientacoes: Orientacao[] = [
-  ...oCam.map((o) => ({ votacaoId: `camara:${o.votacaoId}`, bancada: o.bancada, orientacao: o.orientacao })),
-  ...oSen.map((o) => ({ votacaoId: `senado:${o.votacaoId}`, bancada: o.bancada, orientacao: o.orientacao })),
+  ...oCam.map((o) => linhaOrientacao("camara", o)),
+  ...oSen.map((o) => linhaOrientacao("senado", o)),
 ].filter((o) => idsVotacao.has(o.votacaoId));
 
 // ------------------------------------------------------------------ escrita
