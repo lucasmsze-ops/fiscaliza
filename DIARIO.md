@@ -15,6 +15,24 @@ Modelo:
 
 ---
 
+## 2026-11-01 · E17
+**Feito:** saíram o quiz (página, componentes, `lib/quiz.ts`, `concordancia()`, `data/quiz.json`,
+coluna `votacoes.quiz`, script e JSONs da sonda), o botão Cobrar e "seu voto contou para"
+(`fraseVotoContou()`, bloco da lista no card). Entrou **Como cobrar** (`lib/cobrar.ts`,
+`components/ComoCobrar.tsx`): gabinete, ouvidoria da Casa, TCU, MPF e Fala.BR, só para quem tem
+mandato em curso. Entrou **Receber avisos** (`components/ReceberAvisos.tsx`), fake door no card,
+na página e na colinha. `/como-funciona`, glossário, METODOLOGIA, TESTE-USUARIOS e README ajustados;
+`docs/QUIZ.md` arquivado. 55 testes, build ok, conferido a 375 px.
+**Decidido:** dados editados à mão para não regravar as datas de coleta; o `consolidar.ts`
+modificado gera o mesmo `votacoes.json` (conferido) e só mudaria `updated_at` em `politicos`.
+Avisos não aparecem para quem não tem nem terá mandato. Canais conferidos pelo conteúdo, não pelo
+status HTTP: `portal.tcu.gov.br/ouvidoria/denuncia/` responde 200 e diz "não encontrada"; ficou
+a raiz da ouvidoria.
+**Lacunas:** telefone do gabinete como a fonte escreve, sem DDD.
+**Próximo passo:** E18 — estimar o volume do Brasil inteiro (513 + 81) a partir da sonda e conferir
+os limites atuais dos planos free nas páginas oficiais; testar as APIs a partir de um runner do
+GitHub.
+
 ## 2026-11-01 · mudança de escopo
 **Feito:** `CLAUDE.md` reescrito (escopo, princípios, fases, fora de escopo, rotas, card,
 definição de pronto) e `PLANO.md` refeito a partir da E16: Passo 3 (E17 remoção, E18 volume e

@@ -5,8 +5,6 @@
  */
 import { diasAfastado, governismo, participacao, type Indicador, type Periodo } from "./indicadores";
 import type { Repo } from "./repo";
-import { fraseVotoContou, nomeCurtoLista } from "./quociente";
-import type { VotoQuiz } from "./quiz";
 import { normalizar } from "./texto";
 import type { Cargo, Casa, DespesaMediaUf, Politico } from "./types";
 
@@ -31,13 +29,13 @@ export interface CeapCard {
   urlOficial: string;
 }
 
-/** Partes do e-mail do Cobrar. O navegador acrescenta a votação discordante quando há respostas do quiz. */
-export interface CobrarCard {
-  email: string;
-  assunto: string;
-  corpo: string;
-  /** "Deputada", "Senador"...: para citar a votação discordante. */
-  tratamento: string;
+/** "Como cobrar": só para quem exerce mandato hoje. Canais oficiais em lib/cobrar.ts. */
+export interface ComoCobrarCard {
+  /** Casa do mandato em curso: define a ouvidoria. */
+  casa: Casa;
+  /** E-mail e telefone oficiais do gabinete, quando a fonte traz. */
+  email: string | null;
+  telefone: string | null;
 }
 
 /** Cabeçalho do card: o que a busca e a lista da cidade mostram (variante compacta). */
@@ -63,23 +61,10 @@ export interface ItemBusca extends CardResumo {
 }
 export const itemBusca = (p: Politico): ItemBusca => ({ ...resumoCard(p), busca: normalizar(`${p.nomeUrna} ${p.nome} ${p.numeroUrna ?? ""}`) });
 
-/** "Seu voto contou para": só deputado federal de 2026 (sistema proporcional). Senador: null. */
-export interface ListaCard {
-  frase: string;
-  /** Nome curto exibido ("Federação PT/PC do B/PV" ou "PL"). */
-  nomeCurto: string;
-  /** Nome oficial completo do TSE, para o tooltip. */
-  nomeOficial: string;
-  eleitos: number;
-}
-
 export interface CardDados extends CardResumo {
   numeros: NumerosCard;
-  lista: ListaCard | null;
-  /** Votos nas perguntas do quiz (na Casa em que tem mandato). Null sem mandato no período. A concordância é calculada no navegador, com as respostas. */
-  quiz: VotoQuiz[] | null;
   ceap: CeapCard | null;
-  cobrar: CobrarCard | null;
+  comoCobrar: ComoCobrarCard | null;
   urlPerfil: string | null;
 }
 
@@ -103,34 +88,6 @@ export function rotuloStatus(p: Politico): string {
   }
 }
 
-function tratamento(p: Politico): string {
-  if (p.cargo === "senador") return fem(p) ? "Senadora" : "Senador";
-  return fem(p) ? "Deputada" : "Deputado";
-}
-
-/** Assunto e corpo neutros do Cobrar. */
-export function cobrarCard(p: Politico, email: string): CobrarCard {
-  return {
-    email, tratamento: tratamento(p),
-    assunto: `Mensagem de eleitor(a) de ${p.uf}`,
-    corpo: `Olá, ${tratamento(p)} ${p.nomeUrna}.\n\nSou eleitor(a) de ${p.uf} e acompanho seu mandato pelo Fiscaliza.\n\n`,
-  };
-}
-
-export const hrefMailto = (c: { email: string; assunto: string; corpo: string }) =>
-  `mailto:${c.email}?subject=${encodeURIComponent(c.assunto)}&body=${encodeURIComponent(c.corpo)}`;
-
-/** Acrescenta ao Cobrar a votação do quiz em que o voto diferiu da resposta. Texto neutro, sem adjetivo. */
-export function cobrarComDiscordancia(c: CobrarCard, d: VotoQuiz & { resposta: "sim" | "nao" }): { email: string; assunto: string; corpo: string } {
-  const data = `${d.data.slice(8, 10)}/${d.data.slice(5, 7)}/${d.data.slice(0, 4)}`;
-  const sn = (x: "sim" | "nao") => (x === "sim" ? "Sim" : "Não");
-  return {
-    email: c.email,
-    assunto: `Sobre seu voto: ${d.titulo} (${d.materia})`,
-    corpo: `${c.corpo}Na votação de ${data} sobre "${d.titulo}" (${d.materia}), seu voto foi ${sn(d.voto as "sim" | "nao")}. Eu teria votado ${sn(d.resposta)}.\n\nGostaria de entender as razões do seu voto.\n\n`,
-  };
-}
-
 /** Último mês fechado da média da UF, ou null se nenhum estiver fechado. */
 export function mesReferencia(medias: DespesaMediaUf[]): DespesaMediaUf | null {
   return [...medias].filter((m) => m.fechado).sort((a, b) => a.ano * 100 + a.mes - (b.ano * 100 + b.mes)).at(-1) ?? null;
@@ -142,7 +99,7 @@ export async function montarCard(repo: Repo, id: string, hoje = new Date().toISO
 
   const casa: Casa | null = p.senadoCodigo ? "senado" : p.camaraId ? "camara" : null;
   let numeros: NumerosCard;
-  let quiz: VotoQuiz[] | null = null;
+  let comoCobrar: ComoCobrarCard | null = null;
   if (casa) {
     const cargoDaCasa = casa === "senado" ? "senador" : "deputado_federal";
     const [votacoes, votos, mandatos, afastamentos, orientacoes] = await Promise.all([
@@ -151,17 +108,8 @@ export async function montarCard(repo: Repo, id: string, hoje = new Date().toISO
     const exercicio = mandatos.filter((m) => m.cargo === cargoDaCasa);
     const part = participacao(votacoes, votos, PERIODO_GOVERNO, exercicio);
     const dias = diasAfastado(afastamentos, PERIODO_GOVERNO, hoje);
-    if (part.denominador > 0) {
-      const porVotacao = new Map(votos.map((v) => [v.votacaoId, v.voto]));
-      const emExercicio = (data: string) => exercicio.some((m) => data >= m.inicio && (m.fim === null || data <= m.fim));
-      quiz = (await repo.getVotacoesQuiz()).flatMap(({ item, camara, senado }) => {
-        const v = casa === "senado" ? senado : camara;
-        if (!v) return [];
-        // Câmara não registra ausência: fora do mandato o voto é desconhecido (null), dentro é "ausente".
-        const voto = porVotacao.get(v.id) ?? (emExercicio(v.data) ? "ausente" : null);
-        return [{ itemId: item.id, titulo: item.titulo, materia: item.materia, data: v.data, voto }];
-      });
-    }
+    // Mandato em curso (fim null): só então há gabinete e ouvidoria a quem cobrar.
+    if (exercicio.some((m) => m.fim === null)) comoCobrar = { casa, email: p.email, telefone: p.telefone };
     const textoAfastado = dias > 0 ? `${fem(p) ? "afastada" : "afastado"} ${dias.toLocaleString("pt-BR")} ${dias === 1 ? "dia" : "dias"}` : null;
     numeros = part.denominador > 0
       ? { tipo: "mandato", casa, periodo: ROTULO_PERIODO, participacao: part, diasAfastado: dias, textoAfastado, governismo: governismo(votacoes, votos, orientacoes, PERIODO_GOVERNO) }
@@ -183,15 +131,8 @@ export async function montarCard(repo: Repo, id: string, hoje = new Date().toISO
     }
   }
 
-  let lista: ListaCard | null = null;
-  if (p.cargo === "deputado_federal" && p.listaId) {
-    const l = await repo.getLista(p.listaId);
-    if (l) lista = { frase: fraseVotoContou(l, l.eleitos, l.uf), nomeCurto: nomeCurtoLista(l), nomeOficial: l.nome, eleitos: l.eleitos };
-  }
-
   return {
-    ...resumoCard(p), numeros, lista, quiz, ceap,
-    cobrar: p.email ? cobrarCard(p, p.email) : null,
+    ...resumoCard(p), numeros, ceap, comoCobrar,
     urlPerfil: p.urlPerfil,
   };
 }

@@ -12,9 +12,8 @@
  *          tests/fixtures/quociente-sp-2026.json (entrada real + gabarito, para o teste)
  */
 import { DuckDBInstance } from "@duckdb/node-api";
-import { readFileSync, writeFileSync } from "node:fs";
-import { distribuirVagas, fraseVotoContou, nomeCurtoLista, type Lista } from "../../lib/quociente";
-import type { PoliticoTse } from "./tse";
+import { writeFileSync } from "node:fs";
+import { distribuirVagas, nomeCurtoLista, type Lista } from "../../lib/quociente";
 
 const VAGAS = 70;
 const UF = "SP";
@@ -101,7 +100,6 @@ const saida = {
   conferencia: { listasDivergentes: divergencias, candidatosDivergentes: difCand },
   listas: [...d.listas].sort((a, b) => b.votosValidos - a.votosValidos).map((l) => ({
     ...l, nome: nome.get(l.id)!, composicao: composicao.get(l.id) ?? null, nomeCurto: nomeCurtoLista(listaNome(l.id)),
-    frase: fraseVotoContou(listaNome(l.id), l.total, UF),
   })),
   eleitos: d.eleitos.map((e) => ({ tseSqCandidato: e.candidatoId, listaId: e.listaId, por: e.por, rodada: e.rodada })),
 };
@@ -115,12 +113,3 @@ writeFileSync("tests/fixtures/quociente-sp-2026.json", JSON.stringify({
     eleitosQP: candRaw.filter((x) => esperado(oficialCand.get(x.sq)?.sit) === "qp").map((x) => x.sq).sort(),
     eleitosMedia: candRaw.filter((x) => esperado(oficialCand.get(x.sq)?.sit) === "media").map((x) => x.sq).sort() },
 }) + "\n");
-
-// A frase para a amostra de deputados.
-const amostra = (JSON.parse(readFileSync("data/sonda/politicos-tse.json", "utf8")) as PoliticoTse[]).filter((p) => p.cargo === "deputado_federal");
-console.log("\nfrase da amostra:");
-for (const p of amostra) {
-  const lid = candRaw.find((x) => x.sq === p.tseSqCandidato)?.lista;
-  const l = saida.listas.find((x) => x.id === lid);
-  console.log(`  ${p.nomeUrna.padEnd(24)} ${l ? l.frase : "— sem lista"}`);
-}

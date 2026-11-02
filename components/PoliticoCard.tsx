@@ -1,5 +1,6 @@
 import { inteiro, pct, reais, type CardDados, type CardResumo } from "@/lib/card";
-import { BotaoCobrar, ConcordanciaNoCard } from "./QuizNoCard";
+import { ComoCobrar } from "./ComoCobrar";
+import { ReceberAvisos } from "./ReceberAvisos";
 import { Termo } from "./Termo";
 
 const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
@@ -41,18 +42,11 @@ export function PoliticoCardCompacto({ r, contexto }: { r: CardResumo; contexto?
  */
 export function PoliticoCard({ d, linkPagina = false }: { d: CardDados; linkPagina?: boolean }) {
   const n = d.numeros;
+  // Avisos (fake door) só fazem sentido para quem tem ou terá mandato.
+  const temAvisos = n.tipo !== "sem_mandato";
   return (
     <article className="w-full max-w-sm rounded-2xl border border-black/10 p-4 dark:border-white/15" aria-labelledby={`nome-${d.id}`}>
       <Cabecalho r={d} />
-
-      {d.lista && (
-        <p className="mt-4 rounded-xl bg-black/[0.04] px-3 py-2 text-sm dark:bg-white/[0.06]">
-          <Termo id={`${d.id}-lista`} termo="quociente"
-            explicacao={`${d.lista.nomeCurto}: nome oficial no TSE "${d.lista.nomeOficial}". O voto num candidato a deputado conta para a lista; as vagas de cada lista vão aos mais votados dela.`}>
-            {d.lista.frase.charAt(0).toUpperCase() + d.lista.frase.slice(1)}.
-          </Termo>
-        </p>
-      )}
 
       <section className="mt-4 border-t border-black/10 pt-4 dark:border-white/15" aria-label="Números do mandato">
         {n.tipo === "mandato" && (
@@ -82,7 +76,6 @@ export function PoliticoCard({ d, linkPagina = false }: { d: CardDados; linkPagi
             <p className="mt-3 text-xs text-[var(--suave)]">
               <Termo id={`${d.id}-nominal`} termo="nominal">Votações nominais</Termo> do plenário {n.casa === "senado" ? "do Senado" : "da Câmara"}, {n.periodo}.
             </p>
-            {d.quiz && <ConcordanciaNoCard id={d.id} votos={d.quiz} />}
           </>
         )}
         {n.tipo === "primeiro_voto" && <p className="text-sm">Primeiro voto em fevereiro de 2027.</p>}
@@ -103,11 +96,15 @@ export function PoliticoCard({ d, linkPagina = false }: { d: CardDados; linkPagi
         </section>
       )}
 
-      {(d.cobrar || d.urlPerfil || linkPagina) && (
-        <footer className="mt-4 flex items-center justify-between gap-3 border-t border-black/10 pt-4 dark:border-white/15">
-          {d.cobrar ? (
-            <BotaoCobrar cobrar={d.cobrar} votos={d.quiz} />
-          ) : <span />}
+      {d.comoCobrar && (
+        <section className="mt-4 border-t border-black/10 pt-4 dark:border-white/15" aria-label="Como cobrar">
+          <ComoCobrar c={d.comoCobrar} quem={d.nomeUrna} />
+        </section>
+      )}
+
+      {(temAvisos || d.urlPerfil || linkPagina) && (
+        <footer className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-black/10 pt-4 dark:border-white/15">
+          {temAvisos ? <ReceberAvisos id={d.id} sobre={`sobre ${d.nomeUrna}`} /> : <span />}
           <span className="flex gap-3 text-xs">
             {linkPagina && <a href={`/p/${d.id}`} className="underline underline-offset-2">mais detalhes</a>}
             {d.urlPerfil && <a href={d.urlPerfil} {...externo} className="underline underline-offset-2">perfil oficial</a>}

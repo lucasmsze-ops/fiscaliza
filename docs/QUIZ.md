@@ -1,5 +1,8 @@
 # Quiz de concordância — seleção das votações
 
+> **Arquivado em 2026-11-01.** O quiz saiu do Fiscaliza na mudança de escopo (decisão do
+> usuário; ver `PLANO.md`). Este arquivo fica como registro do critério e da seleção.
+
 Proposta da E8, **aprovada em 2026-11-01** com 10 perguntas e **ampliada para 14 na E13** (decisão
 do usuário): com 10, os senadores em exercício tinham só 4 votos comparáveis. Agora são 14: 9 com
 votação de mérito nas duas Casas, 4 só na Câmara e 1 só no Senado. 13 valem para deputados e 10

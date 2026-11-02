@@ -6,7 +6,7 @@
  */
 import { describe, expect, it } from "vitest";
 import fixture from "./fixtures/indicadores-senado-real.json";
-import { concordancia, governismo, participacao, type OrientacaoBase, type VotacaoBase, type VotoBase } from "../lib/indicadores";
+import { governismo, participacao, type OrientacaoBase, type VotacaoBase, type VotoBase } from "../lib/indicadores";
 
 
 const votacoes: VotacaoBase[] = fixture.votacoes.map((v) => ({ id: v.idExterno, data: v.data }));
@@ -30,9 +30,5 @@ describe("indicadores com dado real do Senado (Marcos Pontes, 2025)", () => {
   it("governismo: mesmo com orientação do Governo numa secreta, o voto secreto não entra", () => {
     const comOrientacaoNasSecretas = orientacoes.map((o, i) => (fixture.votacoes[i]!.secreta ? { ...o, orientacao: "Sim" } : o));
     expect(governismo(votacoes, votos, comOrientacaoNasSecretas)).toEqual({ numerador: 3, denominador: 6, percentual: 50 });
-  });
-  it("concordância: respondendo Sim em todas, só os 6 votos Sim/Não contam → 4/6", () => {
-    const respostas = Object.fromEntries(votacoes.map((v) => [v.id, "sim" as const]));
-    expect(concordancia(respostas, votos)).toEqual({ numerador: 4, denominador: 6, percentual: 66.7 });
   });
 });

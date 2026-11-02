@@ -54,8 +54,8 @@ inicial carregada. **Parar quando a tela "Sua colinha" aparecer** (endereço `/c
 3. "Tem algo nos números dos cards que você não entendeu?" (só se ela olhou os cards)
 4. "Você mandaria isso para alguém? Para quem?"
 
-**Parte opcional (não conta para o critério, serve para a E21):** pedir para responder o quiz, olhar a
-concordância no card, tocar em Cobrar (ver se o e-mail abre pronto, sem enviar) e compartilhar no
+**Parte opcional (não conta para o critério, serve para a E34):** pedir para abrir "Como cobrar" e
+achar o e-mail do gabinete, tocar em "Receber avisos" e compartilhar no
 WhatsApp com ela mesma. Anotar onde travou.
 
 ## Ficha (uma por pessoa)
@@ -71,7 +71,7 @@ deputado estava na lista da cidade: sim / não · senadores marcados: 0 / 1 / 2
 hesitações e toques errados:
 frases em voz alta:
 respostas 1–4:
-parte opcional (quiz, cobrar, compartilhar):
+parte opcional (como cobrar, receber avisos, compartilhar):
 ```
 
 ## Preparação (piloto em 2026-11-01, antes de qualquer participante)

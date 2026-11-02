@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { concordancia, governismo, participacao, type OrientacaoBase, type VotacaoBase, type VotoBase } from "../lib/indicadores";
+import { governismo, participacao, type OrientacaoBase, type VotacaoBase, type VotoBase } from "../lib/indicadores";
 
 // Casos de borda com dados mínimos (não são dados de interface; só exercitam a aritmética).
 const vot = (id: string, data = "2025-01-01"): VotacaoBase => ({ id, data });
@@ -49,16 +49,5 @@ describe("governismo", () => {
     const votos = [voto("a", "sim"), voto("b", "nao")];
     expect(governismo(votacoes, votos, orientacoes, { inicio: "2023-01-01", fim: "2026-12-31" }).percentual).toBe(100);
     expect(governismo(votacoes, votos, orientacoes, { inicio: "2027-01-01", fim: "2030-12-31" }).percentual).toBe(0);
-  });
-});
-
-describe("concordancia", () => {
-  it("compara a resposta do usuário com o voto Sim/Não do político", () => {
-    const votos = [voto("a", "sim"), voto("b", "nao"), voto("c", "abstencao")];
-    expect(concordancia({ a: "sim", b: "sim", c: "sim" }, votos)).toEqual({ numerador: 1, denominador: 2, percentual: 50 });
-  });
-  it("sem resposta → null; político sem voto posicional → null", () => {
-    expect(concordancia({}, [voto("a", "sim")]).percentual).toBeNull();
-    expect(concordancia({ a: "sim" }, [voto("a", "ausente")]).percentual).toBeNull();
   });
 });

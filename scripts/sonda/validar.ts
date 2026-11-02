@@ -2,11 +2,11 @@
  * E8 — Validação de data/*.json (critério de pronto da E8; o cron roda o mesmo antes de gravar).
  *
  * 1. Toda chave estrangeira aponta para um registro que existe (politico_id, votacao_id,
- *    lista_id, municipio_ibge, ids do quiz).
+ *    lista_id, municipio_ibge).
  * 2. Nenhum campo obrigatório vazio (null, "" ou ausente) e nenhuma chave fora do tipo.
  * 3. Chaves primárias únicas e valores de enum dentro do domínio.
- * 4. Coerência: votação secreta sem placar e sem voto Sim/Não; quiz só com votação aberta e
- *    marcada; nenhum CPF ou hash de CPF em lugar nenhum.
+ * 4. Coerência: votação secreta sem placar e sem voto Sim/Não; nenhum CPF ou hash de CPF em
+ *    lugar nenhum.
  * Sai com código 1 se houver qualquer erro. Avisos (campos opcionais nulos) não falham.
  * `DATA_DIR=outro/dir` valida outra pasta (usado para testar o próprio validador).
  */
@@ -30,10 +30,9 @@ const ESQUEMA: Record<string, { pk: string[]; obrig: string[]; opc: string[] }> 
   eleitos_mun: { pk: ["municipio_ibge", "cargo", "politico_id"], obrig: ["municipio_ibge", "cargo", "politico_id", "votos", "posicao"], opc: [] },
   despesas_mes: { pk: ["politico_id", "ano", "mes"], obrig: ["politico_id", "ano", "mes", "total", "por_categoria"], opc: [] },
   despesas_media_uf: { pk: ["uf", "ano", "mes"], obrig: ["uf", "ano", "mes", "media", "deputados", "total", "fechado"], opc: [] },
-  votacoes: { pk: ["id"], obrig: ["id", "id_externo", "casa", "data", "descricao", "secreta", "url_oficial", "quiz"], opc: ["proposicao", "ementa", "objeto", "resultado", "placar"] },
+  votacoes: { pk: ["id"], obrig: ["id", "id_externo", "casa", "data", "descricao", "secreta", "url_oficial"], opc: ["proposicao", "ementa", "objeto", "resultado", "placar"] },
   votos: { pk: ["votacao_id", "politico_id"], obrig: ["votacao_id", "politico_id", "voto"], opc: ["detalhe"] },
   orientacoes: { pk: ["votacao_id", "bancada"], obrig: ["votacao_id", "bancada"], opc: ["orientacao"] },
-  quiz: { pk: ["id"], obrig: ["id", "ordem", "materia", "titulo", "ementa", "explicacao", "fontes"], opc: ["votacao_camara_id", "votacao_senado_id"] },
 };
 const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   politicos: { genero: ["feminino", "masculino", null], cargo: ["deputado_federal", "senador"], status: ["eleito", "reeleito", "nao_eleito", "suplente", "em_exercicio"] },
@@ -73,8 +72,6 @@ for (const t of ["mandatos", "afastamentos", "eleitos_mun", "despesas_mes", "vot
 for (const t of ["votos", "orientacoes"]) fk(t, "votacao_id", votacoes, "votacoes");
 fk("politicos", "lista_id", listas, "listas", true);
 fk("eleitos_mun", "municipio_ibge", municipios, "municipios");
-fk("quiz", "votacao_camara_id", votacoes, "votacoes", true);
-fk("quiz", "votacao_senado_id", votacoes, "votacoes", true);
 
 // Coerência.
 const vs = dados.votacoes as unknown as Linha<Votacao>[];
@@ -87,22 +84,6 @@ for (const v of dados.votos!) {
   const vot = porId.get(v.votacao_id as string);
   if (vot?.secreta && (v.voto === "sim" || v.voto === "nao")) erro(`votos: Sim/Não em votação secreta ${v.votacao_id}`);
   if (vot?.casa === "camara" && v.voto === "secreto") erro(`votos: "secreto" na Câmara ${v.votacao_id}`);
-}
-const noQuiz = new Set<string>();
-for (const q of dados.quiz!) for (const k of ["votacao_camara_id", "votacao_senado_id"]) {
-  const id = q[k] as string | null;
-  if (!id) continue;
-  noQuiz.add(id);
-  const v = porId.get(id);
-  if (v && (v.secreta || !v.quiz)) erro(`quiz ${q.id}: ${id} secreta ou não marcada quiz`);
-  if (v && !id.startsWith(k === "votacao_camara_id" ? "camara:" : "senado:")) erro(`quiz ${q.id}: ${k} aponta para a outra Casa`);
-}
-for (const v of vs) if (v.quiz && !noQuiz.has(v.id)) erro(`votacoes ${v.id}: quiz=true sem item no quiz`);
-for (const q of dados.quiz!) {
-  if (!q.votacao_camara_id && !q.votacao_senado_id) erro(`quiz ${q.id}: sem votação`);
-  const ex = q.explicacao as string[];
-  if (!Array.isArray(ex) || ex.length !== 3 || ex.some((p) => !p || p.length < 40)) erro(`quiz ${q.id}: explicação precisa de 3 parágrafos`);
-  if (/undefined|NaN|\bnull\b/.test(JSON.stringify([q.titulo, q.ementa, q.explicacao, q.fontes]))) erro(`quiz ${q.id}: texto com undefined/NaN/null`);
 }
 const ps = dados.politicos as unknown as Linha<Politico>[];
 for (const p of ps) {

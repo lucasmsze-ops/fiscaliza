@@ -10,9 +10,8 @@ export const SECOES = [
   { id: "cidade", titulo: "Mais votados na sua cidade" },
   { id: "participacao", titulo: "Participação em votações" },
   { id: "governismo", titulo: "Governismo" },
-  { id: "concordancia", titulo: "Concordância com você" },
-  { id: "voto-contou", titulo: "“Seu voto contou para”" },
   { id: "ceap", titulo: "Cota parlamentar (CEAP)" },
+  { id: "cobrar", titulo: "Como cobrar" },
   { id: "fora", titulo: "O que fica fora dos números" },
   { id: "fontes", titulo: "Fontes e atualização" },
   { id: "privacidade", titulo: "Privacidade" },
@@ -42,11 +41,6 @@ export const GLOSSARIO = definir({
     titulo: "Governismo",
     texto: "Percentual dos votos Sim, Não ou Obstrução que coincidiram com a orientação do líder do Governo, nas votações em que o Governo orientou. Calculado por período de governo (atual: 2023–2026).",
     secao: "governismo",
-  },
-  concordancia: {
-    titulo: "Concordância com você",
-    texto: "Percentual das perguntas do quiz que você respondeu em que o voto coincidiu com a sua resposta. Só com pelo menos 3 votações comparáveis.",
-    secao: "concordancia",
   },
   nominal: {
     titulo: "Votação nominal",
@@ -92,11 +86,6 @@ export const GLOSSARIO = definir({
     titulo: "Obstrução",
     texto: "Recurso regimental para tentar impedir ou adiar uma votação. Na Câmara, quem está em obstrução tem o voto registrado como \"Obstrução\".",
     secao: "glossario",
-  },
-  quociente: {
-    titulo: "Quociente eleitoral",
-    texto: "Total de votos válidos dividido pelo número de vagas. Define quantas cadeiras cada partido ou federação recebe; o voto em um candidato conta primeiro para a lista dele.",
-    secao: "voto-contou",
   },
 });
 

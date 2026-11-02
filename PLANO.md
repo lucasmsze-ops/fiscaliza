@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E17** (atualizar esta linha ao avançar)
+**Etapa atual: E18** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -230,17 +230,23 @@ fases, fora de escopo, card). As etapas antigas E17–E21 viraram E19–E22.
 ## Passo 3 — Redirecionamento e infra
 
 ### E17 · Tirar quiz, Cobrar e "seu voto contou para"
-- [ ] Remover `/votacoes` (quiz), `components/{Quiz,QuizNoCard,useRespostas}.tsx`, `lib/quiz.ts`,
+- [x] Remover `/votacoes` (quiz), `components/{Quiz,QuizNoCard,useRespostas}.tsx`, `lib/quiz.ts`,
       `CardDados.quiz`, `CardDados.lista`, `CardDados.cobrar`, `data/quiz.json`, `votacoes.quiz`, e
       os testes e textos correspondentes (`/como-funciona`, glossário, OG, `docs/METODOLOGIA.md`).
-      `lib/quociente.ts` fica (linha do tempo de candidaturas, E29).
-- [ ] **Como cobrar** no card e na página: contato do gabinete e canais oficiais (ouvidoria da
+      `lib/quociente.ts` fica (linha do tempo de candidaturas, E29). (Também saíram
+      `concordancia()`, `fraseVotoContou()`, `scripts/sonda/quiz-fontes.ts` e os JSONs do quiz na
+      sonda; `docs/QUIZ.md` arquivado. `consolidar.ts` modificado gera o mesmo `votacoes.json`.)
+- [x] **Como cobrar** no card e na página: contato do gabinete e canais oficiais (ouvidoria da
       Câmara ou do Senado, Fala.BR, MPF e TCU), com os endereços conferidos nas páginas oficiais.
-- [ ] **Receber avisos** (fake door) no card, na página do político e na colinha: toque abre a
+      (`lib/cobrar.ts`, `components/ComoCobrar.tsx`, fechado por padrão; só com mandato em curso.)
+- [x] **Receber avisos** (fake door) no card, na página do político e na colinha: toque abre a
       explicação "ainda não existe"; nenhum campo de contato. A contagem anônima entra com o
-      Supabase (E19).
+      Supabase (E19). (`components/ReceberAvisos.tsx`, popover nativo; não aparece para quem não
+      tem nem terá mandato.)
 - Pronto quando: build e testes passam, nenhuma tela cita quiz, concordância, Cobrar com e-mail
   pronto ou "seu voto contou para", e o card mostra dois números, Como cobrar e Receber avisos.
+  (55 testes, build ok; conferido a 375 px em `/p/kiko-celeguim-sp`, Mara Gabrilli, Lucas
+  Pavanato, João Paulo Cunha, Rui Falcão, a colinha e `/como-funciona`; `/votacoes` dá 404.)
 
 ### E18 · Volume e custo do Brasil inteiro (porteira do princípio 1)
 - [ ] Estimar linhas e MB por tabela para 513 deputados e 81 senadores, a partir da sonda de SP:

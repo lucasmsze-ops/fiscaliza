@@ -59,20 +59,6 @@ export default async function PaginaPolitico({ params }: Props) {
       <p className="text-sm"><Link href="/" className="underline underline-offset-2">Fiscaliza</Link></p>
       <div className="mt-4 grid justify-items-center"><PoliticoCard d={c} /></div>
 
-      {c.quiz && c.quiz.length > 0 && (
-        <Secao titulo="Como votou nas perguntas do quiz" secao="concordancia">
-          <ul className="grid gap-2">
-            {c.quiz.map((q) => (
-              <li key={q.itemId} className="flex items-baseline justify-between gap-3 border-b border-black/10 pb-2 dark:border-white/15">
-                <Link href={`/votacoes#${q.itemId}`} className="min-w-0 underline-offset-2 hover:underline">{q.titulo} <span className="text-xs text-[var(--suave)]">· {q.materia} · {dataBr(q.data)}</span></Link>
-                <span className="shrink-0 font-medium">{q.voto ? ROTULO[q.voto] : "fora do mandato"}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-2 text-xs text-[var(--suave)]"><Link href="/votacoes" className="underline underline-offset-2">Responda o quiz</Link> para ver a concordância com você.</p>
-        </Secao>
-      )}
-
       {v && (
         <Secao titulo={`Votações nominais do plenário ${casaNome}, 2023–2026`} secao="participacao">
           <p className="text-[var(--suave)]">{inteiro(v.total)} votações durante o mandato. Como votou:</p>

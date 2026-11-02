@@ -10,7 +10,7 @@ import path from "node:path";
 import { deLinha } from "./linhas";
 import type {
   Afastamento, Cargo, Casa, DespesaMediaUf, DespesaMes, EleitoMunicipio, Linha, ListaEleitoral, Mandato, Municipio,
-  Orientacao, Politico, QuizItem, Votacao, Voto,
+  Orientacao, Politico, Votacao, Voto,
 } from "./types";
 
 export interface EleitoNaCidade {
@@ -37,8 +37,6 @@ export interface Repo {
   getOrientacoes(casa: Casa, bancada: string): Promise<Orientacao[]>;
   getDespesas(politicoId: string): Promise<DespesaMes[]>;
   getMediasUf(uf: string): Promise<DespesaMediaUf[]>;
-  /** Perguntas do quiz em ordem, com as votações de cada Casa. */
-  getVotacoesQuiz(): Promise<{ item: QuizItem; camara: Votacao | null; senado: Votacao | null }[]>;
 }
 
 export { normalizar } from "./texto";
@@ -47,7 +45,7 @@ import { normalizar } from "./texto";
 type Tabelas = {
   politicos: Politico; mandatos: Mandato; afastamentos: Afastamento; listas: ListaEleitoral; municipios: Municipio;
   eleitos_mun: EleitoMunicipio; despesas_mes: DespesaMes; despesas_media_uf: DespesaMediaUf; votacoes: Votacao;
-  votos: Voto; orientacoes: Orientacao; quiz: QuizItem;
+  votos: Voto; orientacoes: Orientacao;
 };
 
 /** Lê data/*.json uma vez por processo (cada tabela só quando pedida). */
@@ -115,15 +113,6 @@ export class JsonRepo implements Repo {
   }
   async getMediasUf(uf: string) {
     return (await this.tabela("despesas_media_uf")).filter((m) => m.uf === uf);
-  }
-  async getVotacoesQuiz() {
-    const [quiz, votacoes] = await Promise.all([this.tabela("quiz"), this.tabela("votacoes")]);
-    const porId = new Map(votacoes.map((v) => [v.id, v]));
-    return [...quiz].sort((a, b) => a.ordem - b.ordem).map((item) => ({
-      item,
-      camara: item.votacaoCamaraId ? porId.get(item.votacaoCamaraId) ?? null : null,
-      senado: item.votacaoSenadoId ? porId.get(item.votacaoSenadoId) ?? null : null,
-    }));
   }
 }
 

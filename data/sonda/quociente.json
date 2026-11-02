@@ -22,8 +22,7 @@
    "total": 19,
    "nome": "PL",
    "composicao": null,
-   "nomeCurto": "PL",
-   "frase": "seu voto contou para PL, que elegeu 19 em SP"
+   "nomeCurto": "PL"
   },
   {
    "id": "F102",
@@ -36,8 +35,7 @@
    "total": 6,
    "nome": "FEDERAÇÃO PSOL REDE",
    "composicao": "PSOL/REDE",
-   "nomeCurto": "Federação PSOL/REDE",
-   "frase": "seu voto contou para a Federação PSOL/REDE, que elegeu 6 em SP"
+   "nomeCurto": "Federação PSOL/REDE"
   },
   {
    "id": "F101",
@@ -50,8 +48,7 @@
    "total": 11,
    "nome": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL",
    "composicao": "PT/PC do B/PV",
-   "nomeCurto": "Federação PT/PC do B/PV",
-   "frase": "seu voto contou para a Federação PT/PC do B/PV, que elegeu 11 em SP"
+   "nomeCurto": "Federação PT/PC do B/PV"
   },
   {
    "id": "P20",
@@ -64,8 +61,7 @@
    "total": 6,
    "nome": "PODE",
    "composicao": null,
-   "nomeCurto": "PODE",
-   "frase": "seu voto contou para PODE, que elegeu 6 em SP"
+   "nomeCurto": "PODE"
   },
   {
    "id": "F104",
@@ -78,8 +74,7 @@
    "total": 5,
    "nome": "FEDERAÇÃO UNIÃO PROGRESSISTA",
    "composicao": "UNIÃO/PP",
-   "nomeCurto": "Federação UNIÃO/PP",
-   "frase": "seu voto contou para a Federação UNIÃO/PP, que elegeu 5 em SP"
+   "nomeCurto": "Federação UNIÃO/PP"
   },
   {
    "id": "P55",
@@ -92,8 +87,7 @@
    "total": 6,
    "nome": "PSD",
    "composicao": null,
-   "nomeCurto": "PSD",
-   "frase": "seu voto contou para PSD, que elegeu 6 em SP"
+   "nomeCurto": "PSD"
   },
   {
    "id": "P10",
@@ -106,8 +100,7 @@
    "total": 6,
    "nome": "REPUBLICANOS",
    "composicao": null,
-   "nomeCurto": "REPUBLICANOS",
-   "frase": "seu voto contou para REPUBLICANOS, que elegeu 6 em SP"
+   "nomeCurto": "REPUBLICANOS"
   },
   {
    "id": "P15",
@@ -120,8 +113,7 @@
    "total": 4,
    "nome": "MDB",
    "composicao": null,
-   "nomeCurto": "MDB",
-   "frase": "seu voto contou para MDB, que elegeu 4 em SP"
+   "nomeCurto": "MDB"
   },
   {
    "id": "P40",
@@ -134,8 +126,7 @@
    "total": 2,
    "nome": "PSB",
    "composicao": null,
-   "nomeCurto": "PSB",
-   "frase": "seu voto contou para PSB, que elegeu 2 em SP"
+   "nomeCurto": "PSB"
   },
   {
    "id": "P14",
@@ -148,8 +139,7 @@
    "total": 1,
    "nome": "MISSÃO",
    "composicao": null,
-   "nomeCurto": "MISSÃO",
-   "frase": "seu voto contou para MISSÃO, que elegeu 1 em SP"
+   "nomeCurto": "MISSÃO"
   },
   {
    "id": "P30",
@@ -162,8 +152,7 @@
    "total": 2,
    "nome": "NOVO",
    "composicao": null,
-   "nomeCurto": "NOVO",
-   "frase": "seu voto contou para NOVO, que elegeu 2 em SP"
+   "nomeCurto": "NOVO"
   },
   {
    "id": "F100",
@@ -176,8 +165,7 @@
    "total": 1,
    "nome": "FEDERAÇÃO PSDB CIDADANIA",
    "composicao": "PSDB/CIDADANIA",
-   "nomeCurto": "Federação PSDB/CIDADANIA",
-   "frase": "seu voto contou para a Federação PSDB/CIDADANIA, que elegeu 1 em SP"
+   "nomeCurto": "Federação PSDB/CIDADANIA"
   },
   {
    "id": "F103",
@@ -190,8 +178,7 @@
    "total": 1,
    "nome": "FEDERAÇÃO RENOVAÇÃO SOLIDÁRIA",
    "composicao": "PRD/SOLIDARIEDADE",
-   "nomeCurto": "Federação PRD/SOLIDARIEDADE",
-   "frase": "seu voto contou para a Federação PRD/SOLIDARIEDADE, que elegeu 1 em SP"
+   "nomeCurto": "Federação PRD/SOLIDARIEDADE"
   },
   {
    "id": "P70",
@@ -204,8 +191,7 @@
    "total": 0,
    "nome": "AVANTE",
    "composicao": null,
-   "nomeCurto": "AVANTE",
-   "frase": "seu voto contou para AVANTE, que não elegeu ninguém em SP"
+   "nomeCurto": "AVANTE"
   },
   {
    "id": "P12",
@@ -218,8 +204,7 @@
    "total": 0,
    "nome": "PDT",
    "composicao": null,
-   "nomeCurto": "PDT",
-   "frase": "seu voto contou para PDT, que não elegeu ninguém em SP"
+   "nomeCurto": "PDT"
   },
   {
    "id": "P27",
@@ -232,8 +217,7 @@
    "total": 0,
    "nome": "DC",
    "composicao": null,
-   "nomeCurto": "DC",
-   "frase": "seu voto contou para DC, que não elegeu ninguém em SP"
+   "nomeCurto": "DC"
   },
   {
    "id": "P80",
@@ -246,8 +230,7 @@
    "total": 0,
    "nome": "UP",
    "composicao": null,
-   "nomeCurto": "UP",
-   "frase": "seu voto contou para UP, que não elegeu ninguém em SP"
+   "nomeCurto": "UP"
   },
   {
    "id": "P16",
@@ -260,8 +243,7 @@
    "total": 0,
    "nome": "PSTU",
    "composicao": null,
-   "nomeCurto": "PSTU",
-   "frase": "seu voto contou para PSTU, que não elegeu ninguém em SP"
+   "nomeCurto": "PSTU"
   },
   {
    "id": "P35",
@@ -274,8 +256,7 @@
    "total": 0,
    "nome": "DEMOCRATA",
    "composicao": null,
-   "nomeCurto": "DEMOCRATA",
-   "frase": "seu voto contou para DEMOCRATA, que não elegeu ninguém em SP"
+   "nomeCurto": "DEMOCRATA"
   },
   {
    "id": "P36",
@@ -288,8 +269,7 @@
    "total": 0,
    "nome": "AGIR",
    "composicao": null,
-   "nomeCurto": "AGIR",
-   "frase": "seu voto contou para AGIR, que não elegeu ninguém em SP"
+   "nomeCurto": "AGIR"
   }
  ],
  "eleitos": [

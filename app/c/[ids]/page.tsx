@@ -3,12 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Compartilhar } from "@/components/Compartilhar";
 import { PoliticoCard } from "@/components/PoliticoCard";
+import { ReceberAvisos } from "@/components/ReceberAvisos";
 import { montarCard, resumoNumeros, type CardDados } from "@/lib/card";
 import { idsDaUrl } from "@/lib/colinha";
 import { repo } from "@/lib/repo";
 
-// A colinha: cards completos (com "seu voto contou para" nos deputados), compartilhar e a
-// imagem de preview (opengraph-image.tsx, ao lado).
+// A colinha: cards completos, compartilhar e a imagem de preview (opengraph-image.tsx, ao lado).
 export const revalidate = 86400;
 // Nenhuma colinha é gerada no build; cada uma é gerada na primeira visita e fica em cache (ISR).
 export async function generateStaticParams() {
@@ -45,12 +45,11 @@ export default async function ColinhaPage({ params }: Props) {
       <div className="mt-6 grid justify-items-center gap-4">
         {cs.map((d) => <PoliticoCard key={d.id} d={d} linkPagina />)}
       </div>
-      <div className="mt-8">
+      <div className="mt-8 flex flex-wrap items-center gap-3">
         <Compartilhar titulo={`Minha colinha 2026: ${nomes(cs)}`} texto="Em quem votei para o Congresso em 2026, com os números oficiais de cada um." />
+        <ReceberAvisos id="colinha" sobre="sobre a sua colinha" />
       </div>
       <p className="mt-6 text-sm">
-        <Link href="/votacoes" className="underline underline-offset-2">Responder o quiz e ver a concordância</Link>
-        {" · "}
         <Link href="/" className="underline underline-offset-2">Alterar a colinha</Link>
       </p>
     </main>

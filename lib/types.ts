@@ -164,8 +164,6 @@ export interface Votacao {
   placar: Placar | null;
   secreta: boolean;
   urlOficial: string;
-  /** Entra no quiz de concordância (docs/QUIZ.md). */
-  quiz: boolean;
 }
 
 /**
@@ -197,24 +195,6 @@ export interface Orientacao {
   /** Ex.: "Governo", "PT", "PL", "Minoria". Grafia da fonte. */
   bancada: string;
   orientacao: string;
-}
-
-/** Tabela `quiz`: uma pergunta liga a votação de mérito da mesma matéria em cada Casa. */
-export interface QuizItem {
-  id: string;
-  ordem: number;
-  /** Matéria como a Câmara identifica (o Senado pode renumerar); só Senado quando a Câmara não votou. */
-  materia: string;
-  /** Nome curto e neutro, tirado da ementa. */
-  titulo: string;
-  /** Ementa oficial. */
-  ementa: string;
-  /** Três parágrafos: o que faz (ementa e palavras-chave oficiais), o que foi votado (dados), o que aconteceu depois (situação oficial). */
-  explicacao: string[];
-  /** Páginas oficiais da matéria e inteiro teor. */
-  fontes: { rotulo: string; url: string }[];
-  votacaoCamaraId: string | null;
-  votacaoSenadoId: string | null;
 }
 
 /** Proposições de autoria (E-futura). Mantido do modelo; ainda sem dado na sonda. */

@@ -1,5 +1,5 @@
 /**
- * Os três números do card. Só aritmética sobre tipos internos; sem I/O.
+ * Os números do card. Só aritmética sobre tipos internos; sem I/O.
  * Metodologia espelhada em /como-funciona (atualizar os dois juntos).
  */
 import type { Orientacao, TipoVoto, Votacao, Voto } from "./types";
@@ -79,25 +79,6 @@ export function governismo(votacoes: VotacaoBase[], votosDoPolitico: VotoBase[],
     if (!ori || !voto || !VOTO_POSICIONAL.has(voto)) continue;
     d++;
     if (ORIENTACAO_PARA_VOTO[ori] === voto) n++;
-  }
-  return indicador(n, d);
-}
-
-/** Resposta do usuário no quiz: a favor ou contra a proposição. */
-export type RespostaQuiz = "sim" | "nao";
-
-/**
- * Concordância com você: % das votações do quiz respondidas em que o voto do político
- * (Sim/Não) coincide com a resposta. Sem resposta: null. Político sem voto posicional: fora do denominador.
- */
-export function concordancia(respostas: Record<string, RespostaQuiz>, votosDoPolitico: VotoBase[]): Indicador {
-  const porVotacao = new Map(votosDoPolitico.map((v) => [v.votacaoId, v.voto]));
-  let n = 0, d = 0;
-  for (const [votacaoId, resposta] of Object.entries(respostas)) {
-    const voto = porVotacao.get(votacaoId);
-    if (voto !== "sim" && voto !== "nao") continue;
-    d++;
-    if (voto === resposta) n++;
   }
   return indicador(n, d);
 }

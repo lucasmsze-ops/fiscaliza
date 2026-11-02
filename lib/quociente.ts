@@ -1,6 +1,6 @@
 /**
  * Distribuição das vagas de deputado (sistema proporcional). Só aritmética; sem I/O.
- * Metodologia espelhada em /como-funciona (atualizar os dois juntos).
+ * Usada na linha do tempo de candidaturas (E29), para dizer se a vaga veio por QP ou por média.
  *
  * Regras (Código Eleitoral arts. 106–109 com a Lei 14.211/2021; Res.-TSE 23.677/2021 art. 11;
  * STF, ADIs 7228/7263/7325, 2024, que abriu a última fase a todos):
@@ -142,17 +142,9 @@ export interface ListaNome {
 }
 
 /**
- * Nome curto para o card (decisão de 2026-11-01): partido isolado pela sigla; federação por
- * "Federação " + a composição do TSE. O nome oficial completo vai no tooltip (`lista.nome`).
+ * Nome curto da lista: partido isolado pela sigla; federação por "Federação " + a composição do
+ * TSE. Usado na linha do tempo de candidaturas (E29); o nome oficial completo fica em `lista.nome`.
  */
 export function nomeCurtoLista(l: ListaNome): string {
   return l.composicao ? `Federação ${l.composicao}` : l.nome;
-}
-
-/** A frase do card. Nunca "ajudou a eleger Z": o voto vai para a lista, não para um candidato. */
-export function fraseVotoContou(l: ListaNome, eleitos: number, uf: string): string {
-  const quem = l.composicao ? `a ${nomeCurtoLista(l)}` : nomeCurtoLista(l);
-  return eleitos === 0
-    ? `seu voto contou para ${quem}, que não elegeu ninguém em ${uf}`
-    : `seu voto contou para ${quem}, que elegeu ${eleitos} em ${uf}`;
 }

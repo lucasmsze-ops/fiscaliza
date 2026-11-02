@@ -63,10 +63,9 @@ Hoje (protótipo, SP):
 /                   entrada: cidade ou nome → monta a colinha
 /c/[ids]            colinha: cards + OG image
 /p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
-/votacoes           hoje: as votações do quiz (sai na E17; volta como lista do Plenário no Passo 4)
 /como-funciona      metodologia, fontes, licença, código
 ```
-Planejadas (detalhar no PLANO ao chegar): `/votacoes/[id]` (detalhe com placar por partido),
+Planejadas (detalhar no PLANO ao chegar): `/votacoes` (lista do Plenário, E30), `/votacoes/[id]` (detalhe com placar por partido),
 `/uf/[uf]`, `/cidade/[ibge]` ("quem me representa"), `/comparar`, `/eleicoes`, `/governos`,
 `/partidos`, `/cargos`, `/dicionario`, `/mais-vistos`, `/atualizacoes`.
 
