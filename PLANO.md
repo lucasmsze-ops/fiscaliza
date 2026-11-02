@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E19** (atualizar esta linha ao avançar)
+**Etapa atual: E20** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -262,15 +262,17 @@ fases, fora de escopo, card). As etapas antigas E17–E21 viraram E19–E22.
   decisão do usuário antes da E19.
 
 ### E19 · Supabase e schema
-- [ ] Projeto free. Migrações com as tabelas atuais (sem `quiz`) e `avisos_interesse`
+- [x] Projeto free. Migrações com as tabelas atuais (sem `quiz`) e `avisos_interesse`
       (página, tipo, dia, contagem; sem nada que identifique quem tocou). RLS: anon só lê, exceto
       incrementar a contagem por função. (`supabase/migrations/0001_init.sql` pronta e testada num
       Postgres 17 local (PGlite): carga completa, permissões, `registrar_aviso`, `tamanhos()`.
-      Falta o usuário criar o projeto e rodar a migração no SQL Editor.)
+      Projeto criado pelo usuário em 2026-11-02, região São Paulo; migração rodada no SQL Editor.)
 - [x] `scripts/seed.ts`: carrega `data/*.json` nas tabelas. (Upsert por chave via API REST, só
       `fetch` (`lib/supabase.ts`), sem dependência nova; `npm run seed`; conferência em
       `npm run supabase:conferir`.)
 - Pronto quando: `select count(*)` de cada tabela bate com o JSON.
+      (`npm run supabase:conferir`: 11 de 11 batem; 14,4 MB no Postgres, 1,47× o JSON, 2,9% de
+      500 MB. Seed em 17 s; rodado duas vezes sem duplicar.)
 
 ### E20 · `SupabaseRepo`
 - [ ] Implementar a interface `Repo` sobre o Supabase. Trocar por variável de ambiente.
@@ -279,7 +281,9 @@ fases, fora de escopo, card). As etapas antigas E17–E21 viraram E19–E22.
 
 ### E21 · Cron do Congresso, Brasil inteiro
 - [ ] `scripts/cron/{politicos,despesas,proposicoes,votacoes}.ts`, cada um idempotente,
-      reaproveitando os adapters da sonda. `upsert` por chave externa.
+      reaproveitando os adapters da sonda. `upsert` por chave externa, **só das linhas novas ou
+      alteradas** (medido na E19: regravar tudo levou o banco de 14 para 26 MB sem mudar dado;
+      votações, votos e orientações passadas são imutáveis: inserir ignorando as existentes).
 - [ ] 513 deputados + 81 senadores. CEAPS (cota dos senadores) entra aqui. Medir tempo total.
 - [ ] `proposicoes`: filtrar coautorias via `/proposicoes/{id}/autores` (`proponente = true`).
 - Pronto quando: rodar duas vezes seguidas não duplica nada.

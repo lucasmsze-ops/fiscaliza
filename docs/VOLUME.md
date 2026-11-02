@@ -39,6 +39,11 @@ os dados de SP ocupam 14,4 MB contra 10,0 MB de JSON, **1,44×** no total; `voto
 `eleitos_mun` 1,52×, `orientacoes` 1,80×, `votacoes` 1,04×. A faixa da tabela abaixo é
 conservadora.
 
+**No Supabase (E19):** 14,4 MB para os 438 políticos de SP (1,47× o JSON). Uma segunda carga
+completa, sem nenhuma mudança de dado, levou o banco a 25,6 MB: cada linha regravada deixa a versão
+antiga ocupando espaço até o autovacuum reaproveitá-lo, e o limite de 500 MB conta esse espaço.
+Regra para o cron: gravar só o que é novo ou mudou.
+
 | Tabela | Linhas | JSON | Postgres |
 |---|---|---|---|
 | `votos` | 481 mil | 47 MB | 70–95 MB |

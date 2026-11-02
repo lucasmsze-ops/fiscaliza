@@ -15,6 +15,20 @@ Modelo:
 
 ---
 
+## 2026-11-02 · E19
+**Feito:** usuário criou o projeto no Supabase (free, São Paulo) e rodou a migração no SQL Editor.
+Criei `.env.local` a partir do modelo (fora do git, permissão 600); a URL colada era a do painel
+(`supabase.com/dashboard/project/<id>`), corrigida para `https://<id>.supabase.co` sem exibir
+chaves. Conexão ok com as duas chaves. `npm run seed`: 11 tabelas em 17 s.
+`npm run supabase:conferir`: 11 de 11 contagens batem; 14,4 MB (1,47× o JSON, 2,9% de 500 MB).
+Segunda carga: contagens iguais (idempotente).
+**Decidido:** o cron grava só linhas novas ou alteradas: a segunda carga, sem mudança de dado,
+levou o banco de 14 para 26 MB (versões antigas das linhas regravadas). Registrado na E21 e em
+`docs/VOLUME.md`.
+**Lacunas:** nenhuma.
+**Próximo passo:** E20 — `SupabaseRepo` (interface `Repo` sobre o Supabase, troca por variável de
+ambiente); as páginas passam a ler números pré-calculados, não todas as votações (egress).
+
 ## 2026-11-02 · E19 (preparação)
 **Feito:** usuário tornou o repositório público. `supabase/migrations/0001_init.sql`: 11 tabelas com
 as chaves do validador, índices de leitura, RLS com leitura pública e permissões explícitas,
