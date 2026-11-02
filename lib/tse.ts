@@ -58,7 +58,8 @@ interface ResultadoRaw {
 
 export async function getResultadoMunicipio(ciclo: string, cdEleicao: string, uf: string, cdMunicipio: string, cargo: CargoTse): Promise<ResultadoMunicipio> {
   const u = uf.toLowerCase();
-  const url = `${TSE_RESULTADOS}/${ciclo}/${cdEleicao}/dados/${u}/${u}${cdMunicipio}-c${pad(CARGO_TSE[cargo], 4)}-e${pad(cdEleicao, 6)}-u.json`;
+  // O nome do arquivo usa o código do município com 5 dígitos; o CSV traz sem os zeros à esquerda (RO "35").
+  const url = `${TSE_RESULTADOS}/${ciclo}/${cdEleicao}/dados/${u}/${u}${pad(cdMunicipio, 5)}-c${pad(CARGO_TSE[cargo], 4)}-e${pad(cdEleicao, 6)}-u.json`;
   const raw = await fetchJson<ResultadoRaw>(url, { label: "tse:resultados/{municipio}-u.json" });
   const c = raw.carg.find((x) => Number(x.cd) === CARGO_TSE[cargo]);
   if (!c) throw new Error(`cargo ${cargo} ausente em ${url}`);

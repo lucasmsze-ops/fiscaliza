@@ -54,3 +54,13 @@ npx tsx scripts/sonda/consolidar.ts       # data/*.json (11 tabelas, snake_case 
 npx tsx scripts/sonda/validar.ts          # referências, obrigatórios, chaves; sai com 1 se algo falhar
 npx tsx scripts/sonda/_numeros.ts         # participação e governismo da amostra a partir de data/
 ```
+
+## TSE 2026, Brasil inteiro (E21b)
+
+Com os zips nacionais do TSE em `data/raw/` (candidatos, votação por município e zona, votação por
+partido), extraídos por estado:
+
+```bash
+npx tsx scripts/tse/municipios.ts   # data/municipios-ibge.json (precisa da API do IBGE: rodar na máquina local)
+npx tsx scripts/tse/nacional.ts     # estado/fontes/tse-2026/ + conferências (quociente, JSON oficial, SP)
+```

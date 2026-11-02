@@ -38,3 +38,6 @@ Nunca preencher com dado sintético.
 | 2026-11-01 | Câmara | Cota nota a nota do Brasil inteiro (~1 milhão de linhas em 2023–26) não cabe no Supabase free | A decidir: agregado por fornecedor e mês, com link para as notas na página oficial (`docs/VOLUME.md`) |
 | 2026-11-02 | IBGE | `servicodados.ibge.gov.br` não aceita conexão a partir de runners do GitHub Actions (2 execuções, timeout de conexão) | Municípios e códigos IBGE gerados na máquina local e versionados; o cron só lê |
 | 2026-11-02 | Câmara | Descrição oficial de uma votação (prisão de deputado) traz o CPF dele por extenso | Ocultado como "[CPF omitido]" (`lib/texto.ts#semCpf`); o restante do texto fica como a fonte publica |
+| 2026-11-02 | TSE / IBGE | 13 municípios com grafia diferente entre TSE e IBGE (um com o nome antigo no TSE: "Boa Saúde", hoje Januário Cicco/RN) | De-para explícito em `scripts/tse/municipios.ts`; o site mostra o nome do IBGE |
+| 2026-11-02 | TSE | Uma deputada eleita por média (RJ) não está no top-20 de nenhuma cidade | Todos os eleitos entram em `politicos`, além de quem aparece em algum top-20: tem página e busca, não aparece na lista de nenhuma cidade |
+| 2026-11-02 | TSE | Status "reeleito" não está no TSE 2026 | Fora de SP, até a E21c, os eleitos ficam como "eleito" nas tabelas geradas; nada é publicado antes do cruzamento |

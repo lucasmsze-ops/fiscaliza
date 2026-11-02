@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E21b** (atualizar esta linha ao avançar)
+**Etapa atual: E21c** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -303,16 +303,26 @@ colinha não funciona fora de SP. Dividida em E21a–E21e; o desenho do cron est
       em 5 s. Primeira execução com estado limpo: 8 s.)
 
 ### E21b · TSE 2026 no Brasil inteiro
-- [ ] Candidatos a deputado federal e senador das 27 UFs; top-20 de cada uma das 5.570 cidades;
+- [x] Candidatos a deputado federal e senador das 27 UFs; top-20 de cada uma das 5.570 cidades;
       listas e quociente dos 27 estados, conferidos contra os relatórios oficiais de totalização.
-- [ ] Municípios e códigos IBGE gerados localmente e versionados (o IBGE não responde ao runner).
-- Pronto quando: a colinha funciona a partir de qualquer cidade do país.
+      (`scripts/tse/nacional.ts` → `estado/fontes/tse-2026/`: 3.632 políticos (todos os do top-20 e
+      todos os eleitos), 458 listas, 172.329 linhas de top-20. Gabarito do quociente: a situação de
+      cada candidato no TSE (ELEITO POR QP / POR MÉDIA), 0 divergências nos 27 estados, 513 vagas.
+      Top-20 da maior cidade de cada estado = JSON oficial em 54 de 54. SP idêntico ao publicado.)
+- [x] Municípios e códigos IBGE gerados localmente e versionados (o IBGE não responde ao runner).
+      (`scripts/tse/municipios.ts` → `data/municipios-ibge.json`: 5.571, 13 grafias no de-para.)
+- Pronto quando: as tabelas nacionais estão geradas e conferidas. **Publicação na E21c** (mudança
+      de 2026-11-02): sem o cruzamento com Câmara e Senado, quem está em exercício fora de SP
+      apareceria com "primeiro voto em fevereiro" e suplente que exerceu, "sem mandato".
 
 ### E21c · Parlamentares em exercício no Brasil inteiro
 - [ ] 513 deputados e 81 senadores em `politicos`, `mandatos` e `afastamentos`, ligados ao TSE pelo
       CPF em memória (Câmara) e pelo nome completo + UF (Senado).
 - [ ] Votos de todos desde 2023: arquivos anuais da Câmara (`votacoesVotos`) e `/votacao` do Senado.
-- Pronto quando: a página de qualquer parlamentar em exercício abre com os números.
+- [ ] Publicar junto as tabelas da E21b (estado/fontes/tse-2026), com o status "reeleito" vindo do
+      cruzamento; conferir a colinha a partir de cidades de vários estados.
+- Pronto quando: a colinha funciona a partir de qualquer cidade do país e a página de qualquer
+      parlamentar em exercício abre com os números.
 
 ### E21d · Cota parlamentar no Brasil inteiro
 - [ ] Câmara pela API (27 UFs, média por UF; mês fechado = total igual ao da coleta anterior, que

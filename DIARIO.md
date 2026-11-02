@@ -15,6 +15,23 @@ Modelo:
 
 ---
 
+## 2026-11-02 · E21b
+**Feito:** `scripts/tse/municipios.ts` → `data/municipios-ibge.json` (5.571 cidades; 13 grafias no
+de-para; SP igual ao atual). `scripts/tse/nacional.ts` → `estado/fontes/tse-2026/`: 3.632 políticos
+(top-20 e todos os eleitos), 458 listas, 172.329 linhas de top-20, em 7 s com DuckDB sobre os CSVs
+por estado (3,4 GB). Conferências: quociente candidato a candidato contra a situação no TSE, 0
+divergências nos 27 estados (513 vagas, contadas do próprio TSE); top-20 da maior cidade de cada
+estado contra o JSON oficial, 54 de 54; SP idêntico ao publicado (listas, municípios, 20.365 linhas).
+Corrigido `lib/tse.ts`: o arquivo de resultados usa o código do município com 5 dígitos (o CSV vem
+sem zeros à esquerda; SP nunca expôs isso).
+**Decidido:** a publicação nacional vai junto com a E21c, porque sem o cruzamento com Câmara e
+Senado o card mentiria ("primeiro voto em fevereiro" para quem já vota). Vagas por estado saem do
+TSE, não de uma tabela fixa. Todos os eleitos entram, mesmo sem top-20 (uma deputada do RJ).
+Nenhum homônimo de nome de urna na mesma UF.
+**Lacunas:** ver `docs/LACUNAS.md` (de-para de municípios, eleita sem top-20, "reeleito" fora de SP).
+**Próximo passo:** E21c — os 594 parlamentares em exercício (Câmara pelo CPF em memória, Senado
+pelo nome completo + UF), votos de todos desde 2023 pelos arquivos anuais, e publicar com a E21b.
+
 ## 2026-11-02 · E21a
 **Feito:** E21 dividida em E21a–E21e (PLANO): a original juntava cinco trabalhos e não tinha o TSE
 nacional, sem o qual a colinha só funciona em SP. `scripts/cron/`: `estado.ts` (estado/dados,
