@@ -15,6 +15,19 @@ Modelo:
 
 ---
 
+## 2026-11-01 · referência (fora do plano)
+**Feito:** mapa do politicometro.org pelo navegador, como visitante: home, página de deputado e
+de senador, estado, cidade, "quem me representa", Congresso e detalhe de votação, e as ~20 seções
+(sobre, atualizações, partidos, governos, eleições, STF, comparar etc.). Inventário em
+`docs/REFERENCIA-POLITICOMETRO.md`: cada funcionalidade × o que temos × conflito com o `CLAUDE.md`
+× sugestão (MVP, v1.1, v1.2, fora). Nada copiado; dado novo só pelas fontes oficiais.
+**Decidido:** nada; o documento lista as decisões que são do usuário (escopo, presença e
+discursos, conta, régua ideológica, resumo das votações). O site deles tem bloqueio anti-robô
+fora do navegador: não contornado.
+**Lacunas:** nenhuma de dado.
+**Próximo passo:** o usuário revisa o inventário e diz o que entra; o que entrar vira etapa no
+`PLANO.md` antes de completar a rodada 2 do teste (E16).
+
 ## 2026-11-01 · E16 (rodada 1)
 **Feito:** push de `4e78d39`; busca por número de urna e aviso "Não está na lista?" conferidos em
 produção. O usuário aplicou o teste e relatou: menos de 5 pessoas, todas montaram a colinha em
