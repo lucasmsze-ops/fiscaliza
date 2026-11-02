@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { PoliticoCard } from "@/components/PoliticoCard";
 import { AMOSTRA } from "@/lib/amostra";
-import { montarCard } from "@/lib/card";
 import { repo } from "@/lib/repo";
 
 // Vitrine do protótipo (E10): o card com os 20 políticos da sonda. Não é página do produto.
@@ -9,7 +8,7 @@ export const metadata: Metadata = { title: "Amostra · Fiscaliza", robots: { ind
 export const revalidate = 86400;
 
 export default async function Amostra() {
-  const cards = (await Promise.all(AMOSTRA.map((id) => montarCard(repo, id)))).filter((c) => c !== null);
+  const cards = (await Promise.all(AMOSTRA.map((id) => repo.getCard(id)))).filter((c) => c !== null);
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
       <h1 className="text-2xl font-bold">Amostra da sonda</h1>

@@ -80,7 +80,7 @@ export async function montarPagina(repo: Repo, id: string, hoje = new Date().toI
       .map((m) => ({ ano: m.ano, mes: m.mes, valor: porMes.get(m.ano * 100 + m.mes)?.total ?? null, mediaUf: m.media, aberto: !m.fechado }));
     const ref = [...medias].filter((m) => m.fechado).sort((a, b) => a.ano * 100 + a.mes - (b.ano * 100 + b.mes)).at(-1) ?? null;
     const doRef = ref ? porMes.get(ref.ano * 100 + ref.mes) : undefined;
-    const categorias = Object.entries(doRef?.porCategoria ?? {}).map(([nome, valor]) => ({ nome, valor })).filter((c) => c.valor !== 0).sort((a, b) => b.valor - a.valor);
+    const categorias = Object.entries(doRef?.porCategoria ?? {}).map(([nome, valor]) => ({ nome, valor })).filter((c) => c.valor !== 0).sort((a, b) => b.valor - a.valor || a.nome.localeCompare(b.nome)); // desempate pelo nome: o jsonb não preserva a ordem das chaves
     ceap = { uf: p.uf, meses, categorias, mesReferencia: ref ? { ano: ref.ano, mes: ref.mes } : null };
   }
 

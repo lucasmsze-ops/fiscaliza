@@ -14,7 +14,8 @@
     "validar": "tsx scripts/sonda/validar.ts",
     "seed": "tsx --env-file-if-exists=.env.local scripts/seed.ts",
     "supabase:conferir": "tsx --env-file-if-exists=.env.local scripts/supabase-conferir.ts",
-    "rede": "node scripts/rede.ts"
+    "rede": "node scripts/rede.ts",
+    "precalcular": "tsx --env-file-if-exists=.env.local scripts/precalcular.ts"
   },
   "devDependencies": {
     "@duckdb/node-api": "^2.0.0-r.1",

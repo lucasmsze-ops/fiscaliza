@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E20** (atualizar esta linha ao avançar)
+**Etapa atual: E20** (atualizar esta linha ao avançar; falta conferir em produção)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -275,8 +275,13 @@ fases, fora de escopo, card). As etapas antigas E17–E21 viraram E19–E22.
       500 MB. Seed em 17 s; rodado duas vezes sem duplicar.)
 
 ### E20 · `SupabaseRepo`
-- [ ] Implementar a interface `Repo` sobre o Supabase. Trocar por variável de ambiente.
-- [ ] Nenhum componente muda. Rodar o site inteiro nos dois modos.
+- [x] Implementar a interface `Repo` sobre o Supabase. Trocar por variável de ambiente.
+      (`lib/repo-supabase.ts`, `FISCALIZA_DADOS=supabase`; `Repo` ganhou `getCard`/`getPagina`, que
+      no Supabase leem a tabela `resumos` (migração 0002, `npm run precalcular`, só grava o que mudou).)
+- [x] Nenhum componente muda. Rodar o site inteiro nos dois modos. (Builds nos dois modos: 1.089 de
+      1.089 páginas e rotas com o mesmo conteúdo, depois de fixar a ordem de exibição dos totais de
+      voto (o `jsonb` reordena chaves) e o desempate da lista da cidade pelo número de urna. Colinha e
+      imagem de compartilhamento conferidas em tempo de execução lendo do Supabase.)
 - Pronto quando: o site em produção lê do Supabase e as páginas continuam < 1 s.
 
 ### E21 · Cron do Congresso, Brasil inteiro

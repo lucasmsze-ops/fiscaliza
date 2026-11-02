@@ -5,6 +5,7 @@
 import { describe, expect, it } from "vitest";
 import { AMOSTRA } from "../lib/amostra";
 import { montarCard, resumoNumeros, rotuloCargo, rotuloStatus, type CardDados } from "../lib/card";
+import { montarPagina } from "../lib/pagina";
 import { JsonRepo } from "../lib/repo";
 import type { Politico } from "../lib/types";
 
@@ -78,5 +79,16 @@ describe("rótulos", () => {
     expect(rotuloStatus(base)).toBe("Reeleita em 2026");
     expect(rotuloCargo({ ...base, genero: null })).toBe("Câmara dos Deputados");
     expect(rotuloStatus({ ...base, cargo: "senador", genero: "masculino", status: "nao_eleito" })).toBe("Não eleito em 2026");
+  });
+});
+
+describe("resumo pré-calculado (tabela resumos, E20)", () => {
+  it("card e página sobrevivem ao JSON sem perder nada: o modo Supabase mostra o mesmo que o JSON", async () => {
+    for (const id of AMOSTRA) {
+      const pg = await montarPagina(repo, id, HOJE);
+      expect(pg, id).not.toBeNull();
+      expect(JSON.parse(JSON.stringify(pg)), id).toStrictEqual(pg);
+      expect(pg!.card, id).toStrictEqual(cards.get(id));
+    }
   });
 });

@@ -15,6 +15,21 @@ Modelo:
 
 ---
 
+## 2026-11-02 · E20 (parcial)
+**Feito:** `lib/repo-supabase.ts` (API REST, chave publicável, listas em memória por 5 min);
+`Repo` com `getCard` e `getPagina`; páginas trocaram `montarCard`/`montarPagina` por elas (nenhum
+componente mudou). Migração 0002 (`resumos`: card, página e hash por político), rodada pelo
+usuário; `npm run precalcular` grava 438 resumos em 3 s (1,3 KB em média) e não regrava nada na
+segunda vez. `selecionar()` pagina de 1.000 em 1.000 com `order=` obrigatório. Teste novo: card e
+página sobrevivem ao JSON. Builds nos dois modos comparados página a página: 1.089 de 1.089 iguais.
+**Decidido:** o `jsonb` reordena as chaves dos objetos: "Como votou" passou a seguir uma ordem fixa
+e as categorias da cota desempatam pelo nome. A lista da cidade desempata pelo número de urna numa
+regra única (`lib/cidade.ts`), em vez de depender da ordem do arquivo. `pbcopy` precisa de
+`LANG=en_US.UTF-8` (os comentários da 0002 colaram com acentos trocados; o SQL não foi afetado).
+**Lacunas:** nenhuma de dado.
+**Próximo passo:** usuário cria na Vercel `FISCALIZA_DADOS`, `SUPABASE_URL` e
+`SUPABASE_PUBLISHABLE_KEY`; push; conferir produção lendo do Supabase e o tempo das páginas.
+
 ## 2026-11-02 · E19
 **Feito:** usuário criou o projeto no Supabase (free, São Paulo) e rodou a migração no SQL Editor.
 Criei `.env.local` a partir do modelo (fora do git, permissão 600); a URL colada era a do painel

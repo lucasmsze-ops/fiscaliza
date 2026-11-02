@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Compartilhar } from "@/components/Compartilhar";
 import { PoliticoCard } from "@/components/PoliticoCard";
 import { ReceberAvisos } from "@/components/ReceberAvisos";
-import { montarCard, resumoNumeros, type CardDados } from "@/lib/card";
+import { resumoNumeros, type CardDados } from "@/lib/card";
 import { idsDaUrl } from "@/lib/colinha";
 import { repo } from "@/lib/repo";
 
@@ -18,7 +18,7 @@ export async function generateStaticParams() {
 type Props = { params: Promise<{ ids: string }> };
 
 async function cards(segmento: string) {
-  return (await Promise.all(idsDaUrl(segmento).map((id) => montarCard(repo, id)))).filter((c) => c !== null);
+  return (await Promise.all(idsDaUrl(segmento).map((id) => repo.getCard(id)))).filter((c) => c !== null);
 }
 
 const nomes = (cs: CardDados[]) => cs.length > 1 ? `${cs.slice(0, -1).map((c) => c.nomeUrna).join(", ")} e ${cs.at(-1)!.nomeUrna}` : cs[0]?.nomeUrna ?? "";

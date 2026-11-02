@@ -1,13 +1,17 @@
 /**
  * Camada de dados do site. Componentes e páginas falam só com `Repo`; a origem muda sem tocar
- * neles: `JsonRepo` (protótipo, lê data/*.json) agora, `SupabaseRepo` na E17. As duas leem as
- * mesmas linhas em snake_case e devolvem os tipos de lib/types.ts.
+ * neles: `JsonRepo` (data/*.json) ou `SupabaseRepo` (lib/repo-supabase.ts), escolhida por
+ * FISCALIZA_DADOS. As duas leem as mesmas linhas em snake_case e devolvem os tipos de lib/types.ts.
+ * Card e página: o JsonRepo calcula na hora; o SupabaseRepo lê o resumo pré-calculado (`resumos`).
  *
- * Só roda no servidor (lê arquivos). Nenhuma requisição de usuário chama API externa.
+ * Só roda no servidor. Nenhuma requisição de usuário chama API externa (o Supabase é o banco do site).
  */
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { montarCard, type CardDados } from "./card";
+import { ordemNaCidade } from "./cidade";
 import { deLinha } from "./linhas";
+import { montarPagina, type PaginaDados } from "./pagina";
 import type {
   Afastamento, Cargo, Casa, DespesaMediaUf, DespesaMes, EleitoMunicipio, Linha, ListaEleitoral, Mandato, Municipio,
   Orientacao, Politico, Votacao, Voto,
@@ -21,6 +25,10 @@ export interface EleitoNaCidade {
 }
 
 export interface Repo {
+  /** O card pronto (lib/card.ts#montarCard). */
+  getCard(id: string): Promise<CardDados | null>;
+  /** A página do político pronta (lib/pagina.ts#montarPagina), com o card dentro. */
+  getPagina(id: string): Promise<PaginaDados | null>;
   getPolitico(id: string): Promise<Politico | null>;
   listarPoliticos(): Promise<Politico[]>;
   /** Busca por nome de urna ou nome civil, sem acento nem caixa. */
@@ -40,6 +48,7 @@ export interface Repo {
 }
 
 export { normalizar } from "./texto";
+import { SupabaseRepo } from "./repo-supabase";
 import { normalizar } from "./texto";
 
 type Tabelas = {
@@ -63,6 +72,12 @@ export class JsonRepo implements Repo {
     return p as Promise<Tabelas[K][]>;
   }
 
+  getCard(id: string) {
+    return montarCard(this, id);
+  }
+  getPagina(id: string) {
+    return montarPagina(this, id);
+  }
   async getPolitico(id: string) {
     return (await this.tabela("politicos")).find((p) => p.id === id) ?? null;
   }
@@ -88,7 +103,7 @@ export class JsonRepo implements Repo {
     const porId = new Map(politicos.map((p) => [p.id, p]));
     return linhas.filter((l) => l.municipioIbge === ibge)
       .map((l) => ({ cargo: l.cargo, posicao: l.posicao, votos: l.votos, politico: porId.get(l.politicoId)! }))
-      .sort((a, b) => a.cargo.localeCompare(b.cargo) || a.posicao - b.posicao || b.votos - a.votos);
+      .sort(ordemNaCidade);
   }
   async getLista(id: string) {
     return (await this.tabela("listas")).find((l) => l.id === id) ?? null;
@@ -116,5 +131,8 @@ export class JsonRepo implements Repo {
   }
 }
 
-/** A origem de dados do site. A E17 troca por `SupabaseRepo` aqui, num lugar só. */
-export const repo: Repo = new JsonRepo();
+/**
+ * A origem de dados do site, num lugar só: FISCALIZA_DADOS=supabase lê do Supabase (precisa de
+ * SUPABASE_URL e SUPABASE_PUBLISHABLE_KEY); sem a variável, lê data/*.json.
+ */
+export const repo: Repo = process.env.FISCALIZA_DADOS === "supabase" ? new SupabaseRepo() : new JsonRepo();

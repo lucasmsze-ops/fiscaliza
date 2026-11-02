@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { montarCard, resumoNumeros } from "@/lib/card";
+import { resumoNumeros } from "@/lib/card";
 import { idsDaUrl } from "@/lib/colinha";
 import { repo } from "@/lib/repo";
 
@@ -14,7 +14,7 @@ const COR = { fundo: "#ffffff", texto: "#111827", suave: "#4b5563", linha: "#e5e
 
 export default async function Imagem({ params }: { params: Promise<{ ids: string }> }) {
   const ids = idsDaUrl((await params).ids);
-  const cs = (await Promise.all(ids.map((id) => montarCard(repo, id)))).filter((c) => c !== null);
+  const cs = (await Promise.all(ids.map((id) => repo.getCard(id)))).filter((c) => c !== null);
   // Medidas por quantidade de linhas, para tudo caber em 630 px com o rodapé da fonte.
   const m = cs.length <= 1 ? { foto: 220, nome: 56, sub: 30, num: 30, gap: 0 } : cs.length === 2 ? { foto: 160, nome: 44, sub: 26, num: 26, gap: 20 } : { foto: 112, nome: 36, sub: 22, num: 23, gap: 12 };
   return new ImageResponse(

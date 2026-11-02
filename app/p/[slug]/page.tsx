@@ -5,7 +5,6 @@ import { PoliticoCard } from "@/components/PoliticoCard";
 import { Termo } from "@/components/Termo";
 import { inteiro, reais, resumoNumeros } from "@/lib/card";
 import { hrefSecao, type Secao as SecaoComoFunciona } from "@/lib/glossario";
-import { montarPagina } from "@/lib/pagina";
 import { repo } from "@/lib/repo";
 import type { TipoVoto } from "@/lib/types";
 
@@ -24,9 +23,11 @@ const ROTULO: Record<TipoVoto, string> = {
   sim: "Sim", nao: "Não", abstencao: "Abstenção", obstrucao: "Obstrução", art17: "Presidia a sessão",
   nao_informado: "Voto não divulgado", secreto: "Votou (votação secreta)", ausente: "Não registrou voto",
 };
+/** Ordem fixa de exibição: o jsonb do Postgres não preserva a ordem das chaves de `totais`. */
+const ORDEM_VOTOS = Object.keys(ROTULO) as TipoVoto[];
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const pg = await montarPagina(repo, (await params).slug);
+  const pg = await repo.getPagina((await params).slug);
   if (!pg) return { title: "Fiscaliza" };
   const c = pg.card;
   return {
@@ -49,7 +50,7 @@ function Secao({ titulo, secao, children }: { titulo: string; secao?: SecaoComoF
 }
 
 export default async function PaginaPolitico({ params }: Props) {
-  const pg = await montarPagina(repo, (await params).slug);
+  const pg = await repo.getPagina((await params).slug);
   if (!pg) notFound();
   const { card: c, votacoes: v, ceap, contatos } = pg;
   const casaNome = v?.casa === "senado" ? "do Senado" : "da Câmara";
@@ -63,7 +64,7 @@ export default async function PaginaPolitico({ params }: Props) {
         <Secao titulo={`Votações nominais do plenário ${casaNome}, 2023–2026`} secao="participacao">
           <p className="text-[var(--suave)]">{inteiro(v.total)} votações durante o mandato. Como votou:</p>
           <dl className="mt-3 grid grid-cols-2 gap-x-6 gap-y-1 tabular-nums">
-            {(Object.entries(v.totais) as [TipoVoto, number][]).filter(([, n]) => n > 0).map(([t, n]) => (
+            {ORDEM_VOTOS.map((t) => [t, v.totais[t]] as const).filter(([, n]) => n > 0).map(([t, n]) => (
               <div key={t} className="flex justify-between gap-2">
                 <dt>{t === "obstrucao" ? <Termo id="pg-obs" termo="obstrucao">{ROTULO[t]}</Termo> : ROTULO[t]}</dt>
                 <dd className="font-medium">{inteiro(n)}</dd>

@@ -48,6 +48,23 @@ export async function upsert(c: Cliente, tabela: string, linhas: object[], confl
   }
 }
 
+/**
+ * SELECT paginado: o Supabase devolve no máximo 1.000 linhas por pedido (só a Câmara tem 1.107
+ * votações), então pede faixas de 1.000 até vir menos. `consulta` é a query string do PostgREST,
+ * sempre com `order=` pela chave (ex.: "select=*&casa=eq.camara&order=id").
+ */
+export async function selecionar<T>(c: Cliente, tabela: string, consulta: string, pagina = 1000): Promise<T[]> {
+  // Sem ordem estável, faixas diferentes podem repetir ou pular linhas.
+  if (!/(^|&)order=/.test(consulta)) throw new Error(`selecionar ${tabela}: a consulta precisa de order= (paginação estável)`);
+  const todas: T[] = [];
+  for (let i = 0; ; i += pagina) {
+    const r = await pedir(c, `${tabela}?${consulta}`, { method: "GET", headers: { "Range-Unit": "items", Range: `${i}-${i + pagina - 1}` } }, `select ${tabela}`);
+    const lote = (await r.json()) as T[];
+    todas.push(...lote);
+    if (lote.length < pagina) return todas;
+  }
+}
+
 /** Contagem exata de linhas da tabela. */
 export async function contar(c: Cliente, tabela: string): Promise<number> {
   const r = await pedir(c, `${tabela}?select=*`, { method: "HEAD", headers: { Prefer: "count=exact", Range: "0-0" } }, `contar ${tabela}`);
