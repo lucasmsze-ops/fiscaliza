@@ -44,6 +44,7 @@ Presidente como entidade com feed · presença literal em sessões · feed por j
 /                   entrada: cidade ou nome → monta a colinha
 /c/[ids]            colinha: cards + "seu voto contou para" + concordância + OG image
 /p/[slug]           página do político (ISR): card, histórico 2023–26, CEAP, contatos, cobrar
+                    (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
 /votacoes           as votações do quiz de concordância, explicadas em 3 parágrafos
 /como-funciona      metodologia, fontes, licença, código
 ```

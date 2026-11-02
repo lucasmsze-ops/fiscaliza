@@ -183,9 +183,14 @@ Calendário externo que afeta o plano:
       Derrite "poucos votos para comparar".)
 
 ### E14 · `/p/[slug]` — página do político
-- [ ] ISR `revalidate` 24 h. Card, histórico de votos 2023–26, CEAP mensal, contatos, cobrar.
-- [ ] Slug estável (nome de urna + UF + cargo).
+- [x] ISR `revalidate` 24 h. Card, histórico de votos 2023–26, CEAP mensal, contatos, cobrar.
+      (438 páginas estáticas no build; `lib/pagina.ts`; votos por tipo fecham com a participação.)
+- [x] Slug estável: nome de urna + UF (`kiko-celeguim-sp`), sem o cargo, por decisão do usuário
+      (o cargo muda entre eleições). Homônimo na mesma UF vira erro, não sufixo por ordem.
 - Pronto quando: LCP < 1 s em 4G simulado (Lighthouse mobile) na página mais pesada.
+      (**Pendente.** PageSpeed Insights sem chave: cota esgotada (429); `npx lighthouse` local
+      bloqueado pela política de segurança da sessão. Estimativa por bytes: HTML 11–13 KB e CSS
+      4 KB comprimidos, foto exibida pequena (72×96); falta a medição.)
 
 ### E15 · `/como-funciona` e acabamento
 - [ ] Metodologia de cada número, fontes com link, licenças, link para o código.

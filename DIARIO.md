@@ -15,6 +15,20 @@ Modelo:
 
 ---
 
+## 2026-11-01 · E14 (parcial: falta medir o LCP)
+**Feito:** slug nome de urna + UF (decisão do usuário; colinha no localStorage v2). Colunas
+`telefone` e `redes_sociais` em `politicos`. `lib/pagina.ts` (votos por tipo e últimas 10 no
+mandato, CEAP de 12 meses com meses em aberto e categorias, mandatos, afastamentos, contatos) com
+testes em dado real (soma dos tipos = denominador da participação). `/p/[slug]` estática para os 438
+(ISR 24 h); "mais detalhes" nos cards. 65 testes. Em produção: HTML 13 KB (Kiko) e 11 KB (Giordano)
+comprimidos, pré-renderizados; 404 para slug inexistente. Conferido a 375 px.
+**Decidido:** cargo fora do slug (muda entre eleições). Página só com dado da fonte; seções sem
+dado somem.
+**Lacunas:** nenhuma de dado. O critério (LCP < 1 s, Lighthouse mobile) não foi medido: PageSpeed
+Insights sem chave deu 429 e o `npx lighthouse` local foi bloqueado pela política da sessão.
+**Próximo passo:** medir o LCP de `/p/giordano-sp` e `/p/kiko-celeguim-sp` com Lighthouse mobile
+(o usuário roda, ou autoriza rodar) e fechar a E14; depois E15.
+
 ## 2026-11-01 · E13
 **Feito:** quiz ampliado de 10 para 14 perguntas (decisão do usuário, depois de medir que
 senadores tinham só 4 votos comparáveis): PEC 8/2021, PLP 233/2023, PEC 9/2023 e PLP 177/2023.
