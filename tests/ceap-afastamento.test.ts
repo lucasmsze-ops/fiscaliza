@@ -45,10 +45,13 @@ describe("somarPorMes e mediasPorUf", () => {
     const r = mediasPorUf([
       { uf: "AC", ano: 2026, mes: 1, total: 10 }, { uf: "AC", ano: 2026, mes: 1, total: 20.01 },
       { uf: "AC", ano: 2026, mes: 2, total: 7 }, { uf: "AP", ano: 2026, mes: 1, total: 1 },
+      // total e contagem reais (Câmara, AC, out/2026: R$ 274.313,16 ÷ 8 = 34.289,145): meio centavo arredonda para cima
+      ...Array.from({ length: 7 }, () => ({ uf: "AC", ano: 2026, mes: 10, total: 34289.14 })), { uf: "AC", ano: 2026, mes: 10, total: 34289.18 },
     ]);
     expect(r).toEqual([
       { uf: "AC", ano: 2026, mes: 1, media: 15.01, parlamentares: 2, total: 30.01 },
       { uf: "AC", ano: 2026, mes: 2, media: 7, parlamentares: 1, total: 7 },
+      { uf: "AC", ano: 2026, mes: 10, media: 34289.15, parlamentares: 8, total: 274313.16 },
       { uf: "AP", ano: 2026, mes: 1, media: 1, parlamentares: 1, total: 1 },
     ]);
   });

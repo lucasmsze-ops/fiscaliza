@@ -37,8 +37,6 @@ export function fechadosAte(atual: TotalMes[], limite: number): Set<number> {
   return new Set(atual.map(chave).filter((k) => k <= limite));
 }
 
-const r2 = (x: number) => Math.round(x * 100) / 100;
-
 /** Gasto de um parlamentar num mês: soma líquida (estornos vêm negativos) e soma por categoria. */
 export interface GastoMes { ano: number; mes: number; total: number; porCategoria: Record<string, number> }
 
@@ -74,5 +72,6 @@ export function mediasPorUf(gastos: { uf: string; ano: number; mes: number; tota
     g.set(k, e);
   }
   return [...g.values()].sort((a, b) => a.uf.localeCompare(b.uf) || chave(a) - chave(b))
-    .map((e) => ({ uf: e.uf, ano: e.ano, mes: e.mes, media: r2(e.centavos / 100 / e.n), parlamentares: e.n, total: e.centavos / 100 }));
+    // Divisão em centavos: com reais em ponto flutuante, 34.289,145 virava 34.289,14 (medido em 4 bancadas).
+    .map((e) => ({ uf: e.uf, ano: e.ano, mes: e.mes, media: Math.round(e.centavos / e.n) / 100, parlamentares: e.n, total: e.centavos / 100 }));
 }
