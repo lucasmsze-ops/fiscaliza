@@ -58,10 +58,10 @@ export function resumoCard(p: Politico): CardResumo {
 
 /** Entrada do índice de busca por nome (JSON estático /dados/politicos). */
 export interface ItemBusca extends CardResumo {
-  /** Nome de urna + nome civil normalizados (sem acento, minúsculas). */
+  /** Nome de urna + nome civil + número de urna, normalizados (sem acento, minúsculas). */
   busca: string;
 }
-export const itemBusca = (p: Politico): ItemBusca => ({ ...resumoCard(p), busca: normalizar(`${p.nomeUrna} ${p.nome}`) });
+export const itemBusca = (p: Politico): ItemBusca => ({ ...resumoCard(p), busca: normalizar(`${p.nomeUrna} ${p.nome} ${p.numeroUrna ?? ""}`) });
 
 /** "Seu voto contou para": só deputado federal de 2026 (sistema proporcional). Senador: null. */
 export interface ListaCard {

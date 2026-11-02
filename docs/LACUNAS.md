@@ -32,3 +32,4 @@ Nunca preencher com dado sintético.
 | 2026-11-01 | Senado | PL 2162/2023: situação "VETADA" e, ao mesmo tempo, norma gerada Lei nº 15.402/2026; Câmara ainda mostra "Aguardando Envio ao Senado" | O quiz relata os dois registros do Senado como estão, sem interpretar |
 | 2026-11-01 | Repositório | `github.com/lucasmsze-ops/fiscaliza` é privado; `/como-funciona#licencas` linka para ele como código-fonte (AGPL) | Link dá 404 para quem não está logado até o repo virar público; decidir antes da E16 |
 | 2026-11-01 | Senado | CEAPS (cota dos senadores) continua fora | `/como-funciona#ceap` e `#fora` dizem que não está nesta versão |
+| 2026-11-01 | TSE | Top-20 da cidade cobre 67,4% dos votos para deputado no estado (57,2% na capital); senador, 100% | Aviso "Não está na lista? Busque pelo nome ou pelo número de urna"; tamanho da lista decidido depois da E16 (`docs/TESTE-USUARIOS.md`) |

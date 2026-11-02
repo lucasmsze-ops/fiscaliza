@@ -50,7 +50,7 @@ Presidente como entidade com feed · presença literal em sessões · feed por j
 ```
 A colinha tem `opengraph-image.tsx` (preview com foto, cargo, status e números; Casa e período sempre explícitos, porque um senador eleito pode ter números da Câmara). `metadataBase` vem de `VERCEL_PROJECT_PRODUCTION_URL` (ou `NEXT_PUBLIC_SITE_URL`). A fonte padrão do `next/og` só tem peso regular; buscar fonte externa na hora não é permitido.
 
-Apoio (não são páginas): `/dados/politicos` e `/dados/cidade/[ibge]` são JSONs estáticos gerados no build (índice de busca e top-20 por cidade), servidos pela CDN. `/amostra` é a vitrine dos 20 da sonda (noindex). A colinha usa ids separados por `+` (`/c/kiko-celeguim+andre-do-prado`): 1 deputado e até 2 senadores.
+Apoio (não são páginas): `/dados/politicos` e `/dados/cidade/[ibge]` são JSONs estáticos gerados no build (índice de busca, mais votados primeiro, com nome de urna, nome civil e número de urna; e top-20 por cidade), servidos pela CDN. O top-20 cobre ~2/3 dos votos para deputado: a busca por nome ou número é o caminho do resto. `/amostra` é a vitrine dos 20 da sonda (noindex). A colinha usa ids separados por `+` (`/c/kiko-celeguim+andre-do-prado`): 1 deputado e até 2 senadores.
 
 ## O card do político (objeto central)
 

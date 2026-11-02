@@ -6,6 +6,7 @@ export const dynamic = "force-static";
 export const revalidate = 86400;
 
 export async function GET() {
-  const politicos = await repo.listarPoliticos();
+  // Mais votados primeiro: a busca mostra só os primeiros resultados e mantém esta ordem.
+  const politicos = [...await repo.listarPoliticos()].sort((a, b) => (b.votos2026 ?? -1) - (a.votos2026 ?? -1));
   return Response.json(politicos.map(itemBusca));
 }

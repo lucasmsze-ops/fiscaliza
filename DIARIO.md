@@ -15,6 +15,22 @@ Modelo:
 
 ---
 
+## 2026-11-01 · E16 (preparação)
+**Feito:** E15 publicada (push de `d5f5ca5`; `/como-funciona` conferida em produção). Para a E16:
+`docs/TESTE-USUARIOS.md` com quem chamar, fala do moderador, quando ligar e parar o cronômetro, o
+que conta como sucesso, ficha e perguntas. Piloto: 438 fotos respondem 200; página inicial 9 KB,
+índice 20 KB, cidade 0,6 KB. `scripts/sonda/_cobertura-top20.ts` mediu a parte dos votos para
+deputado que vai para quem aparece no top-20 da cidade: 67,4% no estado, 57,2% na capital (top-50:
+83,0% e 75,5%; top-100: 92,1% e 88,1%). Senador: 100%. Busca: índice inclui o número de urna e vem
+por votos; casa palavra por palavra pelo começo; nome de urna antes do civil. Aviso "Não está na
+lista? Busque pelo nome ou pelo número de urna" no fim da lista de deputados. Conferido a 375 px.
+**Decidido:** sucesso = chegar à colinha com o deputado em quem votou, em < 60 s, sem ajuda;
+senadores anotados mas não decidem (cobertura de 100%). Ficha sem nome nem voto do participante
+(P1–P5). Não aumentar a lista antes do teste: a tabela de cobertura vai para a decisão depois.
+**Lacunas:** a lista da cidade não tem o deputado de ~1 em 3 eleitores; o caminho deles é a busca.
+**Próximo passo:** aplicar o roteiro com as 5 pessoas (pelo menos 1 da capital) e preencher
+"Resultados" e "Achados" em `docs/TESTE-USUARIOS.md`; depois decidir sobre o tamanho da lista.
+
 ## 2026-11-01 · E15
 **Feito:** `/como-funciona` (`app/como-funciona/page.tsx`): 12 seções com âncora (cobertura, lista da
 cidade, participação, governismo, concordância, "seu voto contou para", CEAP, o que fica fora, fontes,

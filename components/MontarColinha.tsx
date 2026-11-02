@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CidadeJson } from "@/app/dados/cidade/[ibge]/route";
 import type { ItemBusca } from "@/lib/card";
 import { alternar, caminhoColinha, CHAVE_STORAGE, COLINHA_VAZIA, idsDaColinha, lerColinha, MAX_SENADORES, type Colinha } from "@/lib/colinha";
@@ -90,6 +90,12 @@ export function MontarColinha({ municipios }: { municipios: MunicipioBusca[] }) 
     }
   }
 
+  const campo = useRef<HTMLInputElement>(null);
+  function irParaBusca() {
+    campo.current?.scrollIntoView({ block: "center" });
+    campo.current?.focus();
+  }
+
   function marcar(cargo: Cargo2026, id: string) {
     const nova = alternar(colinha, cargo, id);
     setColinha(nova);
@@ -100,7 +106,18 @@ export function MontarColinha({ municipios }: { municipios: MunicipioBusca[] }) 
   const cidadesAchadas = useMemo(() => (t.length < 2 ? [] : municipios.filter((m) => normalizar(m.nome).includes(t))
     .sort((a, b) => Number(!normalizar(a.nome).startsWith(t)) - Number(!normalizar(b.nome).startsWith(t)) || a.nome.localeCompare(b.nome, "pt-BR"))
     .slice(0, 6)), [t, municipios]);
-  const pessoasAchadas = useMemo(() => (t.length < 3 || !indice ? [] : [...indice.values()].filter((p) => p.busca.includes(t)).slice(0, 6)), [t, indice]);
+  // Cada palavra digitada precisa começar alguma palavra do nome (ou o número de urna), em qualquer
+  // ordem: "joao silva" acha "JOÃO DA SILVA". O índice vem dos mais votados para os menos; quem casa
+  // pelo nome de urna (o que aparece na urna) vem antes de quem casa só pelo nome civil.
+  const pessoasAchadas = useMemo(() => {
+    if (t.length < 3 || !indice) return [];
+    const termos = t.split(" ");
+    const casa = (texto: string) => { const ps = texto.split(" "); return termos.every((q) => ps.some((w) => w.startsWith(q))); };
+    return [...indice.values()]
+      .filter((p) => casa(p.busca))
+      .sort((a, b) => Number(!casa(normalizar(a.nomeUrna))) - Number(!casa(normalizar(b.nomeUrna))))
+      .slice(0, 6);
+  }, [t, indice]);
 
   const caminho = caminhoColinha(colinha);
   const escolhidos = idsDaColinha(colinha).map((id) => indice?.get(id)?.nomeUrna ?? id);
@@ -109,7 +126,7 @@ export function MontarColinha({ municipios }: { municipios: MunicipioBusca[] }) 
   return (
     <div className="pb-28">
       <label htmlFor="busca" className="block text-sm font-medium">Sua cidade ou o nome de quem recebeu seu voto</label>
-      <input id="busca" type="search" inputMode="search" autoComplete="off" value={termo}
+      <input id="busca" ref={campo} type="search" inputMode="search" autoComplete="off" value={termo}
         onChange={(e) => { setTermo(e.target.value); if (e.target.value.length >= 3) void carregarIndice().catch(() => setErro("Não foi possível carregar a busca.")); }}
         className="mt-2 w-full rounded-xl border border-black/20 bg-transparent px-4 py-3 text-base dark:border-white/25" />
 
@@ -139,6 +156,10 @@ export function MontarColinha({ municipios }: { municipios: MunicipioBusca[] }) 
 
           <h3 className="mt-6 font-semibold">Deputado federal <span className="text-sm font-normal text-[var(--suave)]">· escolha 1</span></h3>
           <ListaCidade cargo="deputado_federal" linhas={cidade.deputado_federal} cidade={cidade.nome} indice={indice} marcado={marcado} marcar={marcar} />
+          <p className="mt-3 text-sm text-[var(--suave)]">
+            Não está na lista?{" "}
+            <button type="button" onClick={irParaBusca} className="underline underline-offset-2">Busque pelo nome ou pelo número de urna</button>.
+          </p>
 
           <h3 className="mt-8 font-semibold">Senado <span className="text-sm font-normal text-[var(--suave)]">· escolha até {MAX_SENADORES}</span></h3>
           <ListaCidade cargo="senador" linhas={cidade.senador} cidade={cidade.nome} indice={indice} marcado={marcado} marcar={marcar} />

@@ -207,7 +207,12 @@ Calendário externo que afeta o plano:
 
 ### E16 · Teste com 5 pessoas
 - [ ] Roteiro: "digite sua cidade e monte sua colinha". Cronometrar.
+      (Roteiro, critério de sucesso e ficha prontos em `docs/TESTE-USUARIOS.md`; falta aplicar
+      com as 5 pessoas e cronometrar.)
 - [ ] Registrar achados em `docs/TESTE-USUARIOS.md`. Ajustar o que impediu o < 1 min.
+      (Piloto feito: a lista da cidade cobre 67% dos votos para deputado no estado e 57% na capital;
+      busca por número de urna, palavra por palavra e por mais votados, e aviso "Não está na
+      lista?", antes do teste. Achados das pessoas: pendente.)
 - Pronto quando: 4 de 5 conseguem em < 1 min sem ajuda.
 
 ## Passo 3 — Infra (Supabase + cron)
