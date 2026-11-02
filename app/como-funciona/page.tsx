@@ -42,7 +42,7 @@ const Ext = ({ href, children }: { href: string; children: React.ReactNode }) =>
 export default async function ComoFunciona() {
   const [politicos, municipios, camara, senado, oriCamara, oriSenado, mediasSp] = await Promise.all([
     repo.listarPoliticos(), repo.listarMunicipios(), repo.getVotacoes("camara"), repo.getVotacoes("senado"),
-    repo.getOrientacoes("camara", "Governo"), repo.getOrientacoes("senado", "Governo"), repo.getMediasUf("SP"),
+    repo.getOrientacoes("camara", "Governo"), repo.getOrientacoes("senado", "Governo"), repo.getMediasUf("SP", "camara"),
   ]);
 
   const conta = (f: (p: (typeof politicos)[number]) => boolean) => politicos.filter(f).length;
@@ -169,28 +169,30 @@ export default async function ComoFunciona() {
 
       <Secao id="ceap">
         <p>
-          <strong>O que é:</strong> a Cota para o Exercício da Atividade Parlamentar, verba mensal da Câmara para despesas do mandato
-          (passagens, escritório, divulgação, combustível e outras). O card mostra o valor líquido do mês, com estornos descontados,
-          e a média da bancada do mesmo estado no mesmo mês.
+          <strong>O que é:</strong> a Cota para o Exercício da Atividade Parlamentar, verba mensal para despesas do mandato
+          (passagens, escritório, divulgação, combustível e outras): CEAP na Câmara, CEAPS no Senado. O card mostra o valor líquido do
+          mês, com estornos descontados, e a média da bancada do mesmo estado, na mesma Casa, no mesmo mês.
         </p>
         <p>
-          <strong>Média da bancada do estado, nunca nacional:</strong> o valor da cota varia por estado. Entram na média só os deputados
-          com algum lançamento no mês.
+          <strong>Média da bancada do estado, nunca nacional:</strong> o valor da cota varia por estado. Entram na média todos os
+          parlamentares do estado com algum lançamento no mês, inclusive quem já deixou o cargo; quem não lançou nada no mês fica fora.
+          No Senado, a bancada tem até 3 senadores, contando a própria pessoa do card. Deputados contam pela bancada em que exercem o
+          mandato, mesmo que tenham disputado 2026 por outro estado.
         </p>
         <p>
-          <strong>Mês de referência:</strong> a Câmara registra as despesas com meses de atraso. Um mês é considerado fechado quando o
-          total da bancada é idêntico em duas coletas e todos os meses anteriores também são. O card mostra o último mês fechado
+          <strong>Mês de referência:</strong> Câmara e Senado registram as despesas com meses de atraso. A coleta é mensal; um mês é
+          considerado fechado quando o total da bancada é idêntico em duas coletas com pelo menos 20 dias entre elas e todos os meses
+          anteriores também são. Na primeira coleta do Brasil inteiro (novembro de 2026) ainda não havia coleta anterior para comparar:
+          valeu o último mês fechado de São Paulo, medido antes. O card mostra o último mês fechado
           {fechado ? ` (hoje, ${rotuloMes(fechado)})` : ""}; a página do político mostra todos os meses e marca os em aberto
           {abertos.length ? ` (${abertos.map(rotuloMes).join(", ")})` : ""}.
         </p>
         <p>
           <strong>Fonte:</strong> despesas por deputado na API de dados abertos da Câmara, com link no card para a página oficial de
           transparência do mês. O arquivo CSV anual da Câmara não é usado porque omite as passagens aéreas emitidas pelo sistema da
-          própria Câmara.
-        </p>
-        <p>
-          <strong>Por enquanto, só São Paulo:</strong> a cota está carregada para os deputados de São Paulo; os outros 26 estados e a
-          cota dos senadores (CEAPS) entram na próxima atualização. Até lá, o card de quem não é deputado por São Paulo não tem o bloco de cota.
+          própria Câmara. No Senado, o arquivo anual da CEAPS nos dados abertos administrativos, com link para a página de transparência
+          do senador (que mostra o ano). Alguns recibos da CEAPS vêm sem tipo de despesa e aparecem como “tipo não informado pela fonte”.
+          Os dados começam em janeiro de 2025.
         </p>
       </Secao>
 
@@ -216,7 +218,8 @@ export default async function ComoFunciona() {
           <li>Vetos presidenciais: são votados em sessão conjunta do Congresso e não constam das votações da Câmara nem do Senado usadas aqui.</li>
           <li>Votações de comissões, votações simbólicas (sem registro individual de voto), discursos e presença em sessão.</li>
           <li>Votações que a Câmara lista como nominais mas sem a lista de votos na API: ficam fora de todos os números.</li>
-          <li>Cota dos senadores (CEAPS), emendas parlamentares, projetos de autoria e patrimônio declarado: não estão nesta versão.</li>
+          <li>Emendas parlamentares, projetos de autoria e patrimônio declarado: não estão nesta versão.</li>
+          <li>Cota parlamentar por fornecedor e nota a nota: o site mostra o total do mês e a soma por categoria, com link para as notas na página oficial.</li>
           <li>Presidente da República, deputados estaduais, governadores e prefeitos.</li>
         </ul>
       </Secao>

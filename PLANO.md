@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E21d** (atualizar esta linha ao avançar)
+**Etapa atual: E21e** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -331,12 +331,14 @@ colinha não funciona fora de SP. Dividida em E21a–E21e; o desenho do cron est
       parlamentar em exercício abre com os números.
 
 ### E21d · Cota parlamentar no Brasil inteiro
-- [ ] Câmara pela API (27 UFs, média por UF; mês fechado = total igual ao da coleta anterior, que
+- [x] Câmara pela API (27 UFs, média por UF; mês fechado = total igual ao da coleta anterior, que
       agora é o publicado) e Senado pela CEAPS (API `adm.senado.gov.br`). Sem CPF de fornecedor.
+      (Feito em 2026-11-02: job `cota`, migração 0003 com `casa`; média = todos da UF com lançamento
+      no mês, inclusive quem saiu; primeira coleta fecha até jul/2026, o último mês fechado de SP.)
 - Pronto quando: o card de senador ganha a cota e as médias das 27 bancadas batem com a soma.
 
 ### E21e · Proposições
-- [ ] Migração 0003; íntegra só de PL, PLP, PEC, PDL e PRC, contagem do resto (decisão de 2026-11-02).
+- [ ] Migração 0004; íntegra só de PL, PLP, PEC, PDL e PRC, contagem do resto (decisão de 2026-11-02).
       Câmara pelos arquivos anuais (`proposicoes`, `proposicoesAutores`, com `proponente`); Senado
       pelas autorias. Medir tempo e tamanho.
 - Pronto quando: rodar duas vezes seguidas não duplica nada e o tamanho bate com `docs/VOLUME.md`.

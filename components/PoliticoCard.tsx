@@ -92,7 +92,7 @@ export function PoliticoCard({ d, linkPagina = false }: { d: CardDados; linkPagi
             <span className="text-lg font-semibold tabular-nums">{d.ceap.valor === null ? "sem lançamento no mês" : reais(d.ceap.valor)}</span>
             <span className="text-[var(--suave)]"> · <Termo id={`${d.id}-media`} termo="mediaUf">média {d.ceap.uf}</Termo> {reais(d.ceap.mediaUf)}</span>
           </p>
-          <a href={d.ceap.urlOficial} {...externo} className="mt-1 inline-block text-xs underline underline-offset-2">ver as despesas na Câmara</a>
+          <a href={d.ceap.urlOficial} {...externo} className="mt-1 inline-block text-xs underline underline-offset-2">ver as despesas {d.ceap.casa === "senado" ? "no Senado" : "na Câmara"}</a>
         </section>
       )}
 

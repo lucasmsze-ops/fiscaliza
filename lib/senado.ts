@@ -328,3 +328,29 @@ export async function listarOrientacoesPlenario(inicio: string, fim: string): Pr
     })),
   }));
 }
+
+// ======================= despesas (CEAPS) =======================
+
+/** Uma despesa da CEAPS, sem fornecedor nem CPF/CNPJ (a cota é agregada por categoria; decisão de 2026-11-02). */
+export interface DespesaSenado {
+  senadoCodigo: string;
+  /** Mês de competência. */
+  ano: number;
+  mes: number;
+  /** Null em ~0,3% das despesas (todas "Recibo"): a fonte não informa o tipo. */
+  tipo: string | null;
+  /** Valor reembolsado; estornos vêm negativos. */
+  valor: number;
+}
+
+interface DespesaCeapsRaw { codSenador: number; ano: number; mes: number; tipoDespesa: string | null; valorReembolsado: number }
+
+/**
+ * Despesas da CEAPS de todos os senadores num ano (uma chamada, ~10 MB para um ano inteiro). Outro
+ * serviço do Senado (`adm.senado.gov.br`), em JSON puro: não passa pela conversão XML→JSON.
+ * A resposta traz `cpfCnpj` e `fornecedor`; nenhum dos dois sai daqui.
+ */
+export async function listarDespesasCeaps(ano: number): Promise<DespesaSenado[]> {
+  const raw = await fetchJson<DespesaCeapsRaw[]>(`https://adm.senado.gov.br/adm-dadosabertos/api/v1/senadores/despesas_ceaps/${ano}`, { label: "senado:/despesas_ceaps/{ano}" });
+  return raw.map((d) => ({ senadoCodigo: String(d.codSenador), ano: d.ano, mes: d.mes, tipo: vazio(d.tipoDespesa), valor: d.valorReembolsado }));
+}

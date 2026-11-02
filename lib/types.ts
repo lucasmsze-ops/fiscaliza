@@ -118,22 +118,26 @@ export interface EleitoMunicipio {
   posicao: number;
 }
 
-/** Tabela `despesas_mes`: CEAP líquida (estornos somados) por deputado e mês. */
+/** Tabela `despesas_mes`: cota líquida (estornos somados) por parlamentar, Casa e mês (CEAP na Câmara, CEAPS no Senado). */
 export interface DespesaMes {
   politicoId: string;
+  casa: Casa;
+  /** UF da bancada na Casa (pode diferir da `uf` do político, que é a da candidatura de 2026). Define a média comparada. */
+  uf: string;
   ano: number;
   mes: number;
   total: number;
   porCategoria: Record<string, number>;
 }
 
-/** Tabela `despesas_media_uf`: média da bancada da UF no mês (só deputados com lançamento). */
+/** Tabela `despesas_media_uf`: média da bancada da UF na Casa no mês (todos os parlamentares da UF com lançamento no mês). */
 export interface DespesaMediaUf {
+  casa: Casa;
   uf: string;
   ano: number;
   mes: number;
   media: number;
-  deputados: number;
+  parlamentares: number;
   total: number;
   /** Total idêntico em duas coletas, e todos os meses anteriores também (`lib/ceap.ts`). O card usa o último fechado. */
   fechado: boolean;

@@ -20,6 +20,8 @@ export type NumerosCard =
   | { tipo: "sem_mandato"; periodo: string };
 
 export interface CeapCard {
+  /** CEAP (Câmara) ou CEAPS (Senado): a Casa dos números do card. */
+  casa: Casa;
   /** "jul/2026": último mês fechado (lib/ceap.ts). */
   mes: string;
   /** Null = sem lançamento no mês (não é zero: a fonte não registrou despesa). */
@@ -88,6 +90,13 @@ export function rotuloStatus(p: Politico): string {
   }
 }
 
+/** Página oficial das despesas do mês (Câmara) ou do ano (Senado, que não filtra por mês na URL). */
+export function urlCota(p: Pick<Politico, "camaraId" | "senadoCodigo">, casa: Casa, m: { ano: number; mes: number }): string {
+  return casa === "senado"
+    ? `https://www6g.senado.leg.br/transparencia/sen/${p.senadoCodigo}/?ano=${m.ano}`
+    : `https://www.camara.leg.br/transparencia/gastos-parlamentares?legislatura=57&ano=${m.ano}&mes=${m.mes}&por=deputado&deputado=${p.camaraId}`;
+}
+
 /** Último mês fechado da média da UF, ou null se nenhum estiver fechado. */
 export function mesReferencia(medias: DespesaMediaUf[]): DespesaMediaUf | null {
   return [...medias].filter((m) => m.fechado).sort((a, b) => a.ano * 100 + a.mes - (b.ano * 100 + b.mes)).at(-1) ?? null;
@@ -119,15 +128,15 @@ export async function montarCard(repo: Repo, id: string, hoje = new Date().toISO
   }
 
   let ceap: CeapCard | null = null;
-  if (p.camaraId && numeros.tipo === "mandato" && numeros.casa === "camara") {
-    const [despesas, medias] = await Promise.all([repo.getDespesas(p.id), repo.getMediasUf(p.uf)]);
-    const ref = mesReferencia(medias);
-    if (ref && despesas.length) {
+  if (numeros.tipo === "mandato") {
+    const casa = numeros.casa;
+    const despesas = (await repo.getDespesas(p.id)).filter((d) => d.casa === casa);
+    // A média é a da bancada em que a pessoa lançou a despesa, não a da UF da candidatura de 2026.
+    const uf = despesas.at(-1)?.uf;
+    const ref = uf ? mesReferencia(await repo.getMediasUf(uf, casa)) : null;
+    if (uf && ref) {
       const doMes = despesas.find((d) => d.ano === ref.ano && d.mes === ref.mes);
-      ceap = {
-        mes: `${MESES[ref.mes - 1]}/${ref.ano}`, valor: doMes?.total ?? null, mediaUf: ref.media, uf: p.uf,
-        urlOficial: `https://www.camara.leg.br/transparencia/gastos-parlamentares?legislatura=57&ano=${ref.ano}&mes=${ref.mes}&por=deputado&deputado=${p.camaraId}`,
-      };
+      ceap = { casa, mes: `${MESES[ref.mes - 1]}/${ref.ano}`, valor: doMes?.total ?? null, mediaUf: ref.media, uf, urlOficial: urlCota(p, casa, ref) };
     }
   }
 

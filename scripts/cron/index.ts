@@ -5,6 +5,7 @@
  * Uso: npm run cron   (SUPABASE_URL e SUPABASE_SECRET_KEY de .env.local; FISCALIZA_ESTADO=pasta opcional)
  */
 import { spawnSync } from "node:child_process";
+import { jobCota } from "./cota";
 import { DADOS, gravarTabela, iniciarEstado, lerTabela, mesclar, type LinhaBruta } from "./estado";
 import { publicar } from "./publicar";
 import { jobParlamentares } from "./parlamentares";
@@ -24,6 +25,8 @@ const jobs: Job[] = [
   // Ordem: políticos antes das votações (os votos de quem acabou de entrar vêm do histórico).
   { nome: "parlamentares", rodar: () => jobParlamentares(hoje) },
   { nome: "votacoes", rodar: async () => { const r = await jobVotacoes(hoje); return { tabelas: { votacoes: r.votacoes, votos: r.votos, orientacoes: r.orientacoes }, relatorio: r.relatorio, falhas: r.falhas }; } },
+  // Depois de parlamentares: despesas_mes só guarda quem está em politicos.
+  { nome: "cota", rodar: () => jobCota(hoje) },
 ];
 
 let falhou = false;

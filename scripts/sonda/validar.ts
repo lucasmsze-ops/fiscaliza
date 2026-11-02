@@ -28,8 +28,8 @@ const ESQUEMA: Record<string, { pk: string[]; obrig: string[]; opc: string[] }> 
   listas: { pk: ["id"], obrig: ["id", "uf", "ano", "cargo", "nome", "votos_validos", "eleitos"], opc: ["composicao"] },
   municipios: { pk: ["ibge"], obrig: ["ibge", "tse", "nome", "uf"], opc: [] },
   eleitos_mun: { pk: ["municipio_ibge", "cargo", "politico_id"], obrig: ["municipio_ibge", "cargo", "politico_id", "votos", "posicao"], opc: [] },
-  despesas_mes: { pk: ["politico_id", "ano", "mes"], obrig: ["politico_id", "ano", "mes", "total", "por_categoria"], opc: [] },
-  despesas_media_uf: { pk: ["uf", "ano", "mes"], obrig: ["uf", "ano", "mes", "media", "deputados", "total", "fechado"], opc: [] },
+  despesas_mes: { pk: ["politico_id", "casa", "ano", "mes"], obrig: ["politico_id", "casa", "uf", "ano", "mes", "total", "por_categoria"], opc: [] },
+  despesas_media_uf: { pk: ["casa", "uf", "ano", "mes"], obrig: ["casa", "uf", "ano", "mes", "media", "parlamentares", "total", "fechado"], opc: [] },
   votacoes: { pk: ["id"], obrig: ["id", "id_externo", "casa", "data", "descricao", "secreta", "url_oficial"], opc: ["proposicao", "ementa", "objeto", "resultado", "placar"] },
   votos: { pk: ["votacao_id", "politico_id"], obrig: ["votacao_id", "politico_id", "voto"], opc: ["detalhe"] },
   orientacoes: { pk: ["votacao_id", "bancada"], obrig: ["votacao_id", "bancada"], opc: ["orientacao"] },
@@ -96,9 +96,17 @@ const texto = ["politicos", "mandatos", "votos", "despesas_mes"].map((t) => read
 if (/cpf/i.test(texto)) erro("algum arquivo menciona CPF");
 if (/\b[0-9a-f]{64}\b/.test(texto)) erro("há um hash SHA-256 nos dados");
 
-// Mês fechado: contíguo desde o primeiro mês (não pode haver aberto antes de fechado).
-const meds = [...dados.despesas_media_uf!].sort((a, b) => (a.ano as number) * 100 + (a.mes as number) - ((b.ano as number) * 100 + (b.mes as number)));
-if (meds.some((m, i) => m.fechado && meds.slice(0, i).some((x) => !x.fechado))) erro("despesas_media_uf: mês fechado depois de um aberto");
+// Mês fechado: contíguo desde o primeiro mês de cada bancada (não pode haver aberto antes de fechado).
+const bancadas = new Map<string, L[]>();
+for (const m of dados.despesas_media_uf!) bancadas.set(`${m.casa} ${m.uf}`, [...(bancadas.get(`${m.casa} ${m.uf}`) ?? []), m]);
+for (const [b, ms] of bancadas) {
+  const meds = [...ms].sort((a, b) => (a.ano as number) * 100 + (a.mes as number) - ((b.ano as number) * 100 + (b.mes as number)));
+  if (meds.some((m, i) => m.fechado && meds.slice(0, i).some((x) => !x.fechado))) erro(`despesas_media_uf ${b}: mês fechado depois de um aberto`);
+}
+// Toda despesa do site tem a média da sua bancada no mesmo mês (o card compara as duas).
+const chavesMedia = new Set(dados.despesas_media_uf!.map((m) => `${m.casa} ${m.uf} ${m.ano} ${m.mes}`));
+for (const d of dados.despesas_mes!) if (!chavesMedia.has(`${d.casa} ${d.uf} ${d.ano} ${d.mes}`)) erro(`despesas_mes ${d.politico_id} ${d.casa} ${d.ano}-${d.mes}: sem média da bancada ${d.uf}`);
+for (const t of ["despesas_mes", "despesas_media_uf"]) for (const l of dados[t]!) if (l.casa !== "camara" && l.casa !== "senado") erro(`${t}: casa inválida ${l.casa}`);
 
 // Avisos: opcionais nulos que o card vai precisar tratar (não são erro: a fonte não tem).
 const nulos = (k: keyof Linha<Politico>) => ps.filter((p) => p[k] === null).length;

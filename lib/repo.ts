@@ -44,7 +44,7 @@ export interface Repo {
   getVotos(politicoId: string): Promise<Voto[]>;
   getOrientacoes(casa: Casa, bancada: string): Promise<Orientacao[]>;
   getDespesas(politicoId: string): Promise<DespesaMes[]>;
-  getMediasUf(uf: string): Promise<DespesaMediaUf[]>;
+  getMediasUf(uf: string, casa: Casa): Promise<DespesaMediaUf[]>;
 }
 
 export { normalizar } from "./texto";
@@ -143,8 +143,8 @@ export class JsonRepo implements Repo {
   async getDespesas(politicoId: string) {
     return (await this.por("despesas_mes", "politicoId")).get(politicoId) ?? [];
   }
-  async getMediasUf(uf: string) {
-    return (await this.tabela("despesas_media_uf")).filter((m) => m.uf === uf);
+  async getMediasUf(uf: string, casa: Casa) {
+    return (await this.tabela("despesas_media_uf")).filter((m) => m.uf === uf && m.casa === casa);
   }
 }
 

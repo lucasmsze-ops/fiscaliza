@@ -98,9 +98,9 @@ export class SupabaseRepo implements Repo {
       this.linhas<Orientacao>("orientacoes", `select=*&bancada=eq.${v(bancada)}&votacao_id=like.${v(`${casa}:*`)}&order=votacao_id`));
   }
   getDespesas(politicoId: string) {
-    return this.linhas<DespesaMes>("despesas_mes", `select=*&politico_id=eq.${v(politicoId)}&order=ano,mes`);
+    return this.linhas<DespesaMes>("despesas_mes", `select=*&politico_id=eq.${v(politicoId)}&order=casa,ano,mes`);
   }
-  getMediasUf(uf: string) {
-    return this.lembrar(`medias:${uf}`, () => this.linhas<DespesaMediaUf>("despesas_media_uf", `select=*&uf=eq.${v(uf)}&order=ano,mes`));
+  getMediasUf(uf: string, casa: Casa) {
+    return this.lembrar(`medias:${casa}:${uf}`, () => this.linhas<DespesaMediaUf>("despesas_media_uf", `select=*&casa=eq.${casa}&uf=eq.${v(uf)}&order=ano,mes`));
   }
 }

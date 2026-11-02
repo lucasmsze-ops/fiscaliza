@@ -49,17 +49,17 @@ export const GLOSSARIO = definir({
   },
   ceap: {
     titulo: "Cota parlamentar (CEAP)",
-    texto: "Cota para o Exercício da Atividade Parlamentar: verba mensal da Câmara para despesas do mandato, como passagens, escritório, divulgação e combustível. Valor líquido do mês, com estornos descontados.",
+    texto: "Cota para o Exercício da Atividade Parlamentar (CEAP na Câmara, CEAPS no Senado): verba mensal para despesas do mandato, como passagens, escritório, divulgação e combustível. Valor líquido do mês, com estornos descontados.",
     secao: "ceap",
   },
   mediaUf: {
     titulo: "Média da bancada",
-    texto: "Média do mesmo mês entre os deputados do mesmo estado que lançaram despesa. O valor da cota muda de estado para estado, por isso a comparação é só dentro da bancada.",
+    texto: "Média do mesmo mês entre os parlamentares da mesma Casa e do mesmo estado que lançaram despesa (no Senado, até 3 senadores). O valor da cota muda de estado para estado, por isso a comparação é só dentro da bancada. Quem disputou 2026 por outro estado é comparado com a bancada em que exerce o mandato.",
     secao: "ceap",
   },
   mesReferencia: {
     titulo: "Mês de referência",
-    texto: "A Câmara registra as despesas com meses de atraso. O card mostra o último mês cujo total da bancada não mudou entre duas coletas.",
+    texto: "Câmara e Senado registram as despesas com meses de atraso. O card mostra o último mês cujo total da bancada não mudou entre duas coletas mensais.",
     secao: "ceap",
   },
   pec: {

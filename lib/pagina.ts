@@ -35,7 +35,7 @@ export interface PaginaDados {
     totais: TotaisVoto;
     ultimas: VotoListado[];
   };
-  ceap: null | { uf: string; meses: MesCeap[]; categorias: { nome: string; valor: number }[]; mesReferencia: { ano: number; mes: number } | null };
+  ceap: null | { casa: Casa; uf: string; meses: MesCeap[]; categorias: { nome: string; valor: number }[]; mesReferencia: { ano: number; mes: number } | null };
   mandatos: Mandato[];
   afastamentos: Afastamento[];
   contatos: { email: string | null; telefone: string | null; redesSociais: string[]; urlPerfil: string | null };
@@ -74,14 +74,15 @@ export async function montarPagina(repo: Repo, id: string, hoje = new Date().toI
 
   let ceap: PaginaDados["ceap"] = null;
   if (card.ceap) {
-    const [despesas, medias] = await Promise.all([repo.getDespesas(id), repo.getMediasUf(p.uf)]);
+    const despesas = (await repo.getDespesas(id)).filter((d) => d.casa === card.ceap!.casa);
+    const medias = await repo.getMediasUf(card.ceap.uf, card.ceap.casa);
     const porMes = new Map(despesas.map((d) => [d.ano * 100 + d.mes, d]));
     const meses = [...medias].sort((a, b) => b.ano * 100 + b.mes - (a.ano * 100 + a.mes)).slice(0, 12)
       .map((m) => ({ ano: m.ano, mes: m.mes, valor: porMes.get(m.ano * 100 + m.mes)?.total ?? null, mediaUf: m.media, aberto: !m.fechado }));
     const ref = [...medias].filter((m) => m.fechado).sort((a, b) => a.ano * 100 + a.mes - (b.ano * 100 + b.mes)).at(-1) ?? null;
     const doRef = ref ? porMes.get(ref.ano * 100 + ref.mes) : undefined;
     const categorias = Object.entries(doRef?.porCategoria ?? {}).map(([nome, valor]) => ({ nome, valor })).filter((c) => c.valor !== 0).sort((a, b) => b.valor - a.valor || a.nome.localeCompare(b.nome)); // desempate pelo nome: o jsonb não preserva a ordem das chaves
-    ceap = { uf: p.uf, meses, categorias, mesReferencia: ref ? { ano: ref.ano, mes: ref.mes } : null };
+    ceap = { casa: card.ceap.casa, uf: card.ceap.uf, meses, categorias, mesReferencia: ref ? { ano: ref.ano, mes: ref.mes } : null };
   }
 
   return {

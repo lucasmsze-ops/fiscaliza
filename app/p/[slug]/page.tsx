@@ -86,7 +86,7 @@ export default async function PaginaPolitico({ params }: Props) {
       )}
 
       {ceap && (
-        <Secao titulo="Cota parlamentar (CEAP) mês a mês" secao="ceap">
+        <Secao titulo={`Cota parlamentar (${ceap.casa === "senado" ? "CEAPS" : "CEAP"}) mês a mês`} secao="ceap">
           <p className="text-[var(--suave)]">Valor líquido do mês e <Termo id="pg-media" termo="mediaUf">média da bancada de {ceap.uf}</Termo>. Meses em aberto ainda recebem lançamentos.</p>
           <table className="mt-3 w-full tabular-nums">
             <thead><tr className="text-left text-xs text-[var(--suave)]"><th className="font-normal">Mês</th><th className="text-right font-normal">Valor</th><th className="text-right font-normal">Média {ceap.uf}</th></tr></thead>
@@ -110,7 +110,7 @@ export default async function PaginaPolitico({ params }: Props) {
               </ul>
             </>
           )}
-          {c.ceap && <p className="mt-3 text-xs"><a href={c.ceap.urlOficial} {...externo} className="underline underline-offset-2">Ver as despesas na Câmara</a></p>}
+          {c.ceap && <p className="mt-3 text-xs"><a href={c.ceap.urlOficial} {...externo} className="underline underline-offset-2">Ver as despesas {c.ceap.casa === "senado" ? "no Senado" : "na Câmara"}</a></p>}
         </Secao>
       )}
 

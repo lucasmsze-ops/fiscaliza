@@ -83,7 +83,7 @@ Foto · nome de urna · partido-UF · status (eleito / reeleito / não eleito / 
 
 Metodologia detalhada (o que conta como voto, licença, secretas, mês da CEAP): `/como-funciona` (texto para o eleitor) e `docs/METODOLOGIA.md` (nota técnica). Ao lado da participação, "afastado N dias no período" (licença não é descontada).
 
-Abaixo: CEAP do mês vs média da bancada **da mesma UF** (cotas variam por estado; nunca comparar com média nacional). Abaixo: **Como cobrar**, com os canais oficiais (contato do gabinete, ouvidoria da Casa, Fala.BR, MPF/TCU), sem texto pronto; e **Receber avisos** (fake door).
+Abaixo: cota do mês (CEAP na Câmara, CEAPS no Senado) vs média da bancada **da mesma UF e da mesma Casa** (cotas variam por estado; nunca comparar com média nacional). A UF é a da bancada na Casa, não a da candidatura de 2026. Abaixo: **Como cobrar**, com os canais oficiais (contato do gabinete, ouvidoria da Casa, Fala.BR, MPF/TCU), sem texto pronto; e **Receber avisos** (fake door).
 
 A página do político segue o inventário (`docs/REFERENCIA-POLITICOMETRO.md`, seção 1): resumo no topo, seções abaixo.
 
@@ -129,6 +129,7 @@ A página do político segue o inventário (`docs/REFERENCIA-POLITICOMETRO.md`, 
 - **Nenhum endpoint expõe CPF** (0 ocorrências no OpenAPI). Join com o TSE por nome completo + UF (`NomeCompletoParlamentar` × `NM_CANDIDATO`, sem acento, maiúsculas), gravando o método em `join`; revisão manual se houver ambiguidade. `codigo` do Senado não tem relação com `id` da Câmara.
 - Foto: `UrlFotoParlamentar` vem em `http://` e redireciona até `https://legis.senado.leg.br/senadores/fotos-oficiais/{codigo}` (JPEG). O adapter troca o esquema para https.
 - 2026 renovou 2/3 do Senado: a maioria dos senadores eleitos não tem dado até 01/02/2027.
+- **CEAPS (cota dos senadores):** `GET https://adm.senado.gov.br/adm-dadosabertos/api/v1/senadores/despesas_ceaps/{ano}` (outro serviço, JSON puro, um ano inteiro numa chamada, ~10 MB). Traz `codSenador` (= `codigo`), mês de competência, `tipoDespesa`, `valorReembolsado` (estornos negativos: 114 em 2025) e `cpfCnpj`/`fornecedor`, que nunca saem do adapter. **Não traz UF**: vem de `politicos` ou, para quem não está em exercício, dos mandatos (`/senador/{codigo}/mandatos`, mandato da legislatura atual); `/senador/{codigo}` não traz `UfParlamentar` de quem não está em exercício (12 de 12 casos). `tipoDespesa` vem `null` em ~0,3% (todos "Recibo") → "Tipo não informado pela fonte". Inclui titulares licenciados e quem saiu (89 códigos em 2026). Página oficial por senador e ano: `https://www6g.senado.leg.br/transparencia/sen/{codigo}/?ano={ano}`.
 
 ### Portal da Transparência (v1.1) — chave gratuita, uma só, usada apenas no cron.
 
@@ -145,8 +146,8 @@ afastamentos      politico_id, inicio, fim, motivo                  (licenças d
 listas            id, uf, ano, cargo, nome, composicao, votos_validos, eleitos   (quociente)
 municipios        ibge, tse, nome, uf
 eleitos_mun       municipio_ibge, cargo, politico_id, votos, posicao   (top-20 + empatados no 20º)
-despesas_mes      politico_id, ano, mes, total, por_categoria jsonb
-despesas_media_uf uf, ano, mes, media, deputados, total
+despesas_mes      politico_id, casa, uf (da bancada na Casa), ano, mes, total, por_categoria jsonb
+despesas_media_uf casa, uf, ano, mes, media, parlamentares, total, fechado
 proposicoes       id_externo, casa, politico_id, tipo, numero, ano, ementa, data,
                   proponente bool, status, url_oficial
 votacoes          id (= casa:id_externo), id_externo, casa, data, proposicao, ementa, objeto,

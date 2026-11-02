@@ -130,11 +130,11 @@ const eleitosMun: EleitoMunicipio[] = mun.municipios.flatMap((m) => (["deputado_
 
 // ------------------------------------------------------------------ CEAP
 const despesasMes: DespesaMes[] = despesas.despesas.filter((d) => porCamara.has(d.camaraId))
-  .map((d) => ({ politicoId: porCamara.get(d.camaraId)!, ano: d.ano, mes: d.mes, total: d.total, porCategoria: d.porCategoria }));
+  .map((d) => ({ politicoId: porCamara.get(d.camaraId)!, casa: "camara" as const, uf: "SP", ano: d.ano, mes: d.mes, total: d.total, porCategoria: d.porCategoria }));
 // Mês fechado: total da bancada idêntico entre esta coleta e a anterior (data/sonda/despesas-coleta-anterior.json).
 const anterior = ler<{ geradoEm: string; mediaUf: MediaUfMes[] }>("despesas-coleta-anterior.json");
 const fechados = mesesFechados(despesas.mediaUf, anterior.mediaUf);
-const mediasUf: DespesaMediaUf[] = despesas.mediaUf.map((m) => ({ uf: m.uf, ano: m.ano, mes: m.mes, media: m.media, deputados: m.deputados, total: m.total, fechado: fechados.has(m.ano * 100 + m.mes) }));
+const mediasUf: DespesaMediaUf[] = despesas.mediaUf.map((m) => ({ casa: "camara" as const, uf: m.uf, ano: m.ano, mes: m.mes, media: m.media, parlamentares: m.deputados, total: m.total, fechado: fechados.has(m.ano * 100 + m.mes) }));
 const ref = mediasUf.filter((m) => m.fechado).at(-1);
 console.log(`CEAP: coleta anterior ${anterior.geradoEm} · mês de referência (último fechado): ${ref ? `${ref.ano}-${String(ref.mes).padStart(2, "0")}` : "nenhum"}`);
 

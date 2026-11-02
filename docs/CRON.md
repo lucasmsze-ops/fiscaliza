@@ -40,7 +40,7 @@ de `.env.local`). No GitHub Actions a partir da E22.
 | `votacoes` | E21a | Câmara `/votacoes` (plenário), `/votos`, `/orientacoes`; Senado `/votacao`, orientação de bancada | da última data conhecida − 14 dias até hoje (a Câmara publica votos e detalhes com atraso) |
 | TSE nacional | E21b | arquivos do TSE | uma vez por eleição |
 | parlamentares | E21c | Câmara, Senado, TSE | diária |
-| cota | E21d | Câmara `/despesas`, Senado CEAPS | dias 1 a 5 do mês |
+| cota | E21d | Câmara `/despesas` (todos da legislatura 57), Senado CEAPS (arquivo anual) | uma coleta por mês civil (`estado/fontes/cota/coletas.json`); anos com mês nos últimos 6 meses são baixados de novo, os outros vêm do cache |
 | proposições | E21e | arquivos anuais da Câmara, autorias do Senado | diária |
 
 Respostas brutas ficam em `estado/fontes/` (ex.: `camara-votos/{id}.json`): votação passada não

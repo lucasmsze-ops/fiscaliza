@@ -31,14 +31,27 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
   informado e voto secreto.
 - Calculado por período de governo (corte em 01/01/2027), não por legislatura.
 
-## CEAP (cota parlamentar)
-- Valor líquido do mês (estornos somados), comparado com a **média da bancada da mesma UF** no
-  mesmo mês, contando só deputados com algum lançamento no mês. Nunca média nacional.
-- **Mês mostrado: o último mês fechado.** A Câmara lança a cota com meses de atraso. Um mês é
-  fechado quando o total da bancada é idêntico em duas coletas e todos os meses anteriores
-  também são. O card mostra "mês de referência: [mês/ano]".
-- Fonte: API da Câmara (`/deputados/{id}/despesas`). O CSV anual não serve para a média porque
-  omite as passagens aéreas compradas pelo sistema da Câmara.
+## Cota parlamentar (CEAP na Câmara, CEAPS no Senado)
+- Valor líquido do mês (estornos somados, em centavos inteiros), comparado com a **média da
+  bancada da mesma UF, na mesma Casa**, no mesmo mês. Nunca média nacional.
+- **Quem entra na média:** todos os parlamentares da UF com algum lançamento no mês, inclusive
+  quem já saiu e não está no site (titular licenciado, quem renunciou). Por isso troca de
+  suplente não muda meses passados. Quem não lançou nada no mês fica fora. No Senado a bancada
+  tem até 3 senadores, contando a própria pessoa. A UF é a da bancada na Casa (`despesas_mes.uf`),
+  não a da candidatura de 2026 (3 deputados disputaram 2026 por outro estado).
+- **Mês mostrado: o último mês fechado.** As Casas lançam a cota com meses de atraso. A coleta é
+  mensal (`scripts/cron/cota.ts`). Um mês é fechado quando o total da bancada é idêntico ao da
+  coleta anterior (o publicado), com pelo menos 20 dias entre as duas, e todos os meses anteriores
+  também são. Com a anterior mais recente que isso, nenhum mês novo fecha (`lib/ceap.ts#fecharMeses`).
+  O card mostra "mês de referência: [mês/ano]".
+- **Primeira coleta nacional (2026-11-02):** não havia coleta anterior para 53 das 54 bancadas, e a
+  de SP seguia a regra antiga (só os deputados em exercício). Fecharam os meses até o último fechado
+  de SP medido entre 30/10 e 01/11 (jul/2026), para as duas Casas. A partir da coleta de dezembro,
+  vale a regra acima.
+- Fontes: API da Câmara (`/deputados/{id}/despesas`, todos os deputados da legislatura 57); o CSV
+  anual não serve para a média porque omite as passagens aéreas compradas pelo sistema da Câmara.
+  Senado: arquivo anual da CEAPS (`adm.senado.gov.br/adm-dadosabertos/api/v1/senadores/despesas_ceaps/{ano}`),
+  sem fornecedor nem CPF/CNPJ; despesa sem tipo vira "Tipo não informado pela fonte". Desde 2025.
 
 ## Como cobrar
 - No lugar do antigo botão Cobrar (removido em 2026-11-01, junto com o quiz de concordância e

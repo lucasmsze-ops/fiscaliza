@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { mesesFechados } from "../lib/ceap";
+import { fechadosAte, fecharMeses, mediasPorUf, mesesFechados, SEM_TIPO, somarPorMes } from "../lib/ceap";
 import { diasAfastado } from "../lib/indicadores";
 
 // Casos de borda com dados mínimos (não são dados de interface; só exercitam a aritmética).
@@ -12,6 +12,45 @@ describe("mesesFechados", () => {
   it("mês que não existia na coleta anterior não fecha; centavos contam", () => {
     expect(mesesFechados([m(1, 10.01)], [m(1, 10)]).size).toBe(0);
     expect(mesesFechados([m(1, 10)], []).size).toBe(0);
+  });
+});
+
+describe("fecharMeses e fechadosAte", () => {
+  const m = (mes: number, total: number, fechado = false) => ({ ano: 2026, mes, total, fechado });
+  it("com 20 dias ou mais entre as coletas, fecha o que ficou igual", () => {
+    expect([...fecharMeses([m(1, 10), m(2, 20)], [m(1, 10), m(2, 20)], 29)]).toEqual([202601, 202602]);
+  });
+  it("com coleta anterior recente, nenhum mês novo fecha; o já fechado e igual continua", () => {
+    expect([...fecharMeses([m(1, 10), m(2, 20)], [m(1, 10, true), m(2, 20)], 1)]).toEqual([202601]);
+    expect([...fecharMeses([m(1, 11), m(2, 20)], [m(1, 10, true), m(2, 20)], 1)]).toEqual([]); // mudou: reabre
+  });
+  it("fechadosAte corta no limite", () => {
+    expect([...fechadosAte([m(6, 1), m(7, 1), m(8, 1)], 202607)]).toEqual([202606, 202607]);
+  });
+});
+
+describe("somarPorMes e mediasPorUf", () => {
+  it("soma líquida por mês e categoria, sem erro de ponto flutuante; tipo nulo vira SEM_TIPO", () => {
+    const g = somarPorMes([
+      { ano: 2026, mes: 1, tipo: "A", valor: 0.1 }, { ano: 2026, mes: 1, tipo: "A", valor: 0.2 },
+      { ano: 2026, mes: 1, tipo: null, valor: 100 }, { ano: 2026, mes: 1, tipo: "A", valor: -0.3 },
+      { ano: 2025, mes: 12, tipo: "B", valor: 5 },
+    ]);
+    expect(g).toEqual([
+      { ano: 2025, mes: 12, total: 5, porCategoria: { B: 5 } },
+      { ano: 2026, mes: 1, total: 100, porCategoria: { A: 0, [SEM_TIPO]: 100 } },
+    ]);
+  });
+  it("média = soma ÷ quem lançou no mês, por UF", () => {
+    const r = mediasPorUf([
+      { uf: "AC", ano: 2026, mes: 1, total: 10 }, { uf: "AC", ano: 2026, mes: 1, total: 20.01 },
+      { uf: "AC", ano: 2026, mes: 2, total: 7 }, { uf: "AP", ano: 2026, mes: 1, total: 1 },
+    ]);
+    expect(r).toEqual([
+      { uf: "AC", ano: 2026, mes: 1, media: 15.01, parlamentares: 2, total: 30.01 },
+      { uf: "AC", ano: 2026, mes: 2, media: 7, parlamentares: 1, total: 7 },
+      { uf: "AP", ano: 2026, mes: 1, media: 1, parlamentares: 1, total: 1 },
+    ]);
   });
 });
 
