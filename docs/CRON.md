@@ -41,7 +41,7 @@ de `.env.local`). No GitHub Actions a partir da E22.
 | TSE nacional | E21b | arquivos do TSE | uma vez por eleição |
 | parlamentares | E21c | Câmara, Senado, TSE | diária |
 | cota | E21d | Câmara `/despesas` (todos da legislatura 57), Senado CEAPS (arquivo anual) | uma coleta por mês civil (`estado/fontes/cota/coletas.json`); anos com mês nos últimos 6 meses são baixados de novo, os outros vêm do cache |
-| proposições | E21e | arquivos anuais da Câmara, autorias do Senado | diária |
+| proposições | E21e | arquivos anuais da Câmara (`proposicoes`, `proposicoesAutores`, 2023→), Senado `/processo` por autor e `/processo/{id}` | diária: ano corrente baixado de novo todo dia, anos anteriores uma vez por semana (situação de proposição antiga muda); autoria do Senado em cache para sempre |
 
 Respostas brutas ficam em `estado/fontes/` (ex.: `camara-votos/{id}.json`): votação passada não
 muda, então nunca é baixada de novo. Resposta vazia não é guardada (os votos podem chegar depois).

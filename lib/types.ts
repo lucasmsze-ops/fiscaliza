@@ -201,20 +201,48 @@ export interface Orientacao {
   orientacao: string;
 }
 
-/** Proposições de autoria (E-futura). Mantido do modelo; ainda sem dado na sonda. */
+/**
+ * Tabela `proposicoes` (E21e): só os tipos que podem virar lei (`TIPOS_LEGISLATIVOS`), desde 2023,
+ * com pelo menos um autor no site. Os demais tipos ficam em `proposicoes_contagem`.
+ */
 export interface Proposicao {
+  /** casa:id_externo */
+  id: string;
   idExterno: string;
   casa: Casa;
-  politicoId: string;
+  /** Sigla da fonte: PL, PLP, PEC, PDL, PRC (Câmara) ou PRS (Senado). */
   tipo: string;
   numero: number;
   ano: number;
-  ementa: string;
-  data: string;
-  /** true só quando o político é proponente, não coautor. */
-  proponente: boolean;
-  status: string | null;
+  /** Null quando a fonte não traz (a interface mostra "—"). CPF em texto oficial vem ocultado (`semCpf`). */
+  ementa: string | null;
+  /** AAAA-MM-DD */
+  apresentacao: string;
+  /** Última situação, como a fonte escreve; null quando a fonte não traz. */
+  situacao: string | null;
+  /** "Transformado(a) em norma jurídica" na fonte (com ou sem veto parcial). */
+  virouNorma: boolean;
   urlOficial: string;
+}
+
+/** Tabela `proposicoes_autores`: autores proponentes que estão no site (não os apoiadores). */
+export interface ProposicaoAutor {
+  proposicaoId: string;
+  politicoId: string;
+  /** Ordem de assinatura na fonte: 1 = primeiro autor. */
+  ordem: number;
+}
+
+/** Tabela `proposicoes_contagem`: requerimentos, indicações, emendas, pareceres etc., só a contagem por ano e tipo. */
+export interface ProposicaoContagem {
+  politicoId: string;
+  casa: Casa;
+  /** Ano da apresentação. */
+  ano: number;
+  /** Sigla da fonte (REQ, RIC, INC, EMC, RQS...). */
+  tipo: string;
+  /** Proposições em que o político é autor (primeiro ou não). */
+  autorias: number;
 }
 
 // ---------------------------------------------------------------- linhas (snake_case)

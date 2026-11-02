@@ -50,4 +50,6 @@ Nunca preencher com dado sintético.
 | 2026-11-02 | Senado | Jorge Kajuru (GO), em exercício desde 2019, não tem nenhuma despesa na CEAPS de 2025–26 (nem pelo código, nem pelo nome); Leany Lemos (DF) e Renzo Braz (MG) entraram em set–out/2026 | Card sem o bloco de cota (como qualquer parlamentar sem lançamento no período); nunca "R$ 0" |
 | 2026-11-02 | Câmara / Senado | Primeira coleta nacional da cota sem coleta anterior comparável (e a de SP seguia outra regra de média) | Meses fechados até jul/2026, o último fechado de SP; a regra de duas coletas vale a partir de dezembro (`docs/METODOLOGIA.md`) |
 | 2026-11-02 | Câmara / Senado | Cota só desde jan/2025 | A página mostra os últimos 12 meses; 2023–2024 entram na E27 |
-
+| 2026-11-02 | Senado | Listagem por autor (`/processo?codigoParlamentarAutor`) inclui quem não está na autoria de iniciativa: 9 senadores num PL da Comissão Diretora (PL 6070/2025, virou lei) e 1 assinatura num PRS | Vale a autoria de iniciativa (tem a ordem): o PL da Comissão Diretora não entra como autoria individual de nenhum senador |
+| 2026-11-02 | Câmara | Arquivos anuais de proposições chegam cortados (o servidor encerra a conexão a cada ~17 s) | Download retomado com `Range` até o tamanho bater; nada aparece na interface |
+| 2026-11-02 | Câmara / Senado | Proposições de autoria só desde 2023 e só dos parlamentares do site (os 70 deputados da legislatura 57 que não estão em `politicos` ficam fora) | A página mostrará os números a partir de 2023 (E25) |

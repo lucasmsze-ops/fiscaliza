@@ -132,5 +132,22 @@ no Postgres. A margem dura de 2 a 3 anos antes de ser preciso arquivar anos anti
 Coleta: 4.619 chamadas à Câmara (648 deputados × 2 anos, todas 200, ~45 min com 3 em voo) e 2
 arquivos da CEAPS (~17 MB). Cache em `estado/fontes/cota`: 6,9 MB. Por mês, só o ano corrente é
 baixado de novo (~2.300 chamadas). A estimativa de `despesas_mes` acima (~31 mil linhas desde 2023)
-segue válida: 2023–2024 entram na E27. Falta a E21e (proposições).
+segue válida: 2023–2024 entram na E27.
+
+## Medido com as proposições (E21e, 2026-11-02)
+
+| Tabela | Linhas | JSON | Postgres (PGlite, migração 0004) |
+|---|---|---|---|
+| `proposicoes` (PL, PLP, PEC, PDL, PRC/PRS desde 2023, com autor no site; 311 viraram norma) | 25.588 | 12,1 MB | 10,6 MB |
+| `proposicoes_autores` (só proponentes) | 40.555 | 3,1 MB | 5,2 MB |
+| `proposicoes_contagem` (demais tipos, por político, ano e tipo) | 19.533 | 1,7 MB | 2,3 MB |
+
+~18 MB no Postgres, abaixo dos 40–54 MB estimados: os ~180 mil vínculos da estimativa contavam
+apoiadores e todos os tipos; aqui só entram os proponentes dos tipos que podem virar lei, e o resto
+vira contagem. Com isso o banco deve ir a ~146 MB de 500 (29%).
+
+Fontes: Câmara, 8 CSVs de 2023–2026 (356 MB; o ano corrente, ~54 MB, é baixado de novo todo dia, com
+retomadas); Senado, 324 listagens + 2.918 autorias (22 MB de cache), ~5 min na primeira vez com
+2 em voo; a primeira execução completa do job levou 295 s, e as seguintes, segundos. **Para a E22:** os 356 MB de CSV não deveriam ir para o cache do Actions;
+guardar só o extrato por ano (ou baixar os anos anteriores uma vez por semana no próprio runner).
 

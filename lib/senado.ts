@@ -354,3 +354,57 @@ export async function listarDespesasCeaps(ano: number): Promise<DespesaSenado[]>
   const raw = await fetchJson<DespesaCeapsRaw[]>(`https://adm.senado.gov.br/adm-dadosabertos/api/v1/senadores/despesas_ceaps/${ano}`, { label: "senado:/despesas_ceaps/{ano}" });
   return raw.map((d) => ({ senadoCodigo: String(d.codSenador), ano: d.ano, mes: d.mes, tipo: vazio(d.tipoDespesa), valor: d.valorReembolsado }));
 }
+
+// ======================= processos legislativos (autoria) =======================
+
+/** Um processo da listagem por autor (`/processo?codigoParlamentarAutor`). */
+export interface ProcessoSenado {
+  id: string;
+  /** "PL", "PEC", "RQS", "R.S"... (da identificação, sem o sufixo de comissão). */
+  sigla: string;
+  numero: number;
+  ano: number;
+  ementa: string | null;
+  apresentacao: string;
+  situacao: string | null;
+  dataSituacao: string | null;
+  codigoMateria: number | null;
+}
+
+/** Autores de iniciativa de um processo, na ordem da fonte (`/processo/{id}`). */
+export interface AutoriaSenado {
+  /** Null quando o autor não é parlamentar (comissão, Mesa, Executivo). */
+  senadoCodigo: string | null;
+  ordem: number;
+}
+
+/** `/processo` responde 429 com 3 chamadas em voo (225 em 3.466, medido em 2026-11-02): mais tentativas, backoff até 16 s. */
+const RETRIES_PROCESSO = 5;
+
+interface ProcessoListaRaw { id: number; identificacao: string; ementa: string | null; dataApresentacao: string; situacaoAtual?: string; dataSituacaoAtual?: string; codigoMateria?: number }
+interface ProcessoRaw { autoriaIniciativa?: { codigoParlamentar?: number; ordem: number }[] }
+
+/** "REQ 4/2023 - CDH" → REQ, 4, 2023. */
+export function identificacaoSenado(s: string): { sigla: string; numero: number; ano: number } {
+  const m = /^(\S+) (\d+)\/(\d{4})/.exec(s.trim());
+  if (!m) throw new Error(`identificação de processo do Senado fora do padrão: ${s}`);
+  return { sigla: m[1]!, numero: Number(m[2]), ano: Number(m[3]) };
+}
+
+/**
+ * Processos de que o senador é autor (primeiro ou não), apresentados entre `inicio` e `fim` (ISO,
+ * janela ≤ 1 ano). JSON puro, uma lista sem paginação (276 itens num ano, medido).
+ */
+export async function listarProcessosDoAutor(codigo: string, inicio: string, fim: string): Promise<ProcessoSenado[]> {
+  const raw = await fetchJson<ProcessoListaRaw[]>(`${SENADO_API}/processo?codigoParlamentarAutor=${codigo}&dataInicioApresentacao=${inicio}&dataFimApresentacao=${fim}`, { label: "senado:/processo?codigoParlamentarAutor", retries: RETRIES_PROCESSO });
+  return raw.map((p) => ({
+    id: String(p.id), ...identificacaoSenado(p.identificacao), ementa: vazio(p.ementa), apresentacao: p.dataApresentacao,
+    situacao: vazio(p.situacaoAtual), dataSituacao: vazio(p.dataSituacaoAtual), codigoMateria: p.codigoMateria ?? null,
+  }));
+}
+
+/** Autores de iniciativa (com a ordem) de um processo. */
+export async function getAutoriaProcesso(id: string): Promise<AutoriaSenado[]> {
+  const raw = await fetchJson<ProcessoRaw>(`${SENADO_API}/processo/${id}`, { label: "senado:/processo/{id}", retries: RETRIES_PROCESSO });
+  return (raw.autoriaIniciativa ?? []).map((a) => ({ senadoCodigo: a.codigoParlamentar ? String(a.codigoParlamentar) : null, ordem: a.ordem }));
+}

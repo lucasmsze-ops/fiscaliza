@@ -6,6 +6,7 @@
  */
 import { spawnSync } from "node:child_process";
 import { jobCota } from "./cota";
+import { jobProposicoes } from "./proposicoes";
 import { DADOS, gravarTabela, iniciarEstado, lerTabela, mesclar, type LinhaBruta } from "./estado";
 import { publicar } from "./publicar";
 import { jobParlamentares } from "./parlamentares";
@@ -27,6 +28,7 @@ const jobs: Job[] = [
   { nome: "votacoes", rodar: async () => { const r = await jobVotacoes(hoje); return { tabelas: { votacoes: r.votacoes, votos: r.votos, orientacoes: r.orientacoes }, relatorio: r.relatorio, falhas: r.falhas }; } },
   // Depois de parlamentares: despesas_mes só guarda quem está em politicos.
   { nome: "cota", rodar: () => jobCota(hoje) },
+  { nome: "proposicoes", rodar: () => jobProposicoes(hoje) },
 ];
 
 let falhou = false;

@@ -288,6 +288,11 @@ export async function getVotos(id: string): Promise<VotoCamara[]> {
   });
 }
 
+// ======================= arquivos anuais =======================
+
+/** Arquivo anual em lote (CSV, `;`, UTF-8 com BOM): `proposicoes`, `proposicoesAutores`... Baixar com `baixarArquivo` (chega cortado). */
+export const arquivoAnualCamara = (nome: string, ano: number) => `https://dadosabertos.camara.leg.br/arquivos/${nome}/csv/${nome}-${ano}.csv`;
+
 // ======================= despesas (CEAP) =======================
 
 export interface DespesaCamara {

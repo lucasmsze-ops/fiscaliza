@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E21e** (atualizar esta linha ao avançar)
+**Etapa atual: E22** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -338,15 +338,19 @@ colinha não funciona fora de SP. Dividida em E21a–E21e; o desenho do cron est
 - Pronto quando: o card de senador ganha a cota e as médias das 27 bancadas batem com a soma.
 
 ### E21e · Proposições
-- [ ] Migração 0004; íntegra só de PL, PLP, PEC, PDL e PRC, contagem do resto (decisão de 2026-11-02).
+- [x] Migração 0004; íntegra só de PL, PLP, PEC, PDL e PRC, contagem do resto (decisão de 2026-11-02).
       Câmara pelos arquivos anuais (`proposicoes`, `proposicoesAutores`, com `proponente`); Senado
       pelas autorias. Medir tempo e tamanho.
+      (Feito em 2026-11-02: job `proposicoes`; 25.588 proposições, 40.555 autorias, 19.533 contagens,
+      ~18 MB; duas execuções seguidas, a segunda sem nada novo. No Senado, PRS no lugar de PRC.)
 - Pronto quando: rodar duas vezes seguidas não duplica nada e o tamanho bate com `docs/VOLUME.md`.
 
 ### E22 · GitHub Actions
 - [ ] Workflow diário: `politicos` → `despesas` → `proposicoes` → `votacoes`. Jobs isolados;
       falha num não bloqueia o seguinte. Log só no output do Actions.
 - [ ] Secrets do Supabase. O cron é também o keep-alive do plano free.
+- [ ] Estado na primeira execução: os arquivos do TSE, o cache de votos e os 356 MB de CSV de
+      proposições da Câmara só existem na máquina local (`docs/VOLUME.md`, E21e).
 - [ ] Data da última carga por fonte gravada (base da página `/atualizacoes`).
 - Pronto quando: o primeiro run agendado termina verde e o site reflete dado novo.
 

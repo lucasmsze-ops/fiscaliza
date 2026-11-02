@@ -15,6 +15,25 @@ Modelo:
 
 ---
 
+## 2026-11-02 · E21e
+**Feito:** job `proposicoes` (`scripts/cron/proposicoes.ts`). Câmara pelos arquivos anuais 2023–2026
+(`proposicoes`, `proposicoesAutores`) com `lib/http.ts#baixarArquivo`, que retoma com `Range`: o
+servidor corta a conexão a cada ~17 s. Senado por `/processo?codigoParlamentarAutor` (324
+listagens) e `/processo/{id}` só das que podem virar lei (2.918, ordem dos autores). Migração 0004
+(`proposicoes`, `proposicoes_autores`, `proposicoes_contagem`), testada no PGlite. Ensaio:
+25.588 proposições (311 viraram norma), 40.555 autorias, 19.533 contagens; duas execuções
+seguidas, a segunda com 0 novas e 0 alteradas; validação ok. ~18 MB no Postgres. Nada publicado
+ainda (falta a migração no Supabase).
+**Decidido:** autor = `proponente = 1` (apoio de PEC vem com 0; conferido contra a API para uma
+deputada: as 2 diferenças eram apoio); `ordem` 1 = primeiro autor. Íntegra só com algum autor no
+site. No Senado, PRS (resolução do Senado) no lugar de PRC, e vale a autoria de iniciativa, não a
+listagem por autor (PL da Comissão Diretora). 2 em voo no Senado (429 com 3). Situação muda em
+proposição antiga: ano corrente todo dia, anteriores por semana.
+**Lacunas:** listagem × autoria de iniciativa no Senado; downloads cortados da Câmara; só desde 2023
+e só parlamentares do site (ver `docs/LACUNAS.md`). Para a E22: 356 MB de CSV fora do cache do Actions.
+**Próximo passo:** publicar (migração 0004 no SQL Editor → `npm run cron`) e conferir as contagens;
+depois E22 — GitHub Actions.
+
 ## 2026-11-02 · E21d
 **Feito:** job `cota` (`scripts/cron/cota.ts`): despesas da Câmara de todos os 648 deputados da
 legislatura 57 pela API (4.619 chamadas, 0 falhas) e CEAPS do Senado pelo arquivo anual

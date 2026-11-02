@@ -113,7 +113,8 @@ A página do político segue o inventário (`docs/REFERENCIA-POLITICOMETRO.md`, 
 - `/votacoes?idOrgao=180&dataInicio&dataFim` — plenário. **Máximo 3 meses por chamada** e 100 itens por página (`lib/camara.ts#janelas` divide). ~1.700 votações/ano listadas, ~280 nominais/ano. Depois `/votacoes/{id}` (`proposicoesAfetadas` = matéria principal), `/votos` e `/orientacoes`.
 - Nominal tem placar na `descricao` (`Sim: N; Não: M`): precisão 100%, recall 99% (medido). O cron confirma por `/votos` mesmo assim.
 - `orientacaoVoto` ∈ {`Sim`, `Não`, `Obstrução`, `Liberado`, `""`}. Vazio e `Liberado` ficam fora do denominador do governismo. `aprovacao` vem `null` em ~17% das nominais.
-- `/proposicoes?idDeputadoAutor` retorna **coautorias**. Filtrar por `/proposicoes/{id}/autores` com `proponente = true`.
+- `/proposicoes?idDeputadoAutor` retorna **coautorias**. Filtrar por `/proposicoes/{id}/autores` com `proponente = true`. Em PEC, as ~170 assinaturas de apoio vêm com `proponente = 0` (conferido: os 2 casos a mais da API para uma deputada em 2025 eram apoio).
+- **Arquivos anuais** `dadosabertos.camara.leg.br/arquivos/{nome}/csv/{nome}-{ano}.csv` (`proposicoes`, `proposicoesAutores`; CSV `;`, UTF-8 com BOM, CRLF): o servidor **corta a transferência a cada ~17 s** (43 de 90 MB) e aceita `Range` (206): `lib/http.ts#baixarArquivo` retoma até o tamanho bater. Regenerados todo dia (~04h). O arquivo do ano traz também proposições sem número (`ano` 0: pareceres, relatórios). Em `proposicoesAutores`, `ordemAssinatura = 1` marca exatamente um primeiro autor por proposição; "virou lei" = `ultimoStatus_descricaoSituacao` "Transformado em Norma Jurídica".
 - `tipoVoto` tem 5 valores: `Sim`, `Não`, `Abstenção`, `Obstrução`, `Artigo 17`, e vem **`null`** em votações de pessoa (→ `nao_informado`: conta na participação, não no governismo). Quem não aparece no array = `ausente`. Tratar todos explicitamente.
 - `/votacoes/{id}/votos` responde **404** em ~1% das votações listadas: tratar como "sem votos". Com 6 chamadas em voo apareceram 429 (3 em 6,5k): o retry resolve.
 - Votação simbólica = array de votos vazio. Ignorar. Medido 2023→out/2026: 6.537 votações do plenário, 1.107 nominais.
@@ -129,6 +130,7 @@ A página do político segue o inventário (`docs/REFERENCIA-POLITICOMETRO.md`, 
 - **Nenhum endpoint expõe CPF** (0 ocorrências no OpenAPI). Join com o TSE por nome completo + UF (`NomeCompletoParlamentar` × `NM_CANDIDATO`, sem acento, maiúsculas), gravando o método em `join`; revisão manual se houver ambiguidade. `codigo` do Senado não tem relação com `id` da Câmara.
 - Foto: `UrlFotoParlamentar` vem em `http://` e redireciona até `https://legis.senado.leg.br/senadores/fotos-oficiais/{codigo}` (JPEG). O adapter troca o esquema para https.
 - 2026 renovou 2/3 do Senado: a maioria dos senadores eleitos não tem dado até 01/02/2027.
+- **Autoria:** `GET /processo?codigoParlamentarAutor={codigo}&dataInicioApresentacao&dataFimApresentacao` (janela ≤ 1 ano, sem paginação; `/senador/{codigo}/autorias` está DEPRECATED). `identificacao` é "PL 1234/2025", às vezes com sufixo de comissão ("REQ 4/2023 - CDH"). Ordem dos autores só em `/processo/{id}` (`autoriaIniciativa[].ordem`, `codigoParlamentar` ausente quando o autor é comissão). A listagem por autor inclui quem não está na autoria de iniciativa (membros da Comissão Diretora num PL dela; assinatura retirada): vale a autoria de iniciativa. Virou norma = situação "TRANSFORMADA EM NORMA JURÍDICA" (com ou sem veto parcial). Com 3 chamadas em voo, `/processo` responde **429** (225 em 3.466): 2 em voo e 5 tentativas. Página da matéria: `www25.senado.leg.br/web/atividade/materias/-/materia/{codigoMateria}`.
 - **CEAPS (cota dos senadores):** `GET https://adm.senado.gov.br/adm-dadosabertos/api/v1/senadores/despesas_ceaps/{ano}` (outro serviço, JSON puro, um ano inteiro numa chamada, ~10 MB). Traz `codSenador` (= `codigo`), mês de competência, `tipoDespesa`, `valorReembolsado` (estornos negativos: 114 em 2025) e `cpfCnpj`/`fornecedor`, que nunca saem do adapter. **Não traz UF**: vem de `politicos` ou, para quem não está em exercício, dos mandatos (`/senador/{codigo}/mandatos`, mandato da legislatura atual); `/senador/{codigo}` não traz `UfParlamentar` de quem não está em exercício (12 de 12 casos). `tipoDespesa` vem `null` em ~0,3% (todos "Recibo") → "Tipo não informado pela fonte". Inclui titulares licenciados e quem saiu (89 códigos em 2026). Página oficial por senador e ano: `https://www6g.senado.leg.br/transparencia/sen/{codigo}/?ano={ano}`.
 
 ### Portal da Transparência (v1.1) — chave gratuita, uma só, usada apenas no cron.
@@ -148,8 +150,10 @@ municipios        ibge, tse, nome, uf
 eleitos_mun       municipio_ibge, cargo, politico_id, votos, posicao   (top-20 + empatados no 20º)
 despesas_mes      politico_id, casa, uf (da bancada na Casa), ano, mes, total, por_categoria jsonb
 despesas_media_uf casa, uf, ano, mes, media, parlamentares, total, fechado
-proposicoes       id_externo, casa, politico_id, tipo, numero, ano, ementa, data,
-                  proponente bool, status, url_oficial
+proposicoes       id (= casa:id_externo), id_externo, casa, tipo, numero, ano, ementa, apresentacao,
+                  situacao, virou_norma bool, url_oficial   (só PL/PLP/PEC/PDL/PRC|PRS com autor no site)
+proposicoes_autores  proposicao_id, politico_id, ordem (1 = primeiro autor; só proponentes)
+proposicoes_contagem politico_id, casa, ano, tipo, autorias   (os demais tipos: REQ, RIC, emendas...)
 votacoes          id (= casa:id_externo), id_externo, casa, data, proposicao, ementa, objeto,
                   descricao, resultado, placar jsonb, secreta bool, url_oficial
 votos             votacao_id, politico_id, voto enum(sim,nao,abstencao,obstrucao,art17,

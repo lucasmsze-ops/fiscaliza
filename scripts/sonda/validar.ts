@@ -33,6 +33,9 @@ const ESQUEMA: Record<string, { pk: string[]; obrig: string[]; opc: string[] }> 
   votacoes: { pk: ["id"], obrig: ["id", "id_externo", "casa", "data", "descricao", "secreta", "url_oficial"], opc: ["proposicao", "ementa", "objeto", "resultado", "placar"] },
   votos: { pk: ["votacao_id", "politico_id"], obrig: ["votacao_id", "politico_id", "voto"], opc: ["detalhe"] },
   orientacoes: { pk: ["votacao_id", "bancada"], obrig: ["votacao_id", "bancada"], opc: ["orientacao"] },
+  proposicoes: { pk: ["id"], obrig: ["id", "id_externo", "casa", "tipo", "numero", "ano", "apresentacao", "virou_norma", "url_oficial"], opc: ["ementa", "situacao"] },
+  proposicoes_autores: { pk: ["proposicao_id", "politico_id"], obrig: ["proposicao_id", "politico_id", "ordem"], opc: [] },
+  proposicoes_contagem: { pk: ["politico_id", "casa", "ano", "tipo"], obrig: ["politico_id", "casa", "ano", "tipo", "autorias"], opc: [] },
 };
 const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   politicos: { genero: ["feminino", "masculino", null], cargo: ["deputado_federal", "senador"], status: ["eleito", "reeleito", "nao_eleito", "suplente", "em_exercicio"] },
@@ -41,6 +44,8 @@ const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   votacoes: { casa: ["camara", "senado"], resultado: ["aprovada", "rejeitada", null] },
   votos: { voto: ["sim", "nao", "abstencao", "obstrucao", "art17", "nao_informado", "secreto", "ausente"] },
   orientacoes: { orientacao: ["Sim", "Não", "Obstrução", "Liberado", ""] },
+  proposicoes: { casa: ["camara", "senado"], virou_norma: [true, false] },
+  proposicoes_contagem: { casa: ["camara", "senado"] },
 };
 
 const dados: Record<string, L[]> = {};
@@ -68,7 +73,14 @@ const fk = (t: string, k: string, alvo: Set<unknown>, nome: string, opcional = f
   for (const l of dados[t]!) { if (opcional && l[k] === null) continue; if (!alvo.has(l[k])) { n++; if (n <= 5) erro(`${t}.${k}=${JSON.stringify(l[k])} não existe em ${nome}`); } }
   if (n > 5) erro(`${t}.${k}: mais ${n - 5} referências quebradas`);
 };
-for (const t of ["mandatos", "afastamentos", "eleitos_mun", "despesas_mes", "votos"]) fk(t, "politico_id", politicos, "politicos");
+for (const t of ["mandatos", "afastamentos", "eleitos_mun", "despesas_mes", "votos", "proposicoes_autores", "proposicoes_contagem"]) fk(t, "politico_id", politicos, "politicos");
+fk("proposicoes_autores", "proposicao_id", ids("proposicoes"), "proposicoes");
+// Toda proposição tem pelo menos um autor no site (é o critério para entrar) e um primeiro autor no máximo.
+const comAutor = ids("proposicoes_autores", "proposicao_id");
+for (const p of dados.proposicoes!) if (!comAutor.has(p.id)) erro(`proposicoes ${p.id}: sem autor no site`);
+const primeiros = new Map<unknown, number>();
+for (const a of dados.proposicoes_autores!) if (a.ordem === 1) primeiros.set(a.proposicao_id, (primeiros.get(a.proposicao_id) ?? 0) + 1);
+for (const [id, n] of primeiros) if (n > 1) erro(`proposicoes ${id}: ${n} primeiros autores`);
 for (const t of ["votos", "orientacoes"]) fk(t, "votacao_id", votacoes, "votacoes");
 fk("politicos", "lista_id", listas, "listas", true);
 fk("eleitos_mun", "municipio_ibge", municipios, "municipios");
