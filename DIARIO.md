@@ -15,6 +15,27 @@ Modelo:
 
 ---
 
+## 2026-11-02 · E21d
+**Feito:** job `cota` (`scripts/cron/cota.ts`): despesas da Câmara de todos os 648 deputados da
+legislatura 57 pela API (4.619 chamadas, 0 falhas) e CEAPS do Senado pelo arquivo anual
+(`lib/senado.ts#listarDespesasCeaps`, sem fornecedor nem CPF/CNPJ), 2025–2026. Migração 0003 (`casa`
+nas duas tabelas, `uf` da bancada em `despesas_mes`, `parlamentares`), testada no PGlite e rodada pelo
+usuário. Card e página de senador com a cota e link para a transparência do Senado. Publicado: 11.173
+despesas, 1.184 médias, 632 resumos. Supabase: 1.186 de 1.186 médias batem com a soma (site + só
+média) e 592 de 592 do Senado com a soma direta do arquivo bruto; cota no card de 78 de 81 senadores
+e 553 de 575 deputados com mandato em curso. Banco: 128 MB.
+**Decidido:** média = todos da UF com lançamento no mês, inclusive quem saiu (a regra da sonda, só
+os em exercício, reabriria meses fechados a cada troca de suplente). Em SP a média mudou em 20 de 22
+meses, explicada ao centavo por 10 deputados fora da lista de 70 da sonda; os 1.273 deputado-meses
+publicados ficaram idênticos. Mês novo só fecha com ≥ 20 dias entre coletas (ago–out de SP estavam
+iguais entre 01/11 e 02/11, feriado); primeira coleta nacional fecha até jul/2026. UF da bancada na
+Casa, não a da candidatura (Tiririca, Rosangela Moro, Hélio Lopes). Média dividida em centavos
+inteiros (4 médias saíram 1 centavo abaixo no meio centavo; corrigidas e republicadas).
+**Lacunas:** Kajuru sem CEAPS em 2025–26; 131 despesas da CEAPS sem tipo; UF de senador fora de
+exercício só pelos mandatos; cota só desde 2025 (ver `docs/LACUNAS.md`). Páginas geradas no build
+ficaram sem a cota até o deploy seguinte (push antes da publicação; ver `docs/CRON.md`).
+**Próximo passo:** E21e — proposições (migração 0004).
+
 ## 2026-11-02 · E21c
 **Feito:** `scripts/cron/parlamentares.ts` (Câmara: 648 da legislatura 57, CPF comparado em memória
 com o TSE 2026 e 2022; Senado: 81 por nome completo + UF, todos ligados) e `votacoes.ts` derivando

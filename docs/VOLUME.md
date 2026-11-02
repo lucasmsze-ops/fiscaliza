@@ -121,5 +121,16 @@ no Postgres. A margem dura de 2 a 3 anos antes de ser preciso arquivar anos anti
 | demais | | 15,8 MB |
 | **Total** | | **121 MB de 500 MB (24%)** |
 
-Ainda faltam a cota nacional (E21d) e as proposições (E21e), estimadas acima em ~60–100 MB.
+## Medido com a cota nacional (E21d, 2026-11-02)
+
+| Tabela | Linhas | JSON | No Postgres |
+|---|---|---|---|
+| `despesas_mes` (Câmara + Senado, jan/2025–out/2026, por mês e categoria) | 12.446 | 4,7 MB | 6,0 MB |
+| `despesas_media_uf` (27 UFs × 2 Casas) | 1.186 | 0,1 MB | 0,2 MB |
+| **Total do banco** | | | **128 MB de 500 MB (25,7%)** |
+
+Coleta: 4.619 chamadas à Câmara (648 deputados × 2 anos, todas 200, ~45 min com 3 em voo) e 2
+arquivos da CEAPS (~17 MB). Cache em `estado/fontes/cota`: 6,9 MB. Por mês, só o ano corrente é
+baixado de novo (~2.300 chamadas). A estimativa de `despesas_mes` acima (~31 mil linhas desde 2023)
+segue válida: 2023–2024 entram na E27. Falta a E21e (proposições).
 

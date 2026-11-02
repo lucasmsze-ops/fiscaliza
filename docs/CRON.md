@@ -56,6 +56,11 @@ muda, então nunca é baixada de novo. Resposta vazia não é guardada (os votos
 
 ## Cuidados
 
+- **Ordem quando a tabela muda de forma:** migração → push → publicação → novo deploy. O build
+  gera as páginas de quem tem mandato (659) a partir dos resumos do momento: na E21d o push veio
+  antes da publicação e as páginas geradas no build ficaram sem a cota até o deploy seguinte (o
+  ISR as renovaria em até 24 h). A colinha e as páginas geradas na primeira visita já saem certas.
+
 - Rodar o cron localmente e no Actions ao mesmo tempo deixa os dois "publicados" diferentes do banco.
   Os dois partem das mesmas fontes, então convergem, mas um pode reenviar linhas iguais. Rodar
   local só para testar.
