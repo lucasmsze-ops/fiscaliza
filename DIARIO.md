@@ -15,6 +15,21 @@ Modelo:
 
 ---
 
+## 2026-11-02 · E20 (fechamento)
+**Feito:** usuário criou as três variáveis na Vercel (`FISCALIZA_DADOS`, `SUPABASE_URL`,
+`SUPABASE_PUBLISHABLE_KEY`, Production e Preview); copiei para a área de transferência a partir do
+`.env.local`, sem a chave secreta, e limpei depois. `meta name="fiscaliza-dados"` mostra a origem
+(json ou supabase) em cada página. Push: produção lendo do Supabase, conteúdo conferido. As funções
+rodavam em Washington (`iad1`, padrão) com o banco em São Paulo: colinha inédita em 0,9–1,1 s.
+`vercel.json` com `regions: ["gru1"]` (o Hobby permite uma região): 0,16–0,54 s; cache 0,05–0,08 s;
+imagem de compartilhamento de 4,2 para 1,8 s.
+**Decidido:** funções em São Paulo, junto do Supabase. A primeira visita depois de cada deploy pega
+a função fria (1,7 s medido) e fica registrada como exceção conhecida.
+**Lacunas:** nenhuma.
+**Próximo passo:** E21 — cron do Congresso no Brasil inteiro (513 + 81), gravando só o que mudou;
+carga inicial pelos arquivos anuais da Câmara; a tabela de municípios é gerada localmente (o IBGE
+não responde ao runner).
+
 ## 2026-11-02 · E20 (parcial)
 **Feito:** `lib/repo-supabase.ts` (API REST, chave publicável, listas em memória por 5 min);
 `Repo` com `getCard` e `getPagina`; páginas trocaram `montarCard`/`montarPagina` por elas (nenhum

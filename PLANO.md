@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E20** (atualizar esta linha ao avançar; falta conferir em produção)
+**Etapa atual: E21** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -283,6 +283,10 @@ fases, fora de escopo, card). As etapas antigas E17–E21 viraram E19–E22.
       voto (o `jsonb` reordena chaves) e o desempate da lista da cidade pelo número de urna. Colinha e
       imagem de compartilhamento conferidas em tempo de execução lendo do Supabase.)
 - Pronto quando: o site em produção lê do Supabase e as páginas continuam < 1 s.
+      (2026-11-02: produção com `fiscaliza-dados=supabase` em todas as páginas, números
+      conferidos. Com as funções em São Paulo (`vercel.json`, `gru1`): colinha inédita 0,16–0,54 s,
+      páginas em cache 0,05–0,08 s; só a primeira visita depois de um deploy, com a função fria,
+      levou 1,7 s. Antes, com as funções em Washington: 0,9–1,1 s.)
 
 ### E21 · Cron do Congresso, Brasil inteiro
 - [ ] `scripts/cron/{politicos,despesas,proposicoes,votacoes}.ts`, cada um idempotente,
