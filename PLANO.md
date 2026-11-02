@@ -214,6 +214,8 @@ Calendário externo que afeta o plano:
       busca por número de urna, palavra por palavra e por mais votados, e aviso "Não está na
       lista?", antes do teste. Achados das pessoas: pendente.)
 - Pronto quando: 4 de 5 conseguem em < 1 min sem ajuda.
+      (Rodada 1, relato do usuário em 2026-11-01: menos de 5 pessoas, todas em < 1 min sem ajuda,
+      todas acharam o deputado na lista da cidade. Falta: completar 5 e alguém que use a busca.)
 
 ## Passo 3 — Infra (Supabase + cron)
 

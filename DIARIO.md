@@ -15,6 +15,18 @@ Modelo:
 
 ---
 
+## 2026-11-01 · E16 (rodada 1)
+**Feito:** push de `4e78d39`; busca por número de urna e aviso "Não está na lista?" conferidos em
+produção. O usuário aplicou o teste e relatou: menos de 5 pessoas, todas montaram a colinha em
+menos de 1 minuto sem ajuda, todas acharam o deputado na lista da cidade, nenhum tropeço.
+Registrado em `docs/TESTE-USUARIOS.md` como resumo (sem ficha por pessoa).
+**Decidido:** E16 continua aberta: o critério pede 5 pessoas, e o caminho da busca (cerca de 1 em 3
+eleitores) não foi exercitado por ninguém. Nada a ajustar desta rodada.
+**Lacunas:** sem tempos individuais, cidades ou idades; não se sabe se alguém era da capital.
+**Próximo passo:** o usuário decide entre completar as 5 (com alguém da capital e alguém cujo
+deputado não esteja no top-20 da cidade) ou dar a E16 por encerrada com esta rodada e seguir para a
+E17 (Supabase).
+
 ## 2026-11-01 · E16 (preparação)
 **Feito:** E15 publicada (push de `d5f5ca5`; `/como-funciona` conferida em produção). Para a E16:
 `docs/TESTE-USUARIOS.md` com quem chamar, fala do moderador, quando ligar e parar o cronômetro, o

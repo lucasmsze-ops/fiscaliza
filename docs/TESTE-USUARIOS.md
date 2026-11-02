@@ -106,11 +106,23 @@ Não é participante: é a checagem do fluxo e do dado antes do teste.
 
 ## Resultados
 
-(Preencher depois das sessões. Uma linha por pessoa.)
+### Rodada 1 (relato do usuário em 2026-11-01)
+Sem ficha por pessoa: o registro é o resumo que o usuário deu depois de aplicar o teste.
+
+- **Pessoas:** menos de 5 (número exato não informado).
+- **Menos de 1 minuto, sem ajuda:** todas.
+- **Caminho do deputado:** todas acharam na lista da cidade; ninguém precisou da busca.
+- **Tropeços:** nenhum relatado.
+
+O que esta rodada **não** cobre:
+- O critério do PLANO pede 5 pessoas (4 de 5). Com menos de 5, ele não está cumprido no papel.
+- Ninguém passou pela busca. É o caminho de cerca de 1 em 3 eleitores (ver "Preparação"), então a
+  busca por nome ou número e o aviso "Não está na lista?" seguem sem teste com gente.
+- Sem tempos individuais, cidades ou faixas de idade: não dá para saber se alguém era da capital.
 
 | P | cidade | tempo | sucesso | caminho do deputado | na lista? | ajuda | principal tropeço |
 |---|--------|-------|---------|---------------------|-----------|-------|-------------------|
 
 ## Achados e ajustes
 
-(Preencher depois das sessões: o que impediu o < 1 min, o que foi ajustado e em qual commit.)
+Rodada 1: nada impediu o < 1 min; nenhum ajuste.
