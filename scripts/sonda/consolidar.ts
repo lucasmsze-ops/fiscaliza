@@ -58,10 +58,12 @@ function statusDe(c: CandidatoMun, emExercicioMesmoCargo: boolean): Status {
 }
 
 const politicos: Politico[] = [];
+// Slug = nome de urna + UF (decisão de 2026-11-01): estável entre eleições (sem o cargo) e sem
+// colisão entre estados. Homônimo na mesma UF é erro: decidir o desempate à mão, nunca pela ordem.
 const usados = new Set<string>();
-const novoSlug = (nomeUrna: string, numero: string | null) => {
-  let s = slugDe(nomeUrna);
-  if (usados.has(s)) s = `${s}-${numero ?? politicos.length}`;
+const novoSlug = (nomeUrna: string) => {
+  const s = `${slugDe(nomeUrna)}-${UF.toLowerCase()}`;
+  if (usados.has(s)) throw new Error(`slug repetido na mesma UF: ${s} (homônimos; decidir desempate)`);
   usados.add(s);
   return s;
 };
@@ -69,7 +71,7 @@ const novoSlug = (nomeUrna: string, numero: string | null) => {
 for (const [sq, c] of Object.entries(mun.candidatos).sort((a, b) => b[1].votosUf - a[1].votosUf)) {
   const dep = bancadaPorSq.get(sq); // em exercício na Câmara hoje (69 de 70 de SP)
   const antigo = antigoPorSq.get(sq); // ex-deputado (registro de outra legislatura)
-  const slug = novoSlug(c.nomeUrna, c.numero);
+  const slug = novoSlug(c.nomeUrna);
   politicos.push({
     id: slug, slug, cargo: c.cargo, nome: c.nome, nomeUrna: c.nomeUrna, genero: c.genero, uf: UF,
     partido: dep?.partido ?? c.partido,
@@ -77,6 +79,8 @@ for (const [sq, c] of Object.entries(mun.candidatos).sort((a, b) => b[1].votosUf
     federacao: c.federacao, numeroUrna: c.numero,
     fotoUrl: dep?.fotoUrl ?? fotoUrlTse(CICLO, ELEICAO, UF, sq),
     email: dep?.emailGabinete ?? null,
+    telefone: dep?.telefoneGabinete ?? null,
+    redesSociais: dep?.redesSociais ?? [],
     urlPerfil: dep ? `https://www.camara.leg.br/deputados/${dep.camaraId}` : null,
     tseSqCandidato: sq, camaraId: dep?.camaraId ?? antigo?.camaraId ?? null, senadoCodigo: null,
     status: statusDe(c, !!dep && c.cargo === "deputado_federal"),
@@ -85,11 +89,12 @@ for (const [sq, c] of Object.entries(mun.candidatos).sort((a, b) => b[1].votosUf
 }
 for (const s of senadores) {
   const t = tse.find((p) => p.tseSqCandidato === s.tseSqCandidato);
-  const slug = novoSlug(t?.nomeUrna ?? s.nome, null);
+  const slug = novoSlug(t?.nomeUrna ?? s.nome);
   politicos.push({
     id: slug, slug, cargo: "senador", nome: s.nomeCompleto, nomeUrna: t?.nomeUrna ?? s.nome, uf: UF, partido: s.partido,
     genero: s.sexo === "Feminino" ? "feminino" : s.sexo === "Masculino" ? "masculino" : null,
     listaId: null, federacao: null, numeroUrna: null, fotoUrl: s.fotoUrl, email: s.email, urlPerfil: s.urlPagina,
+    telefone: s.telefones[0] ?? null, redesSociais: [],
     tseSqCandidato: s.tseSqCandidato, camaraId: null, senadoCodigo: s.senadoCodigo, status: "em_exercicio", votos2026: null, updatedAt: AGORA,
   });
 }

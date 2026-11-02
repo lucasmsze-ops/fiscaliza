@@ -46,4 +46,5 @@ export function lerColinha(bruto: string | null): Colinha {
   }
 }
 
-export const CHAVE_STORAGE = "fiscaliza.colinha.v1";
+/** v2: ids passaram a ter a UF no fim (2026-11-01); colinhas v1 ficam para trás. */
+export const CHAVE_STORAGE = "fiscaliza.colinha.v2";

@@ -22,7 +22,7 @@ export type Casa = "camara" | "senado";
  */
 export type Status = "eleito" | "reeleito" | "nao_eleito" | "suplente" | "em_exercicio";
 
-/** Tabela `politicos`. Um registro por pessoa; `id` = `slug`. */
+/** Tabela `politicos`. Um registro por pessoa; `id` = `slug` = nome de urna + UF (ex.: "kiko-celeguim-sp"). */
 export interface Politico {
   id: string;
   /** Cargo que o card mostra: o disputado em 2026, ou o exercido para quem não disputou. */
@@ -46,6 +46,10 @@ export interface Politico {
   fotoUrl: string | null;
   /** E-mail oficial do gabinete (Câmara `gabinete.email`, Senado `EmailParlamentar`). */
   email: string | null;
+  /** Telefone do gabinete como a fonte escreve (sem DDD). */
+  telefone: string | null;
+  /** Redes sociais declaradas à Câmara (URLs). Vazio quando a fonte não traz. */
+  redesSociais: string[];
   /** Página oficial do parlamentar, se existir. */
   urlPerfil: string | null;
   tseSqCandidato: string | null;

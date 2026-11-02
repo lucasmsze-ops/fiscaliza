@@ -22,7 +22,7 @@ const erro = (m: string) => { if (erros.length < 200) erros.push(m); else if (er
 
 /** Colunas de cada tabela: obrigatórias (não podem ser null/"") e opcionais (podem ser null). */
 const ESQUEMA: Record<string, { pk: string[]; obrig: string[]; opc: string[] }> = {
-  politicos: { pk: ["id"], obrig: ["id", "slug", "cargo", "nome", "nome_urna", "uf", "partido", "status", "updated_at"], opc: ["genero", "lista_id", "federacao", "numero_urna", "foto_url", "email", "url_perfil", "tse_sq_candidato", "camara_id", "senado_codigo", "votos_2026"] },
+  politicos: { pk: ["id"], obrig: ["id", "slug", "cargo", "nome", "nome_urna", "uf", "partido", "status", "updated_at", "redes_sociais"], opc: ["telefone", "genero", "lista_id", "federacao", "numero_urna", "foto_url", "email", "url_perfil", "tse_sq_candidato", "camara_id", "senado_codigo", "votos_2026"] },
   mandatos: { pk: ["politico_id", "cargo", "inicio"], obrig: ["politico_id", "cargo", "inicio", "titular"], opc: ["fim"] },
   afastamentos: { pk: ["politico_id", "inicio", "motivo"], obrig: ["politico_id", "inicio", "motivo"], opc: ["fim"] },
   listas: { pk: ["id"], obrig: ["id", "uf", "ano", "cargo", "nome", "votos_validos", "eleitos"], opc: ["composicao"] },
@@ -107,6 +107,7 @@ for (const q of dados.quiz!) {
 const ps = dados.politicos as unknown as Linha<Politico>[];
 for (const p of ps) {
   if (p.id !== p.slug) erro(`politicos ${p.id}: id ≠ slug`);
+  if (!p.id.endsWith(`-${p.uf.toLowerCase()}`)) erro(`politicos ${p.id}: slug sem a UF no fim`);
   if (p.cargo === "deputado_federal" && p.status !== "em_exercicio" && !p.lista_id) erro(`politicos ${p.id}: deputado de 2026 sem lista`);
   if (p.status === "reeleito" && !p.camara_id && !p.senado_codigo) erro(`politicos ${p.id}: reeleito sem registro na Casa`);
 }

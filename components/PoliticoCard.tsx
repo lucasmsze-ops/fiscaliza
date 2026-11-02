@@ -39,7 +39,7 @@ export function PoliticoCardCompacto({ r, contexto }: { r: CardResumo; contexto?
  * O único card do site (busca, colinha, página do político e OG). Recebe `CardDados` prontos
  * (lib/card.ts) e só exibe: o que é null não aparece, nunca vira traço, zero ou texto de exemplo.
  */
-export function PoliticoCard({ d }: { d: CardDados }) {
+export function PoliticoCard({ d, linkPagina = false }: { d: CardDados; linkPagina?: boolean }) {
   const n = d.numeros;
   return (
     <article className="w-full max-w-sm rounded-2xl border border-black/10 p-4 dark:border-white/15" aria-labelledby={`nome-${d.id}`}>
@@ -103,12 +103,15 @@ export function PoliticoCard({ d }: { d: CardDados }) {
         </section>
       )}
 
-      {(d.cobrar || d.urlPerfil) && (
+      {(d.cobrar || d.urlPerfil || linkPagina) && (
         <footer className="mt-4 flex items-center justify-between gap-3 border-t border-black/10 pt-4 dark:border-white/15">
           {d.cobrar ? (
             <BotaoCobrar cobrar={d.cobrar} votos={d.quiz} />
           ) : <span />}
-          {d.urlPerfil && <a href={d.urlPerfil} {...externo} className="text-xs underline underline-offset-2">perfil oficial</a>}
+          <span className="flex gap-3 text-xs">
+            {linkPagina && <a href={`/p/${d.id}`} className="underline underline-offset-2">mais detalhes</a>}
+            {d.urlPerfil && <a href={d.urlPerfil} {...externo} className="underline underline-offset-2">perfil oficial</a>}
+          </span>
         </footer>
       )}
     </article>

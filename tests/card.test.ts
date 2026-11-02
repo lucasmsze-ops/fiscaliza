@@ -36,47 +36,47 @@ describe("PoliticoCard com os 20 da sonda", () => {
     const tipos = [...cards.values()].map((c) => c.numeros.tipo);
     expect(tipos.filter((t) => t === "mandato")).toHaveLength(14);
     expect(tipos.filter((t) => t === "primeiro_voto")).toHaveLength(6);
-    expect(cards.get("joao-paulo-cunha")!.numeros.tipo).toBe("primeiro_voto");
+    expect(cards.get("joao-paulo-cunha-sp")!.numeros.tipo).toBe("primeiro_voto");
   });
   it("valores conferem com docs/SONDA.md", () => {
     const n = (id: string) => { const x = cards.get(id)!.numeros; if (x.tipo !== "mandato") throw new Error(id); return x; };
-    expect(n("kiko-celeguim").participacao.percentual).toBe(82.7);
-    expect(n("mara-gabrilli").participacao.percentual).toBe(38.3);
-    expect(n("mara-gabrilli").casa).toBe("senado");
-    expect(n("guilherme-derrite").casa).toBe("camara");
-    expect(n("guilherme-derrite").textoAfastado).toBe("afastado 1.041 dias");
-    expect(n("mara-gabrilli").textoAfastado).toBe("afastada 246 dias");
+    expect(n("kiko-celeguim-sp").participacao.percentual).toBe(82.7);
+    expect(n("mara-gabrilli-sp").participacao.percentual).toBe(38.3);
+    expect(n("mara-gabrilli-sp").casa).toBe("senado");
+    expect(n("guilherme-derrite-sp").casa).toBe("camara");
+    expect(n("guilherme-derrite-sp").textoAfastado).toBe("afastado 1.041 dias");
+    expect(n("mara-gabrilli-sp").textoAfastado).toBe("afastada 246 dias");
   });
   it("CEAP só para deputado em exercício, no mês de referência; Cobrar só com e-mail oficial", () => {
     for (const c of cards.values()) {
       if (c.ceap) { expect(c.numeros).toMatchObject({ tipo: "mandato", casa: "camara" }); expect(c.ceap.mes).toBe("jul/2026"); }
       if (c.cobrar) expect(hrefMailto(c.cobrar).startsWith(`mailto:${c.cobrar.email}?`)).toBe(true);
     }
-    expect(cards.get("mara-gabrilli")!.ceap).toBeNull(); // Senado: cota não coletada
-    expect(cards.get("lucas-pavanato")!.cobrar).toBeNull(); // sem e-mail oficial até a posse
-    expect(cards.get("kiko-celeguim")!.ceap?.valor).toBeGreaterThan(0);
+    expect(cards.get("mara-gabrilli-sp")!.ceap).toBeNull(); // Senado: cota não coletada
+    expect(cards.get("lucas-pavanato-sp")!.cobrar).toBeNull(); // sem e-mail oficial até a posse
+    expect(cards.get("kiko-celeguim-sp")!.ceap?.valor).toBeGreaterThan(0);
   });
   it("'seu voto contou para' só nos deputados, com a lista e o total de eleitos do quociente", () => {
-    expect(cards.get("kiko-celeguim")!.lista?.frase).toBe("seu voto contou para a Federação PT/PC do B/PV, que elegeu 11 em SP");
-    expect(cards.get("lucas-pavanato")!.lista?.frase).toBe("seu voto contou para PL, que elegeu 19 em SP");
-    expect(cards.get("erika-hilton")!.lista?.nomeOficial).toBe("FEDERAÇÃO PSOL REDE");
-    for (const id of ["andre-do-prado", "guilherme-derrite", "mara-gabrilli", "giordano", "astronauta-marcos-pontes"]) expect(cards.get(id)!.lista, id).toBeNull();
+    expect(cards.get("kiko-celeguim-sp")!.lista?.frase).toBe("seu voto contou para a Federação PT/PC do B/PV, que elegeu 11 em SP");
+    expect(cards.get("lucas-pavanato-sp")!.lista?.frase).toBe("seu voto contou para PL, que elegeu 19 em SP");
+    expect(cards.get("erika-hilton-sp")!.lista?.nomeOficial).toBe("FEDERAÇÃO PSOL REDE");
+    for (const id of ["andre-do-prado-sp", "guilherme-derrite-sp", "mara-gabrilli-sp", "giordano-sp", "astronauta-marcos-pontes-sp"]) expect(cards.get(id)!.lista, id).toBeNull();
     expect([...cards.values()].filter((c) => c.lista)).toHaveLength(15);
   });
   it("resumo dos números diz a Casa, o período e os dias afastado (Derrite: senador eleito, números da Câmara)", () => {
-    expect(resumoNumeros(cards.get("guilherme-derrite")!)).toBe("Câmara 2023–2026: participação em votações 10,2% (afastado 1.041 dias), governismo 21,3%");
-    expect(resumoNumeros(cards.get("mara-gabrilli")!)).toBe("Senado 2023–2026: participação em votações 38,3% (afastada 246 dias), governismo 91,7%");
-    expect(resumoNumeros(cards.get("kiko-celeguim")!)).toBe("Câmara 2023–2026: participação em votações 82,7%, governismo 97,9%");
-    expect(resumoNumeros(cards.get("guilherme-derrite")!, true)).toBe("Câmara 2023–2026 · participação 10,2% · afastado 1.041 dias · governismo 21,3%");
-    expect(resumoNumeros(cards.get("andre-do-prado")!)).toBe("primeiro voto em fevereiro de 2027");
+    expect(resumoNumeros(cards.get("guilherme-derrite-sp")!)).toBe("Câmara 2023–2026: participação em votações 10,2% (afastado 1.041 dias), governismo 21,3%");
+    expect(resumoNumeros(cards.get("mara-gabrilli-sp")!)).toBe("Senado 2023–2026: participação em votações 38,3% (afastada 246 dias), governismo 91,7%");
+    expect(resumoNumeros(cards.get("kiko-celeguim-sp")!)).toBe("Câmara 2023–2026: participação em votações 82,7%, governismo 97,9%");
+    expect(resumoNumeros(cards.get("guilherme-derrite-sp")!, true)).toBe("Câmara 2023–2026 · participação 10,2% · afastado 1.041 dias · governismo 21,3%");
+    expect(resumoNumeros(cards.get("andre-do-prado-sp")!)).toBe("primeiro voto em fevereiro de 2027");
   });
   it("votos do quiz: só com mandato no período, na Casa do mandato; ausência só dentro do mandato", async () => {
-    expect(cards.get("lucas-pavanato")!.quiz).toBeNull();
-    expect(cards.get("joao-paulo-cunha")!.quiz).toBeNull();
-    expect(cards.get("mara-gabrilli")!.quiz).toHaveLength(10); // perguntas com votação no Senado
-    expect(cards.get("kiko-celeguim")!.quiz).toHaveLength(13); // perguntas com votação na Câmara
-    const kim = new Map(cards.get("kim-kataguiri")!.quiz!.map((v) => [v.itemId, v.voto]));
-    const gravado = (await repo.getVotos("kim-kataguiri")).find((v) => v.votacaoId === "camara:2196833-373")?.voto;
+    expect(cards.get("lucas-pavanato-sp")!.quiz).toBeNull();
+    expect(cards.get("joao-paulo-cunha-sp")!.quiz).toBeNull();
+    expect(cards.get("mara-gabrilli-sp")!.quiz).toHaveLength(10); // perguntas com votação no Senado
+    expect(cards.get("kiko-celeguim-sp")!.quiz).toHaveLength(13); // perguntas com votação na Câmara
+    const kim = new Map(cards.get("kim-kataguiri-sp")!.quiz!.map((v) => [v.itemId, v.voto]));
+    const gravado = (await repo.getVotos("kim-kataguiri-sp")).find((v) => v.votacaoId === "camara:2196833-373")?.voto;
     expect(kim.get("pec-45-2019")).toBe(gravado); // o voto do quiz é o mesmo da votação gravada (PEC 45/2019, 2º turno)
     expect([...kim.values()].every((v) => v !== null)).toBe(true); // em exercício o período todo
   });

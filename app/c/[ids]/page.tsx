@@ -43,7 +43,7 @@ export default async function ColinhaPage({ params }: Props) {
       <h1 className="text-2xl font-bold">Sua colinha</h1>
       <p className="mt-1 text-sm text-[var(--suave)]">Em quem você votou para o Congresso em 2026, com dados oficiais.</p>
       <div className="mt-6 grid justify-items-center gap-4">
-        {cs.map((d) => <PoliticoCard key={d.id} d={d} />)}
+        {cs.map((d) => <PoliticoCard key={d.id} d={d} linkPagina />)}
       </div>
       <div className="mt-8">
         <Compartilhar titulo={`Minha colinha 2026: ${nomes(cs)}`} texto="Em quem votei para o Congresso em 2026, com os números oficiais de cada um." />
