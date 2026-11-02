@@ -15,6 +15,23 @@ Modelo:
 
 ---
 
+## 2026-11-01 · E18 (parcial)
+**Feito:** E17 publicada (push de `bd404da`, conferida em produção). `docs/VOLUME.md`: limites free
+lidos nas páginas oficiais (Supabase 500 MB e 5 GB de egress; Vercel Hobby 1 M de leituras e 200 mil
+escritas de ISR, build de 45 min; Actions ~2.000 min no privado, grátis no público) e volume
+medido nas fontes (446.195 votos da Câmara 2023–26 pelos placares; cota ~233 mil lançamentos/ano
+na Câmara e 23.850 no Senado; 42.695 proposições da Câmara em 2025, 8.112 que podem virar lei).
+Estimativa: ~150 MB de JSON, 220–300 MB no Postgres. `scripts/rede.ts` (sem dependências, 15
+fontes): 15 de 15 daqui. `.github/workflows/rede.yml` pronto, manual.
+**Decidido:** fator de 1,5–2× do JSON para o Postgres (sem Postgres local; a E19 mede). A Câmara
+tem arquivos anuais em lote (votos, autores, proposições), que o cron deve usar no lugar da API
+na carga inicial. Requisito novo para a E20: números pré-calculados pelo cron, porque ler todas
+as votações por página estouraria o egress (~18 GB/mês).
+**Lacunas:** cota nota a nota não cabe no free (~1 milhão de linhas). Equipe de gabinete: fonte
+aberta ainda não localizada (E28).
+**Próximo passo:** push e rodar `gh workflow run rede.yml`; com o resultado, fechar a E18. Antes
+da E19, o usuário decide as 5 questões do fim de `docs/VOLUME.md`.
+
 ## 2026-11-01 · E17
 **Feito:** saíram o quiz (página, componentes, `lib/quiz.ts`, `concordancia()`, `data/quiz.json`,
 coluna `votacoes.quiz`, script e JSONs da sonda), o botão Cobrar e "seu voto contou para"

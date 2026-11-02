@@ -34,3 +34,5 @@ Nunca preencher com dado sintético.
 | 2026-11-01 | Senado | CEAPS (cota dos senadores) continua fora | `/como-funciona#ceap` e `#fora` dizem que não está nesta versão |
 | 2026-11-01 | TSE | Top-20 da cidade cobre 67,4% dos votos para deputado no estado (57,2% na capital); senador, 100% | Aviso "Não está na lista? Busque pelo nome ou pelo número de urna"; tamanho da lista decidido depois da E16 (`docs/TESTE-USUARIOS.md`) |
 | 2026-11-01 | Câmara | Telefone do gabinete vem sem DDD | "Como cobrar" mostra o telefone como a fonte escreve; não acrescentamos DDD |
+| 2026-11-01 | Senado | CEAPS traz CPF de fornecedor pessoa física (306 de 23.850 despesas em 2025) | CPF nunca é gravado; o fornecedor pessoa física aparece só pelo nome, como a fonte publica, ou fica agregado |
+| 2026-11-01 | Câmara | Cota nota a nota do Brasil inteiro (~1 milhão de linhas em 2023–26) não cabe no Supabase free | A decidir: agregado por fornecedor e mês, com link para as notas na página oficial (`docs/VOLUME.md`) |

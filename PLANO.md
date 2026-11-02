@@ -249,12 +249,14 @@ fases, fora de escopo, card). As etapas antigas E17–E21 viraram E19–E22.
   Pavanato, João Paulo Cunha, Rui Falcão, a colinha e `/como-funciona`; `/votacoes` dá 404.)
 
 ### E18 · Volume e custo do Brasil inteiro (porteira do princípio 1)
-- [ ] Estimar linhas e MB por tabela para 513 deputados e 81 senadores, a partir da sonda de SP:
+- [x] Estimar linhas e MB por tabela para 513 deputados e 81 senadores, a partir da sonda de SP:
       votos, orientações, despesas (Câmara e CEAPS), proposições, patrimônio, contas de campanha,
-      equipe de gabinete, candidaturas.
-- [ ] Conferir nas páginas oficiais os limites atuais do Supabase free, da Vercel Hobby (build,
+      equipe de gabinete, candidaturas. (`docs/VOLUME.md`: ~150 MB de JSON, 220–300 MB no
+      Postgres, sem cota nota a nota e sem a íntegra das proposições não legislativas.)
+- [x] Conferir nas páginas oficiais os limites atuais do Supabase free, da Vercel Hobby (build,
       ISR, banda) e do GitHub Actions (repo público vs privado).
 - [ ] Testar se as APIs oficiais respondem a partir de um runner do GitHub (fora do Brasil).
+      (`scripts/rede.ts` + `.github/workflows/rede.yml`; local: 15 de 15. Falta rodar no runner.)
 - Pronto quando: tabela volume × limite, com margem, e a lista do que cabe; o que não couber vira
   decisão do usuário antes da E19.
 

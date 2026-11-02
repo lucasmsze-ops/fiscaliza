@@ -1,0 +1,18 @@
+# E18 — teste de rede das fontes oficiais a partir de um runner do GitHub (fora do Brasil).
+# Só roda quando disparado à mão (Actions → Teste de rede → Run workflow, ou `gh workflow run rede.yml`).
+name: Teste de rede
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  rede:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: Fontes oficiais respondem daqui?
+        run: node scripts/rede.ts
