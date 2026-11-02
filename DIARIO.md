@@ -22,8 +22,9 @@ servidor corta a conexão a cada ~17 s. Senado por `/processo?codigoParlamentarA
 listagens) e `/processo/{id}` só das que podem virar lei (2.918, ordem dos autores). Migração 0004
 (`proposicoes`, `proposicoes_autores`, `proposicoes_contagem`), testada no PGlite. Ensaio:
 25.588 proposições (311 viraram norma), 40.555 autorias, 19.533 contagens; duas execuções
-seguidas, a segunda com 0 novas e 0 alteradas; validação ok. ~18 MB no Postgres. Nada publicado
-ainda (falta a migração no Supabase).
+seguidas, a segunda com 0 novas e 0 alteradas; validação ok. Migração rodada pelo usuário, push e
+publicação: 85.676 linhas em ~75 s, 0 resumos alterados; 14 de 14 contagens no Supabase; banco com
+146,6 MB (29,3%).
 **Decidido:** autor = `proponente = 1` (apoio de PEC vem com 0; conferido contra a API para uma
 deputada: as 2 diferenças eram apoio); `ordem` 1 = primeiro autor. Íntegra só com algum autor no
 site. No Senado, PRS (resolução do Senado) no lugar de PRC, e vale a autoria de iniciativa, não a
@@ -31,8 +32,8 @@ listagem por autor (PL da Comissão Diretora). 2 em voo no Senado (429 com 3). S
 proposição antiga: ano corrente todo dia, anteriores por semana.
 **Lacunas:** listagem × autoria de iniciativa no Senado; downloads cortados da Câmara; só desde 2023
 e só parlamentares do site (ver `docs/LACUNAS.md`). Para a E22: 356 MB de CSV fora do cache do Actions.
-**Próximo passo:** publicar (migração 0004 no SQL Editor → `npm run cron`) e conferir as contagens;
-depois E22 — GitHub Actions.
+**Próximo passo:** E22 — GitHub Actions, começando por como a primeira execução reconstrói o estado
+(arquivos do TSE, cache de votos, CSVs de proposições).
 
 ## 2026-11-02 · E21d
 **Feito:** job `cota` (`scripts/cron/cota.ts`): despesas da Câmara de todos os 648 deputados da

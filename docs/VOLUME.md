@@ -144,7 +144,8 @@ segue válida: 2023–2024 entram na E27.
 
 ~18 MB no Postgres, abaixo dos 40–54 MB estimados: os ~180 mil vínculos da estimativa contavam
 apoiadores e todos os tipos; aqui só entram os proponentes dos tipos que podem virar lei, e o resto
-vira contagem. Com isso o banco deve ir a ~146 MB de 500 (29%).
+vira contagem. **No Supabase, depois de publicar:** 10,6 + 5,2 + 2,3 MB, as 14 tabelas com as
+contagens iguais às do estado, banco com **146,6 MB de 500 (29,3%)**.
 
 Fontes: Câmara, 8 CSVs de 2023–2026 (356 MB; o ano corrente, ~54 MB, é baixado de novo todo dia, com
 retomadas); Senado, 324 listagens + 2.918 autorias (22 MB de cache), ~5 min na primeira vez com
