@@ -264,8 +264,12 @@ fases, fora de escopo, card). As etapas antigas E17–E21 viraram E19–E22.
 ### E19 · Supabase e schema
 - [ ] Projeto free. Migrações com as tabelas atuais (sem `quiz`) e `avisos_interesse`
       (página, tipo, dia, contagem; sem nada que identifique quem tocou). RLS: anon só lê, exceto
-      incrementar a contagem por função.
-- [ ] `scripts/seed.ts`: carrega `data/*.json` nas tabelas.
+      incrementar a contagem por função. (`supabase/migrations/0001_init.sql` pronta e testada num
+      Postgres 17 local (PGlite): carga completa, permissões, `registrar_aviso`, `tamanhos()`.
+      Falta o usuário criar o projeto e rodar a migração no SQL Editor.)
+- [x] `scripts/seed.ts`: carrega `data/*.json` nas tabelas. (Upsert por chave via API REST, só
+      `fetch` (`lib/supabase.ts`), sem dependência nova; `npm run seed`; conferência em
+      `npm run supabase:conferir`.)
 - Pronto quando: `select count(*)` de cada tabela bate com o JSON.
 
 ### E20 · `SupabaseRepo`

@@ -34,7 +34,10 @@ dados hoje, o tráfego do Supabase estouraria o limite mensal.
 ## Estimativa por tabela (Passo 4: Congresso, 2023–2026)
 
 JSON medido por linha na sonda; Postgres estimado em 1,5 a 2 vezes o JSON (cabeçalho de linha e
-índices). A E19 mede o tamanho real com `pg_total_relation_size`.
+índices). **Medido na E19** (migração real carregada num Postgres 17, `pg_total_relation_size`):
+os dados de SP ocupam 14,4 MB contra 10,0 MB de JSON, **1,44×** no total; `votos` 1,41×,
+`eleitos_mun` 1,52×, `orientacoes` 1,80×, `votacoes` 1,04×. A faixa da tabela abaixo é
+conservadora.
 
 | Tabela | Linhas | JSON | Postgres |
 |---|---|---|---|

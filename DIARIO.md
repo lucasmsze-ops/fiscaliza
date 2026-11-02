@@ -15,6 +15,21 @@ Modelo:
 
 ---
 
+## 2026-11-02 · E19 (preparação)
+**Feito:** usuário tornou o repositório público. `supabase/migrations/0001_init.sql`: 11 tabelas com
+as chaves do validador, índices de leitura, RLS com leitura pública e permissões explícitas,
+`avisos_interesse` (contagem por dia, página e tipo) com `registrar_aviso()` para o público e
+`tamanhos()` só para a chave secreta. `lib/supabase.ts` (cliente REST só com `fetch`),
+`lib/esquema.ts` (ordem de carga e chaves), `scripts/seed.ts`, `scripts/supabase-conferir.ts`,
+`.env.example`, `npm run seed` e `npm run supabase:conferir`. Testado num Postgres 17 em
+WebAssembly (PGlite, numa pasta temporária, fora do projeto): migração ok, carga completa,
+público lê mas não escreve nem vê avisos, toque registrado pela função.
+**Decidido:** sem `supabase-js` nem `pg`: a API REST resolve upsert, contagem e funções. Chaves
+novas (sb_secret, sb_publishable) e antigas (JWT) aceitas. Medido: Postgres = 1,44× o JSON.
+**Lacunas:** nenhuma.
+**Próximo passo:** usuário cria o projeto (região São Paulo), roda a migração no SQL Editor e
+preenche `.env.local`; depois `npm run seed` e `npm run supabase:conferir` fecham a E19.
+
 ## 2026-11-02 · decisões de volume
 **Feito:** usuário decidiu as questões de `docs/VOLUME.md`: cota agregada, íntegra só das
 proposições que podem virar lei, dados desde 2023, repositório público. Antes de abrir o repo,
