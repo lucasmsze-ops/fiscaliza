@@ -6,6 +6,7 @@
 import { diasAfastado, governismo, participacao, type Indicador, type Periodo } from "./indicadores";
 import type { Repo } from "./repo";
 import { fraseVotoContou, nomeCurtoLista } from "./quociente";
+import type { VotoQuiz } from "./quiz";
 import { normalizar } from "./texto";
 import type { Cargo, Casa, DespesaMediaUf, Politico } from "./types";
 
@@ -30,9 +31,13 @@ export interface CeapCard {
   urlOficial: string;
 }
 
+/** Partes do e-mail do Cobrar. O navegador acrescenta a votação discordante quando há respostas do quiz. */
 export interface CobrarCard {
   email: string;
-  href: string;
+  assunto: string;
+  corpo: string;
+  /** "Deputada", "Senador"...: para citar a votação discordante. */
+  tratamento: string;
 }
 
 /** Cabeçalho do card: o que a busca e a lista da cidade mostram (variante compacta). */
@@ -71,8 +76,8 @@ export interface ListaCard {
 export interface CardDados extends CardResumo {
   numeros: NumerosCard;
   lista: ListaCard | null;
-  /** Só existe quando o usuário respondeu o quiz (E13); até lá, oculto. */
-  concordancia: Indicador | null;
+  /** Votos nas perguntas do quiz (na Casa em que tem mandato). Null sem mandato no período. A concordância é calculada no navegador, com as respostas. */
+  quiz: VotoQuiz[] | null;
   ceap: CeapCard | null;
   cobrar: CobrarCard | null;
   urlPerfil: string | null;
@@ -103,11 +108,27 @@ function tratamento(p: Politico): string {
   return fem(p) ? "Deputada" : "Deputado";
 }
 
-/** mailto com assunto e corpo neutros; a votação discordante entra na E13, quando houver quiz. */
-export function hrefCobrar(p: Politico, email: string): string {
-  const assunto = `Mensagem de eleitor(a) de ${p.uf}`;
-  const corpo = `Olá, ${tratamento(p)} ${p.nomeUrna}.\n\nSou eleitor(a) de ${p.uf} e acompanho seu mandato pelo Fiscaliza.\n\n`;
-  return `mailto:${email}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpo)}`;
+/** Assunto e corpo neutros do Cobrar. */
+export function cobrarCard(p: Politico, email: string): CobrarCard {
+  return {
+    email, tratamento: tratamento(p),
+    assunto: `Mensagem de eleitor(a) de ${p.uf}`,
+    corpo: `Olá, ${tratamento(p)} ${p.nomeUrna}.\n\nSou eleitor(a) de ${p.uf} e acompanho seu mandato pelo Fiscaliza.\n\n`,
+  };
+}
+
+export const hrefMailto = (c: { email: string; assunto: string; corpo: string }) =>
+  `mailto:${c.email}?subject=${encodeURIComponent(c.assunto)}&body=${encodeURIComponent(c.corpo)}`;
+
+/** Acrescenta ao Cobrar a votação do quiz em que o voto diferiu da resposta. Texto neutro, sem adjetivo. */
+export function cobrarComDiscordancia(c: CobrarCard, d: VotoQuiz & { resposta: "sim" | "nao" }): { email: string; assunto: string; corpo: string } {
+  const data = `${d.data.slice(8, 10)}/${d.data.slice(5, 7)}/${d.data.slice(0, 4)}`;
+  const sn = (x: "sim" | "nao") => (x === "sim" ? "Sim" : "Não");
+  return {
+    email: c.email,
+    assunto: `Sobre seu voto: ${d.titulo} (${d.materia})`,
+    corpo: `${c.corpo}Na votação de ${data} sobre "${d.titulo}" (${d.materia}), seu voto foi ${sn(d.voto as "sim" | "nao")}. Eu teria votado ${sn(d.resposta)}.\n\nGostaria de entender as razões do seu voto.\n\n`,
+  };
 }
 
 /** Último mês fechado da média da UF, ou null se nenhum estiver fechado. */
@@ -121,6 +142,7 @@ export async function montarCard(repo: Repo, id: string, hoje = new Date().toISO
 
   const casa: Casa | null = p.senadoCodigo ? "senado" : p.camaraId ? "camara" : null;
   let numeros: NumerosCard;
+  let quiz: VotoQuiz[] | null = null;
   if (casa) {
     const cargoDaCasa = casa === "senado" ? "senador" : "deputado_federal";
     const [votacoes, votos, mandatos, afastamentos, orientacoes] = await Promise.all([
@@ -129,6 +151,17 @@ export async function montarCard(repo: Repo, id: string, hoje = new Date().toISO
     const exercicio = mandatos.filter((m) => m.cargo === cargoDaCasa);
     const part = participacao(votacoes, votos, PERIODO_GOVERNO, exercicio);
     const dias = diasAfastado(afastamentos, PERIODO_GOVERNO, hoje);
+    if (part.denominador > 0) {
+      const porVotacao = new Map(votos.map((v) => [v.votacaoId, v.voto]));
+      const emExercicio = (data: string) => exercicio.some((m) => data >= m.inicio && (m.fim === null || data <= m.fim));
+      quiz = (await repo.getVotacoesQuiz()).flatMap(({ item, camara, senado }) => {
+        const v = casa === "senado" ? senado : camara;
+        if (!v) return [];
+        // Câmara não registra ausência: fora do mandato o voto é desconhecido (null), dentro é "ausente".
+        const voto = porVotacao.get(v.id) ?? (emExercicio(v.data) ? "ausente" : null);
+        return [{ itemId: item.id, titulo: item.titulo, materia: item.materia, data: v.data, voto }];
+      });
+    }
     const textoAfastado = dias > 0 ? `${fem(p) ? "afastada" : "afastado"} ${dias.toLocaleString("pt-BR")} ${dias === 1 ? "dia" : "dias"}` : null;
     numeros = part.denominador > 0
       ? { tipo: "mandato", casa, periodo: ROTULO_PERIODO, participacao: part, diasAfastado: dias, textoAfastado, governismo: governismo(votacoes, votos, orientacoes, PERIODO_GOVERNO) }
@@ -157,8 +190,8 @@ export async function montarCard(repo: Repo, id: string, hoje = new Date().toISO
   }
 
   return {
-    ...resumoCard(p), numeros, lista, concordancia: null, ceap,
-    cobrar: p.email ? { email: p.email, href: hrefCobrar(p, p.email) } : null,
+    ...resumoCard(p), numeros, lista, quiz, ceap,
+    cobrar: p.email ? cobrarCard(p, p.email) : null,
     urlPerfil: p.urlPerfil,
   };
 }

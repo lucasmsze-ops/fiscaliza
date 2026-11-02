@@ -15,6 +15,25 @@ Modelo:
 
 ---
 
+## 2026-11-01 · E13
+**Feito:** quiz ampliado de 10 para 14 perguntas (decisão do usuário, depois de medir que
+senadores tinham só 4 votos comparáveis): PEC 8/2021, PLP 233/2023, PEC 9/2023 e PLP 177/2023.
+`scripts/sonda/quiz-fontes.ts` (ementa, palavras-chave, situação e norma gerada, Câmara e Senado) →
+textos em `data/sonda/quiz-textos.json` (o que faz e o que aconteceu depois, só com as fontes) +
+parágrafo da votação gerado dos dados. `lib/quiz.ts` (respostas validadas, concordância, mínimo de
+3, votação discordante; 4 testes). Card: votos do quiz em `CardDados.quiz`, terceiro número e
+Cobrar no navegador (`components/QuizNoCard.tsx`, `useRespostas`). `/votacoes` com as 14 perguntas,
+fontes oficiais e contador. 58 testes. Conferido a 375 px: o card e o e-mail mudam com as respostas.
+**Decidido:** 14 perguntas (13 Câmara, 10 Senado); percentual só com ≥ 3 votos comparáveis e sempre
+"N de M"; ausência na Câmara só dentro do mandato; e-mail cita a primeira discordância na ordem do
+quiz. Frases do meu rascunho que não estavam nas fontes foram cortadas (ex.: "substitui o teto de
+gastos").
+**Lacunas:** ementas pouco descritivas; registros conflitantes do PL 2162/2023 (`LACUNAS.md`).
+Bugs achados no teste: respostas rápidas se sobrescreviam (corrigido com atualização funcional);
+dois testes meus partiam de suposição em vez do dado (corrigidos para comparar com o dado gravado).
+**Próximo passo:** E14 — `/p/[slug]` (card, histórico 2023–26, CEAP, contatos, cobrar) e
+`/como-funciona` renderizando `docs/METODOLOGIA.md`.
+
 ## 2026-11-01 · E12
 **Feito:** `/c/[ids]` completa: frase "seu voto contou para" nos deputados (`CardDados.lista`,
 nome oficial no "?"), botão Compartilhar (menu nativo; sem ele, copia o link), `generateMetadata`

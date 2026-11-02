@@ -32,9 +32,17 @@ Texto-fonte da página `/como-funciona` (E14). Toda mudança em `lib/indicadores
 ## Concordância com você
 - % das perguntas do quiz respondidas em que o voto Sim/Não do político coincide com a resposta.
   Cada pergunta aponta para a votação de mérito na Câmara e, quando é a mesma matéria e o mesmo
-  texto, no Senado (`docs/QUIZ.md`).
-- Sem resposta do usuário: oculto. Político sem voto Sim/Não nas perguntas: oculto; eleito que
-  ainda não tomou posse: "primeiro voto em fevereiro".
+  texto, no Senado (`docs/QUIZ.md`). São 14 perguntas: 13 valem para deputados e 10 para senadores.
+- Só entram perguntas em que o político votou Sim ou Não. Abstenção, ausência e voto secreto
+  ficam fora. Na Câmara, quem não aparece numa votação dentro do mandato conta como ausente;
+  fora do mandato, a pergunta não se aplica.
+- **O card sempre mostra a base** ("54,5% · 6 de 11 votações do quiz") e **só mostra o
+  percentual com pelo menos 3 votações comparáveis**; abaixo disso, "poucos votos para
+  comparar" (decisão de 2026-11-01).
+- Sem resposta do usuário: oculto. Eleito que ainda não tomou posse: "primeiro voto em fevereiro".
+- As respostas ficam só no navegador (localStorage). Nada é enviado ao servidor.
+- **Cobrar**: com respostas, o e-mail cita a primeira votação do quiz (na ordem do quiz) em que o
+  voto Sim/Não do político diferiu da resposta, com data, matéria, o voto dele e o da pessoa.
 
 ## "Seu voto contou para"
 - No sistema proporcional o voto vai para a lista (partido isolado ou federação, que conta como

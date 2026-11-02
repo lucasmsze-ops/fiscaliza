@@ -48,7 +48,11 @@ export default async function ColinhaPage({ params }: Props) {
       <div className="mt-8">
         <Compartilhar titulo={`Minha colinha 2026: ${nomes(cs)}`} texto="Em quem votei para o Congresso em 2026, com os números oficiais de cada um." />
       </div>
-      <p className="mt-6 text-sm"><Link href="/" className="underline underline-offset-2">Alterar a colinha</Link></p>
+      <p className="mt-6 text-sm">
+        <Link href="/votacoes" className="underline underline-offset-2">Responder o quiz e ver a concordância</Link>
+        {" · "}
+        <Link href="/" className="underline underline-offset-2">Alterar a colinha</Link>
+      </p>
     </main>
   );
 }

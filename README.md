@@ -50,7 +50,8 @@ npx tsx scripts/sonda/eleitos-mun.ts      # top-20 por município; --todos confe
 npx tsx scripts/sonda/bancada.ts          # perfis + histórico dos 70 deputados de SP e join com 2026 (incremental)
 npx tsx scripts/sonda/votos.ts            # votos de toda a bancada a partir do cache da E4
 npx tsx scripts/sonda/despesas.ts         # CEAP dos 70
-npx tsx scripts/sonda/consolidar.ts       # data/*.json (12 tabelas, snake_case = Supabase)
+npx tsx scripts/sonda/quiz-fontes.ts      # ementa, palavras-chave e situação oficiais das matérias do quiz
+npx tsx scripts/sonda/consolidar.ts       # data/*.json (12 tabelas, snake_case = Supabase); textos do quiz em data/sonda/quiz-textos.json
 npx tsx scripts/sonda/validar.ts          # referências, obrigatórios, chaves; sai com 1 se algo falhar
 npx tsx scripts/sonda/_numeros.ts         # participação e governismo da amostra a partir de data/
 ```

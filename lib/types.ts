@@ -199,10 +199,16 @@ export interface Orientacao {
 export interface QuizItem {
   id: string;
   ordem: number;
-  /** Matéria como a Câmara identifica (o Senado pode renumerar). */
+  /** Matéria como a Câmara identifica (o Senado pode renumerar); só Senado quando a Câmara não votou. */
   materia: string;
-  /** Ementa oficial. A pergunta e a explicação em linguagem simples são da E13. */
+  /** Nome curto e neutro, tirado da ementa. */
+  titulo: string;
+  /** Ementa oficial. */
   ementa: string;
+  /** Três parágrafos: o que faz (ementa e palavras-chave oficiais), o que foi votado (dados), o que aconteceu depois (situação oficial). */
+  explicacao: string[];
+  /** Páginas oficiais da matéria e inteiro teor. */
+  fontes: { rotulo: string; url: string }[];
   votacaoCamaraId: string | null;
   votacaoSenadoId: string | null;
 }

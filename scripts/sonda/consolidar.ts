@@ -163,19 +163,23 @@ console.log(`CEAP: coleta anterior ${anterior.geradoEm} · mês de referência (
 
 // ------------------------------------------------------------------ quiz (critério em docs/QUIZ.md)
 /** [matéria na Câmara, votação de mérito na Câmara, votação de mérito no Senado ou null]. Ordem cronológica. */
-const QUIZ: [string, string, string | null][] = [
+const QUIZ: [string, string | null, string | null][] = [
   ["PLP 93/2023", "2357053-47", "6714"],
   ["PL 490/2007", "345311-270", "6756"],
   ["PEC 45/2019", "2196833-373", "6777"],
+  ["PEC 8/2021", null, "6782"], // só o Senado votou
+  ["PLP 233/2023", "2400758-62", "6827"],
   ["PL 709/2023", "2349493-82", null],
+  ["PEC 9/2023", "2352476-168", "6874"],
   ["PL 1958/2021", "2439779-55", null],
   ["PL 4614/2024", "2473375-59", "6917"],
+  ["PLP 177/2023", "2383019-54", "6951"],
   ["PL 2159/2021", "257161-483", "6935"],
   ["PEC 3/2021", "2270800-175", null],
   ["PL 5582/2025", "2579832-62", null], // Senado votou outro substitutivo (64×0, Governo Sim): não é a mesma pergunta
   ["PL 2162/2023", "2358548-89", "7041"],
 ];
-const noQuiz = new Set(QUIZ.flatMap(([, c, s]) => [`camara:${c}`, ...(s ? [`senado:${s}`] : [])]));
+const noQuiz = new Set(QUIZ.flatMap(([, c, s]) => [...(c ? [`camara:${c}`] : []), ...(s ? [`senado:${s}`] : [])]));
 
 // ------------------------------------------------------------------ votações, votos, orientações
 const resultadoCamara = (v: VotacaoSondaCompleta): Votacao["resultado"] =>
@@ -194,11 +198,68 @@ const votacoes: Votacao[] = [
   })),
 ].sort((a, b) => a.data.localeCompare(b.data) || a.id.localeCompare(b.id));
 const idsVotacao = new Set(votacoes.map((v) => v.id));
+// Textos do quiz: oQueFaz e depois escritos à mão a partir de data/sonda/quiz-fontes.json
+// (ementa, palavras-chave e situação oficiais); o parágrafo da votação sai dos dados.
+interface TextoQuiz { materia: string; titulo: string; oQueFaz: string; depois: string }
+interface FonteQuiz { materia: string; camara: { pagina: string; inteiroTeor: string | null } | null; senado: { identificacao: string; pagina: string } | null }
+const textos = new Map(ler<TextoQuiz[]>("quiz-textos.json").map((t) => [t.materia, t]));
+const fontesQuiz = new Map(ler<FonteQuiz[]>("quiz-fontes.json").map((f) => [f.materia, f]));
+const orientacaoGoverno = new Map([...oCam, ...oSen].filter((o) => o.bancada === "Governo").map((o) => [o.votacaoId, o.orientacao]));
+const dataBr = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
+const inteiroBr = (n: number) => n.toLocaleString("pt-BR");
+
+/** O que exatamente foi a voto, pela descrição oficial da votação. */
+function objetoVotado(descricao: string): string {
+  if (/Redação Final/i.test(descricao)) return "a redação final";
+  if (/segundo turno|2º turno/i.test(descricao)) return "o texto em segundo turno";
+  if (/primeiro turno|1º turno/i.test(descricao)) return "o texto em primeiro turno";
+  if (/Aglutinativa/i.test(descricao)) return "o texto de uma emenda aglutinativa de plenário";
+  if (/Substitutiv/i.test(descricao)) return "o texto do relator";
+  return "o texto";
+}
+
+function paragrafoVotacao(vc: Votacao | null, vs: Votacao | null): string {
+  const frase = (v: Votacao, casa: string) => {
+    const verbo = v.resultado === "rejeitada" ? "rejeitou" : "aprovou";
+    return `${casa}, em ${dataBr(v.data)}, o plenário ${verbo} ${objetoVotado(v.descricao)} por ${inteiroBr(v.placar!.sim)} votos a ${inteiroBr(v.placar!.nao)}.`;
+  };
+  const gov = (v: Votacao) => {
+    const o = orientacaoGoverno.get(v.idExterno) ?? "";
+    return o === "Sim" || o === "Não" || o === "Obstrução" ? `orientou ${o}` : o === "Liberado" ? "liberou a bancada" : "não orientou";
+  };
+  // Em ordem cronológica (o Senado pode ter votado antes da Câmara).
+  const casas: [Votacao, string, string][] = [];
+  if (vc) casas.push([vc, "Na Câmara", "na Câmara"]);
+  if (vs) casas.push([vs, "No Senado", "no Senado"]);
+  casas.sort((a, b) => a[0].data.localeCompare(b[0].data));
+  const partes = casas.map(([v, Casa]) => frase(v, Casa));
+  const gs = casas.map(([v, , casa]) => [casa, gov(v)] as const);
+  const orient = gs.length === 2 && gs[0]![1] === gs[1]![1]
+    ? (gs[0]![1] === "não orientou" ? "O líder do Governo não orientou em nenhuma das duas Casas." : `O líder do Governo ${gs[0]![1]} nas duas Casas.`)
+    : `O líder do Governo ${gs.map(([c, g]) => `${g} ${c}`).join(" e ")}.`;
+  return `${partes.join(" ")} ${orient}`;
+}
+
 const quiz: QuizItem[] = QUIZ.map(([materia, c, s], i) => {
-  const vc = votacoes.find((v) => v.id === `camara:${c}`);
-  if (!vc || !vc.ementa) throw new Error(`quiz: votação ${c} ausente ou sem ementa`);
-  if (s && !idsVotacao.has(`senado:${s}`)) throw new Error(`quiz: votação do Senado ${s} ausente`);
-  return { id: slugDe(materia), ordem: i + 1, materia, ementa: vc.ementa, votacaoCamaraId: vc.id, votacaoSenadoId: s ? `senado:${s}` : null };
+  const vc = c ? votacoes.find((v) => v.id === `camara:${c}`) ?? null : null;
+  const vs = s ? votacoes.find((v) => v.id === `senado:${s}`) ?? null : null;
+  if (c && !vc) throw new Error(`quiz: votação da Câmara ${c} ausente`);
+  if (s && !vs) throw new Error(`quiz: votação do Senado ${s} ausente`);
+  if ([vc, vs].some((v) => v && (v.secreta || !v.placar))) throw new Error(`quiz: ${materia} com votação secreta ou sem placar`);
+  const t = textos.get(materia), f = fontesQuiz.get(materia);
+  if (!t || !f) throw new Error(`quiz: ${materia} sem texto (quiz-textos.json) ou fontes (quiz-fontes.json)`);
+  const ementa = (vc ?? vs)!.ementa;
+  if (!ementa) throw new Error(`quiz: ${materia} sem ementa`);
+  const fontes = [
+    ...(f.camara ? [{ rotulo: `${materia} na Câmara`, url: f.camara.pagina }] : []),
+    ...(f.senado ? [{ rotulo: `${f.senado.identificacao} no Senado`, url: f.senado.pagina }] : []),
+    ...(f.camara?.inteiroTeor ? [{ rotulo: "Texto apresentado (inteiro teor)", url: f.camara.inteiroTeor }] : []),
+  ];
+  return {
+    id: slugDe(materia), ordem: i + 1, materia, titulo: t.titulo, ementa,
+    explicacao: [t.oQueFaz, paragrafoVotacao(vc, vs), t.depois], fontes,
+    votacaoCamaraId: vc?.id ?? null, votacaoSenadoId: vs?.id ?? null,
+  };
 });
 
 const DETALHE_OMITIDO = new Set(["Sim", "Não", "Abstenção", "Votou"]);

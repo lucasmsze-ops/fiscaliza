@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E13** (atualizar esta linha ao avançar)
+**Etapa atual: E14** (atualizar esta linha ao avançar)
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -172,11 +172,15 @@ Calendário externo que afeta o plano:
       (Confirmado pelo usuário no WhatsApp em 2026-11-01: imagem, título e números aparecem.)
 
 ### E13 · `/votacoes` e quiz de concordância
-- [ ] Cada votação do quiz explicada em 3 parágrafos, com link oficial.
-- [ ] Resposta do usuário no `localStorage`; `concordancia()` em `lib/indicadores.ts` com teste.
-- [ ] Terceiro número aparece no card depois do quiz.
-- [ ] Cobrar passa a incluir a votação discordante.
-- Pronto quando: responder o quiz muda o card e o e-mail de cobrança.
+- [x] Cada votação do quiz explicada em 3 parágrafos, com link oficial. (14 perguntas, ampliadas
+      de 10 por decisão do usuário; textos só com ementa, palavras-chave e situação oficiais.)
+- [x] Resposta do usuário no `localStorage`; `concordancia()` em `lib/indicadores.ts` com teste.
+      (`lib/quiz.ts`: mínimo de 3 votos comparáveis, sempre "N de M".)
+- [x] Terceiro número aparece no card depois do quiz.
+- [x] Cobrar passa a incluir a votação discordante.
+- Pronto quando: responder o quiz muda o card e o e-mail de cobrança. (Conferido a 375 px: Kim
+      Kataguiri 54,5% (6 de 11) e e-mail citando o PLP 93/2023; Mara Gabrilli 28,6% (2 de 7);
+      Derrite "poucos votos para comparar".)
 
 ### E14 · `/p/[slug]` — página do político
 - [ ] ISR `revalidate` 24 h. Card, histórico de votos 2023–26, CEAP mensal, contatos, cobrar.

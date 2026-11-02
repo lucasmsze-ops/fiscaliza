@@ -1,4 +1,5 @@
 import { inteiro, pct, reais, type CardDados, type CardResumo } from "@/lib/card";
+import { BotaoCobrar, ConcordanciaNoCard } from "./QuizNoCard";
 import { Termo } from "./Termo";
 
 const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
@@ -56,7 +57,7 @@ export function PoliticoCard({ d }: { d: CardDados }) {
       <section className="mt-4 border-t border-black/10 pt-4 dark:border-white/15" aria-label="Números do mandato">
         {n.tipo === "mandato" && (
           <>
-            <dl className={`grid gap-3 ${d.concordancia ? "grid-cols-3" : "grid-cols-2"}`}>
+            <dl className="grid grid-cols-2 gap-3">
               <div>
                 <dt className="text-xs text-[var(--suave)]"><Termo id={`${d.id}-part`} termo="participacao">participação em votações</Termo></dt>
                 <dd className="mt-1 text-2xl font-semibold tabular-nums">{pct(n.participacao)}</dd>
@@ -76,16 +77,12 @@ export function PoliticoCard({ d }: { d: CardDados }) {
                   </>
                 )}
               </div>
-              {d.concordancia && d.concordancia.percentual !== null && (
-                <div>
-                  <dt className="text-xs text-[var(--suave)]"><Termo id={`${d.id}-conc`} termo="concordancia">com você</Termo></dt>
-                  <dd className="mt-1 text-2xl font-semibold tabular-nums">{pct(d.concordancia)}</dd>
-                </div>
-              )}
+
             </dl>
             <p className="mt-3 text-xs text-[var(--suave)]">
               Votações nominais do plenário {n.casa === "senado" ? "do Senado" : "da Câmara"}, {n.periodo}.
             </p>
+            {d.quiz && <ConcordanciaNoCard id={d.id} votos={d.quiz} />}
           </>
         )}
         {n.tipo === "primeiro_voto" && <p className="text-sm">Primeiro voto em fevereiro de 2027.</p>}
@@ -109,7 +106,7 @@ export function PoliticoCard({ d }: { d: CardDados }) {
       {(d.cobrar || d.urlPerfil) && (
         <footer className="mt-4 flex items-center justify-between gap-3 border-t border-black/10 pt-4 dark:border-white/15">
           {d.cobrar ? (
-            <a href={d.cobrar.href} className="rounded-full bg-[var(--texto)] px-5 py-2 text-sm font-semibold text-[var(--fundo)]">Cobrar</a>
+            <BotaoCobrar cobrar={d.cobrar} votos={d.quiz} />
           ) : <span />}
           {d.urlPerfil && <a href={d.urlPerfil} {...externo} className="text-xs underline underline-offset-2">perfil oficial</a>}
         </footer>

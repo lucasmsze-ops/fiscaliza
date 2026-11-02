@@ -56,7 +56,7 @@ Apoio (não são páginas): `/dados/politicos` e `/dados/cidade/[ibge]` são JSO
 Foto · nome de urna · partido-UF · status (eleito / reeleito / não eleito / suplente / em exercício) · três números:
 1. **Participação em votações** — % de votações nominais do plenário em que registrou voto (Sim/Não/Abstenção/Obstrução). Rótulo: "participação em votações", nunca "presença".
 2. **Governismo** — % de votos alinhados à orientação "Governo". Calculado por período de governo (corte em 01/01/2027), não por legislatura.
-3. **Concordância com você** — % das votações do quiz em que o voto do político coincide com a resposta do usuário. Sem resposta do usuário: oculto. Político sem voto: "primeiro voto em fevereiro".
+3. **Concordância com você** — % das votações do quiz em que o voto do político coincide com a resposta do usuário. Sem resposta do usuário: oculto. Político sem voto: "primeiro voto em fevereiro". Sempre com a base ("6 de 11"); percentual só com ≥ 3 votações comparáveis. Calculada no navegador (respostas no localStorage, `lib/quiz.ts`).
 
 Metodologia detalhada (o que conta como voto, licença, secretas, mês da CEAP, nome da federação): `docs/METODOLOGIA.md`, texto-fonte de `/como-funciona`. Ao lado da participação, "afastado N dias no período" (licença não é descontada).
 
@@ -129,7 +129,8 @@ votacoes          id (= casa:id_externo), id_externo, casa, data, proposicao, em
 votos             votacao_id, politico_id, voto enum(sim,nao,abstencao,obstrucao,art17,
                   nao_informado,secreto,ausente), detalhe (sigla do Senado)
 orientacoes       votacao_id, bancada, orientacao
-quiz              id, ordem, materia, ementa, votacao_camara_id, votacao_senado_id
+quiz              id, ordem, materia, titulo, ementa, explicacao jsonb (3 parágrafos),
+                  fontes jsonb, votacao_camara_id, votacao_senado_id
 ```
 Tudo com `upsert` por chave externa. Nenhuma coluna de CPF ou hash de CPF. Tamanho na sonda (SP, 438 políticos, 2023–26): 9,6 MB de JSON; esperado < 50 MB por legislatura.
 

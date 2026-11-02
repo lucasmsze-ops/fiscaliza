@@ -1,8 +1,10 @@
 # Quiz de concordância — seleção das votações
 
-Proposta da E8, **aprovada em 2026-11-01**. A seleção é editorial e pode ser revista sem mexer
-em código além da lista `QUIZ` em `scripts/sonda/consolidar.ts`. São 10 perguntas: 6 com votação
-de mérito nas duas Casas e 4 só na Câmara. Dados em
+Proposta da E8, **aprovada em 2026-11-01** com 10 perguntas e **ampliada para 14 na E13** (decisão
+do usuário): com 10, os senadores em exercício tinham só 4 votos comparáveis. Agora são 14: 9 com
+votação de mérito nas duas Casas, 4 só na Câmara e 1 só no Senado. 13 valem para deputados e 10
+para senadores. A seleção é editorial e pode ser revista sem mexer em código além da lista `QUIZ`
+em `scripts/sonda/consolidar.ts`. Dados em
 `data/quiz.json` e `data/votacoes.json` (`quiz: true`).
 
 ## Para que serve
@@ -26,13 +28,15 @@ que a mesma resposta sirva para deputados e senadores.
    Senado pode renumerar). Quando os textos votados nas duas Casas forem diferentes a ponto de
    não serem a mesma pergunta, fica só a Câmara.
 6. **Equilíbrio de orientação**: não montar um quiz em que concordar com o Governo seja sempre
-   Sim (ou sempre Não). Na proposta, o Governo orientou Sim em 4, Não em 5 e não orientou em 1.
+   Sim (ou sempre Não). Com as 14, o Governo orientou Sim em 5, Não em 5 e não orientou em 4.
+   As votações divididas do Senado quase sempre tiveram orientação Sim; por isso as quatro
+   acrescentadas na E13 priorizam matérias sem orientação do Governo.
 
 Fontes do cruzamento: as 1.107 votações nominais da Câmara e as 186 abertas do Senado da sonda;
 a lista de candidatas veio de 323 votações de mérito (218 Câmara, 105 Senado), das quais 97 com
 divisão ≥ 20% e orientação Sim/Não do Governo.
 
-## Seleção (10 perguntas, ordem cronológica)
+## Seleção original (10 perguntas, E8)
 
 | # | Matéria | Do que trata (da ementa oficial) | Câmara: data · Sim×Não · Governo | Senado: data · Sim×Não · Governo |
 |---|---|---|---|---|
@@ -46,6 +50,29 @@ divisão ≥ 20% e orientação Sim/Não do Governo.
 | 8 | PEC 3/2021 | Prerrogativas parlamentares (arts. 14, 27, 53, 102 e 105 da Constituição) | 17/09/2025 · 314×168 · sem orientação | — (não chegou ao plenário do Senado) |
 | 9 | PL 5582/2025 | Combate às organizações criminosas | 18/11/2025 · 370×110 · Não | — (ver nota) |
 | 10 | PL 2162/2023 | Ementa original: anistia aos participantes das manifestações de 8 de janeiro de 2023. Texto aprovado (substitutivo; ementa no Senado): altera a Lei de Execução Penal e o Código Penal | 09/12/2025 · 291×148 · Não | 17/12/2025 · 48×25 · Não |
+
+## Acrescentadas na E13 (4 perguntas)
+
+| Matéria | Do que trata (da ementa oficial) | Câmara: data · Sim×Não · Governo | Senado: data · Sim×Não · Governo |
+|---|---|---|---|
+| PEC 8/2021 | Pedidos de vista e decisões individuais (medidas cautelares) nos tribunais | — (não votada na Câmara no período) | 22/11/2023 · 52×18 · sem orientação (2º turno) |
+| PLP 233/2023 | Seguro obrigatório para vítimas de trânsito (SPVAT) | 09/04/2024 · 304×136 · Sim | 08/05/2024 · 41×28 · Sim |
+| PEC 9/2023 | Recursos de partidos para candidaturas de pessoas pretas e pardas; débitos dos partidos | 11/07/2024 · 338×83 · sem orientação (2º turno) | 14/08/2024 · 54×16 · sem orientação (2º turno) |
+| PLP 177/2023 | Número de deputados federais por estado | 06/05/2025 · 270×207 · sem orientação | 25/06/2025 · 41×33 · sem orientação |
+
+Votos comparáveis (Sim/Não) depois da ampliação, entre os da amostra: senadores em exercício de 4
+para 7; a maioria dos deputados em exercício, 9 a 13 de 13. Licenciados (ex.: Derrite) continuam
+com poucos votos e o card mostra "poucos votos para comparar".
+
+## Textos de cada pergunta
+Cada pergunta tem título neutro e três parágrafos (`data/quiz.json`):
+1. **O que faz**: escrito a partir da ementa do texto aprovado e das palavras-chave oficiais
+   (`data/sonda/quiz-fontes.json`, gerado por `scripts/sonda/quiz-fontes.ts`); nada que não esteja
+   nas fontes. Texto em `data/sonda/quiz-textos.json`.
+2. **O que foi votado**: gerado dos dados (data, o que foi a voto, placar, orientação do Governo),
+   em ordem cronológica.
+3. **O que aconteceu depois**: a situação oficial (lei gerada, veto, tramitação).
+A pergunta é a mesma para todas: "Se você estivesse no plenário, votaria Sim ou Não a este texto?"
 
 Votações exatas (ids) em `data/quiz.json`. "Do que trata" é um resumo da ementa oficial para esta
 tabela; a pergunta ao eleitor e a explicação em três parágrafos são da E13, a partir do texto e

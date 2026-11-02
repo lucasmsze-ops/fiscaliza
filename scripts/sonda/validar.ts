@@ -33,7 +33,7 @@ const ESQUEMA: Record<string, { pk: string[]; obrig: string[]; opc: string[] }> 
   votacoes: { pk: ["id"], obrig: ["id", "id_externo", "casa", "data", "descricao", "secreta", "url_oficial", "quiz"], opc: ["proposicao", "ementa", "objeto", "resultado", "placar"] },
   votos: { pk: ["votacao_id", "politico_id"], obrig: ["votacao_id", "politico_id", "voto"], opc: ["detalhe"] },
   orientacoes: { pk: ["votacao_id", "bancada"], obrig: ["votacao_id", "bancada"], opc: ["orientacao"] },
-  quiz: { pk: ["id"], obrig: ["id", "ordem", "materia", "ementa"], opc: ["votacao_camara_id", "votacao_senado_id"] },
+  quiz: { pk: ["id"], obrig: ["id", "ordem", "materia", "titulo", "ementa", "explicacao", "fontes"], opc: ["votacao_camara_id", "votacao_senado_id"] },
 };
 const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   politicos: { genero: ["feminino", "masculino", null], cargo: ["deputado_federal", "senador"], status: ["eleito", "reeleito", "nao_eleito", "suplente", "em_exercicio"] },
@@ -98,7 +98,12 @@ for (const q of dados.quiz!) for (const k of ["votacao_camara_id", "votacao_sena
   if (v && !id.startsWith(k === "votacao_camara_id" ? "camara:" : "senado:")) erro(`quiz ${q.id}: ${k} aponta para a outra Casa`);
 }
 for (const v of vs) if (v.quiz && !noQuiz.has(v.id)) erro(`votacoes ${v.id}: quiz=true sem item no quiz`);
-for (const q of dados.quiz!) if (!q.votacao_camara_id && !q.votacao_senado_id) erro(`quiz ${q.id}: sem votação`);
+for (const q of dados.quiz!) {
+  if (!q.votacao_camara_id && !q.votacao_senado_id) erro(`quiz ${q.id}: sem votação`);
+  const ex = q.explicacao as string[];
+  if (!Array.isArray(ex) || ex.length !== 3 || ex.some((p) => !p || p.length < 40)) erro(`quiz ${q.id}: explicação precisa de 3 parágrafos`);
+  if (/undefined|NaN|\bnull\b/.test(JSON.stringify([q.titulo, q.ementa, q.explicacao, q.fontes]))) erro(`quiz ${q.id}: texto com undefined/NaN/null`);
+}
 const ps = dados.politicos as unknown as Linha<Politico>[];
 for (const p of ps) {
   if (p.id !== p.slug) erro(`politicos ${p.id}: id ≠ slug`);
