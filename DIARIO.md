@@ -23,9 +23,9 @@ Registrado em `docs/TESTE-USUARIOS.md` como resumo (sem ficha por pessoa).
 **Decidido:** E16 continua aberta: o critério pede 5 pessoas, e o caminho da busca (cerca de 1 em 3
 eleitores) não foi exercitado por ninguém. Nada a ajustar desta rodada.
 **Lacunas:** sem tempos individuais, cidades ou idades; não se sabe se alguém era da capital.
-**Próximo passo:** o usuário decide entre completar as 5 (com alguém da capital e alguém cujo
-deputado não esteja no top-20 da cidade) ou dar a E16 por encerrada com esta rodada e seguir para a
-E17 (Supabase).
+**Próximo passo:** completar as 5 pessoas (decisão do usuário), com alguém da capital e alguém cujo
+deputado não esteja no top-20 da cidade, para exercitar a busca. Usar a ficha de
+`docs/TESTE-USUARIOS.md` e registrar como "Rodada 2". Só então fechar a E16.
 
 ## 2026-11-01 · E16 (preparação)
 **Feito:** E15 publicada (push de `d5f5ca5`; `/como-funciona` conferida em produção). Para a E16:
