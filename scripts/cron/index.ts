@@ -21,7 +21,8 @@ const seg = () => `${((Date.now() - t0) / 1000).toFixed(0)}s`;
 const hoje = new Date().toISOString().slice(0, 10);
 if (iniciarEstado()) console.log(`[${seg()}] estado novo em ${DADOS}, a partir de data/*.json (o que o seed carregou)`);
 
-type Job = { nome: string; rodar: () => Promise<{ tabelas: Record<string, LinhaBruta[]>; relatorio: string[]; falhas: number }> };
+/** `atualizadas`: fontes coletadas com sucesso nesta execução (tabela `atualizacoes`); sem o campo, as duas Casas do job, se não houve falha. */
+type Job = { nome: string; rodar: () => Promise<{ tabelas: Record<string, LinhaBruta[]>; relatorio: string[]; falhas: number; atualizadas?: string[] }> };
 const jobs: Job[] = [
   // Ordem: políticos antes das votações (os votos de quem acabou de entrar vêm do histórico).
   { nome: "parlamentares", rodar: () => jobParlamentares(hoje) },
@@ -32,9 +33,11 @@ const jobs: Job[] = [
 ];
 
 let falhou = false;
+const atualizadas: string[] = [];
 for (const job of jobs) {
   try {
     const r = await job.rodar();
+    atualizadas.push(...(r.atualizadas ?? (r.falhas ? [] : [`camara_${job.nome}`, `senado_${job.nome}`])));
     for (const linha of r.relatorio) console.log(`[${seg()}] ${job.nome}: ${linha}`);
     // Ordem das tabelas no objeto = ordem das chaves estrangeiras (votações antes de votos).
     for (const [tabela, novas] of Object.entries(r.tabelas)) {
@@ -48,6 +51,13 @@ for (const job of jobs) {
     console.error(`[${seg()}] ${job.nome} FALHOU: ${(e as Error).stack ?? e}`);
   }
 }
+
+// Data da última coleta bem-sucedida de cada fonte (base da página /atualizacoes). Também é a escrita
+// diária que mantém o Supabase free acordado.
+const coletadoEm = new Date().toISOString();
+const m = mesclar("atualizacoes", lerTabela("atualizacoes"), atualizadas.map((fonte) => ({ fonte, coletado_em: coletadoEm })));
+gravarTabela("atualizacoes", m.linhas);
+console.log(`[${seg()}] atualizacoes: ${atualizadas.join(", ") || "nenhuma fonte coletada"}`);
 
 const v = spawnSync("npx", ["tsx", "scripts/sonda/validar.ts"], { env: { ...process.env, DATA_DIR: DADOS }, encoding: "utf8" });
 console.log(`[${seg()}] validação: ${(v.stdout + v.stderr).trim().split("\n").at(-1)}`);

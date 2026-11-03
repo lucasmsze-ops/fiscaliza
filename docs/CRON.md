@@ -2,7 +2,32 @@
 
 Como os dados oficiais chegam ao Supabase todo dia, sem custo e sem regravar o que não mudou.
 Código em `scripts/cron/`; rodar com `npm run cron` (lê `SUPABASE_URL` e `SUPABASE_SECRET_KEY`
-de `.env.local`). No GitHub Actions a partir da E22.
+de `.env.local`). Desde a E22, roda todo dia no GitHub Actions (`.github/workflows/cron.yml`,
+06:17 de Brasília, ou à mão em Actions → Cron → Run workflow); na máquina local, só
+`npm run cron -- --sem-publicar` (ver Cuidados).
+
+## No GitHub Actions (E22)
+
+- **Estado:** `estado/` vai para o cache do Actions ao fim de toda execução (chave `estado-{run_id}`)
+  e a seguinte restaura a mais recente. Comprimido, ~30 MB. Cache não usado por 7 dias é apagado
+  pelo GitHub: com execução diária, não acontece.
+- **Sem cache** (primeira execução, ou se o cache se perder): o estado vem do asset `estado.tar.gz`
+  da release `estado-inicial`, empacotado na máquina local (`tar --exclude='*.parcial'
+  --exclude='*.csv' -czf estado.tar.gz estado`). Se nem isso houver, o workflow para antes do cron:
+  recomeçar de `data/*.json` reenviaria o Brasil inteiro. Para refazer a release: empacotar o
+  estado local atualizado e substituir o asset (`gh release upload estado-inicial estado.tar.gz
+  --clobber`); o diff contra o publicado garante que nada igual é reenviado.
+- **CPF:** o join do job `parlamentares` lê os CSVs `consulta_cand` 2026, 2022 e 2018 do TSE, que
+  têm CPF. O workflow os baixa a cada execução (3 zips, ~12 MB) para a pasta temporária do runner
+  (`FISCALIZA_TSE`) e os apaga no fim; nunca vão para o cache nem para a release. O repositório é
+  público: um PR de fork pode ler caches do branch principal. Pelo mesmo motivo, os CSVs anuais de
+  proposições da Câmara (um deles com CPF num texto oficial) são apagados logo depois de virar
+  extrato.
+- **Segredos:** `SUPABASE_URL` e `SUPABASE_SECRET_KEY` em Settings → Secrets and variables →
+  Actions. O workflow só roda por agendamento ou à mão, nunca em pull request.
+- **`atualizacoes`:** a cada execução, cada fonte coletada com sucesso (`camara_votacoes`,
+  `senado_cota`...) ganha a data e hora da coleta. É a base da página `/atualizacoes` e a escrita
+  diária que mantém o Supabase free acordado.
 
 ## Ordem de uma execução
 
@@ -61,8 +86,8 @@ muda, então nunca é baixada de novo. Resposta vazia não é guardada (os votos
   antes da publicação e as páginas geradas no build ficaram sem a cota até o deploy seguinte (o
   ISR as renovaria em até 24 h). A colinha e as páginas geradas na primeira visita já saem certas.
 
-- Rodar o cron localmente e no Actions ao mesmo tempo deixa os dois "publicados" diferentes do banco.
-  Os dois partem das mesmas fontes, então convergem, mas um pode reenviar linhas iguais. Rodar
-  local só para testar.
+- **Desde a E22, não publicar da máquina local.** O publicado local deixa de acompanhar o banco
+  assim que o Actions publica; um `npm run cron` local reenviaria linhas (iguais ou não) e, pior,
+  avançaria o publicado local sem o do Actions. Na máquina local, só `--sem-publicar`.
 - Quando a tabela `politicos` crescer (E21c), os votos dos novos políticos nas votações antigas vêm
   dos arquivos anuais da Câmara e do `/votacao` do Senado, não da janela do job diário.

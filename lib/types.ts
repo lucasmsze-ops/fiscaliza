@@ -245,6 +245,14 @@ export interface ProposicaoContagem {
   autorias: number;
 }
 
+/** Tabela `atualizacoes`: quando cada fonte foi coletada com sucesso pela última vez (base de /atualizacoes). */
+export interface Atualizacao {
+  /** "camara_votacoes", "senado_cota", ... (`{casa}_{job}`). */
+  fonte: string;
+  /** ISO 8601, UTC. */
+  coletadoEm: string;
+}
+
 // ---------------------------------------------------------------- linhas (snake_case)
 
 type Digito = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";

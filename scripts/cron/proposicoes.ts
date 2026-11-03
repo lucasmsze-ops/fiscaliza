@@ -12,10 +12,10 @@
  * político, ano e tipo em `proposicoes_contagem`.
  *
  * Situação muda em proposição antiga: o ano corrente é baixado de novo todo dia, os anteriores
- * uma vez por semana.
+ * uma vez por semana. Da Câmara fica só um extrato por ano; os CSVs são apagados.
  */
 import { DuckDBInstance } from "@duckdb/node-api";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { mapLimite } from "../../lib/async";
 import { arquivoAnualCamara } from "../../lib/camara";
 import { TIPOS_LEGISLATIVOS } from "../../lib/esquema";
@@ -30,13 +30,26 @@ const DIR_CAMARA = `${FONTES}/camara-arquivos`;
 const DIR_SENADO = `${FONTES}/senado-processos`;
 
 const ler = <T>(f: string): T => JSON.parse(readFileSync(f, "utf8")) as T;
+
+/** O que fica de um ano dos arquivos da Câmara (`estado/fontes/camara-arquivos/extrato-{ano}.json`). */
+interface ExtratoCamara {
+  buscadoEm: string;
+  /** Só as que podem virar lei e têm algum deputado proponente. */
+  proposicoes: { id: string; tipo: string; numero: number; ano: number; ementa: string | null; apresentacao: string; situacao: string | null }[];
+  /** Deputados proponentes dessas proposições. */
+  autores: { id: string; dep: string; ordem: number }[];
+  /** Demais tipos, por deputado proponente, ano e tipo. */
+  contagem: { dep: string; ano: number; tipo: string; n: number }[];
+  total: { proposicoes: number; autorias: number };
+}
 const dias = (a: string, b: string) => Math.round((Date.parse(a) - Date.parse(b)) / 86_400_000);
 /** "Transformado em Norma Jurídica" (Câmara), "TRANSFORMADA EM NORMA JURÍDICA COM VETO PARCIAL" (Senado). */
 const virouNorma = (situacao: string | null) => /transformad[oa] em norma jur/i.test(situacao ?? "");
 const textoOficial = (s: string | null | undefined) => (s && s.trim() ? semCpf(s.trim()) : null);
 
-export async function jobProposicoes(hoje: string): Promise<{ tabelas: Record<string, LinhaBruta[]>; relatorio: string[]; falhas: number }> {
+export async function jobProposicoes(hoje: string): Promise<{ tabelas: Record<string, LinhaBruta[]>; relatorio: string[]; falhas: number; atualizadas: string[] }> {
   const relatorio: string[] = [];
+  const atualizadas: string[] = [];
   let falhas = 0;
   const anoHoje = Number(hoje.slice(0, 4));
   const anos = Array.from({ length: anoHoje - ANO_INICIAL + 1 }, (_, i) => ANO_INICIAL + i);
@@ -52,51 +65,72 @@ export async function jobProposicoes(hoje: string): Promise<{ tabelas: Record<st
   const contagem: LinhaBruta[] = [];
 
   // ---------------------------------------------------------------- Câmara
+  // Um extrato por ano (só o que o site usa), e os CSVs apagados em seguida: cada proposição está em
+  // um único arquivo anual, com os autores no arquivo do mesmo ano (conferido 2023–2026), então
+  // processar ano a ano dá o mesmo resultado e o cache do Actions não carrega 356 MB de CSV.
   try {
     mkdirSync(DIR_CAMARA, { recursive: true });
-    const arqBaixados = `${DIR_CAMARA}/baixados.json`;
-    const baixados: Record<string, string> = existsSync(arqBaixados) ? ler(arqBaixados) : {};
-    let baixadosAgora = 0;
-    for (const ano of anos) for (const nome of ["proposicoes", "proposicoesAutores"]) {
-      const chave = `${nome}-${ano}`;
-      if (!velho(baixados[chave], ano) && existsSync(`${DIR_CAMARA}/${chave}.csv`)) continue;
-      await baixarArquivo(arquivoAnualCamara(nome, ano), `${DIR_CAMARA}/${chave}.csv`, { label: `camara:/arquivos/${nome}` });
-      baixados[chave] = hoje; baixadosAgora++;
-      writeFileSync(arqBaixados, JSON.stringify(baixados, null, 1) + "\n");
-    }
-    const c = await (await DuckDBInstance.create(":memory:")).connect();
-    const lista = (nome: string) => `[${anos.map((a) => `'${DIR_CAMARA}/${nome}-${a}.csv'`).join(",")}]`;
-    const csv = (nome: string) => `read_csv(${lista(nome)}, delim=';', header=true, quote='"', all_varchar=true, union_by_name=true, filename=true)`;
-    // A mesma proposição pode estar em mais de um arquivo anual: fica a do arquivo mais recente.
-    await c.run(`create table p as select * exclude (n) from (
-      select id, siglaTipo tipo, numero, ano, ementa, left(dataApresentacao, 10) apresentacao, ultimoStatus_descricaoSituacao situacao,
-             row_number() over (partition by id order by filename desc) n
-      from ${csv("proposicoes")} where dataApresentacao >= '${ANO_INICIAL}-01-01') where n = 1`);
-    await c.run(`create table a as select idProposicao id, idDeputadoAutor dep, min(cast(ordemAssinatura as integer)) ordem
-      from ${csv("proposicoesAutores")} where proponente = '1' and idDeputadoAutor <> '' group by 1, 2`);
     const tipos = TIPOS_LEGISLATIVOS.camara.map((t) => `'${t}'`).join(",");
-    const leg = (await (await c.run(`select p.*, a.dep, a.ordem from p join a using (id) where p.tipo in (${tipos}) order by p.id, a.ordem`)).getRowObjectsJson()) as unknown as
-      { id: string; tipo: string; numero: string; ano: string; ementa: string | null; apresentacao: string; situacao: string | null; dep: string; ordem: number }[];
+    let baixadosAgora = 0, np = 0, na = 0;
+    const extratos: ExtratoCamara[] = [];
+    for (const ano of anos) {
+      const arq = `${DIR_CAMARA}/extrato-${ano}.json`;
+      const anterior = existsSync(arq) ? ler<ExtratoCamara>(arq) : null;
+      if (anterior && !velho(anterior.buscadoEm, ano)) { extratos.push(anterior); np += anterior.total.proposicoes; na += anterior.total.autorias; continue; }
+      const csvP = `${DIR_CAMARA}/proposicoes-${ano}.csv`, csvA = `${DIR_CAMARA}/proposicoesAutores-${ano}.csv`;
+      await baixarArquivo(arquivoAnualCamara("proposicoes", ano), csvP, { label: "camara:/arquivos/proposicoes" });
+      await baixarArquivo(arquivoAnualCamara("proposicoesAutores", ano), csvA, { label: "camara:/arquivos/proposicoesAutores" });
+      baixadosAgora += 2;
+      const c = await (await DuckDBInstance.create(":memory:")).connect();
+      const csv = (f: string) => `read_csv('${f}', delim=';', header=true, quote='"', all_varchar=true)`;
+      await c.run(`create table p as select id, siglaTipo tipo, numero, ano, ementa, left(dataApresentacao, 10) apresentacao, ultimoStatus_descricaoSituacao situacao
+        from ${csv(csvP)} where dataApresentacao >= '${ANO_INICIAL}-01-01'`);
+      await c.run(`create table a as select idProposicao id, idDeputadoAutor dep, min(cast(ordemAssinatura as integer)) ordem
+        from ${csv(csvA)} where proponente = '1' and idDeputadoAutor <> '' group by 1, 2`);
+      const sel = async <T>(sql: string) => (await (await c.run(sql)).getRowObjectsJson()) as unknown as T[];
+      const leg = await sel<{ id: string; tipo: string; numero: string; ano: string; ementa: string | null; apresentacao: string; situacao: string | null }>(
+        `select * from p where tipo in (${tipos}) and id in (select id from a) order by id`);
+      const autLeg = await sel<{ id: string; dep: string; ordem: number }>(`select a.* from a join p using (id) where p.tipo in (${tipos}) order by id, ordem`);
+      const resto = await sel<{ dep: string; ano: string; tipo: string; n: string }>(`select a.dep, year(cast(p.apresentacao as date)) ano, p.tipo, count(*) n
+        from p join a using (id) where p.tipo not in (${tipos}) group by 1, 2, 3 order by 1, 2, 3`);
+      const tot = (await sel<{ np: string; na: string }>(`select (select count(*) from p) np, (select count(*) from a) na`))[0]!;
+      const extrato: ExtratoCamara = {
+        buscadoEm: hoje,
+        proposicoes: leg.map((r) => ({ id: r.id, tipo: r.tipo, numero: Number(r.numero), ano: Number(r.ano), ementa: textoOficial(r.ementa), apresentacao: r.apresentacao, situacao: textoOficial(r.situacao) })),
+        autores: autLeg.map((r) => ({ id: r.id, dep: r.dep, ordem: Number(r.ordem) })),
+        contagem: resto.map((r) => ({ dep: r.dep, ano: Number(r.ano), tipo: r.tipo, n: Number(r.n) })),
+        total: { proposicoes: Number(tot.np), autorias: Number(tot.na) },
+      };
+      writeFileSync(arq, JSON.stringify(extrato));
+      // Os CSVs não ficam: um deles traz CPF por extenso num texto oficial, e o cache do Actions de um repositório público não é lugar para isso.
+      rmSync(csvP); rmSync(csvA);
+      extratos.push(extrato); np += extrato.total.proposicoes; na += extrato.total.autorias;
+    }
+    const porId = new Map(extratos.flatMap((e) => e.proposicoes.map((p) => [p.id, p] as const)));
     const vistas = new Set<string>();
-    for (const r of leg) {
-      const politicoId = porCamara.get(r.dep);
+    for (const a of extratos.flatMap((e) => e.autores)) {
+      const politicoId = porCamara.get(a.dep);
       if (!politicoId) continue;
-      const id = `camara:${r.id}`;
+      const r = porId.get(a.id)!, id = `camara:${a.id}`;
       if (!vistas.has(id)) {
         vistas.add(id);
-        proposicoes.push({ id, id_externo: r.id, casa: "camara", tipo: r.tipo, numero: Number(r.numero), ano: Number(r.ano), ementa: textoOficial(r.ementa),
-          apresentacao: r.apresentacao, situacao: textoOficial(r.situacao), virou_norma: virouNorma(r.situacao), url_oficial: `https://www.camara.leg.br/propostas-legislativas/${r.id}` });
+        proposicoes.push({ id, id_externo: r.id, casa: "camara", tipo: r.tipo, numero: r.numero, ano: r.ano, ementa: r.ementa,
+          apresentacao: r.apresentacao, situacao: r.situacao, virou_norma: virouNorma(r.situacao), url_oficial: `https://www.camara.leg.br/propostas-legislativas/${r.id}` });
       }
-      autores.push({ proposicao_id: id, politico_id: politicoId, ordem: Number(r.ordem) });
+      autores.push({ proposicao_id: id, politico_id: politicoId, ordem: a.ordem });
     }
-    const resto = (await (await c.run(`select a.dep, year(cast(p.apresentacao as date)) ano, p.tipo, count(*) n from p join a using (id)
-      where p.tipo not in (${tipos}) group by 1, 2, 3 order by 1, 2, 3`)).getRowObjectsJson()) as unknown as { dep: string; ano: string; tipo: string; n: string }[];
+    // Soma entre extratos: o arquivo de um ano traz proposições apresentadas no ano anterior (382 no de 2026).
+    const somadas = new Map<string, { dep: string; ano: number; tipo: string; n: number }>();
+    for (const r of extratos.flatMap((e) => e.contagem)) {
+      const k = `${r.dep}|${r.ano}|${r.tipo}`, e = somadas.get(k);
+      if (e) e.n += r.n; else somadas.set(k, { ...r });
+    }
     let contCamara = 0;
-    for (const r of resto) {
+    for (const r of [...somadas.values()].sort((x, y) => x.dep.localeCompare(y.dep) || x.ano - y.ano || x.tipo.localeCompare(y.tipo))) {
       const politicoId = porCamara.get(r.dep);
-      if (politicoId) { contagem.push({ politico_id: politicoId, casa: "camara", ano: Number(r.ano), tipo: r.tipo, autorias: Number(r.n) }); contCamara++; }
+      if (politicoId) { contagem.push({ politico_id: politicoId, casa: "camara", ano: r.ano, tipo: r.tipo, autorias: r.n }); contCamara++; }
     }
-    const { np, na } = ((await (await c.run(`select (select count(*) from p) np, (select count(*) from a) na`)).getRowObjectsJson()) as unknown as { np: string; na: string }[])[0]!;
+    atualizadas.push("camara_proposicoes");
     relatorio.push(`Câmara: ${baixadosAgora} arquivos baixados; ${np} proposições desde ${ANO_INICIAL}, ${na} autorias de deputados; ${vistas.size} que podem virar lei com autor no site, ${contCamara} contagens`);
   } catch (e) {
     falhas++;
@@ -158,6 +192,7 @@ export async function jobProposicoes(hoje: string): Promise<{ tabelas: Record<st
         url_oficial: p.codigoMateria !== null ? `https://www25.senado.leg.br/web/atividade/materias/-/materia/${p.codigoMateria}` : `https://legis.senado.leg.br/dadosabertos/processo/${id}` });
       for (const a of doSite) autores.push({ proposicao_id: pid, politico_id: porSenado.get(a.senadoCodigo!), ordem: a.ordem });
     }
+    atualizadas.push("senado_proposicoes");
     relatorio.push(`Senado: ${res.ok.filter((r) => r.baixado).length} listagens baixadas, ${res.ok.filter((r) => !r.baixado).length} do cache; ${legislativos.size} que podem virar lei (${det.ok.length} autorias), ${[...porTipo.keys()].length} contagens; ${semNaAutoria} vínculos da listagem ausentes da autoria de iniciativa, ${semMateria} sem código de matéria`);
   } catch (e) {
     falhas++;
@@ -167,5 +202,5 @@ export async function jobProposicoes(hoje: string): Promise<{ tabelas: Record<st
   const norma = proposicoes.filter((p) => p.virou_norma).length;
   relatorio.push(`total: ${proposicoes.length} proposições (${norma} viraram norma), ${autores.length} vínculos de autoria, ${contagem.length} contagens`);
   // Uma Casa que falhou não manda nada: sem ela, as tabelas mescladas continuam com o que já havia.
-  return { tabelas: { proposicoes, proposicoes_autores: autores, proposicoes_contagem: contagem }, relatorio, falhas };
+  return { tabelas: { proposicoes, proposicoes_autores: autores, proposicoes_contagem: contagem }, relatorio, falhas, atualizadas };
 }

@@ -33,14 +33,14 @@ const ler = <T>(f: string): T => JSON.parse(readFileSync(f, "utf8")) as T;
 const chaveMes = (m: { ano: number; mes: number }) => m.ano * 100 + m.mes;
 const dias = (a: string, b: string) => Math.round((Date.parse(a) - Date.parse(b)) / 86_400_000);
 
-export async function jobCota(hoje: string): Promise<{ tabelas: Record<string, LinhaBruta[]>; relatorio: string[]; falhas: number }> {
+export async function jobCota(hoje: string): Promise<{ tabelas: Record<string, LinhaBruta[]>; relatorio: string[]; falhas: number; atualizadas: string[] }> {
   mkdirSync(`${DIR}/camara`, { recursive: true });
   mkdirSync(`${DIR}/senado`, { recursive: true });
   const arqColetas = `${DIR}/coletas.json`;
   const coletas: string[] = existsSync(arqColetas) ? ler(arqColetas) : [];
   const anterior = coletas.at(-1);
   if (anterior && anterior.slice(0, 7) === hoje.slice(0, 7) && process.env.FISCALIZA_COTA !== "forcar") {
-    return { tabelas: {}, relatorio: [`já coletada em ${anterior}; a próxima é no mês que vem`], falhas: 0 };
+    return { tabelas: {}, relatorio: [`já coletada em ${anterior}; a próxima é no mês que vem`], falhas: 0, atualizadas: [] };
   }
 
   const relatorio: string[] = [];
@@ -127,7 +127,7 @@ export async function jobCota(hoje: string): Promise<{ tabelas: Record<string, L
     relatorio.push(`Senado FALHOU: ${(e as Error).message}`);
   }
 
-  if (!camaraOk && !senadoOk) return { tabelas: {}, relatorio, falhas };
+  if (!camaraOk && !senadoOk) return { tabelas: {}, relatorio, falhas, atualizadas: [] };
 
   // ---------------------------------------------------------------- linhas
   const despesasMes: LinhaBruta[] = gastos.filter((x) => x.politicoId).map((x) => ({
@@ -168,5 +168,5 @@ export async function jobCota(hoje: string): Promise<{ tabelas: Record<string, L
   relatorio.push(`conferidas ${conferidas} médias (casa × UF × mês) contra a soma; ${soMedia.length} parlamentar-meses entram só na média (${new Set(soMedia.map((x) => `${x.casa}:${x.uf}`)).size} bancadas)`);
 
   if (!falhas) writeFileSync(arqColetas, JSON.stringify([...coletas, hoje]) + "\n");
-  return { tabelas: { despesas_mes: despesasMes, despesas_media_uf: medias }, relatorio, falhas };
+  return { tabelas: { despesas_mes: despesasMes, despesas_media_uf: medias }, relatorio, falhas, atualizadas: [...(camaraOk ? ["camara_cota"] : []), ...(senadoOk ? ["senado_cota"] : [])] };
 }

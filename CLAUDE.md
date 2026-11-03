@@ -29,7 +29,7 @@ forma anônima (cookieless, só página e tipo). Nunca pede e-mail, telefone ou 
 
 - Next.js (App Router) + TypeScript + Tailwind + shadcn/ui. Instalados (versões fixas): next 16.4.3, react 19.3.1, tailwindcss 4.3.3; `next build` funciona com o TypeScript 7 do projeto. shadcn/ui entra na E10, só o Tooltip. Páginas leem dados só por `lib/repo.ts` (`repo`).
 - Supabase Postgres, pela API REST com `fetch` (`lib/supabase.ts`, sem `supabase-js`). Origem dos dados por `FISCALIZA_DADOS=supabase` (`lib/repo-supabase.ts`); sem a variável, `data/*.json`. Card e página vêm pré-calculados da tabela `resumos` (`npm run precalcular`), nunca de todas as votações por página (egress). Migrações em `supabase/migrations/`, rodadas à mão no SQL Editor; `npm run seed` e `npm run supabase:conferir`. PostgREST devolve no máximo 1.000 linhas por pedido: `selecionar()` pagina e exige `order=`. `jsonb` não preserva a ordem das chaves: nunca exibir na ordem de `Object.entries` de um objeto vindo do banco.
-- Cron: GitHub Actions, scripts em `scripts/` (Node/TypeScript). DuckDB para processar CSVs do TSE.
+- Cron: GitHub Actions (`.github/workflows/cron.yml`, diário), scripts em `scripts/` (Node/TypeScript). DuckDB para processar CSVs do TSE e os arquivos anuais da Câmara.
 - Deploy: Vercel via push na `main`. Páginas de político com ISR (`revalidate` 24h). Funções em São Paulo (`vercel.json`, `regions: ["gru1"]`; o Hobby permite uma região), junto do Supabase: com o padrão (`iad1`, Washington) cada consulta ao banco cruzava o continente e a colinha nova levava ~1 s.
 - Fotos: servidas direto das URLs oficiais (Câmara/Senado/TSE). Nunca proxiar pela Vercel. Exceção: `next/og` busca fotos na hora de gerar a imagem de compartilhamento.
 - Licença: AGPL-3.0 (código), CC-BY 4.0 (dados derivados).
@@ -159,13 +159,14 @@ votacoes          id (= casa:id_externo), id_externo, casa, data, proposicao, em
 votos             votacao_id, politico_id, voto enum(sim,nao,abstencao,obstrucao,art17,
                   nao_informado,secreto,ausente), detalhe (sigla do Senado)
 orientacoes       votacao_id, bancada, orientacao
+atualizacoes      fonte ({casa}_{job}), coletado_em   (última coleta bem-sucedida; base de /atualizacoes)
 ```
 A tabela `quiz` e a coluna `votacoes.quiz` saem na E17; o modelo cresce a cada passo (detalhar no PLANO).
 Tudo com `upsert` por chave externa. Nenhuma coluna de CPF ou hash de CPF; CPF que apareça em texto oficial (descrição de votação, ementa) é ocultado com `lib/texto.ts#semCpf`. Volume e limites: `docs/VOLUME.md` (decisões de 2026-11-02: dados desde 2023, cota agregada por mês/categoria/fornecedor sem nota a nota, íntegra só das proposições que podem virar lei; as páginas leem números pré-calculados pelo cron, não as votações inteiras). Tamanho na sonda (SP, 438 políticos, 2023–26): 9,6 MB de JSON; esperado < 50 MB por legislatura.
 
-## Cron (`scripts/cron/`, `npm run cron`; Actions na E22)
+## Cron (`scripts/cron/`, `npm run cron`; GitHub Actions diário desde a E22)
 
-Desenho em `docs/CRON.md`. Estado em `estado/` (fora do git; no Actions, no cache do Actions): coleta incremental de cada job → validação → publicação só das linhas novas ou alteradas (diff contra `estado/publicado`, sem ler o banco) → resumos só onde mudou. Jobs isolados; um falhando não impede o seguinte e o processo sai com 1. Log só no output do Actions. O cron também é o keep-alive do Supabase free. Linhas de votação, voto e orientação só por `lib/linhas-votacao.ts` (a mesma regra da sonda).
+Desenho em `docs/CRON.md`. Desde a E22 só o Actions publica; localmente, apenas `npm run cron -- --sem-publicar`. Estado em `estado/` (fora do git; no Actions, no cache do Actions, com a release `estado-inicial` como ponto de partida): coleta incremental de cada job → validação → publicação só das linhas novas ou alteradas (diff contra `estado/publicado`, sem ler o banco) → resumos só onde mudou. Jobs isolados; um falhando não impede o seguinte e o processo sai com 1. Log só no output do Actions. O cron também é o keep-alive do Supabase free. Linhas de votação, voto e orientação só por `lib/linhas-votacao.ts` (a mesma regra da sonda).
 
 ## Convenções de código
 

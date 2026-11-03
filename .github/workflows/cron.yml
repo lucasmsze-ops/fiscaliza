@@ -1,0 +1,79 @@
+# E22 — cron diário do Fiscaliza (desenho em docs/CRON.md): coleta nas fontes oficiais, valida e
+# publica no Supabase só o que mudou. Também é o keep-alive do Supabase free.
+#
+# Estado (estado/: dados, publicado, caches das fontes) vive no cache do Actions, uma entrada por
+# execução, sempre restaurando a mais recente. Sem cache (primeira execução, ou cache expirado),
+# o estado vem do asset `estado.tar.gz` da release `estado-inicial`. Nenhum dos dois tem CPF: os
+# arquivos do TSE com CPF são baixados a cada execução para a pasta temporária do runner e nunca
+# vão para o cache (o repositório é público).
+name: Cron
+on:
+  schedule:
+    - cron: "17 9 * * *" # 06:17 em Brasília, depois de a Câmara regenerar os arquivos anuais (~04h UTC)
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cron
+  cancel-in-progress: false
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120 # dia 1º: coleta mensal da cota (~2.300 chamadas à Câmara)
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      FISCALIZA_TSE: ${{ runner.temp }}/tse
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      - name: Estado (cache da última execução)
+        id: estado
+        uses: actions/cache/restore@v4
+        with:
+          path: estado
+          key: estado-${{ github.run_id }}
+          restore-keys: estado-
+      - name: Estado inicial (release), se não havia cache
+        if: steps.estado.outputs.cache-matched-key == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download estado-inicial --pattern estado.tar.gz --dir "$RUNNER_TEMP"
+          tar -xzf "$RUNNER_TEMP/estado.tar.gz"
+      - name: O estado tem o que o cron precisa?
+        run: |
+          # Sem isto o cron recomeçaria de data/*.json (só SP) e reenviaria o Brasil inteiro.
+          test -s estado/publicado/politicos.json
+          test -s estado/fontes/tse-2026/politicos.json
+          echo "estado: $(du -sh estado | cut -f1); politicos publicados: $(grep -c '"id"' estado/publicado/politicos.json)"
+
+      - name: Candidaturas do TSE (só no runner; têm CPF)
+        run: |
+          mkdir -p "$FISCALIZA_TSE"
+          for ano in 2026 2022 2018; do
+            pasta=consulta_cand; [ "$ano" != 2026 ] && pasta="consulta_cand_$ano"
+            curl -fsS --retry 5 --retry-all-errors -o "$FISCALIZA_TSE/$ano.zip" \
+              "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_$ano.zip"
+            unzip -q -o "$FISCALIZA_TSE/$ano.zip" "consulta_cand_${ano}_*.csv" -d "$FISCALIZA_TSE/$pasta"
+          done
+
+      - name: Cron
+        run: npm run cron
+
+      - name: Apaga os arquivos do TSE
+        if: always()
+        run: rm -rf "$FISCALIZA_TSE"
+      - name: Guarda o estado
+        # Sempre: o publicado tem de acompanhar o que já foi gravado no Supabase, mesmo quando um job
+        # falha depois (a próxima execução tenta de novo o que falhou).
+        if: always() && hashFiles('estado/publicado/politicos.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: estado
+          key: estado-${{ github.run_id }}

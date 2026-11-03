@@ -7,7 +7,7 @@
  * Votos: derivados de TODAS as votações nominais conhecidas, para TODOS os políticos com camaraId
  * ou senadoCodigo, a partir das respostas brutas em estado/fontes. Assim quem entra em `politicos`
  * (E21c) ganha o histórico desde 2023 sem job separado. Votação passada não muda: a resposta
- * bruta é baixada uma vez (na máquina local, aproveita o cache da sonda em data/raw/apoio).
+ * bruta é baixada uma vez e fica em estado/fontes (as da sonda foram copiadas para lá na E22).
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { mapLimite } from "../../lib/async";
@@ -22,7 +22,6 @@ const MARGEM_DIAS = 14;
 const INICIO_CAMARA = "2023-01-01";
 const INICIO_SENADO = "2023-02-01"; // posse da 57ª legislatura (mesmo corte da sonda)
 const EM_VOO = 6;
-const CACHE_SONDA = "data/raw/apoio/votos-cache";
 
 const menosDias = (iso: string, d: number) => new Date(Date.parse(`${iso}T00:00:00Z`) - d * 86_400_000).toISOString().slice(0, 10);
 const ler = <T>(f: string): T | null => (existsSync(f) ? (JSON.parse(readFileSync(f, "utf8")) as T) : null);
@@ -53,7 +52,7 @@ export async function jobVotacoes(hoje: string): Promise<ResultadoVotacoes> {
   let baixados = 0;
   const votosDe = async (id: string): Promise<VotoCamara[]> => {
     const arq = `${dirVotos}/${id}.json`;
-    const guardado = ler<VotoCamara[]>(arq) ?? ler<VotoCamara[]>(`${CACHE_SONDA}/${id}.json`);
+    const guardado = ler<VotoCamara[]>(arq);
     if (guardado?.length) return guardado;
     const vs = await getVotos(id);
     baixados++;

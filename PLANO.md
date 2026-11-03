@@ -346,12 +346,18 @@ colinha não funciona fora de SP. Dividida em E21a–E21e; o desenho do cron est
 - Pronto quando: rodar duas vezes seguidas não duplica nada e o tamanho bate com `docs/VOLUME.md`.
 
 ### E22 · GitHub Actions
-- [ ] Workflow diário: `politicos` → `despesas` → `proposicoes` → `votacoes`. Jobs isolados;
+- [x] Workflow diário: `politicos` → `despesas` → `proposicoes` → `votacoes`. Jobs isolados;
       falha num não bloqueia o seguinte. Log só no output do Actions.
+      (`.github/workflows/cron.yml`, 06:17 de Brasília; ordem real: parlamentares → votações → cota →
+      proposições, como no `npm run cron`.)
 - [ ] Secrets do Supabase. O cron é também o keep-alive do plano free.
-- [ ] Estado na primeira execução: os arquivos do TSE, o cache de votos e os 356 MB de CSV de
+- [x] Estado na primeira execução: os arquivos do TSE, o cache de votos e os 356 MB de CSV de
       proposições da Câmara só existem na máquina local (`docs/VOLUME.md`, E21e).
-- [ ] Data da última carga por fonte gravada (base da página `/atualizacoes`).
+      (Cache do Actions + release `estado-inicial` (30 MB, sem CPF); `consulta_cand` baixado a cada
+      execução e apagado; votos da sonda copiados para o estado; proposições da Câmara viram
+      extrato por ano e os CSVs são apagados.)
+- [x] Data da última carga por fonte gravada (base da página `/atualizacoes`). (Tabela
+      `atualizacoes`, migração 0005.)
 - Pronto quando: o primeiro run agendado termina verde e o site reflete dado novo.
 
 ## Passo 4 — Congresso completo, Brasil inteiro

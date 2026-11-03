@@ -36,6 +36,7 @@ const ESQUEMA: Record<string, { pk: string[]; obrig: string[]; opc: string[] }> 
   proposicoes: { pk: ["id"], obrig: ["id", "id_externo", "casa", "tipo", "numero", "ano", "apresentacao", "virou_norma", "url_oficial"], opc: ["ementa", "situacao"] },
   proposicoes_autores: { pk: ["proposicao_id", "politico_id"], obrig: ["proposicao_id", "politico_id", "ordem"], opc: [] },
   proposicoes_contagem: { pk: ["politico_id", "casa", "ano", "tipo"], obrig: ["politico_id", "casa", "ano", "tipo", "autorias"], opc: [] },
+  atualizacoes: { pk: ["fonte"], obrig: ["fonte", "coletado_em"], opc: [] },
 };
 const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   politicos: { genero: ["feminino", "masculino", null], cargo: ["deputado_federal", "senador"], status: ["eleito", "reeleito", "nao_eleito", "suplente", "em_exercicio"] },
