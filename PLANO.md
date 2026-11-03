@@ -361,13 +361,25 @@ colinha não funciona fora de SP. Dividida em E21a–E21e; o desenho do cron est
       `atualizacoes`, migração 0005.)
 - Pronto quando: o primeiro run agendado termina verde e o site reflete dado novo.
 
+### E22b · Visual do protótipo
+Tema claro do protótipo do Claude Design (`docs/PROTOTIPO.md`, seção Visual) nas páginas que já
+existem (`/`, `/c/[ids]`, `/p/[slug]`, `/como-funciona`), sem conteúdo novo.
+- [ ] Tokens no `app/globals.css`: fundo, card, teal, texto. Tema escuro derivado dos mesmos tokens.
+- [ ] Roboto por `next/font`, servida pelo site.
+- [ ] Menu lateral e barra do topo com a busca. No celular, barra no rodapé ou gaveta (medir).
+- [ ] Reler o protótipo antes de começar (pode ter mudado).
+- Pronto quando: as páginas atuais com o visual novo, medidas no celular (colinha e página do
+  político em < 1 s no 4G), sem nenhum número diferente.
+
 ## Passo 4 — Congresso completo, Brasil inteiro
 
-Referência: `docs/REFERENCIA-POLITICOMETRO.md`, seções 1 e 2. Detalhar cada etapa ao chegar nela.
+Referência: `docs/REFERENCIA-POLITICOMETRO.md`, seções 1 e 2. Referência visual e campo a campo:
+`docs/PROTOTIPO.md` (que tela vai em que etapa e as decisões abertas). Detalhar cada etapa ao chegar nela.
 
 ### E23 · Página do político: resumo do topo
 Mandato atual e próximo, salário e "quanto custa o mandato" (ato legal), data da coleta,
-"o que está e o que não está nesta página", redes declaradas ao TSE.
+"o que está e o que não está nesta página", redes declaradas ao TSE. Layout do crachá do protótipo,
+sem perder governismo, cota contra a média, "Como cobrar" e "Receber avisos" (`docs/PROTOTIPO.md`).
 
 ### E24 · Patrimônio e contas de campanha (TSE)
 Patrimônio por eleição, sem descrição dos bens; arrecadado, gasto e % de dinheiro público.
@@ -421,14 +433,16 @@ aberto aparece como lacuna, com o porquê.
 ## Passo 7 — Contexto (detalhar ao chegar)
 Comparar (2 a 5 lado a lado) · governos e indicadores · partidos (sem régua) · cargos ·
 dicionário · mais vistos (analytics cookieless) · impostômetro · STF (só com fonte aberta) ·
-ouvir a página · tema claro/escuro · servidor MCP.
+ouvir a página · tema claro/escuro · servidor MCP. Telas no protótipo: Comparar, Cargos,
+Dicionário (`docs/PROTOTIPO.md`).
 
 Calendário: a posse é em 01/02/2027. Até lá, o Passo 3 e o Passo 4 cabem no ritmo de uma etapa
 por dia (22 etapas depois da divisão da E21).
 
 ## Backlog (encaixar nos passos quando chegar a hora)
 
-Emendas parlamentares (Portal da Transparência, chave única no cron) · "votação da semana" como
+Emendas parlamentares (Portal da Transparência, chave única no cron; aba do crachá no protótipo,
+decisão 3 em `docs/PROTOTIPO.md`) · "votação da semana" como
 destaque em `/votacoes` · efetividade · suplentes · RSS/ICS · seguir tema (sem conta: no
 localStorage) · dados abertos para download.
 

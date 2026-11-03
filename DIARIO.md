@@ -33,7 +33,8 @@ deputado). Depois do Actions, nada de publicar da máquina local: só `--sem-pub
 **Lacunas:** CPF com mais de uma candidatura (`docs/LACUNAS.md`). `camara_cota`/`senado_cota` só
 entram em `atualizacoes` na próxima coleta mensal (dezembro); levar em conta na página `/atualizacoes`.
 **Próximo passo:** conferir o run agendado de 2026-11-04 (09:17 UTC): verde e dado novo no site
-(ex.: `atualizacoes` com data de 04/11). Se ok, marcar o "Pronto quando" e passar para a E23.
+(ex.: `atualizacoes` com data de 04/11). Se ok, marcar o "Pronto quando" e passar para a E22b
+(visual do protótipo, nova; cruzamento em `docs/PROTOTIPO.md`, com 4 decisões abertas do usuário).
 
 ## 2026-11-02 · E21e
 **Feito:** job `proposicoes` (`scripts/cron/proposicoes.ts`). Câmara pelos arquivos anuais 2023–2026
