@@ -350,7 +350,8 @@ colinha não funciona fora de SP. Dividida em E21a–E21e; o desenho do cron est
       falha num não bloqueia o seguinte. Log só no output do Actions.
       (`.github/workflows/cron.yml`, 06:17 de Brasília; ordem real: parlamentares → votações → cota →
       proposições, como no `npm run cron`.)
-- [ ] Secrets do Supabase. O cron é também o keep-alive do plano free.
+- [x] Secrets do Supabase. O cron é também o keep-alive do plano free.
+      (`SUPABASE_URL` e `SUPABASE_SECRET_KEY`; run manual verde em 2026-11-03.)
 - [x] Estado na primeira execução: os arquivos do TSE, o cache de votos e os 356 MB de CSV de
       proposições da Câmara só existem na máquina local (`docs/VOLUME.md`, E21e).
       (Cache do Actions + release `estado-inicial` (30 MB, sem CPF); `consulta_cand` baixado a cada

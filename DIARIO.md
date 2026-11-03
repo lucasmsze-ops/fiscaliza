@@ -15,6 +15,26 @@ Modelo:
 
 ---
 
+## 2026-11-03 · E22
+**Feito:** `.github/workflows/cron.yml` (06:17 de Brasília + `workflow_dispatch`). Estado no cache do
+Actions (uma entrada por execução, restaura a mais recente); sem cache, vem da release
+`estado-inicial` (`estado.tar.gz`, 30 MB, 6.440 JSON, sem CPF nem hash). `consulta_cand` baixado a
+cada execução para `$RUNNER_TEMP` e apagado. Proposições da Câmara viram extrato por ano (CSV
+apagado); votos da sonda copiados para o estado. Tabela `atualizacoes` (migração 0005, rodada pelo
+usuário). Secrets gravados pelo usuário. Primeiro run manual: publicou 5 proposições, 2 contagens e
+62 resumos, mas o `parlamentares` parou com slug repetido (abaixo). Corrigido, cache apagado, segundo
+run manual verde a partir da release: 0 políticos alterados, 6 fontes em `atualizacoes`.
+**Decidido:** nada com CPF vai para cache ou release (repositório público: PR de fork lê cache). Sem
+cache nem release, o workflow para antes do cron (não recomeça de SP). `runner.temp` não existe no
+`env` do job: `FISCALIZA_TSE` vem de um passo via `$GITHUB_ENV`. Mesmo CPF com mais de uma
+candidatura: vale a que foi à urna, no empate o sq maior (`porCpf`); antes valia a última linha
+lida, e o TSE regenerou os arquivos em outra ordem (Carlos Jordy ligou à candidatura cancelada a
+deputado). Depois do Actions, nada de publicar da máquina local: só `--sem-publicar`.
+**Lacunas:** CPF com mais de uma candidatura (`docs/LACUNAS.md`). `camara_cota`/`senado_cota` só
+entram em `atualizacoes` na próxima coleta mensal (dezembro); levar em conta na página `/atualizacoes`.
+**Próximo passo:** conferir o run agendado de 2026-11-04 (09:17 UTC): verde e dado novo no site
+(ex.: `atualizacoes` com data de 04/11). Se ok, marcar o "Pronto quando" e passar para a E23.
+
 ## 2026-11-02 · E21e
 **Feito:** job `proposicoes` (`scripts/cron/proposicoes.ts`). Câmara pelos arquivos anuais 2023–2026
 (`proposicoes`, `proposicoesAutores`) com `lib/http.ts#baixarArquivo`, que retoma com `Range`: o
