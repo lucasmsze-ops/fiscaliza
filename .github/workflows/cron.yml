@@ -23,8 +23,10 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
-      FISCALIZA_TSE: ${{ runner.temp }}/tse
     steps:
+      - name: Pasta dos arquivos do TSE, fora do checkout
+        # O contexto `runner` não existe no env do job; só dentro dos passos.
+        run: echo "FISCALIZA_TSE=$RUNNER_TEMP/tse" >> "$GITHUB_ENV"
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
