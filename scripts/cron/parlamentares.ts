@@ -32,7 +32,7 @@ const normaliza = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toUp
 const soDigitos = (s: string | null | undefined) => (s ?? "").replace(/\D/g, "").padStart(11, "0");
 const ler = <T>(f: string): T => JSON.parse(readFileSync(f, "utf8")) as T;
 
-interface CandTse { ano: number; sq: string; uf: string; cargo: string; nome: string; nomeUrna: string; genero: string | null; cpf: string }
+export interface CandTse { ano: number; sq: string; uf: string; cargo: string; nome: string; nomeUrna: string; genero: string | null; cpf: string; foiUrna: boolean }
 interface CacheDeputado { buscadoEm: string; perfil: Omit<DeputadoPerfil, "cpf">; historico: HistoricoDeputado[]; tse: { sq2026: string | null; sq2022: string | null } }
 interface CacheSenador { buscadoEm: string; perfil: SenadorPerfil; mandatos: MandatoSenado[]; licencas: LicencaSenado[] }
 
@@ -43,11 +43,25 @@ async function candidaturasTse(): Promise<CandTse[]> {
   for (const [ano, cargos] of [[2026, ["DEPUTADO FEDERAL", "SENADOR"]], [2022, ["DEPUTADO FEDERAL", "SENADOR", "1º SUPLENTE", "2º SUPLENTE"]], [2018, ["SENADOR", "1º SUPLENTE", "2º SUPLENTE"]]] as const) {
     const pasta = ano === 2026 ? "consulta_cand" : `consulta_cand_${ano}`;
     const arqs = `[${UFS.map((uf) => `'${RAW}/${pasta}/consulta_cand_${ano}_${uf}.csv'`).join(",")}]`;
-    const rows = (await (await c.run(`SELECT SQ_CANDIDATO sq, SG_UF uf, DS_CARGO cargo, NM_CANDIDATO nome, NM_URNA_CANDIDATO "nomeUrna", DS_GENERO genero, NR_CPF_CANDIDATO cpf
+    const rows = (await (await c.run(`SELECT SQ_CANDIDATO sq, SG_UF uf, DS_CARGO cargo, NM_CANDIDATO nome, NM_URNA_CANDIDATO "nomeUrna", DS_GENERO genero, NR_CPF_CANDIDATO cpf, coalesce(DS_SIT_TOT_TURNO, '#NULO') <> '#NULO' "foiUrna"
       FROM read_csv(${arqs}, delim=';', header=true, quote='"', encoding='latin-1', all_varchar=true) WHERE DS_CARGO IN (${cargos.map((x) => `'${x}'`).join(",")})`)).getRowObjectsJson()) as unknown as Omit<CandTse, "ano">[];
     for (const r of rows) out.push({ ...r, ano, genero: r.genero === "FEMININO" ? "feminino" : r.genero === "MASCULINO" ? "masculino" : null });
   }
   return out;
+}
+
+/**
+ * Candidatura por CPF. O mesmo CPF pode ter mais de uma no ano (registro cancelado e refeito, troca
+ * de cargo): vale a que foi à urna e, no empate, o registro mais recente. Nunca a ordem das linhas,
+ * que muda quando o TSE regenera os arquivos.
+ */
+export function porCpf(cands: CandTse[]): Map<string, CandTse> {
+  const m = new Map<string, CandTse>();
+  for (const c of cands) {
+    const k = soDigitos(c.cpf), a = m.get(k);
+    if (!a || (c.foiUrna !== a.foiUrna ? c.foiUrna : Number(c.sq) > Number(a.sq))) m.set(k, c);
+  }
+  return m;
 }
 
 export interface ResultadoParlamentares {
@@ -63,8 +77,8 @@ export async function jobParlamentares(hoje: string): Promise<ResultadoParlament
   const tsePoliticos = ler<Linha<Politico>[]>(`${TSE}/politicos.json`).map((l) => deLinha<Politico>(l));
   const candidatos = new Map(ler<LinhaBruta[]>(`${TSE}/candidatos.json`).map((c) => [String(c.tse_sq_candidato), c]));
   const cands = await candidaturasTse();
-  const porCpf2026 = new Map(cands.filter((c) => c.ano === 2026).map((c) => [soDigitos(c.cpf), c]));
-  const porCpf2022 = new Map(cands.filter((c) => c.ano === 2022 && c.cargo === "DEPUTADO FEDERAL").map((c) => [soDigitos(c.cpf), c]));
+  const porCpf2026 = porCpf(cands.filter((c) => c.ano === 2026));
+  const porCpf2022 = porCpf(cands.filter((c) => c.ano === 2022 && c.cargo === "DEPUTADO FEDERAL"));
   const porSq = new Map(cands.map((c) => [c.sq, c]));
 
   // ---------------------------------------------------------------- Câmara
