@@ -27,7 +27,7 @@ export function Compartilhar({ titulo, texto }: { titulo: string; texto: string 
   return (
     <div className="flex items-center gap-3">
       <button type="button" onClick={() => void compartilhar()}
-        className="rounded-full bg-[var(--texto)] px-6 py-3 text-sm font-semibold text-[var(--fundo)]">
+        className="rounded-xl bg-destaque px-6 py-3 text-sm font-bold text-destaque-texto">
         Compartilhar colinha
       </button>
       {aviso && <span role="status" className="text-sm">{aviso}</span>}

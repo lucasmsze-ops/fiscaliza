@@ -15,6 +15,22 @@ Modelo:
 
 ---
 
+## 2026-11-03 · E22b
+**Feito:** feita no mesmo dia, com a E22 aguardando o run agendado (exceção pedida pelo usuário; não
+toca no cron). `docs/PROTOTIPO.md` cruza o protótipo do Claude Design com o plano. Tema do
+protótipo em `app/globals.css`: tokens viram cores do Tailwind (`bg-card`, `border-borda`,
+`bg-destaque`, `text-suave`), com escuro derivado. Roboto por `next/font`. `components/Moldura.tsx`
+(menu lateral no desktop, gaveta no celular), `MenuItens.tsx`, `BarraTopo.tsx` (caminho + busca que
+abre `/?q=` na entrada). Conferido no navegador (build JSON): desktop, celular, escuro, gaveta,
+busca, seleção na cidade, colinha; 0 erros no console; 64 testes.
+**Decidido:** menu só com páginas que existem (item futuro seria placeholder). Gaveta, não barra no
+rodapé, porque o rodapé do celular é da barra "Ver colinha". Secundário `#5F6B7E` em vez do
+`#64748B` do protótipo (contraste 5,15:1 contra 4,54:1). Nenhum texto ou número mudou; só saiu o
+link "Fiscaliza" do topo de `/p` e `/como-funciona` (a marca no menu faz esse papel).
+**Lacunas:** nenhuma.
+**Próximo passo:** conferir o run agendado de 2026-11-04 (fecha a E22). Depois a E23, que pede antes a
+decisão 1 de `docs/PROTOTIPO.md` (colinha × Monitorando).
+
 ## 2026-11-03 · E22
 **Feito:** `.github/workflows/cron.yml` (06:17 de Brasília + `workflow_dispatch`). Estado no cache do
 Actions (uma entrada por execução, restaura a mais recente); sem cache, vem da release

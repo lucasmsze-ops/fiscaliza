@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BarraTopo } from "@/components/BarraTopo";
 import { Compartilhar } from "@/components/Compartilhar";
 import { PoliticoCard } from "@/components/PoliticoCard";
 import { ReceberAvisos } from "@/components/ReceberAvisos";
@@ -39,9 +40,11 @@ export default async function ColinhaPage({ params }: Props) {
   const cs = await cards((await params).ids);
   if (!cs.length) notFound();
   return (
-    <main className="mx-auto max-w-xl px-4 py-8">
+    <>
+    <BarraTopo secao="Colinha" pagina="Sua colinha" />
+    <main className="mx-auto max-w-xl pb-8">
       <h1 className="text-2xl font-bold">Sua colinha</h1>
-      <p className="mt-1 text-sm text-[var(--suave)]">Em quem você votou para o Congresso em 2026, com dados oficiais.</p>
+      <p className="mt-1 text-sm text-suave">Em quem você votou para o Congresso em 2026, com dados oficiais.</p>
       <div className="mt-6 grid justify-items-center gap-4">
         {cs.map((d) => <PoliticoCard key={d.id} d={d} linkPagina />)}
       </div>
@@ -53,5 +56,6 @@ export default async function ColinhaPage({ params }: Props) {
         <Link href="/" className="underline underline-offset-2">Alterar a colinha</Link>
       </p>
     </main>
+    </>
   );
 }

@@ -1,20 +1,57 @@
 @import "tailwindcss";
 
+/*
+ * Tema do protótipo do Claude Design (docs/PROTOTIPO.md, seção Visual): fundo claro, cards brancos
+ * com raio 15, destaque teal com texto escuro. O escuro segue o sistema, com os mesmos papéis.
+ */
 :root {
-  --fundo: #ffffff;
-  --texto: #111827;
-  --suave: #4b5563;
+  --fundo: #f7fafc;
+  --card: #ffffff;
+  --texto: #2d3748;
+  --suave: #5f6b7e;
+  --borda: #e2e8f0;
+  --borda-forte: #cbd5e0;
+  --destaque: #4fd1c5;
+  --destaque-texto: #1a202c;
+  --link: #2c7a7b;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --fundo: #0b0f14;
-    --texto: #f3f4f6;
-    --suave: #9ca3af;
+    --fundo: #12171f;
+    --card: #1b222d;
+    --texto: #e2e8f0;
+    --suave: #a0aec0;
+    --borda: #2d3748;
+    --borda-forte: #4a5568;
+    --destaque: #4fd1c5;
+    --destaque-texto: #1a202c;
+    --link: #81e6d9;
   }
 }
-body {
-  background: var(--fundo);
-  color: var(--texto);
+
+@theme inline {
+  --color-fundo: var(--fundo);
+  --color-card: var(--card);
+  --color-texto: var(--texto);
+  --color-suave: var(--suave);
+  --color-borda: var(--borda);
+  --color-borda-forte: var(--borda-forte);
+  --color-destaque: var(--destaque);
+  --color-destaque-texto: var(--destaque-texto);
+  --color-link: var(--link);
+  --radius-card: 15px;
+  --shadow-card: 0 3.5px 5.5px rgba(0, 0, 0, 0.02);
+  --font-sans: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    background: var(--fundo);
+    color: var(--texto);
+  }
+  a {
+    color: var(--link);
+  }
 }
 
 /* Páginas com barra fixa no rodapé (montar colinha): o rodapé sobe para não ficar coberto. */

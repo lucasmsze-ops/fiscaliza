@@ -12,11 +12,11 @@ function Cabecalho({ r, compacto = false }: { r: CardResumo; compacto?: boolean 
       {r.fotoUrl && (
         // <img> de propósito: a foto vem direto da URL oficial, sem passar pela Vercel (CLAUDE.md).
         <img src={r.fotoUrl} alt={`Foto oficial de ${r.nomeUrna}`} width={compacto ? 48 : 72} height={compacto ? 64 : 96} loading="lazy" decoding="async"
-          className={`${compacto ? "h-16 w-12" : "h-24 w-[4.5rem]"} shrink-0 rounded-lg bg-black/5 object-cover dark:bg-white/10`} />
+          className={`${compacto ? "h-16 w-12" : "h-24 w-[4.5rem]"} shrink-0 rounded-lg bg-fundo object-cover`} />
       )}
       <div className="min-w-0">
         <h2 id={`nome-${r.id}`} className={`${compacto ? "text-base" : "text-lg"} font-semibold leading-tight break-words`}>{r.nomeUrna}</h2>
-        <p className={`${compacto ? "mt-0.5 text-xs" : "mt-1 text-sm"} text-[var(--suave)]`}>{r.cargo} · {r.partidoUf}</p>
+        <p className={`${compacto ? "mt-0.5 text-xs" : "mt-1 text-sm"} text-suave`}>{r.cargo} · {r.partidoUf}</p>
         <p className={`${compacto ? "mt-0.5 text-xs" : "mt-1 text-sm"}`}>{r.status}</p>
       </div>
     </header>
@@ -31,7 +31,7 @@ export function PoliticoCardCompacto({ r, contexto }: { r: CardResumo; contexto?
   return (
     <div className="w-full text-left" aria-labelledby={`nome-${r.id}`}>
       <Cabecalho r={r} compacto />
-      {contexto && <p className="mt-2 text-xs text-[var(--suave)] tabular-nums">{contexto}</p>}
+      {contexto && <p className="mt-2 text-xs text-suave tabular-nums">{contexto}</p>}
     </div>
   );
 }
@@ -45,65 +45,65 @@ export function PoliticoCard({ d, linkPagina = false }: { d: CardDados; linkPagi
   // Avisos (fake door) só fazem sentido para quem tem ou terá mandato.
   const temAvisos = n.tipo !== "sem_mandato";
   return (
-    <article className="w-full max-w-sm rounded-2xl border border-black/10 p-4 dark:border-white/15" aria-labelledby={`nome-${d.id}`}>
+    <article className="w-full max-w-sm rounded-card border border-borda bg-card p-4 shadow-card" aria-labelledby={`nome-${d.id}`}>
       <Cabecalho r={d} />
 
-      <section className="mt-4 border-t border-black/10 pt-4 dark:border-white/15" aria-label="Números do mandato">
+      <section className="mt-4 border-t border-borda pt-4" aria-label="Números do mandato">
         {n.tipo === "mandato" && (
           <>
             <dl className="grid grid-cols-2 gap-3">
               <div>
-                <dt className="text-xs text-[var(--suave)]"><Termo id={`${d.id}-part`} termo="participacao">participação em votações</Termo></dt>
+                <dt className="text-xs text-suave"><Termo id={`${d.id}-part`} termo="participacao">participação em votações</Termo></dt>
                 <dd className="mt-1 text-2xl font-semibold tabular-nums">{pct(n.participacao)}</dd>
-                <dd className="text-xs text-[var(--suave)] tabular-nums">{inteiro(n.participacao.numerador)} de {inteiro(n.participacao.denominador)}</dd>
+                <dd className="text-xs text-suave tabular-nums">{inteiro(n.participacao.numerador)} de {inteiro(n.participacao.denominador)}</dd>
                 {n.textoAfastado && (
                   <dd className="mt-1 text-xs"><Termo id={`${d.id}-afast`} termo="afastado">{n.textoAfastado}</Termo></dd>
                 )}
               </div>
               <div>
-                <dt className="text-xs text-[var(--suave)]"><Termo id={`${d.id}-gov`} termo="governismo">governismo</Termo></dt>
+                <dt className="text-xs text-suave"><Termo id={`${d.id}-gov`} termo="governismo">governismo</Termo></dt>
                 {n.governismo.percentual === null ? (
                   <dd className="mt-1 text-sm">sem voto em orientação do Governo</dd>
                 ) : (
                   <>
                     <dd className="mt-1 text-2xl font-semibold tabular-nums">{pct(n.governismo)}</dd>
-                    <dd className="text-xs text-[var(--suave)] tabular-nums">{inteiro(n.governismo.numerador)} de {inteiro(n.governismo.denominador)}</dd>
+                    <dd className="text-xs text-suave tabular-nums">{inteiro(n.governismo.numerador)} de {inteiro(n.governismo.denominador)}</dd>
                   </>
                 )}
               </div>
 
             </dl>
-            <p className="mt-3 text-xs text-[var(--suave)]">
+            <p className="mt-3 text-xs text-suave">
               <Termo id={`${d.id}-nominal`} termo="nominal">Votações nominais</Termo> do plenário {n.casa === "senado" ? "do Senado" : "da Câmara"}, {n.periodo}.
             </p>
           </>
         )}
         {n.tipo === "primeiro_voto" && <p className="text-sm">Primeiro voto em fevereiro de 2027.</p>}
-        {n.tipo === "sem_mandato" && <p className="text-sm text-[var(--suave)]">Sem mandato no Congresso em {n.periodo}.</p>}
+        {n.tipo === "sem_mandato" && <p className="text-sm text-suave">Sem mandato no Congresso em {n.periodo}.</p>}
       </section>
 
       {d.ceap && (
-        <section className="mt-4 border-t border-black/10 pt-4 text-sm dark:border-white/15" aria-label="Cota parlamentar">
-          <p className="text-xs text-[var(--suave)]">
+        <section className="mt-4 border-t border-borda pt-4 text-sm" aria-label="Cota parlamentar">
+          <p className="text-xs text-suave">
             <Termo id={`${d.id}-ceap`} termo="ceap">cota parlamentar</Termo>{" "}
             · <Termo id={`${d.id}-mes`} termo="mesReferencia">{d.ceap.mes}</Termo>
           </p>
           <p className="mt-1">
             <span className="text-lg font-semibold tabular-nums">{d.ceap.valor === null ? "sem lançamento no mês" : reais(d.ceap.valor)}</span>
-            <span className="text-[var(--suave)]"> · <Termo id={`${d.id}-media`} termo="mediaUf">média {d.ceap.uf}</Termo> {reais(d.ceap.mediaUf)}</span>
+            <span className="text-suave"> · <Termo id={`${d.id}-media`} termo="mediaUf">média {d.ceap.uf}</Termo> {reais(d.ceap.mediaUf)}</span>
           </p>
           <a href={d.ceap.urlOficial} {...externo} className="mt-1 inline-block text-xs underline underline-offset-2">ver as despesas {d.ceap.casa === "senado" ? "no Senado" : "na Câmara"}</a>
         </section>
       )}
 
       {d.comoCobrar && (
-        <section className="mt-4 border-t border-black/10 pt-4 dark:border-white/15" aria-label="Como cobrar">
+        <section className="mt-4 border-t border-borda pt-4" aria-label="Como cobrar">
           <ComoCobrar c={d.comoCobrar} quem={d.nomeUrna} />
         </section>
       )}
 
       {(temAvisos || d.urlPerfil || linkPagina) && (
-        <footer className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-black/10 pt-4 dark:border-white/15">
+        <footer className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-borda pt-4">
           {temAvisos ? <ReceberAvisos id={d.id} sobre={`sobre ${d.nomeUrna}`} /> : <span />}
           <span className="flex gap-3 text-xs">
             {linkPagina && <a href={`/p/${d.id}`} className="underline underline-offset-2">mais detalhes</a>}

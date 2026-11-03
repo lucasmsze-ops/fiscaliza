@@ -38,7 +38,7 @@ function ListaCidade({ cargo, linhas, cidade, pessoas, marcado, marcar }: {
         return (
           <li key={id}>
             <button type="button" aria-pressed={sel} onClick={() => marcar(cargo, id)}
-              className={`w-full rounded-2xl border p-3 transition ${sel ? "border-[var(--texto)] ring-2 ring-[var(--texto)]" : "border-black/10 dark:border-white/15"}`}>
+              className={`w-full rounded-card border bg-card p-3 shadow-card transition ${sel ? "border-destaque ring-2 ring-destaque" : "border-borda"}`}>
               <PoliticoCardCompacto r={p} contexto={`${posicao}º em ${cidade} · ${inteiro(votos)} votos${sel ? " · ✓ na sua colinha" : ""}`} />
             </button>
           </li>
@@ -70,9 +70,18 @@ export function MontarColinha() {
   const [erro, setErro] = useState<string | null>(null);
   const [colinha, setColinha] = useState<Colinha>(COLINHA_VAZIA);
 
-  // Restaura a colinha e a última cidade deste navegador.
+  // Restaura a colinha e a última cidade deste navegador. Vindo da busca da barra do topo (`/?q=`),
+  // abre a busca com o termo no lugar da última cidade (que limparia o campo ao carregar).
   useEffect(() => {
     setColinha(lerColinha(lerStorage(CHAVE_STORAGE)));
+    const q = new URLSearchParams(location.search).get("q")?.trim();
+    if (q) {
+      setTermo(q);
+      void carregarMunicipios();
+      if (q.length >= 3) void carregarIndice().catch(() => setErro("Não foi possível carregar a busca."));
+      campo.current?.focus();
+      return;
+    }
     const ultima = Number(lerStorage(CHAVE_CIDADE));
     if (ultima) void escolherCidade(ultima);
   }, []);
@@ -140,49 +149,49 @@ export function MontarColinha() {
       <input id="busca" ref={campo} type="search" inputMode="search" autoComplete="off" value={termo}
         onFocus={() => void carregarMunicipios()}
         onChange={(e) => { setTermo(e.target.value); void carregarMunicipios(); if (e.target.value.length >= 3) void carregarIndice().catch(() => setErro("Não foi possível carregar a busca.")); }}
-        className="mt-2 w-full rounded-xl border border-black/20 bg-transparent px-4 py-3 text-base dark:border-white/25" />
+        className="mt-2 w-full rounded-card border border-borda bg-card px-4 py-3 text-base outline-none focus:border-destaque" />
 
       {(cidadesAchadas.length > 0 || pessoasAchadas.length > 0) && (
-        <div className="mt-2 rounded-xl border border-black/10 p-2 dark:border-white/15">
+        <div className="mt-2 rounded-card border border-borda bg-card p-2 shadow-card">
           {cidadesAchadas.map((m) => (
-            <button key={m.ibge} type="button" onClick={() => void escolherCidade(m.ibge)} className="block w-full rounded-lg px-3 py-2 text-left hover:bg-black/5 dark:hover:bg-white/10">
-              {m.nome} <span className="text-xs text-[var(--suave)]">· cidade · {m.uf}</span>
+            <button key={m.ibge} type="button" onClick={() => void escolherCidade(m.ibge)} className="block w-full rounded-lg px-3 py-2 text-left hover:bg-fundo">
+              {m.nome} <span className="text-xs text-suave">· cidade · {m.uf}</span>
             </button>
           ))}
           {pessoasAchadas.map((p) => (
             <button key={p.id} type="button" aria-pressed={marcado(p.id)} onClick={() => { marcar(p.cargoChave, p.id); setTermo(""); }}
-              className="block w-full rounded-lg px-3 py-2 text-left hover:bg-black/5 dark:hover:bg-white/10">
-              {p.nomeUrna} <span className="text-xs text-[var(--suave)]">· {p.cargo} · {p.partidoUf}{marcado(p.id) ? " · ✓" : ""}</span>
+              className="block w-full rounded-lg px-3 py-2 text-left hover:bg-fundo">
+              {p.nomeUrna} <span className="text-xs text-suave">· {p.cargo} · {p.partidoUf}{marcado(p.id) ? " · ✓" : ""}</span>
             </button>
           ))}
         </div>
       )}
 
       {erro && <p className="mt-3 text-sm" role="alert">{erro}</p>}
-      {carregando && <p className="mt-3 text-sm text-[var(--suave)]">Carregando…</p>}
+      {carregando && <p className="mt-3 text-sm text-suave">Carregando…</p>}
 
       {cidade && !carregando && (
         <section className="mt-8" aria-labelledby="titulo-cidade">
           <h2 id="titulo-cidade" className="text-xl font-semibold">Mais votados em {cidade.nome}</h2>
-          <p className="mt-1 text-sm text-[var(--suave)]">Toque em quem recebeu seu voto em 2026. <Link href={hrefSecao("cidade")} className="underline underline-offset-2">Fonte: TSE</Link>.</p>
+          <p className="mt-1 text-sm text-suave">Toque em quem recebeu seu voto em 2026. <Link href={hrefSecao("cidade")} className="underline underline-offset-2">Fonte: TSE</Link>.</p>
 
-          <h3 className="mt-6 font-semibold">Deputado federal <span className="text-sm font-normal text-[var(--suave)]">· escolha 1</span></h3>
+          <h3 className="mt-6 font-semibold">Deputado federal <span className="text-sm font-normal text-suave">· escolha 1</span></h3>
           <ListaCidade cargo="deputado_federal" linhas={cidade.deputado_federal} cidade={cidade.nome} pessoas={cidade.pessoas} marcado={marcado} marcar={marcar} />
-          <p className="mt-3 text-sm text-[var(--suave)]">
+          <p className="mt-3 text-sm text-suave">
             Não está na lista?{" "}
             <button type="button" onClick={irParaBusca} className="underline underline-offset-2">Busque pelo nome ou pelo número de urna</button>.
           </p>
 
-          <h3 className="mt-8 font-semibold">Senado <span className="text-sm font-normal text-[var(--suave)]">· escolha até {MAX_SENADORES}</span></h3>
+          <h3 className="mt-8 font-semibold">Senado <span className="text-sm font-normal text-suave">· escolha até {MAX_SENADORES}</span></h3>
           <ListaCidade cargo="senador" linhas={cidade.senador} cidade={cidade.nome} pessoas={cidade.pessoas} marcado={marcado} marcar={marcar} />
         </section>
       )}
 
       {caminho && (
-        <div className="barra-fixa fixed inset-x-0 bottom-0 border-t border-black/10 bg-[var(--fundo)] px-4 py-3 dark:border-white/15">
+        <div className="barra-fixa fixed inset-x-0 bottom-0 border-t border-borda bg-card px-4 py-3">
           <div className="mx-auto flex max-w-xl items-center justify-between gap-3">
-            <p className="min-w-0 truncate text-sm"><span className="text-[var(--suave)]">Sua colinha:</span> {escolhidos.join(", ")}</p>
-            <Link href={caminho} className="shrink-0 rounded-full bg-[var(--texto)] px-5 py-2 text-sm font-semibold text-[var(--fundo)]">Ver colinha</Link>
+            <p className="min-w-0 truncate text-sm"><span className="text-suave">Sua colinha:</span> {escolhidos.join(", ")}</p>
+            <Link href={caminho} className="shrink-0 rounded-xl bg-destaque px-5 py-2 text-sm font-bold text-destaque-texto">Ver colinha</Link>
           </div>
         </div>
       )}

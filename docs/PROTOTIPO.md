@@ -21,10 +21,10 @@ Tema claro inspirado no Purity UI Dashboard (Creative Tim): usar as escolhas vis
 | Fundo da página | `#F7FAFC` |
 | Card | branco, raio 15 px, sombra `0 3.5px 5.5px rgba(0,0,0,.02)` |
 | Destaque | teal `#4FD1C5` com texto escuro `#1A202C`; links `#2C7A7B` |
-| Texto | `#2D3748`; secundário `#64748B`; bordas `#E2E8F0` |
+| Texto | `#2D3748`; secundário `#64748B` (no site `#5F6B7E`: 5,15:1 sobre o fundo, contra 4,54:1); bordas `#E2E8F0` |
 | Fonte | Roboto 400/500/700/900 |
 
-No site:
+No site (aplicado na E22b, `app/globals.css`, `components/Moldura.tsx`):
 - Roboto entra por `next/font`, servida pelo próprio site no build, nunca buscada na hora.
 - O tema escuro continua, seguindo o sistema como hoje, com tokens derivados destes. O botão
   claro/escuro segue no Passo 7.

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BarraTopo } from "@/components/BarraTopo";
 import { PoliticoCard } from "@/components/PoliticoCard";
 import { Termo } from "@/components/Termo";
 import { inteiro, reais, resumoNumeros } from "@/lib/card";
@@ -41,10 +42,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /** `secao`: seção de /como-funciona com a regra de cálculo; só para blocos com número. */
 function Secao({ titulo, secao, children }: { titulo: string; secao?: SecaoComoFunciona; children: React.ReactNode }) {
   return (
-    <section className="mt-10" aria-label={titulo}>
+    <section className="mt-6 rounded-card border border-borda bg-card p-5 shadow-card" aria-label={titulo}>
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="text-lg font-semibold">{titulo}</h2>
-        {secao && <Link href={hrefSecao(secao)} className="shrink-0 text-xs text-[var(--suave)] underline underline-offset-2">como contamos</Link>}
+        {secao && <Link href={hrefSecao(secao)} className="shrink-0 text-xs text-suave underline underline-offset-2">como contamos</Link>}
       </div>
       <div className="mt-3 text-sm">{children}</div>
     </section>
@@ -58,13 +59,14 @@ export default async function PaginaPolitico({ params }: Props) {
   const casaNome = v?.casa === "senado" ? "do Senado" : "da Câmara";
 
   return (
-    <main className="mx-auto max-w-xl px-4 py-8">
-      <p className="text-sm"><Link href="/" className="underline underline-offset-2">Fiscaliza</Link></p>
-      <div className="mt-4 grid justify-items-center"><PoliticoCard d={c} /></div>
+    <>
+    <BarraTopo secao="Políticos" pagina={c.nomeUrna} />
+    <main className="mx-auto max-w-xl pb-8">
+      <div className="grid justify-items-center"><PoliticoCard d={c} /></div>
 
       {v && (
         <Secao titulo={`Votações nominais do plenário ${casaNome}, 2023–2026`} secao="participacao">
-          <p className="text-[var(--suave)]">{inteiro(v.total)} votações durante o mandato. Como votou:</p>
+          <p className="text-suave">{inteiro(v.total)} votações durante o mandato. Como votou:</p>
           <dl className="mt-3 grid grid-cols-2 gap-x-6 gap-y-1 tabular-nums">
             {ORDEM_VOTOS.map((t) => [t, v.totais[t]] as const).filter(([, n]) => n > 0).map(([t, n]) => (
               <div key={t} className="flex justify-between gap-2">
@@ -76,8 +78,8 @@ export default async function PaginaPolitico({ params }: Props) {
           <h3 className="mt-6 font-medium">Últimas 10 votações</h3>
           <ul className="mt-2 grid gap-3">
             {v.ultimas.map((u, i) => (
-              <li key={i} className="border-b border-black/10 pb-2 dark:border-white/15">
-                <p className="flex justify-between gap-3"><span className="text-xs text-[var(--suave)]">{dataBr(u.data)}{u.proposicao ? ` · ${u.proposicao}` : ""}</span><span className="shrink-0 font-medium">{ROTULO[u.voto]}</span></p>
+              <li key={i} className="border-b border-borda pb-2">
+                <p className="flex justify-between gap-3"><span className="text-xs text-suave">{dataBr(u.data)}{u.proposicao ? ` · ${u.proposicao}` : ""}</span><span className="shrink-0 font-medium">{ROTULO[u.voto]}</span></p>
                 <p className="mt-1 text-xs leading-relaxed">{u.descricao.replace(/\s*Sim:\s*\d.*$/s, "")} <a href={u.urlOficial} {...externo} className="underline underline-offset-2">fonte</a></p>
               </li>
             ))}
@@ -87,15 +89,15 @@ export default async function PaginaPolitico({ params }: Props) {
 
       {ceap && (
         <Secao titulo={`Cota parlamentar (${ceap.casa === "senado" ? "CEAPS" : "CEAP"}) mês a mês`} secao="ceap">
-          <p className="text-[var(--suave)]">Valor líquido do mês e <Termo id="pg-media" termo="mediaUf">média da bancada de {ceap.uf}</Termo>. Meses em aberto ainda recebem lançamentos.</p>
+          <p className="text-suave">Valor líquido do mês e <Termo id="pg-media" termo="mediaUf">média da bancada de {ceap.uf}</Termo>. Meses em aberto ainda recebem lançamentos.</p>
           <table className="mt-3 w-full tabular-nums">
-            <thead><tr className="text-left text-xs text-[var(--suave)]"><th className="font-normal">Mês</th><th className="text-right font-normal">Valor</th><th className="text-right font-normal">Média {ceap.uf}</th></tr></thead>
+            <thead><tr className="text-left text-xs text-suave"><th className="font-normal">Mês</th><th className="text-right font-normal">Valor</th><th className="text-right font-normal">Média {ceap.uf}</th></tr></thead>
             <tbody>
               {ceap.meses.map((m) => (
-                <tr key={`${m.ano}-${m.mes}`} className="border-t border-black/10 dark:border-white/15">
-                  <td className="py-1">{MESES[m.mes - 1]}/{m.ano}{m.aberto && <span className="ml-1 text-xs text-[var(--suave)]">em aberto</span>}</td>
+                <tr key={`${m.ano}-${m.mes}`} className="border-t border-borda">
+                  <td className="py-1">{MESES[m.mes - 1]}/{m.ano}{m.aberto && <span className="ml-1 text-xs text-suave">em aberto</span>}</td>
                   <td className="py-1 text-right">{m.valor === null ? "sem lançamento" : reais(m.valor)}</td>
-                  <td className="py-1 text-right text-[var(--suave)]">{reais(m.mediaUf)}</td>
+                  <td className="py-1 text-right text-suave">{reais(m.mediaUf)}</td>
                 </tr>
               ))}
             </tbody>
@@ -144,5 +146,6 @@ export default async function PaginaPolitico({ params }: Props) {
       )}
 
     </main>
+    </>
   );
 }

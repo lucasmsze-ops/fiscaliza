@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { BarraTopo } from "@/components/BarraTopo";
 import { Termo } from "@/components/Termo";
 import { PERIODO_GOVERNO } from "@/lib/card";
 import { GLOSSARIO, SECOES, type Secao } from "@/lib/glossario";
@@ -67,16 +67,17 @@ export default async function ComoFunciona() {
   const rotuloMes = (m: { ano: number; mes: number }) => `${MESES[m.mes - 1]}/${m.ano}`;
 
   return (
-    <main className="mx-auto max-w-xl px-4 py-8">
-      <p className="text-sm"><Link href="/" className="underline underline-offset-2">Fiscaliza</Link></p>
-      <h1 className="mt-4 text-2xl font-bold">Como funciona</h1>
+    <>
+    <BarraTopo secao="Fiscaliza" pagina="Como funciona" />
+    <main className="mx-auto max-w-xl pb-8">
+      <h1 className="text-2xl font-bold">Como funciona</h1>
       <p className="mt-3 text-sm leading-relaxed">
         O Fiscaliza mostra o que os dados abertos do TSE, da Câmara dos Deputados e do Senado Federal registram sobre quem recebeu seu voto.
         Cada número tem uma regra de cálculo, descrita nesta página, e um link para a página oficial de origem.
         O site não qualifica ninguém: mostra o número e a fonte. Nenhum dado é inventado: o que a fonte não traz aparece como lacuna, nunca como zero.
       </p>
 
-      <nav aria-label="Seções" className="mt-6 rounded-2xl border border-black/10 p-4 text-sm dark:border-white/15">
+      <nav aria-label="Seções" className="mt-6 rounded-card border border-borda bg-card p-4 text-sm shadow-card">
         <ol className="grid gap-1 sm:grid-cols-2">
           {SECOES.map((s) => <li key={s.id}><a href={`#${s.id}`} className="underline underline-offset-2">{s.titulo}</a></li>)}
         </ol>
@@ -266,11 +267,12 @@ export default async function ComoFunciona() {
           {Object.values(GLOSSARIO).map((g) => (
             <div key={g.titulo}>
               <dt className="font-medium">{g.titulo}</dt>
-              <dd className="text-[var(--suave)]">{g.texto}</dd>
+              <dd className="text-suave">{g.texto}</dd>
             </div>
           ))}
         </dl>
       </Secao>
     </main>
+    </>
   );
 }

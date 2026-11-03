@@ -364,10 +364,13 @@ colinha não funciona fora de SP. Dividida em E21a–E21e; o desenho do cron est
 ### E22b · Visual do protótipo
 Tema claro do protótipo do Claude Design (`docs/PROTOTIPO.md`, seção Visual) nas páginas que já
 existem (`/`, `/c/[ids]`, `/p/[slug]`, `/como-funciona`), sem conteúdo novo.
-- [ ] Tokens no `app/globals.css`: fundo, card, teal, texto. Tema escuro derivado dos mesmos tokens.
-- [ ] Roboto por `next/font`, servida pelo site.
-- [ ] Menu lateral e barra do topo com a busca. No celular, barra no rodapé ou gaveta (medir).
-- [ ] Reler o protótipo antes de começar (pode ter mudado).
+- [x] Tokens no `app/globals.css`: fundo, card, teal, texto. Tema escuro derivado dos mesmos tokens.
+      (Viram cores do Tailwind: `bg-card`, `border-borda`, `bg-destaque`, `text-suave`...)
+- [x] Roboto por `next/font`, servida pelo site. (Um arquivo de 37 KB, pré-carregado, `swap`.)
+- [x] Menu lateral e barra do topo com a busca. No celular, barra no rodapé ou gaveta (medir).
+      (Gaveta por popover nativo: o rodapé do celular é da barra "Ver colinha". Menu só com páginas
+      que existem. A busca do topo abre a entrada com `/?q=`.)
+- [x] Reler o protótipo antes de começar (pode ter mudado).
 - Pronto quando: as páginas atuais com o visual novo, medidas no celular (colinha e página do
   político em < 1 s no 4G), sem nenhum número diferente.
 

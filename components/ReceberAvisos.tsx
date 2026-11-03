@@ -13,11 +13,11 @@ export function ReceberAvisos({ id, sobre }: {
   return (
     <>
       <button type="button" popoverTarget={alvo}
-        className="rounded-full border border-black/20 px-4 py-2 text-sm font-medium dark:border-white/25">
+        className="rounded-xl border border-borda-forte bg-card px-4 py-2 text-sm font-bold">
         Receber avisos
       </button>
       <div id={alvo} popover="auto"
-        className="m-auto max-w-[min(22rem,calc(100vw-2rem))] rounded-xl border border-black/10 bg-[var(--fundo)] p-4 text-left text-sm leading-relaxed text-[var(--texto)] shadow-xl backdrop:bg-black/40 dark:border-white/15">
+        className="m-auto max-w-[min(22rem,calc(100vw-2rem))] rounded-card border border-borda bg-card p-4 text-left text-sm leading-relaxed text-texto shadow-xl backdrop:bg-black/40">
         <p className="font-semibold">Avisos ainda não existem</p>
         <p className="mt-1">O Fiscaliza ainda não manda avisos {sobre}. Nada sobre você foi pedido nem guardado.</p>
         <button type="button" popoverTarget={alvo} popoverTargetAction="hide" className="mt-3 text-xs underline underline-offset-2">
