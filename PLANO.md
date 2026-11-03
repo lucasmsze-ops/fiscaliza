@@ -379,22 +379,51 @@ existem (`/`, `/c/[ids]`, `/p/[slug]`, `/como-funciona`), sem conteúdo novo.
 Referência: `docs/REFERENCIA-POLITICOMETRO.md`, seções 1 e 2. Referência visual e campo a campo:
 `docs/PROTOTIPO.md` (que tela vai em que etapa e as decisões abertas). Detalhar cada etapa ao chegar nela.
 
-### E23 · Página do político: resumo do topo
+Decisão de 2026-11-03: antecipar as telas do protótipo que já têm dado real no banco (E23 a E23d),
+antes das que pedem coleta nova. Só dado real: bloco cujo dado ainda não é coletado não aparece
+(nem vazio, nem "em breve"); "—" só para o que a fonte oficial não publica.
+
+### E23 · Crachá: página do político no layout do protótipo
 Mandato atual e próximo, salário e "quanto custa o mandato" (ato legal), data da coleta,
-"o que está e o que não está nesta página", redes declaradas ao TSE. Layout do crachá do protótipo,
-sem perder governismo, cota contra a média, "Como cobrar" e "Receber avisos" (`docs/PROTOTIPO.md`).
+"o que está e o que não está nesta página", redes declaradas ao TSE. Layout do crachá do protótipo
+(`docs/PROTOTIPO.md`) só com o que já está no banco: participação, governismo, cota contra a média,
+mandatos e afastamentos, últimas votações, propostas de autoria (resumo). Sem perder "Como cobrar"
+e "Receber avisos". Fora até ter dado: patrimônio (E24), "votou com o partido" (E26), emendas
+(decisão 3), "quem vota mais parecido" (decisão 2). "Monitorar" espera a decisão 1 (não bloqueia).
+
+### E23b · Congresso: bancadas e o que já foi votado
+Página `/congresso` com o que já existe: Plenário em bolinhas por partido (parlamentares em
+exercício, Câmara e Senado), lista de quem está em cada bancada, últimas votações nominais com
+placar e "o que virou lei" (`proposicoes.virou_norma`). Agenda e pauta ficam na E32 (coleta nova).
+
+### E23c · Quem me representa no Congresso
+Cidade ou estado → os 3 senadores e os deputados federais da UF (rota `/uf/[uf]`, já planejada),
+com a contagem da Constituição. Prefeito, governador, deputados estaduais e vereadores entram no
+Passo 5; até lá a página diz só o que cobre.
+
+### E23d · Cargos e Dicionário
+`/cargos` e `/dicionario`: texto fixo com fonte legal (Constituição, regimentos). O Dicionário
+junta os termos de `lib/glossario.ts`, sem duplicar. Menu ganha os itens das páginas novas.
 
 ### E24 · Patrimônio e contas de campanha (TSE)
 Patrimônio por eleição, sem descrição dos bens; arrecadado, gasto e % de dinheiro público.
 
 ### E25 · Propostas de autoria
 Autor principal vs coautoria, "podem virar lei" vs pedidos, quantas viraram lei, filtro por ano.
+Aba Propostas do crachá e a lista geral `/propostas` do protótipo (Casa, tipo, situação, busca na
+ementa). A linha do tempo da tramitação só se a tramitação for coletada (hoje só a situação atual).
 Decisão de 2026-11-02: texto completo só de PL, PLP, PEC, PDL e PRC; o resto como contagem por
 ano e tipo, com link. Carga inicial pelos arquivos anuais da Câmara (`proposicoesAutores`).
 Decidir aqui se entram temas por palavra-chave da ementa.
 
 ### E26 · Todos os votos e fidelidade ao partido
-Lista completa com filtros (ano, voto, busca); % de votos iguais à orientação do partido.
+Lista completa com filtros (ano, voto, busca); % de votos iguais à orientação do partido. Aba Votos
+do crachá e "votou com o partido?"; participação ao lado da média da Casa.
+
+### E26b · Comparar
+`/comparar`, 2 a 5 lado a lado, sem nota nem ranking (tela do protótipo). Vem depois da E24 e da E26
+porque as linhas dependem delas (patrimônio, fidelidade). Idade só se a data de nascimento do TSE
+passar a ser gravada.
 
 ### E27 · Cota completa
 Câmara e Senado: por mês, categoria e maiores fornecedores. Decisão de 2026-11-02: agregada, sem
@@ -408,7 +437,8 @@ Participação em comissões (não as votações delas); pessoas, folha do mês 
 TSE 2008–2026: cargo, votos, eleito por QP ou média (`lib/quociente.ts`).
 
 ### E30 · Votações do Plenário
-`/votacoes` com todas as votações do período, filtros por Casa, data, tipo e busca.
+`/votacoes` com todas as votações do período, filtros por Casa, data, tipo e busca. As últimas
+votações e o Plenário em bolinhas já vieram na E23b.
 
 ### E31 · Detalhe da votação
 `/votacoes/[id]`: o que é, o que foi votado, quórum, placar, voto e orientação de cada partido,
@@ -436,8 +466,8 @@ aberto aparece como lacuna, com o porquê.
 ## Passo 7 — Contexto (detalhar ao chegar)
 Comparar (2 a 5 lado a lado) · governos e indicadores · partidos (sem régua) · cargos ·
 dicionário · mais vistos (analytics cookieless) · impostômetro · STF (só com fonte aberta) ·
-ouvir a página · tema claro/escuro · servidor MCP. Telas no protótipo: Comparar, Cargos,
-Dicionário (`docs/PROTOTIPO.md`).
+ouvir a página · tema claro/escuro · servidor MCP. Comparar, Cargos e Dicionário foram antecipados
+(E26b, E23d).
 
 Calendário: a posse é em 01/02/2027. Até lá, o Passo 3 e o Passo 4 cabem no ritmo de uma etapa
 por dia (22 etapas depois da divisão da E21).

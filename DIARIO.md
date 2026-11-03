@@ -28,8 +28,9 @@ rodapé, porque o rodapé do celular é da barra "Ver colinha". Secundário `#5F
 `#64748B` do protótipo (contraste 5,15:1 contra 4,54:1). Nenhum texto ou número mudou; só saiu o
 link "Fiscaliza" do topo de `/p` e `/como-funciona` (a marca no menu faz esse papel).
 **Lacunas:** nenhuma.
-**Próximo passo:** conferir o run agendado de 2026-11-04 (fecha a E22). Depois a E23, que pede antes a
-decisão 1 de `docs/PROTOTIPO.md` (colinha × Monitorando).
+**Próximo passo:** conferir o run agendado de 2026-11-04 (fecha a E22). Depois a E23 (crachá no layout
+do protótipo, só com dado real). O plano antecipou E23–E23d, as telas que já têm dado no banco; a
+decisão 1 (colinha × Monitorando) não bloqueia a E23, só o botão "Monitorar".
 
 ## 2026-11-03 · E22
 **Feito:** `.github/workflows/cron.yml` (06:17 de Brasília + `workflow_dispatch`). Estado no cache do

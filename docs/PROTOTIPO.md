@@ -1,7 +1,8 @@
 # Protótipo de telas (Claude Design)
 
 Referência visual e de conteúdo para o Passo 4 em diante. Lido e cruzado com o `CLAUDE.md` e o
-`PLANO.md` em 2026-11-03.
+`PLANO.md` em 2026-11-03. No mesmo dia, o plano antecipou as telas que já têm dado real no banco
+(E23 a E23d): crachá, Congresso, "quem me representa" no Congresso, Cargos e Dicionário.
 
 - **Onde está:** canvas "Fiscaliza — Protótipo" no claude.ai,
   `https://claude.ai/artifact/9VkftS3ZKzdgwb3dJpLDv5`. Uma sessão do Claude Code lê as telas direto
@@ -50,7 +51,7 @@ No site (aplicado na E22b, `app/globals.css`, `components/Moldura.tsx`):
 | Aba Votos: votação, orientação do partido, voto, link oficial | `votacoes`, `votos`, `orientacoes` | E26 |
 | Aba Emendas: destino, valor, pago | Portal da Transparência (chave de API) | **decisão 3** |
 | Monitorar | navegador (localStorage) | **decisão 1** |
-| Comparar com outro político | ver Comparar | Passo 7 |
+| Comparar com outro político | ver Comparar | E26b |
 | Compartilhar | card `next/og` | E33 |
 
 **O que o card atual tem e o crachá do protótipo não mostra.** Tudo continua, porque é o objeto
@@ -71,17 +72,17 @@ central do `CLAUDE.md`. Na E23, achar o lugar de cada um no layout do crachá:
 
 ### Congresso (`Congresso`)
 - **Plenário em bolinhas por partido, com a lista de quem está em cada bancada:** `politicos` em
-  exercício. Entra na E30.
-- **"O que está sendo votado" / "O que virou lei", placar:** E30 e E31 (`virou_norma` já está em
-  `proposicoes`).
+  exercício. Antecipado para a E23b.
+- **Últimas votações com placar e "O que virou lei":** E23b (`votacoes` e `virou_norma` já estão no
+  banco). A lista completa com filtros e o detalhe da votação seguem na E30 e na E31.
 - **Agenda do mês e pauta da sessão:** E32, pelo cron.
 - **"Sem sessão agora · consultado há 0 min":** sugere consulta ao vivo (princípio 2). No site
   vira "atualizado em {data da coleta}", vindo de `atualizacoes`.
 
 ### Me representa (`Representantes`)
 - **Cidade ou estado → quem está no cargo, em anéis (Brasília, estado, cidade), com a contagem da
-  Constituição:** a parte do Congresso dá para fazer já (senadores e deputados federais da UF).
-  Prefeito, governador, deputados estaduais e vereadores vêm no Passo 5.
+  Constituição:** a parte do Congresso foi antecipada para a E23c (senadores e deputados federais
+  da UF). Prefeito, governador, deputados estaduais e vereadores vêm no Passo 5.
 - **Bandeja "Monitorando (n)":** **decisão 1**.
 
 ### Entrar / Monitorando (`Entrar`)
@@ -97,7 +98,7 @@ central do `CLAUDE.md`. Na E23, achar o lugar de cada um no layout do crachá:
   - "Discursou no Plenário": discursos estão fora de escopo.
   - Atos do Executivo, contratos de prefeitura: sem fonte aberta no escopo atual.
 
-### Comparar (`Comparar`, `CompararCom`) → Passo 7
+### Comparar (`Comparar`, `CompararCom`) → E26b (depois de patrimônio e fidelidade)
 - **De 2 a 5 lado a lado, sem nota nem ranking:** bate com o princípio 4.
 - **Linhas:** partido, idade, salário, cota, patrimônio, votos na última eleição, propostas,
   participação, mandatos.
@@ -108,10 +109,11 @@ central do `CLAUDE.md`. Na E23, achar o lugar de cada um no layout do crachá:
   `proposicoes`, só as que têm autor no site.
 - **MPV:** não é coletada (o autor é a Presidência).
 - **Linha do tempo "Apresentada → comissão → Plenário → outra casa → sanção":** pede a
-  tramitação, que não é coletada (hoje só a situação atual). Encaixar na E25 ou no Passo 7.
+  tramitação, que não é coletada (hoje só a situação atual). A lista entra na E25; a linha do tempo,
+  só se a tramitação passar a ser coletada.
 
-### Cargos, Dicionário → Passo 7
-- **Ambas são texto fixo com fonte legal:** podem vir antes, por serem baratas.
+### Cargos, Dicionário → E23d
+- **Ambas são texto fixo com fonte legal:** antecipadas por não dependerem de coleta.
 - **Dicionário:** junta com os termos de `lib/glossario.ts`, sem duplicar.
 
 ### Sobre
