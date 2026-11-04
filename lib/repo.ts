@@ -13,8 +13,8 @@ import { ordemNaCidade } from "./cidade";
 import { deLinha } from "./linhas";
 import { montarPagina, type PaginaDados } from "./pagina";
 import type {
-  Afastamento, Cargo, Casa, DespesaMediaUf, DespesaMes, EleitoMunicipio, Linha, ListaEleitoral, Mandato, Municipio,
-  Orientacao, Politico, Votacao, Voto,
+  Afastamento, Atualizacao, Cargo, Casa, DespesaMediaUf, DespesaMes, EleitoMunicipio, Linha, ListaEleitoral, Mandato, Municipio,
+  Orientacao, Politico, Proposicao, ProposicaoAutor, ProposicaoContagem, Votacao, Voto,
 } from "./types";
 
 export interface EleitoNaCidade {
@@ -45,6 +45,12 @@ export interface Repo {
   getOrientacoes(casa: Casa, bancada: string): Promise<Orientacao[]>;
   getDespesas(politicoId: string): Promise<DespesaMes[]>;
   getMediasUf(uf: string, casa: Casa): Promise<DespesaMediaUf[]>;
+  /** Proposições que podem virar lei com o político entre os autores (ordem 1 = primeiro autor). */
+  getAutorias(politicoId: string): Promise<{ proposicao: Proposicao; ordem: number }[]>;
+  /** Os demais tipos (requerimentos, indicações, emendas...), só a contagem por ano e tipo. */
+  getContagemProposicoes(politicoId: string): Promise<ProposicaoContagem[]>;
+  /** Última coleta bem-sucedida de cada fonte (`{casa}_{job}`). */
+  getAtualizacoes(): Promise<Atualizacao[]>;
 }
 
 export { normalizar } from "./texto";
@@ -54,7 +60,8 @@ import { normalizar } from "./texto";
 type Tabelas = {
   politicos: Politico; mandatos: Mandato; afastamentos: Afastamento; listas: ListaEleitoral; municipios: Municipio;
   eleitos_mun: EleitoMunicipio; despesas_mes: DespesaMes; despesas_media_uf: DespesaMediaUf; votacoes: Votacao;
-  votos: Voto; orientacoes: Orientacao;
+  votos: Voto; orientacoes: Orientacao; proposicoes: Proposicao; proposicoes_autores: ProposicaoAutor;
+  proposicoes_contagem: ProposicaoContagem; atualizacoes: Atualizacao;
 };
 
 /** Lê data/*.json uma vez por processo (cada tabela só quando pedida). */
@@ -145,6 +152,19 @@ export class JsonRepo implements Repo {
   }
   async getMediasUf(uf: string, casa: Casa) {
     return (await this.tabela("despesas_media_uf")).filter((m) => m.uf === uf && m.casa === casa);
+  }
+  async getAutorias(politicoId: string) {
+    const [autores, porId] = await Promise.all([this.por("proposicoes_autores", "politicoId"), this.por("proposicoes", "id")]);
+    return (autores.get(politicoId) ?? []).flatMap((a) => {
+      const proposicao = porId.get(a.proposicaoId)?.[0];
+      return proposicao ? [{ proposicao, ordem: a.ordem }] : [];
+    });
+  }
+  async getContagemProposicoes(politicoId: string) {
+    return (await this.por("proposicoes_contagem", "politicoId")).get(politicoId) ?? [];
+  }
+  async getAtualizacoes() {
+    return this.tabela("atualizacoes");
   }
 }
 

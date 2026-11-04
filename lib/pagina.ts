@@ -26,6 +26,32 @@ export interface MesCeap {
   aberto: boolean;
 }
 
+export interface PropostaListada {
+  casa: Casa;
+  tipo: string;
+  numero: number;
+  ano: number;
+  ementa: string | null;
+  apresentacao: string;
+  situacao: string | null;
+  virouNorma: boolean;
+  urlOficial: string;
+  primeiroAutor: boolean;
+}
+
+/** Propostas de autoria desde 2023 (só onde foram coletadas: quem passou pela Câmara ou está no Senado). */
+export interface PropostasPagina {
+  desde: number;
+  /** Tipos que podem virar lei (PL, PLP, PEC, PDL, PRC/PRS) com o político entre os autores. */
+  leis: number;
+  primeiroAutor: number;
+  viraramNorma: number;
+  /** Os demais tipos (requerimentos, indicações, emendas...), pela contagem. */
+  outras: number;
+  /** As mais recentes, até 10. */
+  ultimas: PropostaListada[];
+}
+
 export interface PaginaDados {
   card: CardDados;
   votacoes: null | {
@@ -39,7 +65,12 @@ export interface PaginaDados {
   mandatos: Mandato[];
   afastamentos: Afastamento[];
   contatos: { email: string | null; telefone: string | null; redesSociais: string[]; urlPerfil: string | null };
+  /** Opcional: resumos gravados antes da E23 não têm (a seção some até o cron regravar). */
+  propostas?: PropostasPagina | null;
 }
+
+/** Ano inicial da coleta de proposições (docs/VOLUME.md, decisão de 2026-11-02). */
+export const PROPOSTAS_DESDE = 2023;
 
 const VAZIO: TotaisVoto = { sim: 0, nao: 0, abstencao: 0, obstrucao: 0, art17: 0, nao_informado: 0, secreto: 0, ausente: 0 };
 
@@ -85,8 +116,25 @@ export async function montarPagina(repo: Repo, id: string, hoje = new Date().toI
     ceap = { casa: card.ceap.casa, uf: card.ceap.uf, meses, categorias, mesReferencia: ref ? { ano: ref.ano, mes: ref.mes } : null };
   }
 
+  let propostas: PropostasPagina | null = null;
+  if (p.camaraId || p.senadoCodigo) {
+    const [autorias, contagem] = await Promise.all([repo.getAutorias(id), repo.getContagemProposicoes(id)]);
+    const ordenadas = [...autorias].sort((a, b) => b.proposicao.apresentacao.localeCompare(a.proposicao.apresentacao) || b.proposicao.id.localeCompare(a.proposicao.id));
+    propostas = {
+      desde: PROPOSTAS_DESDE,
+      leis: autorias.length,
+      primeiroAutor: autorias.filter((a) => a.ordem === 1).length,
+      viraramNorma: autorias.filter((a) => a.proposicao.virouNorma).length,
+      outras: contagem.reduce((t, c) => t + c.autorias, 0),
+      ultimas: ordenadas.slice(0, 10).map(({ proposicao: x, ordem }) => ({
+        casa: x.casa, tipo: x.tipo, numero: x.numero, ano: x.ano, ementa: x.ementa, apresentacao: x.apresentacao,
+        situacao: x.situacao, virouNorma: x.virouNorma, urlOficial: x.urlOficial, primeiroAutor: ordem === 1,
+      })),
+    };
+  }
+
   return {
-    card, votacoes, ceap,
+    card, votacoes, ceap, propostas,
     mandatos: [...mandatos].sort((a, b) => b.inicio.localeCompare(a.inicio)),
     afastamentos: afastamentos.filter((a) => (a.fim ?? hoje) >= PERIODO_GOVERNO.inicio).sort((a, b) => b.inicio.localeCompare(a.inicio)),
     contatos: { email: p.email, telefone: p.telefone, redesSociais: p.redesSociais, urlPerfil: p.urlPerfil },

@@ -53,6 +53,24 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
   Senado: arquivo anual da CEAPS (`adm.senado.gov.br/adm-dadosabertos/api/v1/senadores/despesas_ceaps/{ano}`),
   sem fornecedor nem CPF/CNPJ; despesa sem tipo vira "Tipo não informado pela fonte". Desde 2025.
 
+## Propostas de autoria
+- Desde 2023, só de quem foi coletado: quem passou pela Câmara na legislatura 57 ou está no Senado
+  (`politicos.camara_id` ou `senado_codigo`). Para os demais a seção não existe (não é zero).
+- **Autor:** Câmara, `proponente = 1` em `proposicoesAutores` (apoio de PEC fica fora); Senado,
+  `autoriaIniciativa` de `/processo/{id}`. **Primeiro autor:** `ordem = 1` (ordem de assinatura).
+- **Podem virar lei:** PL, PLP, PEC, PDL, PRC (Câmara) e PL, PLP, PEC, PDL, PRS (Senado), com
+  íntegra em `proposicoes`. **Viraram norma:** `virou_norma` (situação "Transformado(a) em Norma
+  Jurídica"). Os demais tipos só como soma de `proposicoes_contagem` ("requerimentos, emendas e
+  outros pedidos").
+- A página mostra as 10 mais recentes por data de apresentação (`lib/pagina.ts`).
+
+## Salário
+- Subsídio mensal bruto dos membros do Congresso, igual para deputados e senadores: Decreto
+  Legislativo nº 172/2022, art. 1º (39.293,32 desde 01/01/2023; 41.650,92 desde 01/04/2023;
+  44.008,52 desde 01/02/2024; 46.366,19 desde 01/02/2025). Conferido no texto oficial em
+  2026-11-03 (`lib/salario.ts`). Só para quem exerce mandato hoje. Não inclui cota nem verba de
+  gabinete.
+
 ## Como cobrar
 - No lugar do antigo botão Cobrar (removido em 2026-11-01, junto com o quiz de concordância e
   "seu voto contou para"; ver `PLANO.md`, mudança de escopo).

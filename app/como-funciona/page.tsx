@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { BarraTopo } from "@/components/BarraTopo";
 import { Termo } from "@/components/Termo";
-import { PERIODO_GOVERNO } from "@/lib/card";
+import { PERIODO_GOVERNO, reais } from "@/lib/card";
 import { GLOSSARIO, SECOES, type Secao } from "@/lib/glossario";
 import { CANAIS_CONFERIDOS_EM, CANAIS_EXTERNOS, OUVIDORIA } from "@/lib/cobrar";
 import { repo } from "@/lib/repo";
+import { SUBSIDIO_CONGRESSO, subsidioEm } from "@/lib/salario";
 
 // Metodologia de cada número, fontes, privacidade e licenças (E15). Toda métrica da interface
 // linka para uma seção daqui (via components/Termo.tsx). Os números desta página saem do mesmo
@@ -65,6 +66,7 @@ export default async function ComoFunciona() {
   const fechado = ordenadas.filter((m) => m.fechado).at(-1);
   const abertos = ordenadas.filter((m) => !m.fechado);
   const rotuloMes = (m: { ano: number; mes: number }) => `${MESES[m.mes - 1]}/${m.ano}`;
+  const subsidioHoje = subsidioEm(new Date().toISOString().slice(0, 10))!;
 
   return (
     <>
@@ -197,6 +199,34 @@ export default async function ComoFunciona() {
         </p>
       </Secao>
 
+      <Secao id="propostas">
+        <p>
+          <strong>O que conta:</strong> propostas apresentadas desde 2023 em que o parlamentar aparece entre os autores. Na Câmara,
+          vale quem a Câmara marca como proponente: as assinaturas só de apoio (comuns em PEC) ficam fora. No Senado, vale a autoria de
+          iniciativa da matéria.
+        </p>
+        <p>
+          <strong>Podem virar lei:</strong> PL, PLP, PEC, PDL e PRC (Câmara) ou PRS (Senado). Dessas, a página mostra quantas, em
+          quantas o parlamentar é o <strong>primeiro autor</strong> (ordem de assinatura 1) e quantas viraram norma jurídica (situação
+          “Transformado em Norma Jurídica” na Câmara, “Transformada em Norma Jurídica” no Senado). Os demais tipos (requerimentos,
+          indicações, emendas, pareceres) aparecem só como contagem, porque são pedidos e não leis.
+        </p>
+        <p>
+          <strong>Fonte:</strong> arquivos anuais de proposições e autores dos dados abertos da Câmara e o serviço de processos dos
+          dados abertos do Senado, com link para a página oficial de cada proposta. Só quem passou pela Câmara na legislatura atual ou
+          está no Senado tem propostas coletadas.
+        </p>
+      </Secao>
+
+      <Secao id="salario">
+        <p>
+          O subsídio mensal dos membros do Congresso é o mesmo para deputados federais e senadores e é fixado por decreto legislativo:
+          {" "}<Ext href={SUBSIDIO_CONGRESSO.url}>{SUBSIDIO_CONGRESSO.ato}</Ext>. O valor em vigor hoje é {reais(subsidioHoje.valor)}, desde
+          {" "}{diaBr(subsidioHoje.desde)}. É o valor bruto, antes de impostos; não inclui a cota parlamentar nem a verba de gabinete.
+          Conferido no texto oficial em {diaBr(SUBSIDIO_CONGRESSO.conferidoEm)}.
+        </p>
+      </Secao>
+
       <Secao id="cobrar">
         <p>
           Para quem exerce mandato hoje, o card e a página do político mostram o contato oficial do gabinete (e-mail e
@@ -219,7 +249,7 @@ export default async function ComoFunciona() {
           <li>Vetos presidenciais: são votados em sessão conjunta do Congresso e não constam das votações da Câmara nem do Senado usadas aqui.</li>
           <li>Votações de comissões, votações simbólicas (sem registro individual de voto), discursos e presença em sessão.</li>
           <li>Votações que a Câmara lista como nominais mas sem a lista de votos na API: ficam fora de todos os números.</li>
-          <li>Emendas parlamentares, projetos de autoria e patrimônio declarado: não estão nesta versão.</li>
+          <li>Emendas parlamentares e patrimônio declarado: não estão nesta versão.</li>
           <li>Cota parlamentar por fornecedor e nota a nota: o site mostra o total do mês e a soma por categoria, com link para as notas na página oficial.</li>
           <li>Presidente da República, deputados estaduais, governadores e prefeitos.</li>
         </ul>
@@ -229,8 +259,8 @@ export default async function ComoFunciona() {
         <ul className="list-disc space-y-1 pl-5">
           <li><Ext href="https://dadosabertos.tse.jus.br">TSE, dados abertos</Ext>: candidatos, votação por município e zona, votação por partido, totais por município e o relatório de resultado da totalização (gabarito do cálculo das vagas).</li>
           <li><Ext href="https://resultados.tse.jus.br">TSE, divulgação de resultados</Ext>: fotos dos candidatos e resultado por município.</li>
-          <li><Ext href="https://dadosabertos.camara.leg.br">Câmara dos Deputados, dados abertos</Ext>: deputados, histórico, votações, votos, orientações de bancada e despesas da cota.</li>
-          <li><Ext href="https://legis.senado.leg.br/dadosabertos/docs/">Senado Federal, dados abertos</Ext>: senadores, mandatos, licenças, votações e orientação de bancada.</li>
+          <li><Ext href="https://dadosabertos.camara.leg.br">Câmara dos Deputados, dados abertos</Ext>: deputados, histórico, votações, votos, orientações de bancada e despesas da cota, proposições e autores.</li>
+          <li><Ext href="https://legis.senado.leg.br/dadosabertos/docs/">Senado Federal, dados abertos</Ext>: senadores, mandatos, licenças, votações, orientação de bancada e processos (autoria).</li>
           <li><Ext href="https://servicodados.ibge.gov.br/api/docs/localidades">IBGE, localidades</Ext>: códigos de município.</li>
         </ul>
         <p>

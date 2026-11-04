@@ -15,7 +15,8 @@ import type { EleitoNaCidade, Repo } from "./repo";
 import { cliente, selecionar, type Cliente } from "./supabase";
 import { normalizar } from "./texto";
 import type {
-  Afastamento, Cargo, Casa, DespesaMediaUf, DespesaMes, Linha, ListaEleitoral, Mandato, Municipio, Orientacao, Politico, Votacao, Voto,
+  Afastamento, Atualizacao, Cargo, Casa, DespesaMediaUf, DespesaMes, Linha, ListaEleitoral, Mandato, Municipio, Orientacao, Politico,
+  Proposicao, ProposicaoContagem, Votacao, Voto,
 } from "./types";
 
 const TTL_MS = 5 * 60_000;
@@ -46,6 +47,17 @@ export class SupabaseRepo implements Repo {
   async getCard(id: string) {
     const [r] = await selecionar<{ card: CardDados }>(this.cli, "resumos", `select=card&politico_id=eq.${v(id)}&order=politico_id`);
     return r?.card ?? null;
+  }
+  async getAutorias(id: string) {
+    const ls = await selecionar<{ ordem: number; proposicao: Linha<Proposicao> }>(this.cli, "proposicoes_autores",
+      `select=ordem,proposicao:proposicoes(*)&politico_id=eq.${v(id)}&order=proposicao_id`);
+    return ls.map((l) => ({ ordem: l.ordem, proposicao: deLinha<Proposicao>(l.proposicao) }));
+  }
+  getContagemProposicoes(id: string) {
+    return this.linhas<ProposicaoContagem>("proposicoes_contagem", `select=*&politico_id=eq.${v(id)}&order=casa,ano,tipo`);
+  }
+  getAtualizacoes() {
+    return this.lembrar("atualizacoes", () => this.linhas<Atualizacao>("atualizacoes", "select=*&order=fonte"));
   }
   async getPagina(id: string) {
     const [r] = await selecionar<{ pagina: PaginaDados }>(this.cli, "resumos", `select=pagina&politico_id=eq.${v(id)}&order=politico_id`);

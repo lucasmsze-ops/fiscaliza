@@ -171,7 +171,7 @@ Desenho em `docs/CRON.md`. Desde a E22 só o Actions publica; localmente, apenas
 ## Convenções de código
 
 - Um adapter por fonte em `lib/{tse,camara,senado}.ts`, retornando tipos internos (`Politico`, `Votacao`, `Voto`). Nenhum componente conhece o shape das APIs.
-- Componentes em `components/`. `PoliticoCard` é o único card; reutilizado em busca, colinha, página e OG. Ele só exibe `CardDados` de `lib/card.ts#montarCard`. Fotos com `<img>` direto da URL oficial (nunca `next/image`, que passaria pela Vercel). Explicação de termos com `components/Termo.tsx` (popover nativo do HTML, sem biblioteca).
+- Componentes em `components/`. `PoliticoCard` é o único card; reutilizado em busca, colinha e OG. Na página do político, o topo é o crachá (`components/Cracha.tsx`, layout do protótipo, E23), que exibe os mesmos `CardDados`. Os dois só exibem `CardDados` de `lib/card.ts#montarCard`. Fotos com `<img>` direto da URL oficial (nunca `next/image`, que passaria pela Vercel). Explicação de termos com `components/Termo.tsx` (popover nativo do HTML, sem biblioteca).
 - Textos de interface em português do Brasil, sem jargão legislativo sem tooltip (PEC, PL, MP, obstrução, quociente).
 - Links externos com `rel="noreferrer noopener"`. Header `Referrer-Policy: same-origin`.
 - Mobile-first. A colinha e a página do político têm que carregar em < 1s em 4G.
