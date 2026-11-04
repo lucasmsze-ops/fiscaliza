@@ -86,7 +86,7 @@ Metodologia detalhada (o que conta como voto, licença, secretas, mês da CEAP):
 
 Abaixo: cota do mês (CEAP na Câmara, CEAPS no Senado) vs média da bancada **da mesma UF e da mesma Casa** (cotas variam por estado; nunca comparar com média nacional). A UF é a da bancada na Casa, não a da candidatura de 2026. Abaixo: **Como cobrar**, com os canais oficiais (contato do gabinete, ouvidoria da Casa, Fala.BR, MPF/TCU), sem texto pronto; e **Receber avisos** (fake door).
 
-A página do político segue o inventário (`docs/REFERENCIA-POLITICOMETRO.md`, seção 1): resumo no topo, seções abaixo.
+**Na interface (decisão do usuário de 2026-11-04):** a página do político segue o crachá do protótipo (`docs/PROTOTIPO.md`, E23i): cabeçalho (cargo pelo estado, sigla e nome do partido, em exercício desde · mandato até), salário, participação, participação ao lado da média da Casa, "quem vota mais parecido" e as abas Propostas e Votos. Governismo, cota, mandatos, contatos, "Como cobrar" e "Receber avisos" saíram da página; seguem calculados em `CardDados` e no resumo da página e documentados em `/como-funciona`, para voltarem em outra tela se for decidido.
 
 ## Fontes de dados e armadilhas conhecidas
 

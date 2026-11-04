@@ -234,6 +234,23 @@ export default async function ComoFunciona() {
         </p>
       </Secao>
 
+      <Secao id="parecidos">
+        <p>
+          <strong>O que é:</strong> para quem está em exercício hoje, os 5 parlamentares da mesma Casa que mais votaram igual a ele
+          ou ela. Conta o % de votos iguais (Sim, Não, Abstenção ou Obstrução) nas votações nominais do Plenário de 2023 a 2026 em
+          que os dois votaram. Votação secreta, voto não divulgado e ausência ficam fora. Só entra quem tem pelo menos 50
+          votações em comum; o empate é desfeito pelo número de votações em comum.
+        </p>
+        <p>
+          É uma comparação entre duas pessoas, voto a voto. Não é nota, ranking nem posição política: votar parecido com alguém
+          não diz se os votos foram bons ou ruins.
+        </p>
+        <p>
+          <strong>Participação ao lado da média:</strong> a média é a da participação em votações (mesma regra do card) de todos os
+          que estão em exercício hoje na Casa.
+        </p>
+      </Secao>
+
       <Secao id="salario">
         <p>
           O subsídio mensal dos membros do Congresso é o mesmo para deputados federais e senadores e é fixado por decreto legislativo:

@@ -86,6 +86,18 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
   deputados federais da UF (`politicos.uf`). Municípios por UF de `municipios` (5.571).
 - Cidade → estado: a cidade não muda quem a representa no Congresso (eleição pelo estado inteiro).
 
+## Crachá (`/p/[slug]`, E23i)
+- "Quem vota mais parecido" (`lib/comparacoes.ts`): quem está em exercício hoje na mesma Casa;
+  votações nominais de 2023–2026; votos comparáveis Sim, Não, Abstenção, Obstrução (secreto,
+  nao_informado, art17 e ausente ficam fora); % = iguais / em comum, uma casa; mínimo 50 em comum;
+  empate pelo número em comum. Top 5.
+- Participação ao lado da média: média simples da participação (mesma regra do card) de quem está
+  em exercício hoje na Casa (513 / 81).
+- "Mandato até": deputado na legislatura 57 → 31/01/2027; senador titular com posse em 01/02/2019 →
+  31/01/2027, em 01/02/2023 → 31/01/2031; suplente: não se mostra (depende do titular).
+- Nome do partido: `NM_PARTIDO` do TSE 2026, em caixa de título (`lib/partidos.ts`).
+- "Votou com o partido?" fica fora até a E26 (partido no dia de cada voto e blocos da Câmara).
+
 ## Salário
 - Subsídio mensal bruto dos membros do Congresso, igual para deputados e senadores: Decreto
   Legislativo nº 172/2022, art. 1º (39.293,32 desde 01/01/2023; 41.650,92 desde 01/04/2023;

@@ -12,3 +12,13 @@ describe("siglaPartido", () => {
     expect(siglaPartido("PT")).toBe("PT");
   });
 });
+
+describe("nomePartido", () => {
+  it("todas as siglas dos políticos do site têm nome", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { nomePartido } = await import("../lib/partidos");
+    const ps = JSON.parse(readFileSync("data/politicos.json", "utf8")) as { partido: string }[];
+    expect([...new Set(ps.map((p) => p.partido))].filter((s) => !nomePartido(s))).toEqual([]);
+    expect(nomePartido("PCDOB")).toBe("Partido Comunista do Brasil");
+  });
+});

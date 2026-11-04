@@ -13,6 +13,7 @@ export const SECOES = [
   { id: "ceap", titulo: "Cota parlamentar (CEAP)" },
   { id: "propostas", titulo: "Propostas de autoria" },
   { id: "congresso", titulo: "Congresso hoje" },
+  { id: "parecidos", titulo: "Quem vota mais parecido" },
   { id: "salario", titulo: "Salário" },
   { id: "cobrar", titulo: "Como cobrar" },
   { id: "fora", titulo: "O que fica fora dos números" },
@@ -74,6 +75,11 @@ export const GLOSSARIO = definir({
     titulo: "Primeiro autor",
     texto: "Quem assina a proposta em primeiro lugar, pela ordem de assinatura registrada pela Câmara ou pelo Senado. Os demais são coautores.",
     secao: "propostas",
+  },
+  parecidos: {
+    titulo: "Quem vota mais parecido",
+    texto: "Entre quem está em exercício hoje na mesma Casa: % de votos iguais (Sim, Não, Abstenção ou Obstrução) nas votações nominais em que os dois votaram, de 2023 a 2026. Votação secreta, voto não divulgado e ausência ficam fora. Precisa de pelo menos 50 votações em comum. Não é nota nem posição política.",
+    secao: "parecidos",
   },
   salario: {
     titulo: "Salário",

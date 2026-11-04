@@ -15,3 +15,11 @@ export const REGIOES = [
 ] as const;
 
 export const regiaoDe = (uf: string) => REGIOES.find((r) => (r.ufs as readonly string[]).includes(uf));
+
+/** "pelo Pará", "pela Bahia", "por São Paulo": como se diz que alguém representa o estado. */
+const PREPOSICAO_UF: Record<string, string> = {
+  AC: "pelo", AL: "por", AP: "pelo", AM: "pelo", BA: "pela", CE: "pelo", DF: "pelo", ES: "pelo", GO: "por", MA: "pelo",
+  MT: "por", MS: "por", MG: "por", PA: "pelo", PB: "pela", PR: "pelo", PE: "por", PI: "pelo", RJ: "pelo", RN: "pelo",
+  RS: "pelo", RO: "por", RR: "por", SC: "por", SP: "por", SE: "por", TO: "pelo",
+};
+export const pelaUf = (uf: string) => (NOME_UF[uf] ? `${PREPOSICAO_UF[uf]} ${NOME_UF[uf]}` : uf);

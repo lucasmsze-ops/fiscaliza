@@ -3,6 +3,7 @@
  * o que falta vira null e a seção some (ou mostra a lacuna com texto fixo).
  */
 import { montarCard, PERIODO_GOVERNO, type CardDados } from "./card";
+import { compararComCasa, coresDoDia, type ComparacaoCasa } from "./comparacoes";
 import type { Repo } from "./repo";
 import type { Afastamento, Casa, Mandato, TipoVoto } from "./types";
 
@@ -13,6 +14,8 @@ export interface VotoListado {
   proposicao: string | null;
   descricao: string;
   voto: TipoVoto;
+  /** Opcional: resumos gravados antes da E23i não têm. */
+  resultado?: "aprovada" | "rejeitada" | null;
   urlOficial: string;
 }
 
@@ -67,6 +70,10 @@ export interface PaginaDados {
   contatos: { email: string | null; telefone: string | null; redesSociais: string[]; urlPerfil: string | null };
   /** Opcional: resumos gravados antes da E23 não têm (a seção some até o cron regravar). */
   propostas?: PropostasPagina | null;
+  /** Participação média da Casa e "quem vota mais parecido" (E23i); só para quem está em exercício hoje. */
+  comparacao?: ComparacaoCasa | null;
+  /** Ordem das cores de partido do dia (etiqueta do partido no crachá, como em /congresso). */
+  coresPartido?: string[];
 }
 
 /** Ano inicial da coleta de proposições (docs/VOLUME.md, decisão de 2026-11-02). */
@@ -99,7 +106,7 @@ export async function montarPagina(repo: Repo, id: string, hoje = new Date().toI
     const meus = new Map((await repo.getVotos(id)).map((v) => [v.votacaoId, v.voto]));
     votacoes = {
       casa, total: vs.length, totais: contarVotos(vs.map((v) => v.id), meus),
-      ultimas: vs.slice(0, 10).map((v) => ({ data: v.data, proposicao: v.proposicao, descricao: v.descricao, voto: meus.get(v.id) ?? "ausente", urlOficial: v.urlOficial })),
+      ultimas: vs.slice(0, 10).map((v) => ({ data: v.data, proposicao: v.proposicao, descricao: v.descricao, voto: meus.get(v.id) ?? "ausente", resultado: v.resultado, urlOficial: v.urlOficial })),
     };
   }
 
@@ -133,8 +140,10 @@ export async function montarPagina(repo: Repo, id: string, hoje = new Date().toI
     };
   }
 
+  const comparacao = card.comoCobrar ? await compararComCasa(repo, id, card.comoCobrar.casa, hoje) : null;
+
   return {
-    card, votacoes, ceap, propostas,
+    card, votacoes, ceap, propostas, comparacao, coresPartido: await coresDoDia(repo, hoje),
     mandatos: [...mandatos].sort((a, b) => b.inicio.localeCompare(a.inicio)),
     afastamentos: afastamentos.filter((a) => (a.fim ?? hoje) >= PERIODO_GOVERNO.inicio).sort((a, b) => b.inicio.localeCompare(a.inicio)),
     contatos: { email: p.email, telefone: p.telefone, redesSociais: p.redesSociais, urlPerfil: p.urlPerfil },

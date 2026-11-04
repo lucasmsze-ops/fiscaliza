@@ -58,3 +58,5 @@ Nunca preencher com dado sintético.
 | 2026-11-04 | TSE × Câmara/Senado | A mesma sigla com duas grafias: TSE "PCDOB", Casas "PCdoB" (20 políticos) | Grafia única "PCdoB" no cron (`lib/partidos.ts`) e na montagem das bancadas |
 | 2026-11-04 | Senado | Composição a partir de 01/02/2027: das 27 cadeiras eleitas em 2022, 9 têm suplente hoje e não se sabe quem ocupará em fevereiro | `/congresso` mostra "A partir de fev/2027" só na Câmara (513 eleitos) |
 | 2026-11-04 | Câmara e Senado | Pauta e agenda de sessões futuras não são coletadas | "Sem sessão agora / próxima sessão" e a pauta marcada do protótipo ficam ocultas; a agenda mostra só as votações que já houve |
+| 2026-11-04 | Câmara | Orientação de bloco parlamentar vem só com o nome abreviado e cortado ("Bl UniPpFdrPsdbCid..."); `/blocos` lista só os 7 blocos de hoje | "Votou com o partido?" e a coluna de orientação do crachá ficam ocultas até a E26 |
+| 2026-11-04 | Câmara e Senado | O partido de cada parlamentar no dia de cada votação não é gravado (a janela partidária de 2026 trocou muitos de partido) | Idem: comparar votos antigos com o partido de hoje daria número errado |
