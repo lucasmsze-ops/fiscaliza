@@ -72,8 +72,14 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
   somadas, na ordem fixa da paleta de referência validada (CVD e contraste); o resto em cinza. Nunca
   por posição política. A lista com nome e cadeiras é obrigatória (3 cores ficam abaixo de 3:1 no
   branco).
-- Últimas votações: as 10 mais recentes das duas Casas por data. "O que virou norma": as 10
-  proposições com `virou_norma` mais recentes pela apresentação (a data da norma não é coletada).
+- Câmara a partir de 01/02/2027 (`camaraEleita`): `politicos` com cargo deputado_federal e status eleito
+  ou reeleito = 513, partido de hoje. Senado fora: das 27 cadeiras de 2022, 18 têm o titular em
+  exercício; nas outras 9 não se sabe com dado quem ocupará a cadeira em fevereiro.
+- Agenda: contagem de votações nominais por dia e Casa (`listarDatasVotacoes`); as votações de cada
+  mês vêm de `/dados/votacoes/[mes]` (limites reais do mês: o Postgres recusa dia 31 inexistente).
+  "Votações da última sessão": as do último dia com votação nominal em cada Casa. "O que virou
+  norma" saiu da página (não está no protótipo); o número continua no crachá.
+- Sigla de partido canônica (`lib/partidos.ts`): TSE "PCDOB" = Câmara/Senado "PCdoB" (20 políticos).
 
 ## Visão geral (`/`)
 - Mesmas cadeiras de `/congresso` (`lib/congresso.ts#casasHoje`), por estado: 3 senadores e os

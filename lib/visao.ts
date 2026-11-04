@@ -31,7 +31,7 @@ export async function montarVisao(repo: Repo, hoje = new Date().toISOString().sl
   const [{ casas, politicos }, municipios] = await Promise.all([casasHoje(repo, hoje), repo.listarMunicipios()]);
   const pessoas = casas.flatMap((c) => c.bancadas.flatMap((b) => b.membros.map((m) => {
     const p = politicos.get(m.id)!;
-    return { id: p.id, nomeUrna: p.nomeUrna, cargo: rotuloCargo({ ...p, cargo: c.casa === "senado" ? "senador" : "deputado_federal" }), casa: c.casa, uf: p.uf, partido: p.partido, fotoUrl: p.fotoUrl };
+    return { id: p.id, nomeUrna: p.nomeUrna, cargo: rotuloCargo({ ...p, cargo: c.casa === "senado" ? "senador" : "deputado_federal" }), casa: c.casa, uf: p.uf, partido: b.partido, fotoUrl: p.fotoUrl };
   }))).sort((a, b) => a.nomeUrna.localeCompare(b.nomeUrna, "pt-BR"));
   const municipiosPorUf: Record<string, number> = {};
   for (const m of municipios) municipiosPorUf[m.uf] = (municipiosPorUf[m.uf] ?? 0) + 1;

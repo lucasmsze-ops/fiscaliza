@@ -17,7 +17,7 @@ describe("Plenário hoje", () => {
     expect(bancadas(["x1", "x2", "y1", "z1"].map((id) => mand(id)), ps).map((b) => [b.partido, b.membros.length])).toEqual([["XX", 2], ["AA", 1], ["BB", 1]]);
   });
   it("cor pelo total das duas Casas: o mesmo partido tem a mesma cor nas duas", () => {
-    const casa = (casa: "camara" | "senado", bs: [string, number][]) => ({ casa, total: 0, bancadas: bs.map(([partido, n]) => ({ partido, membros: Array.from({ length: n }, () => ({ id: "", nomeUrna: "", uf: "" })) })) });
+    const casa = (casa: "camara" | "senado", bs: [string, number][]) => ({ casa, total: 0, bancadas: bs.map(([partido, n]) => ({ partido, membros: Array.from({ length: n }, () => ({ id: "", nomeUrna: "", uf: "", fotoUrl: null })) })) });
     expect(ordemDasCores([casa("camara", [["A", 10], ["B", 9]]), casa("senado", [["B", 3], ["C", 2]])])).toEqual(["B", "A", "C"]);
   });
   it("hemiciclo: uma posição por cadeira, da esquerda para a direita", () => {
@@ -28,5 +28,30 @@ describe("Plenário hoje", () => {
       expect(pts.at(-1)!.x).toBeGreaterThan(0);
       expect(pts.every((p) => p.y >= -1e-9 && Math.hypot(p.x, p.y) <= 1 + 1e-9)).toBe(true);
     }
+  });
+});
+
+describe("Câmara a partir de fev/2027", () => {
+  it("só eleitos e reeleitos a deputado federal", async () => {
+    const { camaraEleita } = await import("../lib/congresso");
+    const ps = [
+      { id: "a", nomeUrna: "A", uf: "SP", partido: "X", cargo: "deputado_federal", status: "eleito", fotoUrl: null },
+      { id: "b", nomeUrna: "B", uf: "SP", partido: "X", cargo: "deputado_federal", status: "reeleito", fotoUrl: null },
+      { id: "c", nomeUrna: "C", uf: "SP", partido: "Y", cargo: "deputado_federal", status: "suplente", fotoUrl: null },
+      { id: "d", nomeUrna: "D", uf: "SP", partido: "Y", cargo: "senador", status: "eleito", fotoUrl: null },
+    ] as Politico[];
+    const c = camaraEleita(ps);
+    expect(c.total).toBe(2);
+    expect(c.bancadas.map((b) => [b.partido, b.membros.length])).toEqual([["X", 2]]);
+  });
+});
+
+describe("limitesDoMes", () => {
+  it("último dia real do mês, inclusive fevereiro bissexto", async () => {
+    const { limitesDoMes } = await import("../lib/congresso");
+    expect(limitesDoMes("2026-11")).toEqual(["2026-11-01", "2026-11-30"]);
+    expect(limitesDoMes("2026-02")).toEqual(["2026-02-01", "2026-02-28"]);
+    expect(limitesDoMes("2028-02")).toEqual(["2028-02-01", "2028-02-29"]);
+    expect(limitesDoMes("2026-12")).toEqual(["2026-12-01", "2026-12-31"]);
   });
 });

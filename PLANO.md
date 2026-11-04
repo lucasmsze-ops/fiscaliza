@@ -413,6 +413,10 @@ placar e "o que virou lei" (`proposicoes.virou_norma`). Agenda e pauta ficam na 
 - [x] Consultas enxutas no `Repo` (mandatos em curso, afastamentos na data, `limit`), menu,
       metodologia "Congresso hoje", testes.
 - Pronto quando: `/congresso` no ar só com dado real, conferido contra a fonte.
+- [x] Refeita no layout da tela Congresso do protótipo (2026-11-04, pedido do usuário): cabeçalho com
+      as votações do ano, Plenário interativo (Casa, Hoje / A partir de fev/2027 só na Câmara, estado,
+      destaque do partido, bancada em cartões), agenda do mês com votações por dia, votações da
+      última sessão por Casa. Ocultos sem dado: "sem sessão agora / próxima sessão" e a pauta marcada.
 
 Decisão de 2026-11-04 (usuário): o site fica igual ao protótipo, tela por tela, com dado real; o que
 não tem dado ainda fica oculto. A colinha sai da interface (links `/c/...` redirecionam). Monitorar

@@ -18,6 +18,7 @@ import { getDeputado, getHistorico, listarDeputados, type DeputadoPerfil, type H
 import { deLinha, paraLinha } from "../../lib/linhas";
 import { deHistoricoCamara, deSenado } from "../../lib/linhas-mandato";
 import { getLicencas, getMandatos, getSenador, listarSenadoresAtuais, type LicencaSenado, type MandatoSenado, type SenadorPerfil } from "../../lib/senado";
+import { siglaPartido } from "../../lib/partidos";
 import { slugPolitico } from "../../lib/texto";
 import type { Afastamento, Linha, Mandato, Politico, Status } from "../../lib/types";
 import { canonico, FONTES, lerTabela, type LinhaBruta } from "./estado";
@@ -220,7 +221,7 @@ export async function jobParlamentares(hoje: string): Promise<ResultadoParlament
   const linhasPol = [...politicos.values()].map((p) => {
     const a = noEstado.get(p.id);
     if (a) { p.camaraId ??= (a.camara_id as number | null); p.senadoCodigo ??= (a.senado_codigo as string | null); }
-    const l = paraLinha({ ...p, updatedAt: "" }) as unknown as LinhaBruta;
+    const l = paraLinha({ ...p, partido: siglaPartido(p.partido), updatedAt: "" }) as unknown as LinhaBruta;
     const igual = a && canonico({ ...a, updated_at: "" }) === canonico(l);
     return { ...l, updated_at: igual ? a!.updated_at : agora };
   });

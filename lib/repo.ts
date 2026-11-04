@@ -57,6 +57,10 @@ export interface Repo {
   listarAfastamentosEm(data: string): Promise<Afastamento[]>;
   /** Votações nominais mais recentes da Casa (data desc). */
   ultimasVotacoes(casa: Casa, limite: number): Promise<Votacao[]>;
+  /** Data e Casa de todas as votações nominais (calendário da agenda). */
+  listarDatasVotacoes(): Promise<{ data: string; casa: Casa }[]>;
+  /** Votações nominais das duas Casas entre as datas (AAAA-MM-DD, inclusive), mais recentes primeiro. */
+  votacoesEntre(inicio: string, fim: string): Promise<Votacao[]>;
   /** Proposições que viraram norma, mais recentes pela apresentação, com os autores do site. */
   ultimasNormas(limite: number): Promise<{ proposicao: Proposicao; autores: { politicoId: string; ordem: number }[] }[]>;
 }
@@ -182,6 +186,12 @@ export class JsonRepo implements Repo {
   }
   async ultimasVotacoes(casa: Casa, limite: number) {
     return (await this.getVotacoes(casa)).sort((a, b) => b.data.localeCompare(a.data) || b.id.localeCompare(a.id)).slice(0, limite);
+  }
+  async listarDatasVotacoes() {
+    return (await this.tabela("votacoes")).map((v) => ({ data: v.data, casa: v.casa })).sort((a, b) => a.data.localeCompare(b.data));
+  }
+  async votacoesEntre(inicio: string, fim: string) {
+    return (await this.tabela("votacoes")).filter((v) => v.data >= inicio && v.data <= fim).sort((a, b) => b.data.localeCompare(a.data) || b.id.localeCompare(a.id));
   }
   async ultimasNormas(limite: number) {
     const [ps, autores] = await Promise.all([this.tabela("proposicoes"), this.por("proposicoes_autores", "proposicaoId")]);

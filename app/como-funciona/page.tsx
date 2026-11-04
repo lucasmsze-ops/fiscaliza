@@ -220,11 +220,17 @@ export default async function ComoFunciona() {
         <p>
           <strong>Cores e ordem:</strong> as fatias do Plenário seguem o tamanho da bancada, da maior para a menor; não há ordem de
           esquerda ou direita. Os 8 partidos com mais cadeiras nas duas Casas somadas ganham cor própria, a mesma na Câmara e no
-          Senado; os demais aparecem em cinza. A lista ao lado do desenho traz o nome e o número de cadeiras de cada partido.
+          Senado; os demais aparecem em cinza. As pílulas abaixo do desenho trazem o nome e o número de cadeiras de cada partido.
+          Siglas que o TSE e as Casas escrevem de jeitos diferentes (PCDOB e PCdoB) aparecem numa grafia só.
         </p>
         <p>
-          <strong>Últimas votações:</strong> as votações nominais mais recentes do Plenário das duas Casas, com o placar publicado pela
-          fonte. Nas votações secretas o Senado publica só quem votou, não como.
+          <strong>A partir de fevereiro de 2027:</strong> na Câmara, os 513 eleitos em 2026, com o partido registrado hoje. No Senado essa
+          visão não aparece: das 27 cadeiras eleitas em 2022, só se sabe quem ocupa hoje, não quem ocupará em fevereiro.
+        </p>
+        <p>
+          <strong>Agenda e última sessão:</strong> quantas votações nominais houve em cada dia nas duas Casas e quais foram, com o placar
+          publicado pela fonte. A pauta marcada (sessões futuras) não é coletada e não aparece. Nas votações secretas o Senado publica só
+          quem votou, não como; em votação de pessoa a Câmara registra o voto, mas não divulga a direção.
         </p>
       </Secao>
 

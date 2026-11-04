@@ -68,6 +68,12 @@ export class SupabaseRepo implements Repo {
   ultimasVotacoes(casa: Casa, limite: number) {
     return this.linhas<Votacao>("votacoes", `select=*&casa=eq.${v(casa)}&order=data.desc,id.desc&limit=${limite}`);
   }
+  listarDatasVotacoes() {
+    return this.lembrar("datas-votacoes", () => selecionar<{ data: string; casa: Casa }>(this.cli, "votacoes", "select=data,casa&order=data,id"));
+  }
+  votacoesEntre(inicio: string, fim: string) {
+    return this.linhas<Votacao>("votacoes", `select=*&data=gte.${v(inicio)}&data=lte.${v(fim)}&order=data.desc,id.desc`);
+  }
   async ultimasNormas(limite: number) {
     const ls = await selecionar<Linha<Proposicao> & { autores: { politico_id: string; ordem: number }[] }>(this.cli, "proposicoes",
       `select=*,autores:proposicoes_autores(politico_id,ordem)&virou_norma=is.true&order=apresentacao.desc,id.desc&limit=${limite}`);

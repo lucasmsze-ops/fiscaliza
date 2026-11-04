@@ -15,6 +15,22 @@ Modelo:
 
 ---
 
+## 2026-11-04 · E23b (refeita no layout do protótipo)
+**Feito:** `/congresso` refeita como a tela Congresso do protótipo: cabeçalho com as votações nominais
+do ano (192 em 2026), Plenário interativo (`components/Plenario.tsx`: Casa, Hoje / A partir de
+fev/2027, estado, destaque do partido, pílulas, bancada em cartões), agenda do mês
+(`components/AgendaPlenario.tsx`, rota `/dados/votacoes/[mes]`) e votações da última sessão por Casa
+com placar e barra (`components/PlacarVotacao.tsx`). Sigla canônica de partido (`lib/partidos.ts`)
+no cron e nas bancadas. Conferido com `estado/dados` e com o Supabase; desktop, celular, escuro, 0
+erros; 74 testes. O cron local `--sem-publicar` falhou 2× no parlamentares (504 da Câmara);
+a correção de sigla foi conferida sobre o publicado: 20 políticos PCDOB → PCdoB, nenhum outro campo.
+**Decidido:** "A partir de fev/2027" só na Câmara (Senado não fecha com dado). "Sem sessão agora",
+"próxima sessão" e pauta marcada ocultos (não coletados). "O que virou norma" saiu (não está no
+protótipo). Limites reais do mês nas consultas (o Postgres recusou 2026-11-31; o modo JSON não pega).
+**Lacunas:** grafia PCDOB/PCdoB; composição do Senado em 2027; pauta futura (`docs/LACUNAS.md`).
+**Próximo passo:** push; o próximo cron do Actions publica as 20 siglas corrigidas. Conferir o run
+agendado de 05/11 (fecha a E22). Depois a E23d (Me representa).
+
 ## 2026-11-04 · E23c
 **Feito:** decisão do usuário: o site fica igual ao protótipo, tela por tela, com dado real; o que
 não tem dado fica oculto; a colinha sai; Monitorar só no aparelho; uma tela por etapa. PLANO
