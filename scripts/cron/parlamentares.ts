@@ -12,7 +12,7 @@
  * e disputou 2026 ganha o camaraId (os números do mandato dependem dele).
  */
 import { DuckDBInstance } from "@duckdb/node-api";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { mapLimite } from "../../lib/async";
 import { getDeputado, getHistorico, listarDeputados, type DeputadoPerfil, type HistoricoDeputado } from "../../lib/camara";
 import { deLinha, paraLinha } from "../../lib/linhas";
@@ -85,8 +85,19 @@ export async function jobParlamentares(hoje: string): Promise<ResultadoParlament
   // ---------------------------------------------------------------- Câmara
   const dirDep = `${FONTES}/camara-deputados`;
   mkdirSync(dirDep, { recursive: true });
-  const leg57 = [...new Map((await listarDeputados({ legislatura: 57 })).map((d) => [d.camaraId, d])).values()];
   const emExercicio = new Set((await listarDeputados()).map((d) => d.camaraId));
+  // A lista da legislatura (`idLegislatura=57`) leva 12–15 s por página quando a API está lenta e o
+  // gateway corta em 15 s (504 o dia todo em 2026-11-04, em qualquer tamanho de página); a de quem
+  // está em exercício responde em 0,2 s. Sem a da legislatura, vale quem o cron já conhece mais quem
+  // está em exercício: quem assume uma cadeira aparece na segunda.
+  let leg57: { camaraId: number }[];
+  try {
+    leg57 = [...new Map((await listarDeputados({ legislatura: 57 })).map((d) => [d.camaraId, d])).values()];
+  } catch (e) {
+    const conhecidos = readdirSync(dirDep).filter((f) => /^\d+\.json$/.test(f)).map((f) => Number(f.slice(0, -5)));
+    leg57 = [...new Set([...conhecidos, ...emExercicio])].map((camaraId) => ({ camaraId }));
+    relatorio.push(`lista da legislatura 57 indisponível (${(e as Error).message.slice(0, 80)}): usados ${conhecidos.length} deputados já conhecidos + os ${emExercicio.size} em exercício (${leg57.length})`);
+  }
   const velho = (c: CacheDeputado | null, id: number) => !c || (emExercicio.has(id) ? c.buscadoEm < hoje : Date.parse(hoje) - Date.parse(c.buscadoEm) > 7 * 86_400_000);
   const deps = await mapLimite(leg57, EM_VOO, async (d) => {
     const arq = `${dirDep}/${d.camaraId}.json`;

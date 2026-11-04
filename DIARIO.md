@@ -15,6 +15,18 @@ Modelo:
 
 ---
 
+## 2026-11-04 · 504 da lista da Câmara
+**Feito:** o `parlamentares` falhou nos 4 crons do dia em `/deputados?idLegislatura=57`. Medido: 12–15 s
+por página e 504 no corte de 15 s do gateway, com qualquer `itens` (10 a 1000) e com ou sem
+`ordenarPor`; só a página já em cache na Câmara respondia rápido; `/deputados` (em exercício) em 0,2 s.
+O job agora cai para "já conhecidos (cache) + em exercício" quando a lista da legislatura falha.
+Ensaio local `--sem-publicar` com a API lenta: caiu no caminho alternativo (648), politicos 20
+alteradas = exatamente as siglas PCDOB → PCdoB; 4 perfis falharam (mantidos, tentados de novo);
+25 min por causa da lentidão (cabe nos 120 min do Actions).
+**Decidido:** o caminho alternativo não conta como falha (quem assume cadeira aparece na lista em
+exercício); perfis que falham seguem contando.
+**Próximo passo:** push; o run agendado de 05/11 publica as 20 siglas (ou um manual antes).
+
 ## 2026-11-04 · celular e títulos das votações
 **Feito:** pedido do usuário (títulos pouco claros, celular ruim). Votações (aba Votos, agenda e última
 sessão do /congresso): título = ementa da matéria, "Votado: …" com o procedimento embaixo (ementa
