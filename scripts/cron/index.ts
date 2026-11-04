@@ -7,11 +7,12 @@
 import { spawnSync } from "node:child_process";
 import { jobCota } from "./cota";
 import { calcularFidelidade } from "./fidelidade";
+import { calcularPaginasVotacao } from "./votacoes-paginas";
 import { jobProposicoes } from "./proposicoes";
 import { DADOS, gravarTabela, iniciarEstado, lerTabela, mesclar, type LinhaBruta } from "./estado";
 import { publicar } from "./publicar";
 import { jobParlamentares } from "./parlamentares";
-import { gravarResumos } from "./resumos";
+import { gravarResumos, gravarResumosVotacao } from "./resumos";
 import { jobVotacoes } from "./votacoes";
 
 /** --sem-publicar: coleta, mescla e valida em estado/dados, mas não envia nada ao Supabase (ensaio). */
@@ -70,6 +71,16 @@ try {
   console.error(`[${seg()}] fidelidade FALHOU: ${(e as Error).stack ?? e}`);
 }
 
+// Página de cada votação (placar por partido no dia): também derivada dos caches das fontes.
+try {
+  const pv = calcularPaginasVotacao();
+  gravarTabela("resumos_votacao", pv.linhas);
+  for (const l of pv.relatorio) console.log(`[${seg()}] votações: ${l}`);
+} catch (e) {
+  falhou = true;
+  console.error(`[${seg()}] votações (páginas) FALHOU: ${(e as Error).stack ?? e}`);
+}
+
 const v = spawnSync("npx", ["tsx", "scripts/sonda/validar.ts"], { env: { ...process.env, DATA_DIR: DADOS }, encoding: "utf8" });
 console.log(`[${seg()}] validação: ${(v.stdout + v.stderr).trim().split("\n").at(-1)}`);
 if (v.status !== 0) { console.error(v.stdout + v.stderr); console.error("dado inválido: nada foi publicado"); process.exit(1); }
@@ -78,5 +89,12 @@ if (SEM_PUBLICAR) { console.log(`[${seg()}] --sem-publicar: nada enviado ao Supa
 for (const p of await publicar()) console.log(`[${seg()}] publicar ${p.tabela.padEnd(18)} ${String(p.enviadas).padStart(6)} enviadas, ${p.semMudanca} sem mudança${p.soNoPublicado ? `, ${p.soNoPublicado} só no publicado (não apagadas)` : ""}`);
 const r = await gravarResumos(DADOS, hoje);
 console.log(`[${seg()}] resumos: ${r.gravados} de ${r.politicos} gravados (os demais não mudaram)`);
+try {
+  const rv = await gravarResumosVotacao(DADOS);
+  console.log(`[${seg()}] resumos de votação: ${rv.gravados} de ${rv.votacoes} gravados (os demais não mudaram)`);
+} catch (e) {
+  falhou = true; // ex.: a tabela resumos_votacao (migração 0006) ainda não existe
+  console.error(`[${seg()}] resumos de votação FALHOU: ${(e as Error).message}`);
+}
 console.log(`[${seg()}] fim${falhou ? " com falhas" : ""}`);
 process.exit(falhou ? 1 : 0);

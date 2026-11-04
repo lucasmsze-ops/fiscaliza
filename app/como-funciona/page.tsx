@@ -219,8 +219,9 @@ export default async function ComoFunciona() {
         </p>
         <p>
           <strong>Cores e ordem:</strong> as fatias do Plenário seguem o tamanho da bancada, da maior para a menor; não há ordem de
-          esquerda ou direita. Os 8 partidos com mais cadeiras nas duas Casas somadas ganham cor própria, a mesma na Câmara e no
-          Senado; os demais aparecem em cinza. As pílulas abaixo do desenho trazem o nome e o número de cadeiras de cada partido.
+          esquerda ou direita. Cada partido aparece na cor oficial dele (registrada no Wikidata a partir da identidade do partido),
+          levemente escurecida para dar contraste; PRD, Missão e UP, sem cor oficial encontrada, têm uma cor de apoio. A cor só
+          distingue: as pílulas abaixo do desenho trazem o nome e o número de cadeiras de cada partido.
           Siglas que o TSE e as Casas escrevem de jeitos diferentes (PCDOB e PCdoB) aparecem numa grafia só.
         </p>
         <p>
@@ -231,6 +232,16 @@ export default async function ComoFunciona() {
           <strong>Agenda e última sessão:</strong> quantas votações nominais houve em cada dia nas duas Casas e quais foram, com o placar
           publicado pela fonte. A pauta marcada (sessões futuras) não é coletada e não aparece. Nas votações secretas o Senado publica só
           quem votou, não como; em votação de pessoa a Câmara registra o voto, mas não divulga a direção.
+        </p>
+        <p>
+          <strong>Página de cada votação:</strong> o que foi votado naquele momento (texto principal, emenda, destaque, requerimento,
+          recurso, redação final ou escolha de autoridade) sai da descrição oficial por regra fixa; quando a descrição não segue um padrão
+          conhecido, só a descrição aparece. A regra de aprovação vem da Constituição (PEC: 3/5 em dois turnos; lei complementar: maioria
+          absoluta); a marca de votos necessários só aparece na votação do texto principal. Não votou, na Câmara, é 513 menos quem
+          registrou voto. Como votou cada partido usa o partido de cada parlamentar no dia, como a Câmara e o Senado registraram no voto;
+          para o deputado que não votou, o partido do voto dele mais próximo no tempo. A orientação é a da bancada do partido (ou da
+          federação, ou do bloco cujo nome lista o partido); sem isso, &quot;sem orientação registrada&quot;. A ementa é a oficial, sem
+          resumo; a caixa de termos explica palavras jurídicas que aparecem nela.
         </p>
       </Secao>
 

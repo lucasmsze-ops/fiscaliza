@@ -15,16 +15,41 @@ import { FONTES, lerTabela, type LinhaBruta } from "./estado";
 /** Votações mais recentes de cada Casa com a orientação guardada (coluna da aba Votos do crachá). */
 const ULTIMAS = 20;
 
-interface VotoNoDia { votacaoId: string; politicoId: string; voto: TipoVoto; partido: string }
+export interface VotoNoDia { votacaoId: string; politicoId: string; voto: TipoVoto; partido: string }
 
 const ler = <T>(f: string): T => JSON.parse(readFileSync(f, "utf8")) as T;
 /** Só os JSON de verdade: o tar do macOS põe ao lado de cada arquivo um `._nome.json` binário (AppleDouble). */
 const jsons = (dir: string) => readdirSync(dir).filter((f) => !f.startsWith(".") && f.endsWith(".json"));
 
-export function calcularFidelidade(): { linhas: LinhaBruta[]; relatorio: string[] } {
-  const politicos = lerTabela("politicos");
+/**
+ * Cada voto registrado com o partido do dia, das respostas em cache das fontes. Câmara: só quem
+ * votou (a ausência é implícita); Senado: os 81. `incluirSemPagina`: também quem não tem página no
+ * site (ex-deputado que não disputou 2026), com um id provisório: o placar de uma votação precisa de todos.
+ */
+export function votosComPartido(politicos = lerTabela("politicos"), incluirSemPagina = false): VotoNoDia[] {
   const porCamara = new Map(politicos.filter((p) => p.camara_id).map((p) => [Number(p.camara_id), String(p.id)]));
   const porSenado = new Map(politicos.filter((p) => p.senado_codigo).map((p) => [String(p.senado_codigo), String(p.id)]));
+  const votos: VotoNoDia[] = [];
+  const dirCamara = `${FONTES}/camara-votos`;
+  if (existsSync(dirCamara)) for (const f of jsons(dirCamara)) {
+    for (const v of ler<{ votacaoId: string; camaraId: number; voto: TipoVoto; partido: string }[]>(`${dirCamara}/${f}`)) {
+      const pid = porCamara.get(v.camaraId) ?? (incluirSemPagina ? `camara-id:${v.camaraId}` : undefined);
+      if (pid) votos.push({ votacaoId: `camara:${v.votacaoId}`, politicoId: pid, voto: v.voto, partido: v.partido });
+    }
+  }
+  for (const f of existsSync(FONTES) ? jsons(FONTES).filter((x) => /^senado-votacao-\d{4}\.json$/.test(x)) : []) {
+    for (const vt of ler<{ idExterno: string; votos: { senadoCodigo: string; voto: TipoVoto; partido: string }[] }[]>(`${FONTES}/${f}`)) {
+      for (const v of vt.votos) {
+        const pid = porSenado.get(String(v.senadoCodigo)) ?? (incluirSemPagina ? `senado-id:${v.senadoCodigo}` : undefined);
+        if (pid) votos.push({ votacaoId: `senado:${vt.idExterno}`, politicoId: pid, voto: v.voto, partido: v.partido });
+      }
+    }
+  }
+  return votos;
+}
+
+export function calcularFidelidade(): { linhas: LinhaBruta[]; relatorio: string[] } {
+  const politicos = lerTabela("politicos");
   const votacoes = lerTabela("votacoes").filter((v) => String(v.data) >= PERIODO_GOVERNO.inicio && String(v.data) <= PERIODO_GOVERNO.fim);
   const noPeriodo = new Set(votacoes.map((v) => String(v.id)));
   const oriPor = new Map<string, { bancada: string; orientacao: string }[]>();
@@ -34,22 +59,7 @@ export function calcularFidelidade(): { linhas: LinhaBruta[]; relatorio: string[
     oriPor.set(String(o.votacao_id), l);
   }
 
-  const votos: VotoNoDia[] = [];
-  const dirCamara = `${FONTES}/camara-votos`;
-  if (existsSync(dirCamara)) for (const f of jsons(dirCamara)) {
-    for (const v of ler<{ votacaoId: string; camaraId: number; voto: TipoVoto; partido: string }[]>(`${dirCamara}/${f}`)) {
-      const pid = porCamara.get(v.camaraId);
-      if (pid) votos.push({ votacaoId: `camara:${v.votacaoId}`, politicoId: pid, voto: v.voto, partido: v.partido });
-    }
-  }
-  for (const f of existsSync(FONTES) ? jsons(FONTES).filter((x) => /^senado-votacao-\d{4}\.json$/.test(x)) : []) {
-    for (const vt of ler<{ idExterno: string; votos: { senadoCodigo: string; voto: TipoVoto; partido: string }[] }[]>(`${FONTES}/${f}`)) {
-      for (const v of vt.votos) {
-        const pid = porSenado.get(String(v.senadoCodigo));
-        if (pid) votos.push({ votacaoId: `senado:${vt.idExterno}`, politicoId: pid, voto: v.voto, partido: v.partido });
-      }
-    }
-  }
+  const votos = votosComPartido(politicos);
 
   const ultimas = new Set(["camara", "senado"].flatMap((casa) => votacoes.filter((v) => v.casa === casa)
     .sort((a, b) => String(b.data).localeCompare(String(a.data)) || String(b.id).localeCompare(String(a.id))).slice(0, ULTIMAS).map((v) => String(v.id))));

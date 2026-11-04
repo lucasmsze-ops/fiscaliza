@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import type { CongressoDados, VotacaoResumo } from "@/lib/congresso";
-import { PlacarVotacao } from "./PlacarVotacao";
+import { CartaoVotacao } from "./CartaoVotacao";
 
 const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 const SEMANA = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
 const DIA_SEMANA = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
-const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
 const chip = "inline-flex h-9 items-center rounded-xl border border-borda bg-card px-3.5 text-xs font-bold hover:border-destaque disabled:opacity-30";
 
 const somaMes = (mes: string, m: number) => {
@@ -58,30 +57,26 @@ export function AgendaPlenario({ porDia, mesInicial, diaInicial, votacoesMes }: 
             const d = `${mes}-${String(i + 1).padStart(2, "0")}`;
             const n = (porDia[d]?.camara ?? 0) + (porDia[d]?.senado ?? 0);
             const on = d === dia;
+            // Sábado e domingo ficam desabilitados: o Plenário vota em dias úteis.
+            const util = ![0, 6].includes((offset + i) % 7);
             return (
-              <button key={d} type="button" onClick={() => setDia(d)} aria-pressed={on} aria-label={`${i + 1} de ${MESES[m - 1]}: ${n} votações nominais`}
-                className={`flex h-[46px] flex-col items-center justify-center gap-px rounded-[10px] border text-[13px] ${on ? "border-destaque bg-fundo font-bold" : "border-transparent hover:bg-fundo"}`}>
+              <button key={d} type="button" disabled={!util} onClick={() => setDia(d)} aria-pressed={on}
+                aria-label={`${i + 1} de ${MESES[m - 1]}${n > 0 ? ": com votação no Plenário" : ""}`}
+                className={`flex h-[46px] flex-col items-center justify-center gap-1 rounded-[10px] border text-[13px] disabled:cursor-default disabled:opacity-30 ${on ? "border-destaque bg-fundo font-bold" : "border-transparent enabled:hover:bg-fundo"}`}>
                 <span>{i + 1}</span>
-                <span className="text-[10px] text-link tabular-nums">{n > 0 ? n : ""}</span>
+                <span aria-hidden="true" className={`size-1.5 rounded-full ${n > 0 && util ? "bg-[#2f855a] dark:bg-[#68d391]" : "bg-transparent"}`} />
               </button>
             );
           })}
         </div>
-        <p className="text-xs text-suave">O número é quantas votações nominais houve no dia, somando Câmara e Senado.</p>
+        <p className="flex items-center gap-1.5 text-xs text-suave"><span aria-hidden="true" className="size-1.5 rounded-full bg-[#2f855a] dark:bg-[#68d391]" /> dia com votação nominal no Plenário (Câmara ou Senado).</p>
       </div>
 
       <div className="grid min-w-0 flex-[1_1_320px] content-start gap-2.5">
         <h3 className="text-[17px] font-bold">{DIA_SEMANA[wd]}, {Number(dia.slice(8))} de {MESES[Number(dia.slice(5, 7)) - 1]}</h3>
         {!porMes[mes] && <p className="text-sm text-suave">Carregando…</p>}
         {porMes[mes] && doDia.length === 0 && <p className="text-sm text-suave">Nenhuma votação nominal no Plenário neste dia.</p>}
-        {doDia.map((v) => (
-          <div key={v.id} className="grid gap-1 rounded-xl border border-borda p-3 text-sm">
-            <span className="text-[13px] text-link">{v.casa === "senado" ? "Senado" : "Câmara"}{v.proposicao ? ` · ${v.proposicao}` : ""}{v.resultado ? ` · ${v.resultado}` : ""}</span>
-            <strong className="line-clamp-3 leading-snug">{v.ementa ?? v.descricao}</strong>
-            {v.ementa && <span className="text-xs leading-relaxed text-suave">Votado: {v.descricao}</span>}
-            <span className="flex flex-wrap items-end justify-between gap-2 text-xs"><PlacarVotacao v={v} /><a href={v.urlOficial} {...externo} className="underline underline-offset-2">página oficial</a></span>
-          </div>
-        ))}
+        {doDia.map((v) => <CartaoVotacao key={v.id} v={v} />)}
       </div>
     </div>
   );

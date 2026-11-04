@@ -12,6 +12,7 @@ import { montarCard, type CardDados } from "./card";
 import { ordemNaCidade } from "./cidade";
 import { deLinha } from "./linhas";
 import { montarPagina, type PaginaDados } from "./pagina";
+import type { VotacaoPagina } from "./votacao";
 import type {
   Afastamento, Atualizacao, Cargo, Casa, DespesaMediaUf, DespesaMes, EleitoMunicipio, Linha, ListaEleitoral, Mandato, Municipio,
   FidelidadePolitico, Orientacao, Politico, Proposicao, ProposicaoAutor, ProposicaoContagem, Votacao, Voto,
@@ -65,6 +66,8 @@ export interface Repo {
   votacoesEntre(inicio: string, fim: string): Promise<Votacao[]>;
   /** Proposições que viraram norma, mais recentes pela apresentação, com os autores do site. */
   ultimasNormas(limite: number): Promise<{ proposicao: Proposicao; autores: { politicoId: string; ordem: number }[] }[]>;
+  /** Página pronta de uma votação (lib/votacao.ts; calculada pelo cron, que tem o partido de cada voto no dia). */
+  getVotacaoPagina(id: string): Promise<VotacaoPagina | null>;
 }
 
 export { normalizar } from "./texto";
@@ -204,6 +207,14 @@ export class JsonRepo implements Repo {
     return ps.filter((p) => p.virouNorma)
       .sort((a, b) => b.apresentacao.localeCompare(a.apresentacao) || b.id.localeCompare(a.id)).slice(0, limite)
       .map((proposicao) => ({ proposicao, autores: (autores.get(proposicao.id) ?? []).map((a) => ({ politicoId: a.politicoId, ordem: a.ordem })) }));
+  }
+  private paginasVotacao: Promise<Map<string, VotacaoPagina>> | null = null;
+  async getVotacaoPagina(id: string) {
+    // Só existe no estado do cron (estado/dados/resumos_votacao.json); em data/ (sonda) não há o arquivo.
+    this.paginasVotacao ??= readFile(path.join(this.dir, "resumos_votacao.json"), "utf8")
+      .then((t) => new Map((JSON.parse(t) as { votacao_id: string; pagina: VotacaoPagina }[]).map((l) => [l.votacao_id, l.pagina])))
+      .catch(() => new Map());
+    return (await this.paginasVotacao).get(id) ?? null;
   }
 }
 

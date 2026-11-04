@@ -16,10 +16,10 @@ const CARGOS = [
   { k: "senado", rotulo: "Senadores", icone: "M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6M9 11h.01M15 11h.01" },
   { k: "camara", rotulo: "Deputados federais", icone: "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c0-3.5 3-5.5 7-5.5s7 2 7 5.5M17 11a3 3 0 1 0 0-6M22 21c0-2.6-1.6-4.3-4-5" },
 ] as const;
-type FiltroCargo = "todos" | "senado" | "camara";
+type FiltroCargo = "senado" | "camara";
 
 const iniciais = (n: string) => n.split(" ").filter(Boolean).map((w) => w[0]).slice(0, 2).join("");
-const fundoPartido = (partido: string, cores: string[]) => `color-mix(in srgb, ${corPartido(partido, cores)} 22%, transparent)`;
+const fundoPartido = (partido: string, cores: string[]) => `color-mix(in srgb, ${corPartido(partido)} 22%, transparent)`;
 
 function Foto({ p, tamanho, classe }: { p: PessoaNoCargo; tamanho: number; classe?: string }) {
   const dim = classe ? undefined : { width: tamanho, height: tamanho };
@@ -44,8 +44,7 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
   const [cq, setCq] = useState("");
   const [municipios, setMunicipios] = useState<MunicipioJson[] | null>(null);
   const pedido = useRef<Promise<void> | null>(null);
-  const [lista, setLista] = useState(false);
-  const [cargo, setCargo] = useState<FiltroCargo>("todos");
+  const [cargo, setCargo] = useState<FiltroCargo>("senado");
   const [partido, setPartido] = useState("todos");
   const [nq, setNq] = useState("");
   const [letra, setLetra] = useState("");
@@ -66,7 +65,7 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
   function escolherUf(u: string) { setUf(u); setReg(regiaoDe(u)!.k); setCidade(null); setCq(""); }
   function voltarBrasil() { setUf(""); setReg(""); setCidade(null); setCq(""); }
   function abrirLista(c: FiltroCargo, ufLista?: string) {
-    setCargo(c); setLista(true); setLetra(""); setLim(POR_PAGINA);
+    setCargo(c); setLetra(""); setLim(POR_PAGINA);
     if (ufLista !== undefined) setUf(ufLista);
     requestAnimationFrame(() => listaRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
   }
@@ -83,10 +82,9 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
 
   const partidos = useMemo(() => [...new Set(d.pessoas.map((p) => p.partido))].sort((a, b) => a.localeCompare(b, "pt-BR")), [d.pessoas]);
   const nqn = normalizar(nq);
-  const filtradas = d.pessoas.filter((p) => (cargo === "todos" || p.casa === cargo) && (partido === "todos" || p.partido === partido)
+  const filtradas = d.pessoas.filter((p) => (p.casa === cargo) && (partido === "todos" || p.partido === partido)
     && (!uf || p.uf === uf) && (!nqn || normalizar(p.nomeUrna).includes(nqn)) && (!letra || normalizar(p.nomeUrna).startsWith(letra.toLowerCase())));
-  const letrasComGente = new Set(d.pessoas.filter((p) => (cargo === "todos" || p.casa === cargo) && (!uf || p.uf === uf)).map((p) => normalizar(p.nomeUrna)[0]?.toUpperCase()));
-  const tituloLista = cargo === "todos" ? "Todos os políticos no cargo" : CARGOS.find((c) => c.k === cargo)!.rotulo;
+  const letrasComGente = new Set(d.pessoas.filter((p) => (p.casa === cargo) && (!uf || p.uf === uf)).map((p) => normalizar(p.nomeUrna)[0]?.toUpperCase()));
   const total = (c: "senado" | "camara") => d.pessoas.filter((p) => p.casa === c).length;
 
   return (
@@ -179,44 +177,17 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
         </div>
       </section>
 
-      <section aria-labelledby="titulo-cargos" className="grid gap-3.5">
-        <div>
-          <h2 id="titulo-cargos" className="text-lg font-bold">Quem está no cargo hoje</h2>
-          <p className="mt-1 text-[13px] text-suave">Toque num cargo para ver a lista em ordem alfabética · <button type="button" onClick={() => { setUf(""); abrirLista("todos", ""); }} className="underline underline-offset-2 text-link">ver todos</button></p>
-        </div>
-        <div className="grid gap-4.5 [grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr))]">
-          {CARGOS.map((c) => {
-            const on = lista && cargo === c.k;
-            return (
-              <button key={c.k} type="button" onClick={() => { setUf(""); abrirLista(c.k, ""); }}
-                className={`flex items-center justify-between gap-3 rounded-card border bg-card p-4 text-left shadow-card ${on ? "border-destaque" : "border-borda hover:border-destaque"}`}>
-                <span className="grid gap-1">
-                  <span className="text-xs font-bold text-suave">{c.rotulo}</span>
-                  <span className="text-lg font-bold tabular-nums">{total(c.k)} <span className="text-xs text-link">{on ? "lista aberta" : "ver lista ›"}</span></span>
-                </span>
-                <span className="inline-flex size-[45px] shrink-0 items-center justify-center rounded-xl bg-destaque text-destaque-texto">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={c.icone} /></svg>
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
       <div ref={listaRef} className="scroll-mt-4" />
-      {lista && (
-        <section aria-labelledby="titulo-lista" className="grid gap-3.5 rounded-card border border-borda bg-card p-5 shadow-card">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h2 id="titulo-lista" className="text-lg font-bold">{tituloLista}</h2>
-              <p className="mt-1 text-[13px] text-suave"><strong className="text-texto">{filtradas.length}</strong> {filtradas.length === 1 ? "pessoa" : "pessoas"}, em ordem alfabética</p>
-            </div>
-            <button type="button" onClick={() => setLista(false)} className={btn}>Fechar lista ×</button>
+      <section aria-labelledby="titulo-lista" className="grid gap-3.5 rounded-card border border-borda bg-card p-4 shadow-card sm:p-5">
+          <div>
+            <h2 id="titulo-lista" className="text-lg font-bold">Quem está no cargo hoje</h2>
+            <p className="mt-1 text-[13px] text-suave"><strong className="text-texto">{filtradas.length}</strong> {filtradas.length === 1 ? "pessoa" : "pessoas"}, em ordem alfabética</p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {(["todos", "senado", "camara"] as const).map((k) => (
-              <button key={k} type="button" onClick={() => { setCargo(k); setLim(POR_PAGINA); }} className={cargo === k ? btnOn : btn}>
-                {k === "todos" ? "Todos os cargos" : CARGOS.find((c) => c.k === k)!.rotulo}
+          {/* Cargo mais alto já escolhido (hoje, Senadores); os outros cargos entram no Passo 5. */}
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Cargo">
+            {CARGOS.map((c) => (
+              <button key={c.k} type="button" aria-pressed={cargo === c.k} onClick={() => { setCargo(c.k); setLetra(""); setLim(POR_PAGINA); }} className={cargo === c.k ? btnOn : btn}>
+                {c.rotulo} · {total(c.k)}
               </button>
             ))}
           </div>
@@ -264,7 +235,6 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
             <button type="button" onClick={() => setLim((l) => l + POR_PAGINA)} className={`${btn} justify-self-center`}>Ver mais ({filtradas.length - lim})</button>
           )}
         </section>
-      )}
     </main>
   );
 }

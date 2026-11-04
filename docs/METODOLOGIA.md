@@ -68,10 +68,11 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
 - Cadeira ocupada na data = mandato em curso (`mandatos.fim` nulo, `inicio` ≤ data) sem afastamento
   que cubra a data (`lib/congresso.ts#emExercicio`). Em 2026-11-04: 575 mandatos em curso na Câmara
   (62 titulares licenciados) → 513 cadeiras; Senado 81.
-- Bancadas por tamanho (empate pelo nome). Cor: os 8 partidos com mais cadeiras nas duas Casas
-  somadas, na ordem fixa da paleta de referência validada (CVD e contraste); o resto em cinza. Nunca
-  por posição política. A lista com nome e cadeiras é obrigatória (3 cores ficam abaixo de 3:1 no
-  branco).
+- Bancadas por tamanho (empate pelo nome). Cor: a oficial de cada partido (Wikidata P465, conferida
+  à mão; `lib/partidos.ts#COR_PARTIDO`), aplicada com `color-mix(in oklab, cor 82%, var(--texto))` para
+  ganhar contraste nos dois temas; PRD, MISSÃO e UP sem cor oficial encontrada usam cor de apoio. A
+  cor só distingue (partidos de cores parecidas existem, ex.: PL e PSDB): a lista com nome e cadeiras é
+  obrigatória. Nunca por posição política.
 - Câmara a partir de 01/02/2027 (`camaraEleita`): `politicos` com cargo deputado_federal e status eleito
   ou reeleito = 513, partido de hoje. Senado fora: das 27 cadeiras de 2022, 18 têm o titular em
   exercício; nas outras 9 não se sabe com dado quem ocupará a cadeira em fevereiro.
@@ -80,6 +81,28 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
   "Votações da última sessão": as do último dia com votação nominal em cada Casa. "O que virou
   norma" saiu da página (não está no protótipo); o número continua no crachá.
 - Sigla de partido canônica (`lib/partidos.ts`): TSE "PCDOB" = Câmara/Senado "PCdoB" (20 políticos).
+
+## Votação (`/votacoes/[id]`, E23k)
+- Pré-calculada no cron (`scripts/cron/votacoes-paginas.ts` → `resumos_votacao`), porque o partido de
+  cada voto no dia só existe nas respostas em cache das fontes. ~4 KB por votação, 1.537 votações.
+- O que foi votado (`lib/votacao.ts#objetoVotado`), pela descrição oficial: autoridade (MSF/OFS ou
+  "Votação nominal da Mensagem/do Ofício"); requerimento ("requerimento" ou "preferência" nos 60
+  primeiros caracteres); recurso; redação final; destaque ("Mantido/Suprimido o texto", "o Destaque");
+  texto principal (substitutivo, emenda aglutinativa substitutiva, projeto, proposta, PEC/PLP…); emenda.
+  Em 1.537 votações: 6 sem padrão (só a descrição aparece). Turno ("1º/2º turno") só quando a
+  descrição diz, e nunca num requerimento (o turno citado é o da votação pedida).
+- Votos necessários: só no texto principal de PEC (308 / 49) e PLP (257 / 41). Demais tipos: a
+  regra em texto (maioria dos votos com maioria absoluta presente), sem marca.
+- Contagem: todos os votos do cache, inclusive de quem não tem página no site (ex-deputado que não
+  disputou 2026): bate com o placar da tabela `votacoes` em 1.107/1.107 da Câmara. Não votou na
+  Câmara = 513 − votos registrados; por partido, os deputados em exercício no dia (mandato e
+  afastamentos) que não votaram, com o partido do voto deles mais próximo no tempo (sem voto
+  nenhum, o de hoje). O resto (até 20 por votação, em 1.011 votações) não tem partido identificável
+  e aparece numa nota. Senado: a fonte lista os 81, com o partido.
+- Orientação por partido: a mesma regra de "votou com o partido" (`orientacaoDoPartido`: partido,
+  federação ou bloco cujo nome o lista; bloco cortado sem o partido → "sem orientação registrada").
+- Caminho: as votações nominais da mesma matéria (mesmo texto de `proposicao`) no Plenário da mesma
+  Casa, por data e id. Não junta Câmara e Senado: a numeração da matéria muda entre as Casas.
 
 ## Visão geral (`/`)
 - Mesmas cadeiras de `/congresso` (`lib/congresso.ts#casasHoje`), por estado: 3 senadores e os

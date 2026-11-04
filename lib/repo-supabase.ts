@@ -14,6 +14,7 @@ import type { PaginaDados } from "./pagina";
 import type { EleitoNaCidade, Repo } from "./repo";
 import { cliente, selecionar, type Cliente } from "./supabase";
 import { normalizar } from "./texto";
+import type { VotacaoPagina } from "./votacao";
 import type {
   Afastamento, Atualizacao, Cargo, Casa, DespesaMediaUf, DespesaMes, Linha, ListaEleitoral, Mandato, Municipio, Orientacao, Politico,
   Proposicao, ProposicaoContagem, Votacao, Voto,
@@ -81,6 +82,10 @@ export class SupabaseRepo implements Repo {
     const ls = await selecionar<Linha<Proposicao> & { autores: { politico_id: string; ordem: number }[] }>(this.cli, "proposicoes",
       `select=*,autores:proposicoes_autores(politico_id,ordem)&virou_norma=is.true&order=apresentacao.desc,id.desc&limit=${limite}`);
     return ls.map(({ autores, ...p }) => ({ proposicao: deLinha<Proposicao>(p as Linha<Proposicao>), autores: autores.map((a) => ({ politicoId: a.politico_id, ordem: a.ordem })) }));
+  }
+  async getVotacaoPagina(id: string) {
+    const [r] = await selecionar<{ pagina: VotacaoPagina }>(this.cli, "resumos_votacao", `select=pagina&votacao_id=eq.${v(id)}&order=votacao_id`);
+    return r?.pagina ?? null;
   }
   async getPagina(id: string) {
     const [r] = await selecionar<{ pagina: PaginaDados }>(this.cli, "resumos", `select=pagina&politico_id=eq.${v(id)}&order=politico_id`);

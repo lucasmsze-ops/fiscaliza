@@ -12,11 +12,27 @@ const ITENS = [
 
 const ativo = (href: string, caminho: string) => href === "/" ? caminho === "/" : caminho.startsWith(href);
 
-export function MenuItens({ fecharGaveta }: {
-  /** id do popover da gaveta do celular: fecha ao navegar (a troca de página não recarrega). */
-  fecharGaveta?: string;
+export function MenuItens({ abas = false }: {
+  /** Celular: abas numa faixa rolável, em vez da lista do menu lateral. */
+  abas?: boolean;
 }) {
   const caminho = usePathname();
+  if (abas) return (
+    <ul className="-mx-4 flex gap-1 overflow-x-auto border-b border-borda px-4">
+      {ITENS.map((i) => {
+        const on = ativo(i.href, caminho);
+        return (
+          <li key={i.href} className="shrink-0">
+            <Link href={i.href} aria-current={on ? "page" : undefined}
+              className={`inline-flex h-11 items-center gap-2 border-b-2 px-3 text-[13px] font-bold whitespace-nowrap no-underline ${on ? "border-destaque text-texto" : "border-transparent text-suave"}`}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={i.icone} /></svg>
+              {i.rotulo}
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
   return (
     <ul className="grid gap-1">
       {ITENS.map((i) => {
@@ -24,7 +40,6 @@ export function MenuItens({ fecharGaveta }: {
         return (
           <li key={i.href}>
             <Link href={i.href} aria-current={on ? "page" : undefined}
-              onClick={() => { if (fecharGaveta) document.getElementById(fecharGaveta)?.hidePopover(); }}
               className={`flex items-center gap-3 rounded-card px-3.5 py-2.5 text-[13px] font-bold whitespace-nowrap no-underline ${on ? "bg-card text-texto shadow-card" : "text-suave hover:bg-card hover:text-texto"}`}>
               <span className={`inline-flex size-[30px] shrink-0 items-center justify-center rounded-xl shadow-card ${on ? "bg-destaque text-destaque-texto" : "bg-card text-link"}`}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={i.icone} /></svg>

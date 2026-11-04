@@ -66,9 +66,10 @@ Hoje (protótipo, SP):
 /congresso          Plenário de hoje, últimas votações, o que virou norma (E23b)
 /c/[ids]            links antigos da colinha: redireciona para o crachá (a colinha saiu em 2026-11-04)
 /p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
+/votacoes/[id]      uma votação do Plenário (E23k): placar, regra, ementa, caminho, como votou cada partido (id = casa-idExterno)
 /como-funciona      metodologia, fontes, licença, código
 ```
-Planejadas (detalhar no PLANO ao chegar): `/votacoes` (lista do Plenário, E30), `/votacoes/[id]` (detalhe com placar por partido),
+Planejadas (detalhar no PLANO ao chegar): `/votacoes` (lista do Plenário, E30),
 `/uf/[uf]`, `/cidade/[ibge]` ("quem me representa"), `/comparar`, `/eleicoes`, `/governos`,
 `/partidos`, `/cargos`, `/dicionario`, `/mais-vistos`, `/atualizacoes`.
 
@@ -162,6 +163,8 @@ votos             votacao_id, politico_id, voto enum(sim,nao,abstencao,obstrucao
                   nao_informado,secreto,ausente), detalhe (sigla do Senado)
 orientacoes       votacao_id, bancada, orientacao
 atualizacoes      fonte ({casa}_{job}), coletado_em   (última coleta bem-sucedida; base de /atualizacoes)
+resumos           politico_id, card jsonb, pagina jsonb, hash   (crachá pronto, pelo cron)
+resumos_votacao   votacao_id, pagina jsonb, hash   (página da votação pronta, com o partido de cada voto no dia; E23k)
 ```
 A tabela `quiz` e a coluna `votacoes.quiz` saem na E17; o modelo cresce a cada passo (detalhar no PLANO).
 Tudo com `upsert` por chave externa. Nenhuma coluna de CPF ou hash de CPF; CPF que apareça em texto oficial (descrição de votação, ementa) é ocultado com `lib/texto.ts#semCpf`. Volume e limites: `docs/VOLUME.md` (decisões de 2026-11-02: dados desde 2023, cota agregada por mês/categoria/fornecedor sem nota a nota, íntegra só das proposições que podem virar lei; as páginas leem números pré-calculados pelo cron, não as votações inteiras). Tamanho na sonda (SP, 438 políticos, 2023–26): 9,6 MB de JSON; esperado < 50 MB por legislatura.

@@ -124,7 +124,7 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
               <div className="flex flex-wrap items-center gap-2.5">
                 <span className="text-sm font-bold text-suave sm:text-base">{d.cargo} {pelaUf(uf)}</span>
                 <span className="inline-flex h-[26px] items-center rounded-lg px-3 text-xs font-bold"
-                  style={{ background: `color-mix(in srgb, ${corPartido(partido, cores)} 24%, transparent)` }}>
+                  style={{ background: `color-mix(in srgb, ${corPartido(partido)} 24%, transparent)` }}>
                   {partido}{nome && nome.toLowerCase() !== partido.toLowerCase() ? ` · ${nome}` : ""}
                 </span>
               </div>

@@ -15,6 +15,20 @@ Modelo:
 
 ---
 
+## 2026-11-04 · E23k · layout e página da votação
+**Feito:** menu do celular em abas; cor oficial por partido (`lib/partidos.ts#corPartido`); Visão geral
+com chips de cargo; Congresso com abas de Casa, agenda de dias úteis com bolinha e cartões de votação
+(`components/CartaoVotacao.tsx`); página `/votacoes/[id]` pré-calculada no cron
+(`scripts/cron/votacoes-paginas.ts`, `lib/votacao.ts`, tabela `resumos_votacao`, migração 0006 testada
+no PGlite). Ensaio local: 1.537 páginas (~6 MB, até 6,6 KB cada); placar recalculado dos votos bate com
+`votacoes.placar` em 1.107/1.107 da Câmara; classificador do que foi votado sem padrão em 6 de 1.537.
+**Decidido:** a contagem usa todos os votos do cache, inclusive de quem não tem página (ex-deputados):
+sem isso faltavam ~30 votos por votação. Não votou na Câmara = 513 − registrados; quem não votou e
+está fora do registro de mandatos (até 20 por votação) vai para uma nota, sem partido. Barras do
+placar em tons neutros (Sim/Não não são bom/ruim). Hora da votação e palavras-chave ficam fora.
+**Lacunas:** palavras-chave oficiais (indexação) da Câmara e tema (E23j) não coletados.
+**Próximo passo:** rodar a 0006 no SQL Editor; push; cron manual para gravar `resumos_votacao`.
+
 ## 2026-11-04 · 504 da lista da Câmara
 **Feito:** o `parlamentares` falhou nos 4 crons do dia em `/deputados?idLegislatura=57`. Medido: 12–15 s
 por página e 504 no corte de 15 s do gateway, com qualquer `itens` (10 a 1000) e com ou sem

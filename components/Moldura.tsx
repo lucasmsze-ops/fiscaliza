@@ -31,8 +31,8 @@ function CartaoFontes() {
 }
 
 /**
- * Moldura de todas as páginas (app/layout.tsx): menu lateral no computador; no celular, cabeçalho
- * com o menu numa gaveta (popover nativo, sem JS), como no protótipo (a lista de itens fica igual nas duas).
+ * Moldura de todas as páginas (app/layout.tsx): menu lateral no computador; no celular, a marca e o
+ * menu em abas logo abaixo (pedido do usuário em 2026-11-04: abas, não um botão que abre).
  */
 export function Moldura({ children }: { children: React.ReactNode }) {
   return (
@@ -47,22 +47,9 @@ export function Moldura({ children }: { children: React.ReactNode }) {
       </aside>
 
       <div className="min-w-0 flex-1">
-        <header className="flex items-center justify-between py-4 lg:hidden">
+        <header className="grid gap-3 pt-4 pb-2 lg:hidden">
           <Marca />
-          <button type="button" popoverTarget="menu-celular"
-            className="inline-flex h-10 items-center gap-2 rounded-xl border border-borda bg-card px-3.5 text-sm font-bold shadow-card">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
-            Menu
-          </button>
-          <nav id="menu-celular" popover="auto" aria-label="Menu principal"
-            className="inset-y-0 right-auto left-0 m-0 h-dvh border-0 max-h-none w-72 max-w-[85vw] overflow-y-auto bg-fundo p-4 text-texto shadow-xl backdrop:bg-black/40">
-            <div className="flex items-center justify-between px-3.5 pb-4">
-              <Marca />
-              <button type="button" popoverTarget="menu-celular" popoverTargetAction="hide" className="text-sm underline underline-offset-2">Fechar</button>
-            </div>
-            <MenuItens fecharGaveta="menu-celular" />
-            <CartaoFontes />
-          </nav>
+          <nav aria-label="Menu principal"><MenuItens abas /></nav>
         </header>
 
         {children}

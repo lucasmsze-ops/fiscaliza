@@ -491,6 +491,19 @@ Classificação oficial de tema, nas duas Casas: Câmara, arquivo anual `proposi
 Propostas do crachá (o do protótipo) e etiqueta de tema nas votações (pela matéria principal).
 - Pronto quando: cada proposta e votação mostra o tema oficial, e a aba Propostas filtra por ele.
 
+### E23k · Ajustes de layout e página da votação (pedido de 2026-11-04)
+- [x] Menu do celular em abas (no lugar do botão que abria a gaveta).
+- [x] Cor oficial de cada partido (Wikidata P465) em todas as telas; nenhum partido em cinza.
+- [x] Visão geral: "Quem está no cargo hoje" com chips de cargo (Senadores já selecionado) e a lista sempre aberta.
+- [x] Congresso: sem o cartão de contagem; Câmara e Senado em abas; chips só para Hoje / a partir de fev/2027;
+      agenda só com dias úteis e uma bolinha nos dias com votação; cartões de votação no formato do print.
+- [x] `/votacoes/[id]`: cabeçalho (o que foi votado, regra do tipo), resultado com votos necessários, "O que
+      era" (ementa oficial e termos jurídicos), caminho no Plenário, como votou cada partido. Pré-calculada no
+      cron (`resumos_votacao`, migração 0006).
+- [ ] Palavras-chave oficiais da Câmara (indexação) e tema (E23j): ainda não coletados, fora da página.
+- [ ] Link da aba Votos do crachá para a página da votação (precisa do id da votação no resumo do político).
+- Pronto quando: as telas acima no ar, com a migração 0006 rodada antes do push.
+
 ### E24 · Patrimônio e contas de campanha (TSE)
 Patrimônio por eleição, sem descrição dos bens; arrecadado, gasto e % de dinheiro público. Redes
 sociais declaradas ao TSE (veio da E23). Bloco de patrimônio do crachá.

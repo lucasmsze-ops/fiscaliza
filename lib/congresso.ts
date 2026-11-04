@@ -36,11 +36,8 @@ export function bancadasDe(pessoas: Politico[]): Bancada[] {
     .sort((a, b) => b.membros.length - a.membros.length || a.partido.localeCompare(b.partido, "pt-BR"));
 }
 
-/** Cor do partido no tema (variáveis `--serie-N` de app/globals.css); fora das 8, cinza. */
-export const corPartido = (partido: string, cores: string[]) => {
-  const i = cores.indexOf(partido);
-  return i === -1 ? "var(--serie-outros)" : `var(--serie-${i + 1})`;
-};
+/** Cor do partido: a oficial (lib/partidos.ts#corPartido). */
+export { corPartido } from "./partidos";
 
 /** Quantos partidos ganham cor própria; os demais viram "outros partidos" (a paleta tem 8 cores). */
 export const CORES_PARTIDO = 8;
@@ -118,8 +115,6 @@ export interface CongressoDados {
   casas: CasaHoje[];
   camara2027: CasaHoje;
   cores: string[];
-  /** Votações nominais das duas Casas no ano da votação mais recente. */
-  noAno: { ano: number; total: number };
   /** AAAA-MM-DD → votações nominais por Casa no dia. */
   porDia: Record<string, { camara: number; senado: number }>;
   /** Mês (AAAA-MM) e dia da votação mais recente, com as votações desse mês. */
@@ -137,7 +132,6 @@ export async function montarCongresso(repo: Repo, hoje = new Date().toISOString(
   const porDia: CongressoDados["porDia"] = {};
   for (const x of datas) (porDia[x.data] ??= { camara: 0, senado: 0 })[x.casa]++;
   const ultimo = datas.at(-1)?.data ?? hoje;
-  const ano = Number(ultimo.slice(0, 4));
   const mesInicial = ultimo.slice(0, 7);
   const votacoesMes = (await repo.votacoesEntre(...limitesDoMes(mesInicial))).map(resumirVotacao);
   const sessao = (casa: Casa, vs: Votacao[]) => ({ casa, data: vs[0]?.data ?? "", votacoes: vs.filter((v) => v.data === vs[0]?.data).map(resumirVotacao) });
@@ -145,7 +139,6 @@ export async function montarCongresso(repo: Repo, hoje = new Date().toISOString(
     casas,
     camara2027: camaraEleita([...politicos.values()]),
     cores: ordemDasCores(casas),
-    noAno: { ano, total: datas.filter((x) => x.data.startsWith(String(ano))).length },
     porDia, mesInicial, diaInicial: ultimo, votacoesMes,
     ultimaSessao: [sessao("camara", vc), sessao("senado", vs)].filter((x) => x.data),
   };

@@ -36,10 +36,12 @@ export function Plenario({ casas, camara2027, cores }: { casas: CasaHoje[]; cama
 
   return (
     <div className="grid gap-3.5">
-      <div className="flex flex-wrap gap-2">
+      <div role="tablist" aria-label="Casa" className="flex gap-1 border-b border-borda">
         {casas.map((c) => (
-          <button key={c.casa} type="button" aria-pressed={casaSel === c.casa} onClick={() => trocar(() => { setCasaSel(c.casa); if (c.casa === "senado") setQuando("hoje"); })}
-            className={casaSel === c.casa ? chipOn : chipOff}>{c.casa === "senado" ? "Senado" : "Câmara"} · {c.total}</button>
+          <button key={c.casa} type="button" role="tab" aria-selected={casaSel === c.casa} onClick={() => trocar(() => { setCasaSel(c.casa); if (c.casa === "senado") setQuando("hoje"); })}
+            className={`-mb-px h-11 border-b-2 px-4 text-sm font-bold ${casaSel === c.casa ? "border-destaque text-texto" : "border-transparent text-suave hover:text-texto"}`}>
+            {c.casa === "senado" ? "Senado" : "Câmara"} <span className="font-normal text-suave">· {c.total}</span>
+          </button>
         ))}
       </div>
       <div className="flex flex-wrap items-center gap-2">
@@ -62,7 +64,7 @@ export function Plenario({ casas, camara2027, cores }: { casas: CasaHoje[]; cama
             {cadeiras.map(({ m, partido: p, p: pt }) => {
               const apagada = (foco && foco !== p) || (uf !== "todos" && m.uf !== uf);
               return (
-                <circle key={m.id} cx={pt.x} cy={1 - pt.y} r={raio} fill={cor(p, cores)} stroke="var(--card)" strokeWidth={raio * 0.18}
+                <circle key={m.id} cx={pt.x} cy={1 - pt.y} r={raio} fill={cor(p)} stroke="var(--card)" strokeWidth={raio * 0.18}
                   opacity={apagada ? 0.18 : 1} className="cursor-pointer transition-opacity"
                   onMouseEnter={() => setHover(p)} onClick={() => setPartido(p)}>
                   <title>{`${m.nomeUrna} · ${p} · ${m.uf}`}</title>
@@ -82,7 +84,7 @@ export function Plenario({ casas, camara2027, cores }: { casas: CasaHoje[]; cama
           <button key={b.partido} type="button" aria-pressed={partido === b.partido} onClick={() => setPartido(partido === b.partido ? "" : b.partido)}
             onMouseEnter={() => setHover(b.partido)} onMouseLeave={() => setHover("")}
             className={`inline-flex h-8 items-center gap-1.5 rounded-full border px-2.5 text-[13px] font-bold hover:bg-fundo ${partido === b.partido ? "border-destaque bg-fundo" : "border-borda"}`}>
-            <span className="size-2.5 rounded-full" style={{ background: cor(b.partido, cores) }} aria-hidden="true" />
+            <span className="size-2.5 rounded-full" style={{ background: cor(b.partido) }} aria-hidden="true" />
             {b.partido} <span className="font-normal text-suave">{b.membros.length}</span>
           </button>
         ))}
