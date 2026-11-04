@@ -477,10 +477,10 @@ emendas seguem ocultos até ter dado.
       completa sob demanda (`/dados/propostas/[id]`); Votos em tabela com voto e resultado.
 - [x] Fora da página por decisão do usuário: governismo, cota, mandatos, contatos, Como cobrar,
       Receber avisos (seguem no resumo). Ocultos sem dado: patrimônio, emendas, tema das propostas.
-- [ ] "Votou com o partido?" e a coluna "orientação do partido" na aba Votos: foram para a E26.
-      Precisam do partido de cada um no dia da votação (a janela partidária de 2026 trocou muitos) e
-      da composição dos blocos da Câmara (a API só lista os blocos de hoje; os de 2023–2025 vêm só
-      abreviados nas orientações).
+- [x] "Votou com o partido?" (pizza) e a coluna "orientação do partido" na aba Votos: partido no dia
+      de cada voto (caches das fontes), bancada = partido, federação ou bloco que o lista
+      (`lib/fidelidade.ts`, `scripts/cron/fidelidade.ts`); bloco de nome cortado sem o partido fica
+      fora (quase todo 2025 de MDB, Republicanos, Podemos, PSDB); mínimo de 20 votações.
 - Pronto quando: o crachá no layout do protótipo, só com dado real, no ar com os números novos.
 
 ### E24 · Patrimônio e contas de campanha (TSE)
@@ -496,10 +496,9 @@ Decidir aqui se entram temas por palavra-chave da ementa.
 
 ### E26 · Todos os votos e fidelidade ao partido
 Lista completa com filtros (ano, voto, busca); % de votos iguais à orientação do partido. Aba Votos
-do crachá e "votou com o partido?" (pizza do protótipo) e a coluna "orientação do partido". Antes:
-gravar o partido de cada voto (a resposta de `/votacoes/{id}/votos` e do `/votacao` do Senado traz) e
-resolver os blocos da Câmara (orientação por bloco, nomes abreviados; decidir se o voto conta contra
-o bloco ou fica fora). A participação ao lado da média já veio na E23i.
+do crachá completa. "Votou com o partido?", a coluna de orientação e a participação ao lado da média
+já vieram na E23i; aqui, a lista inteira de votos com filtros e, se der, a composição histórica dos
+blocos de 2025 (hoje fora da conta).
 
 ### E27 · Cota completa
 Câmara e Senado: por mês, categoria e maiores fornecedores. "Quanto custa o mandato" (veio da

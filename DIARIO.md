@@ -24,9 +24,13 @@ ganhou `comparacao` (média e parecidos, `lib/comparacoes.ts`), `coresPartido` e
 votação. Nomes dos partidos do TSE. Conferido com `estado/dados`: deputada, senador, eleito sem posse,
 não eleita; desktop, celular, escuro, 0 erros. 3.724 páginas em ~2 s; resumos +0,6 MB.
 **Decidido (usuário):** saem do crachá governismo, cota, mandatos, contatos, Como cobrar e Receber
-avisos (seguem no resumo e na metodologia). "Votou com o partido?" vai para a E26: sem o partido no
-dia de cada voto e sem a composição histórica dos blocos, o número sairia errado.
-**Lacunas:** blocos abreviados da Câmara; partido no dia da votação (`docs/LACUNAS.md`).
+avisos (seguem no resumo e na metodologia). "Votou com o partido?" entrou também, a pedido: partido
+no dia de cada voto lido das respostas em cache (Câmara e Senado trazem a sigla do dia), bancada =
+partido, federação ou bloco cujo nome abreviado o lista; bloco cortado sem o partido fica fora
+(78% dos votos identificados; 2025 de MDB, Republicanos, Podemos, PSDB quase todo fora). Conferido na
+fonte: Nikolas Ferreira 73 votos contra o PL, ex.: urgência de 15/04/2026 (355 × 29), PL orientou Sim.
+Resultado em `estado/dados/fidelidade.json`, fora do banco; só o resumo da página leva o número.
+**Lacunas:** blocos de nome cortado na Câmara (`docs/LACUNAS.md`).
 **Próximo passo:** publicar na ordem do `docs/CRON.md`: push do código → cron manual (regrava os
 resumos com os números novos e as 20 siglas PCdoB) → push deste diário (novo deploy). Depois conferir
 o run agendado de 05/11 e seguir para a E23d.
