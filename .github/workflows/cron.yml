@@ -49,6 +49,8 @@ jobs:
         run: |
           gh release download estado-inicial --pattern estado.tar.gz --dir "$RUNNER_TEMP"
           tar -xzf "$RUNNER_TEMP/estado.tar.gz"
+      - name: Tira os arquivos ._* do macOS (o tar do estado inicial foi feito num Mac)
+        run: find estado -name '._*' -type f -delete
       - name: O estado tem o que o cron precisa?
         run: |
           # Sem isto o cron recomeçaria de data/*.json (só SP) e reenviaria o Brasil inteiro.

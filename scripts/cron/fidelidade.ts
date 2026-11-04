@@ -18,6 +18,8 @@ const ULTIMAS = 20;
 interface VotoNoDia { votacaoId: string; politicoId: string; voto: TipoVoto; partido: string }
 
 const ler = <T>(f: string): T => JSON.parse(readFileSync(f, "utf8")) as T;
+/** Só os JSON de verdade: o tar do macOS põe ao lado de cada arquivo um `._nome.json` binário (AppleDouble). */
+const jsons = (dir: string) => readdirSync(dir).filter((f) => !f.startsWith(".") && f.endsWith(".json"));
 
 export function calcularFidelidade(): { linhas: LinhaBruta[]; relatorio: string[] } {
   const politicos = lerTabela("politicos");
@@ -34,13 +36,13 @@ export function calcularFidelidade(): { linhas: LinhaBruta[]; relatorio: string[
 
   const votos: VotoNoDia[] = [];
   const dirCamara = `${FONTES}/camara-votos`;
-  if (existsSync(dirCamara)) for (const f of readdirSync(dirCamara)) {
+  if (existsSync(dirCamara)) for (const f of jsons(dirCamara)) {
     for (const v of ler<{ votacaoId: string; camaraId: number; voto: TipoVoto; partido: string }[]>(`${dirCamara}/${f}`)) {
       const pid = porCamara.get(v.camaraId);
       if (pid) votos.push({ votacaoId: `camara:${v.votacaoId}`, politicoId: pid, voto: v.voto, partido: v.partido });
     }
   }
-  for (const f of existsSync(FONTES) ? readdirSync(FONTES).filter((x) => /^senado-votacao-\d{4}\.json$/.test(x)) : []) {
+  for (const f of existsSync(FONTES) ? jsons(FONTES).filter((x) => /^senado-votacao-\d{4}\.json$/.test(x)) : []) {
     for (const vt of ler<{ idExterno: string; votos: { senadoCodigo: string; voto: TipoVoto; partido: string }[] }[]>(`${FONTES}/${f}`)) {
       for (const v of vt.votos) {
         const pid = porSenado.get(String(v.senadoCodigo));
