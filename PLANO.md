@@ -3,8 +3,8 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E22** (atualizar esta linha ao avançar). Falta só o run agendado (o de 04/11 não disparou);
-E22b, E23, E23b, E23c e E23i foram feitas adiantadas a pedido do usuário. Depois da E22, seguir para a E23d.
+**Etapa atual: E23d** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
+terminou verde. E22b, E23, E23b, E23c, E23i e E23k foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -361,6 +361,7 @@ colinha não funciona fora de SP. Dividida em E21a–E21e; o desenho do cron est
 - [x] Data da última carga por fonte gravada (base da página `/atualizacoes`). (Tabela
       `atualizacoes`, migração 0005.)
 - Pronto quando: o primeiro run agendado termina verde e o site reflete dado novo.
+  (Feito: run agendado 41875775412 verde em 2026-11-04, com as siglas PCdoB publicadas.)
 
 ### E22b · Visual do protótipo
 Tema claro do protótipo do Claude Design (`docs/PROTOTIPO.md`, seção Visual) nas páginas que já

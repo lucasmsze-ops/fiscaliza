@@ -27,7 +27,10 @@ sem isso faltavam ~30 votos por votação. Não votou na Câmara = 513 − regis
 está fora do registro de mandatos (até 20 por votação) vai para uma nota, sem partido. Barras do
 placar em tons neutros (Sim/Não não são bom/ruim). Hora da votação e palavras-chave ficam fora.
 **Lacunas:** palavras-chave oficiais (indexação) da Câmara e tema (E23j) não coletados.
-**Próximo passo:** rodar a 0006 no SQL Editor; push; cron manual para gravar `resumos_votacao`.
+**No ar:** 0006 rodada pelo usuário; push; cron manual 41937058953 verde (1.537 resumos de votação
+gravados, nenhuma outra tabela mudou); este commit é o redeploy que limpa o 404 em cache de quem
+abriu uma votação antes do cron. O run agendado das 17h15 UTC também passou verde: E22 fechada.
+**Próximo passo:** E23d (Me representa) ou o link da aba Votos do crachá para a página da votação.
 
 ## 2026-11-04 · 504 da lista da Câmara
 **Feito:** o `parlamentares` falhou nos 4 crons do dia em `/deputados?idLegislatura=57`. Medido: 12–15 s
