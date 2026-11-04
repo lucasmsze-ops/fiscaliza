@@ -47,7 +47,7 @@ export function Plenario({ casas, camara2027, cores }: { casas: CasaHoje[]; cama
         {casaSel === "camara" && (
           <button type="button" aria-pressed={quando === "fev"} onClick={() => trocar(() => setQuando("fev"))} className={`${quando === "fev" ? chipOn : chipOff} h-8 text-[13px]`}>A partir de fev/2027</button>
         )}
-        <select value={uf} onChange={(e) => setUf(e.target.value)} aria-label="Estado" className="h-8 rounded-full border border-borda bg-card px-2.5 text-[13px]">
+        <select value={uf} onChange={(e) => setUf(e.target.value)} aria-label="Estado" className="h-8 rounded-full border border-borda bg-card px-2.5 text-base sm:text-[13px]">
           <option value="todos">Todos os estados</option>
           {Object.keys(NOME_UF).sort().map((u) => <option key={u} value={u}>{u}</option>)}
         </select>

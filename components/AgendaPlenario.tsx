@@ -77,7 +77,8 @@ export function AgendaPlenario({ porDia, mesInicial, diaInicial, votacoesMes }: 
         {doDia.map((v) => (
           <div key={v.id} className="grid gap-1 rounded-xl border border-borda p-3 text-sm">
             <span className="text-[13px] text-link">{v.casa === "senado" ? "Senado" : "Câmara"}{v.proposicao ? ` · ${v.proposicao}` : ""}{v.resultado ? ` · ${v.resultado}` : ""}</span>
-            <span className="leading-relaxed">{v.descricao}</span>
+            <strong className="line-clamp-3 leading-snug">{v.ementa ?? v.descricao}</strong>
+            {v.ementa && <span className="text-xs leading-relaxed text-suave">Votado: {v.descricao}</span>}
             <span className="flex flex-wrap items-end justify-between gap-2 text-xs"><PlacarVotacao v={v} /><a href={v.urlOficial} {...externo} className="underline underline-offset-2">página oficial</a></span>
           </div>
         ))}

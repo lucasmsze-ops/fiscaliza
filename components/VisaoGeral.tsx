@@ -21,11 +21,12 @@ type FiltroCargo = "todos" | "senado" | "camara";
 const iniciais = (n: string) => n.split(" ").filter(Boolean).map((w) => w[0]).slice(0, 2).join("");
 const fundoPartido = (partido: string, cores: string[]) => `color-mix(in srgb, ${corPartido(partido, cores)} 22%, transparent)`;
 
-function Foto({ p, tamanho }: { p: PessoaNoCargo; tamanho: number }) {
+function Foto({ p, tamanho, classe }: { p: PessoaNoCargo; tamanho: number; classe?: string }) {
+  const dim = classe ? undefined : { width: tamanho, height: tamanho };
   return p.fotoUrl
     // <img> de propósito: a foto vem direto da URL oficial, sem passar pela Vercel (CLAUDE.md).
-    ? <img src={p.fotoUrl} alt="" width={tamanho} height={tamanho} loading="lazy" decoding="async" className="shrink-0 rounded-full bg-fundo object-cover object-top" style={{ width: tamanho, height: tamanho }} />
-    : <span aria-hidden="true" className="inline-flex shrink-0 items-center justify-center rounded-full bg-fundo font-bold" style={{ width: tamanho, height: tamanho, fontSize: tamanho / 3 }}>{iniciais(p.nomeUrna)}</span>;
+    ? <img src={p.fotoUrl} alt="" width={tamanho} height={tamanho} loading="lazy" decoding="async" className={`shrink-0 rounded-full bg-fundo object-cover object-top ${classe ?? ""}`} style={dim} />
+    : <span aria-hidden="true" className={`inline-flex shrink-0 items-center justify-center rounded-full bg-fundo text-sm font-bold ${classe ?? ""}`} style={dim}>{iniciais(p.nomeUrna)}</span>;
 }
 
 function SelecaoPartido({ partido, cores }: { partido: string; cores: string[] }) {
@@ -103,7 +104,7 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
             <label htmlFor="cidade" className="sr-only">Sua cidade</label>
             <input id="cidade" type="search" autoComplete="off" value={cq} placeholder="Digite sua cidade"
               onFocus={carregarMunicipios} onChange={(e) => { setCq(e.target.value); carregarMunicipios(); }}
-              className="h-[42px] w-full rounded-card border border-borda bg-card pr-3.5 pl-[38px] text-[13px] outline-none focus:border-destaque" />
+              className="h-[42px] w-full rounded-card border border-borda bg-card pr-3.5 pl-[38px] text-base outline-none sm:text-[13px] focus:border-destaque" />
             {sugestoes.length > 0 && !cidade && (
               <div className="absolute inset-x-0 top-[46px] z-10 overflow-hidden rounded-card border border-borda bg-card shadow-xl">
                 {sugestoes.map(([ibge, nome, u]) => (
@@ -220,37 +221,41 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
             ))}
           </div>
           <div className="flex flex-wrap items-center gap-2.5">
-            <div className="relative max-w-[360px] flex-[1_1_240px]">
+            <div className="relative w-full sm:w-auto sm:max-w-[360px] sm:flex-[1_1_240px]">
               <label htmlFor="nome-q" className="sr-only">Nome</label>
               <input id="nome-q" type="search" value={nq} onChange={(e) => { setNq(e.target.value); setLim(POR_PAGINA); }} placeholder="Nome do político"
-                className="h-[42px] w-full rounded-card border border-borda bg-card px-3.5 text-[13px] outline-none focus:border-destaque" />
+                className="h-[42px] w-full rounded-card border border-borda bg-card px-3.5 text-base outline-none focus:border-destaque sm:text-[13px]" />
             </div>
             <select value={partido} onChange={(e) => { setPartido(e.target.value); setLim(POR_PAGINA); }} aria-label="Partido"
-              className="h-[42px] rounded-card border border-borda bg-card px-3 text-[13px]">
+              className="h-[42px] min-w-0 flex-1 rounded-card border border-borda bg-card px-3 text-base sm:flex-none sm:text-[13px]">
               <option value="todos">Partido: todos</option>
               {partidos.map((p) => <option key={p} value={p}>{p}</option>)}
             </select>
             <select value={uf} onChange={(e) => { setUf(e.target.value); setReg(e.target.value ? regiaoDe(e.target.value)!.k : ""); setLim(POR_PAGINA); }} aria-label="Estado"
-              className="h-[42px] rounded-card border border-borda bg-card px-3 text-[13px]">
+              className="h-[42px] min-w-0 flex-1 rounded-card border border-borda bg-card px-3 text-base sm:flex-none sm:text-[13px]">
               <option value="">Estado: todos</option>
               {Object.keys(NOME_UF).sort().map((u) => <option key={u} value={u}>{u} · {NOME_UF[u]}</option>)}
             </select>
           </div>
-          <nav aria-label="Letras" className="flex flex-wrap gap-0.5">
-            <button type="button" onClick={() => setLetra("")} className={`h-8 min-w-8 rounded-lg px-2 text-xs font-bold ${letra === "" ? "bg-destaque text-destaque-texto" : "hover:bg-fundo"}`}>A–Z</button>
+          <nav aria-label="Letras" className="-mx-1 flex gap-0.5 overflow-x-auto px-1 pb-1 sm:flex-wrap sm:overflow-visible">
+            <button type="button" onClick={() => setLetra("")} className={`h-9 min-w-9 shrink-0 rounded-lg px-2 text-xs font-bold ${letra === "" ? "bg-destaque text-destaque-texto" : "hover:bg-fundo"}`}>A–Z</button>
             {LETRAS.map((l) => (
               <button key={l} type="button" disabled={!letrasComGente.has(l)} onClick={() => { setLetra(l); setLim(POR_PAGINA); }}
-                className={`h-8 min-w-8 rounded-lg px-2 text-xs font-bold disabled:opacity-30 ${letra === l ? "bg-destaque text-destaque-texto" : "hover:bg-fundo"}`}>{l}</button>
+                className={`h-9 min-w-9 shrink-0 rounded-lg px-2 text-xs font-bold disabled:opacity-30 ${letra === l ? "bg-destaque text-destaque-texto" : "hover:bg-fundo"}`}>{l}</button>
             ))}
           </nav>
-          <div className="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(min(200px,100%),1fr))]">
+          {/* Celular: linhas compactas; a partir do tablet, os cartões do protótipo. */}
+          <div className="grid gap-2 sm:gap-4 sm:[grid-template-columns:repeat(auto-fill,minmax(200px,1fr))]">
             {filtradas.slice(0, lim).map((p) => (
-              <Link key={p.id} href={`/p/${p.id}`} className="flex flex-col items-center gap-1 rounded-card border border-borda bg-card p-4 text-center text-texto no-underline shadow-card hover:border-destaque">
-                <Foto p={p} tamanho={64} />
-                <strong className="mt-1 text-sm">{p.nomeUrna}</strong>
-                <span className="text-xs text-suave">{p.cargo} · {p.uf}</span>
-                <SelecaoPartido partido={p.partido} cores={d.cores} />
-                <span className="mt-1.5 text-xs font-bold text-link">Ver crachá ›</span>
+              <Link key={p.id} href={`/p/${p.id}`} className="flex items-center gap-3 rounded-card border border-borda bg-card p-3 text-texto no-underline shadow-card hover:border-destaque sm:flex-col sm:gap-1 sm:p-4 sm:text-center">
+                <Foto p={p} tamanho={64} classe="size-12 sm:size-16" />
+                <span className="grid min-w-0 flex-1 gap-0.5 sm:justify-items-center">
+                  <strong className="truncate text-sm sm:mt-1 sm:whitespace-normal">{p.nomeUrna}</strong>
+                  <span className="text-xs text-suave">{p.cargo} · {p.uf}</span>
+                  <span className="sm:mt-0.5"><SelecaoPartido partido={p.partido} cores={d.cores} /></span>
+                </span>
+                <span aria-hidden="true" className="text-lg text-suave sm:hidden">›</span>
+                <span className="hidden text-xs font-bold text-link sm:mt-1.5 sm:inline">Ver crachá ›</span>
               </Link>
             ))}
           </div>

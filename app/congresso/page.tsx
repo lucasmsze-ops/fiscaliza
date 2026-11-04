@@ -75,12 +75,13 @@ export default async function Congresso() {
                   <details key={v.id} className="group rounded-xl border border-borda p-3.5 open:bg-fundo">
                     <summary className="grid cursor-pointer list-none gap-1.5">
                       <span className="flex w-full justify-between gap-3">
-                        <strong className="text-[15px] leading-snug">{v.descricao}</strong>
+                        <strong className="line-clamp-3 text-[15px] leading-snug">{v.ementa ?? v.descricao}</strong>
                         {v.resultado && <span className={`shrink-0 text-xs font-bold ${v.resultado === "aprovada" ? "text-[#2f855a] dark:text-[#68d391]" : "text-suave"}`}>{v.resultado}</span>}
                       </span>
                       <span className="text-xs text-suave">{v.proposicao ?? "sem matéria principal informada"}</span>
                     </summary>
                     <div className="mt-2.5 grid gap-2 border-t border-borda pt-2.5 text-sm">
+                      {v.ementa && <span className="text-xs leading-relaxed text-suave">Votado: {v.descricao}</span>}
                       <PlacarVotacao v={v} barra />
                       <a href={v.urlOficial} {...externo} className="text-[13px] underline underline-offset-2">Página oficial ›</a>
                     </div>

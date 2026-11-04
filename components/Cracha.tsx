@@ -17,7 +17,7 @@ const dataBr = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.sl
 const reaisExatos = (v: number) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const umaCasa = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const iniciais = (n: string) => n.split(" ").filter(Boolean).map((w) => w[0]).slice(0, 2).join("");
-const card = "rounded-card border border-borda bg-card p-[22px] shadow-card";
+const card = "rounded-card border border-borda bg-card p-4 shadow-card sm:p-[22px]";
 
 /**
  * Fim do mandato em curso, quando decorre da lei: deputados, o fim da legislatura (31/01/2027);
@@ -33,18 +33,18 @@ export function fimDoMandato(m: Mandato): string | null {
 
 function Icone({ d }: { d: string }) {
   return (
-    <span className="inline-flex size-[45px] shrink-0 items-center justify-center rounded-xl bg-destaque text-destaque-texto">
+    <span className="hidden size-[45px] shrink-0 items-center justify-center rounded-xl bg-destaque text-destaque-texto sm:inline-flex">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={d} /></svg>
     </span>
   );
 }
 
-function Numero({ rotulo, valor, detalhe, icone }: { rotulo: ReactNode; valor: ReactNode; detalhe?: ReactNode; icone: string }) {
+function Numero({ rotulo, valor, detalhe, icone, largo = false }: { rotulo: ReactNode; valor: ReactNode; detalhe?: ReactNode; icone: string; largo?: boolean }) {
   return (
-    <div className={`${card} flex items-center justify-between gap-3`}>
+    <div className={`${card} flex items-center justify-between gap-3 ${largo ? "col-span-2" : ""}`}>
       <span className="grid gap-1">
         <span className="text-xs font-bold text-suave">{rotulo}</span>
-        <span className="text-xl font-bold tabular-nums">{valor} {detalhe && <span className="text-xs font-bold text-[#2f855a] dark:text-[#68d391]">{detalhe}</span>}</span>
+        <span className="text-lg font-bold tabular-nums sm:text-xl">{valor} {detalhe && <span className="block text-xs font-bold text-[#2f855a] sm:inline dark:text-[#68d391]">{detalhe}</span>}</span>
       </span>
       <Icone d={icone} />
     </div>
@@ -74,8 +74,8 @@ function ComPartido({ f, periodo }: { f: { com: number; contra: number }; period
       {total < MINIMO_FIDELIDADE ? (
         <p className="text-sm text-suave">Poucas votações com a orientação do partido identificada para um percentual. Na Câmara, a orientação de blocos de nome cortado na fonte fica fora da conta.</p>
       ) : (
-        <div className="flex flex-wrap items-center gap-[18px]">
-          <svg width="140" height="140" viewBox="0 0 140 140" role="img" aria-label={`${umaCasa(pCom)}% com o partido, ${umaCasa(100 - pCom)}% contra`}>
+        <div className="flex items-center gap-4 sm:gap-[18px]">
+          <svg viewBox="0 0 140 140" className="size-[110px] shrink-0 sm:size-[140px]" role="img" aria-label={`${umaCasa(pCom)}% com o partido, ${umaCasa(100 - pCom)}% contra`}>
             <circle cx="70" cy="70" r={r} fill="none" stroke={COR_CONTRA} strokeWidth="22" />
             <circle cx="70" cy="70" r={r} fill="none" stroke={COR_COM} strokeWidth="22" strokeDasharray={`${(pCom / 100) * c} ${c}`} transform="rotate(-90 70 70)" />
           </svg>
@@ -112,17 +112,17 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
   return (
     <>
       <section aria-labelledby="nome-politico" className="relative pb-2">
-        <div className="h-[180px] rounded-card bg-destaque" />
-        <div className="relative mx-[22px] -mt-[70px] flex flex-wrap items-center justify-between gap-5 rounded-card border-[1.5px] border-card bg-card/95 px-[22px] py-[18px] shadow-card backdrop-blur-xl">
-          <div className="flex min-w-0 flex-wrap items-center gap-[18px]">
+        <div className="h-20 rounded-card bg-destaque sm:h-[180px]" />
+        <div className="relative mx-3 -mt-10 flex flex-wrap items-center justify-between gap-4 rounded-card border-[1.5px] border-card bg-card/95 p-4 shadow-card backdrop-blur-xl sm:mx-[22px] sm:-mt-[70px] sm:gap-5 sm:px-[22px] sm:py-[18px]">
+          <div className="flex min-w-0 items-center gap-3 sm:gap-[18px]">
             {d.fotoUrl
               // <img> de propósito: a foto vem direto da URL oficial, sem passar pela Vercel (CLAUDE.md).
-              ? <img src={d.fotoUrl} alt={`Foto oficial de ${d.nomeUrna}`} width={90} height={90} decoding="async" className="size-[90px] shrink-0 rounded-full bg-fundo object-cover object-top" />
-              : <span aria-hidden="true" className="inline-flex size-[90px] shrink-0 items-center justify-center rounded-full bg-fundo text-3xl font-black">{iniciais(d.nomeUrna)}</span>}
+              ? <img src={d.fotoUrl} alt={`Foto oficial de ${d.nomeUrna}`} width={90} height={90} decoding="async" className="size-16 shrink-0 rounded-full bg-fundo object-cover object-top sm:size-[90px]" />
+              : <span aria-hidden="true" className="inline-flex size-16 shrink-0 items-center justify-center rounded-full bg-fundo text-xl font-black sm:size-[90px] sm:text-3xl">{iniciais(d.nomeUrna)}</span>}
             <div className="grid min-w-0 gap-1.5">
-              <h1 id="nome-politico" className="text-3xl leading-tight font-black break-words">{d.nomeUrna}</h1>
+              <h1 id="nome-politico" className="text-xl leading-tight font-black break-words sm:text-3xl">{d.nomeUrna}</h1>
               <div className="flex flex-wrap items-center gap-2.5">
-                <span className="text-base font-bold text-suave">{d.cargo} {pelaUf(uf)}</span>
+                <span className="text-sm font-bold text-suave sm:text-base">{d.cargo} {pelaUf(uf)}</span>
                 <span className="inline-flex h-[26px] items-center rounded-lg px-3 text-xs font-bold"
                   style={{ background: `color-mix(in srgb, ${corPartido(partido, cores)} 24%, transparent)` }}>
                   {partido}{nome && nome.toLowerCase() !== partido.toLowerCase() ? ` · ${nome}` : ""}
@@ -142,7 +142,7 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
         </div>
       </section>
 
-      <section aria-label="Números principais" className="grid gap-[18px] [grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))]">
+      <section aria-label="Números principais" className="grid grid-cols-2 gap-3 sm:gap-[18px]">
         {salario && (
           <Numero icone="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
             rotulo={<Termo id="cr-salario" termo="salario">Salário por mês</Termo>} valor={reaisExatos(salario.valor)} />
@@ -152,12 +152,12 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
             rotulo={<Termo id="cr-part" termo="participacao">Participação em votações, {n.periodo}</Termo>}
             valor={pct(n.participacao)} detalhe={`${inteiro(n.participacao.numerador)} de ${inteiro(n.participacao.denominador)}`} />
         )}
-        {n.tipo === "primeiro_voto" && <Numero icone="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" rotulo="Votações" valor="Primeiro voto em fevereiro de 2027" />}
-        {n.tipo === "sem_mandato" && <Numero icone="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 16v-5M12 8h.01" rotulo="Votações" valor={`Sem mandato no Congresso em ${n.periodo}`} />}
+        {n.tipo === "primeiro_voto" && <Numero icone="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" rotulo="Votações" valor="Primeiro voto em fevereiro de 2027" largo />}
+        {n.tipo === "sem_mandato" && <Numero icone="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 16v-5M12 8h.01" rotulo="Votações" valor={`Sem mandato no Congresso em ${n.periodo}`} largo />}
       </section>
 
       {n.tipo === "mandato" && (fidelidade || (comparacao?.mediaParticipacao != null && n.participacao.percentual !== null)) && (
-        <section aria-label="Gráficos" className="grid gap-[18px] [grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr))]">
+        <section aria-label="Gráficos" className="grid gap-3 sm:gap-[18px] [grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr))]">
           {fidelidade && <ComPartido f={fidelidade} periodo={n.periodo} />}
           {comparacao?.mediaParticipacao != null && n.participacao.percentual !== null && (
             <div className={`${card} grid gap-3`}>
@@ -165,11 +165,11 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
                 <h2 className="text-lg font-bold">Participação nas votações</h2>
                 <p className="mt-1 text-[13px] text-suave">{n.periodo}, ao lado da média de quem está em exercício {comparacao.casa === "senado" ? "no Senado" : "na Câmara"} hoje.</p>
               </div>
-              <div className="flex h-[180px] items-end justify-center gap-9 border-b border-borda">
+              <div className="flex h-[140px] items-end justify-center gap-9 border-b border-borda sm:h-[180px]">
                 {[[d.nomeUrna, n.participacao.percentual, "var(--destaque)"], [casaMedia, comparacao.mediaParticipacao, "var(--borda-forte)"]].map(([l, v, c]) => (
                   <div key={String(l)} className="flex h-full w-[84px] flex-col items-center justify-end gap-1.5">
                     <span className="text-lg font-bold tabular-nums">{umaCasa(Number(v))}%</span>
-                    <span className="block w-full rounded-t-xl" style={{ height: `${Number(v) * 1.2}px`, background: String(c) }} />
+                    <span className="block w-full rounded-t-xl" style={{ height: `calc((100% - 32px) * ${Number(v) / 100})`, background: String(c) }} />
                   </div>
                 ))}
               </div>

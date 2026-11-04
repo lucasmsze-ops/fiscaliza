@@ -37,14 +37,14 @@ export function BuscaTopo() {
   }, [t, indice]);
 
   return (
-    <div className="relative w-60 max-w-full">
+    <div className="relative w-full sm:w-60">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true" className="absolute top-[13px] left-[13px]">
         <circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" />
       </svg>
       <label htmlFor="busca-topo" className="sr-only">Buscar político ou página</label>
       <input id="busca-topo" type="search" autoComplete="off" value={q} placeholder="Buscar político ou página…"
         onFocus={carregar} onChange={(e) => { setQ(e.target.value); carregar(); }}
-        className="h-[42px] w-full rounded-card border border-borda bg-card pr-3.5 pl-[38px] text-[13px] outline-none focus:border-destaque" />
+        className="h-[42px] w-full rounded-card border border-borda bg-card pr-3.5 pl-[38px] text-base outline-none sm:text-[13px] focus:border-destaque" />
       {t.length >= 2 && (
         <div className="absolute top-12 right-0 z-40 w-80 max-w-[90vw] overflow-hidden rounded-card border border-borda bg-card shadow-xl">
           {resultados.map((r) => (
