@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 /** Compartilha a URL atual: menu nativo do celular (Web Share API) ou, sem ele, copia o link. */
-export function Compartilhar({ titulo, texto, rotulo = "Compartilhar colinha" }: { titulo: string; texto: string; rotulo?: string }) {
+export function Compartilhar({ titulo, texto, rotulo = "Compartilhar" }: { titulo: string; texto: string; rotulo?: string }) {
   const [aviso, setAviso] = useState<string | null>(null);
 
   async function compartilhar() {

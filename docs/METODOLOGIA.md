@@ -75,6 +75,11 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
 - Últimas votações: as 10 mais recentes das duas Casas por data. "O que virou norma": as 10
   proposições com `virou_norma` mais recentes pela apresentação (a data da norma não é coletada).
 
+## Visão geral (`/`)
+- Mesmas cadeiras de `/congresso` (`lib/congresso.ts#casasHoje`), por estado: 3 senadores e os
+  deputados federais da UF (`politicos.uf`). Municípios por UF de `municipios` (5.571).
+- Cidade → estado: a cidade não muda quem a representa no Congresso (eleição pelo estado inteiro).
+
 ## Salário
 - Subsídio mensal bruto dos membros do Congresso, igual para deputados e senadores: Decreto
   Legislativo nº 172/2022, art. 1º (39.293,32 desde 01/01/2023; 41.650,92 desde 01/04/2023;

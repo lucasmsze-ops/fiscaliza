@@ -5,13 +5,12 @@ import { usePathname } from "next/navigation";
 
 /** Só páginas que existem: item de página futura seria placeholder (CLAUDE.md, princípio 5). */
 const ITENS = [
-  { href: "/", rotulo: "Monte sua colinha", icone: "M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" },
+  { href: "/", rotulo: "Visão geral", icone: "M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" },
   { href: "/congresso", rotulo: "Congresso", icone: "M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6M9 11h.01M15 11h.01" },
-  { href: "/como-funciona", rotulo: "Como funciona", icone: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 16v-5M12 8h.01" },
+  { href: "/como-funciona", rotulo: "Sobre", icone: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 16v-5M12 8h.01" },
 ];
 
-/** A colinha (`/c/...`) é parte do caminho de quem monta: marca "Monte sua colinha". */
-const ativo = (href: string, caminho: string) => href === "/" ? caminho === "/" || caminho.startsWith("/c/") : caminho.startsWith(href);
+const ativo = (href: string, caminho: string) => href === "/" ? caminho === "/" : caminho.startsWith(href);
 
 export function MenuItens({ fecharGaveta }: {
   /** id do popover da gaveta do celular: fecha ao navegar (a troca de página não recarrega). */

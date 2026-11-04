@@ -4,7 +4,7 @@ Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
 **Etapa atual: E22** (atualizar esta linha ao avançar). Falta só o run agendado (o de 04/11 não disparou);
-E22b, E23 e E23b foram feitas adiantadas a pedido do usuário. Depois da E22, seguir para a E23c.
+E22b, E23, E23b e E23c foram feitas adiantadas a pedido do usuário. Depois da E22, seguir para a E23d.
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -414,14 +414,56 @@ placar e "o que virou lei" (`proposicoes.virou_norma`). Agenda e pauta ficam na 
       metodologia "Congresso hoje", testes.
 - Pronto quando: `/congresso` no ar só com dado real, conferido contra a fonte.
 
-### E23c · Quem me representa no Congresso
-Cidade ou estado → os 3 senadores e os deputados federais da UF (rota `/uf/[uf]`, já planejada),
-com a contagem da Constituição. Prefeito, governador, deputados estaduais e vereadores entram no
-Passo 5; até lá a página diz só o que cobre.
+Decisão de 2026-11-04 (usuário): o site fica igual ao protótipo, tela por tela, com dado real; o que
+não tem dado ainda fica oculto. A colinha sai da interface (links `/c/...` redirecionam). Monitorar
+só neste aparelho (localStorage), sem Entrar nem conta. Uma tela por etapa, push aprovado a cada uma.
 
-### E23d · Cargos e Dicionário
+### E23c · Visão geral (página inicial do protótipo)
+`/` vira a Visão geral: mapa por região e estado (contornos `geodata-br-states`, MIT, dados do
+IBGE), busca de cidade, painel do estado com os 3 senadores e a contagem de deputados federais e
+municípios; "Quem está no cargo hoje" (Senadores, Deputados federais; os outros cargos ocultos até o
+Passo 5); lista A–Z com filtros de cargo, nome, partido, estado e letra. Barra do topo com a busca
+de político e página. Sai a colinha (`MontarColinha`, OG da colinha); `/c/[ids]` redireciona para o
+crachá. Menu com os itens do protótipo que já existem.
+- [x] Mapa (`components/MapaBrasil.tsx`, contornos em `lib/mapa-brasil.ts`), regiões, busca de
+      cidade (as 5.571, baixadas ao tocar), painel do estado: 3 senadores, deputados federais e
+      municípios (conferido: MG 3 / 53 / 853). Título "Quem representa cada estado" no lugar de
+      "Quem governa" até haver governadores (Passo 5).
+- [x] "Quem está no cargo hoje" (81 e 513, a mesma regra de `/congresso`) e lista A–Z com cargo,
+      nome, partido, estado e letra, fotos oficiais e "Ver crachá".
+- [x] Busca da barra do topo (`components/BuscaTopo.tsx`) sobre `/dados/politicos` e as páginas.
+- [x] Colinha fora: `MontarColinha`, OG da colinha e `/dados/cidade` removidos; `/c/[ids]` → 308
+      para o crachá do primeiro. Menu: Visão geral, Congresso, Sobre (= `/como-funciona`).
+- Pronto quando: a página inicial igual à Visão geral do protótipo, só com dado real, no ar.
+
+### E23d · Me representa (Congresso)
+Cidade ou estado → os 3 senadores e os deputados federais da UF, com a contagem da Constituição e
+os anéis "Em Brasília / No seu estado". Governador, deputados estaduais, prefeito e vereadores
+ocultos até o Passo 5.
+
+### E23e · Monitorando neste aparelho
+"+ Monitorar" no crachá, na Me representa e na lista; tela Monitorando com quem a pessoa acompanha
+e "o que aconteceu desde a última visita" (votos, propostas, cota), tudo no localStorage. Sem Entrar,
+sem e-mail, sem alertas (princípio 3). Sino e contagem no menu e na barra do topo.
+
+### E23f · Comparar
+`/comparar`, 2 a 5 lado a lado, sem nota nem ranking; "Comparar com outro político" no crachá. Só
+as linhas com dado (partido, salário, cota, votos na eleição, propostas, participação, mandatos);
+patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a ser gravada.
+
+### E23g · Propostas
+`/propostas`: lista geral com filtros (Casa, tipo, situação, busca na ementa) e link oficial. A
+linha do tempo da tramitação fica oculta (só a situação atual é coletada).
+
+### E23h · Cargos e Dicionário
 `/cargos` e `/dicionario`: texto fixo com fonte legal (Constituição, regimentos). O Dicionário
-junta os termos de `lib/glossario.ts`, sem duplicar. Menu ganha os itens das páginas novas.
+junta os termos de `lib/glossario.ts`, sem duplicar.
+
+### E23i · Crachá completo
+O que falta do crachá do protótipo com dado que já existe: "Votou com o partido?" (orientação do
+partido × voto), participação ao lado da média da Casa e "Quem vota mais parecido" (votações
+nominais em comum, % de votos iguais, mínimo de votações; regra em `/como-funciona`). Patrimônio e
+emendas seguem ocultos até ter dado.
 
 ### E24 · Patrimônio e contas de campanha (TSE)
 Patrimônio por eleição, sem descrição dos bens; arrecadado, gasto e % de dinheiro público. Redes
@@ -429,8 +471,7 @@ sociais declaradas ao TSE (veio da E23). Bloco de patrimônio do crachá.
 
 ### E25 · Propostas de autoria
 Autor principal vs coautoria, "podem virar lei" vs pedidos, quantas viraram lei, filtro por ano.
-Aba Propostas do crachá e a lista geral `/propostas` do protótipo (Casa, tipo, situação, busca na
-ementa). A linha do tempo da tramitação só se a tramitação for coletada (hoje só a situação atual).
+Aba Propostas do crachá (a lista geral `/propostas` foi antecipada para a E23g). A linha do tempo da tramitação só se a tramitação for coletada (hoje só a situação atual).
 Decisão de 2026-11-02: texto completo só de PL, PLP, PEC, PDL e PRC; o resto como contagem por
 ano e tipo, com link. Carga inicial pelos arquivos anuais da Câmara (`proposicoesAutores`).
 Decidir aqui se entram temas por palavra-chave da ementa.
@@ -438,11 +479,6 @@ Decidir aqui se entram temas por palavra-chave da ementa.
 ### E26 · Todos os votos e fidelidade ao partido
 Lista completa com filtros (ano, voto, busca); % de votos iguais à orientação do partido. Aba Votos
 do crachá e "votou com o partido?"; participação ao lado da média da Casa.
-
-### E26b · Comparar
-`/comparar`, 2 a 5 lado a lado, sem nota nem ranking (tela do protótipo). Vem depois da E24 e da E26
-porque as linhas dependem delas (patrimônio, fidelidade). Idade só se a data de nascimento do TSE
-passar a ser gravada.
 
 ### E27 · Cota completa
 Câmara e Senado: por mês, categoria e maiores fornecedores. "Quanto custa o mandato" (veio da
@@ -487,7 +523,7 @@ aberto aparece como lacuna, com o porquê.
 Comparar (2 a 5 lado a lado) · governos e indicadores · partidos (sem régua) · cargos ·
 dicionário · mais vistos (analytics cookieless) · impostômetro · STF (só com fonte aberta) ·
 ouvir a página · tema claro/escuro · servidor MCP. Comparar, Cargos e Dicionário foram antecipados
-(E26b, E23d).
+(E23f, E23h).
 
 Calendário: a posse é em 01/02/2027. Até lá, o Passo 3 e o Passo 4 cabem no ritmo de uma etapa
 por dia (22 etapas depois da divisão da E21).

@@ -62,8 +62,3 @@
     color: var(--link);
   }
 }
-
-/* Páginas com barra fixa no rodapé (montar colinha): o rodapé sobe para não ficar coberto. */
-body:has(.barra-fixa) footer {
-  padding-bottom: 4.5rem;
-}

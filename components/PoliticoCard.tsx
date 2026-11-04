@@ -37,7 +37,7 @@ export function PoliticoCardCompacto({ r, contexto }: { r: CardResumo; contexto?
 }
 
 /**
- * O único card do site (busca, colinha, página do político e OG). Recebe `CardDados` prontos
+ * O card do político (hoje só na vitrine /amostra; o crachá usa os mesmos `CardDados`). Recebe `CardDados` prontos
  * (lib/card.ts) e só exibe: o que é null não aparece, nunca vira traço, zero ou texto de exemplo.
  */
 export function PoliticoCard({ d, linkPagina = false }: { d: CardDados; linkPagina?: boolean }) {

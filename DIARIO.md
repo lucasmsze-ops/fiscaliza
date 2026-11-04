@@ -15,6 +15,24 @@ Modelo:
 
 ---
 
+## 2026-11-04 · E23c
+**Feito:** decisão do usuário: o site fica igual ao protótipo, tela por tela, com dado real; o que
+não tem dado fica oculto; a colinha sai; Monitorar só no aparelho; uma tela por etapa. PLANO
+reordenado (E23c Visão geral → E23i Crachá completo), CLAUDE.md (princípio 3, rotas, definição de
+pronto) e `docs/PROTOTIPO.md` atualizados. `/` virou a Visão geral: mapa (`MapaBrasil`,
+`lib/mapa-brasil.ts` com os contornos do protótipo, `geodata-br-states` MIT), regiões, busca de
+cidade, painel do estado, "Quem está no cargo hoje", lista A–Z (`VisaoGeral`, `lib/visao.ts`).
+Busca do topo sobre `/dados/politicos`. Colinha removida (`MontarColinha`, OG, `/dados/cidade`);
+`/c/[ids]` → 308 para o crachá. Conferido com `estado/dados` e com o Supabase: 81 / 513, MG 3 / 53 /
+853; desktop, celular, escuro, 0 erros; 70 testes. JS da página: +20 KB comprimido sobre os ~180 KB
+de todas as páginas.
+**Decidido:** título "Quem representa cada estado" (não "Quem governa", sem governadores ainda).
+Cartões só de Senadores e Deputados federais; os outros cargos do protótipo ficam ocultos. Partido
+na mesma cor de `/congresso`. "Sobre" no menu leva a `/como-funciona`.
+**Lacunas:** nenhuma nova.
+**Próximo passo:** push da E23c; conferir o run agendado de 05/11 (fecha a E22); depois a E23d (Me
+representa).
+
 ## 2026-11-04 · E23b
 **Feito:** o run agendado de 04/11 (09:17 UTC) não disparou: workflow ativo, nenhum evento
 `schedule` até 11:04 UTC (atraso ou descarte do Actions); a E22 segue aberta. E23b adiantada:

@@ -6,7 +6,7 @@
 export function ReceberAvisos({ id, sobre }: {
   /** Único na página. */
   id: string;
-  /** Do que seriam os avisos, para o texto: "sobre Kiko Celeguim", "sobre a sua colinha". */
+  /** Do que seriam os avisos, para o texto: "sobre Kiko Celeguim". */
   sobre: string;
 }) {
   const alvo = `avisos-${id}`;

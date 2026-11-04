@@ -106,18 +106,11 @@ export default async function ComoFunciona() {
 
       <Secao id="cidade">
         <p>
-          Ao escolher a cidade, o site lista, por cargo, os 20 candidatos com mais votos no município em 2026, segundo o
-          boletim do TSE por município e zona. Quando há empate com o 20º colocado, todos os empatados entram; a ordem entre
-          empatados é a do número de urna e não significa nada.
-        </p>
-        <p>
-          Contam só votos nominais válidos: brancos, nulos e votos anulados por decisão judicial ficam fora. A posição é a do
-          município. A eleição de deputado federal é decidida no estado inteiro, pelo sistema proporcional: quem foi o
-          mais votado na cidade pode não ter sido eleito.
-        </p>
-        <p>
-          Você marca em quem votou. A escolha fica no seu navegador e no endereço da colinha; o servidor não registra nada
-          (veja <a href="#privacidade" className="underline underline-offset-2">Privacidade</a>).
+          <strong>Mapa e cidade:</strong> na Visão geral, ao tocar num estado ou escolher a cidade, o site mostra quem está no
+          cargo hoje em Brasília por aquele estado: os 3 senadores e a contagem de deputados federais (todos eleitos pelo estado
+          inteiro). Governador, prefeito, deputados estaduais e vereadores entram depois. Contornos dos estados:{" "}
+          <Ext href="https://github.com/giuliano-macedo/geodata-br-states">geodata-br-states</Ext> (licença MIT), a partir das
+          malhas do IBGE.
         </p>
       </Secao>
 
@@ -293,11 +286,10 @@ export default async function ComoFunciona() {
       <Secao id="privacidade">
         <ul className="list-disc space-y-1 pl-5">
           <li>Sem conta, sem e-mail, sem cadastro. Não existe tabela de usuários.</li>
-          <li>A colinha fica no endereço da página (<code>/c/…</code>) e no armazenamento local do seu navegador.</li>
+          <li>O que você filtra ou procura fica só no seu navegador; o servidor não registra nada.</li>
           <li>O botão “Receber avisos” só explica que avisos ainda não existem. Ele não pede nem guarda e-mail, telefone ou qualquer contato.</li>
           <li>Sem cookies e, nesta versão, sem ferramenta de medição de audiência.</li>
-          <li>As fotos são carregadas direto dos servidores oficiais da Câmara, do Senado e do TSE. Esses servidores recebem o pedido da imagem, sem o endereço da sua colinha (política de referência <code>same-origin</code>).</li>
-          <li>Ao compartilhar, a imagem de preview é gerada no servidor a partir do endereço da colinha; nada fica guardado.</li>
+          <li>As fotos são carregadas direto dos servidores oficiais da Câmara, do Senado e do TSE. Esses servidores recebem o pedido da imagem, sem o endereço da página que você está vendo (política de referência <code>same-origin</code>).</li>
         </ul>
       </Secao>
 

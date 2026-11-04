@@ -1,10 +1,5 @@
 import Link from "next/link";
-import { cadeirasHemiciclo, type CasaHoje } from "@/lib/congresso";
-
-const cor = (partido: string, cores: string[]) => {
-  const i = cores.indexOf(partido);
-  return i === -1 ? "var(--serie-outros)" : `var(--serie-${i + 1})`;
-};
+import { cadeirasHemiciclo, corPartido as cor, type CasaHoje } from "@/lib/congresso";
 
 /**
  * Plenário em bolinhas: cada cadeira na cor do partido de quem a ocupa hoje, bancadas em fatias

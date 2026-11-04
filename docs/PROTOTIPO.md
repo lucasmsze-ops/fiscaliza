@@ -51,7 +51,7 @@ No site (aplicado na E22b, `app/globals.css`, `components/Moldura.tsx`):
 | Aba Votos: votação, orientação do partido, voto, link oficial | `votacoes`, `votos`, `orientacoes` | E26 |
 | Aba Emendas: destino, valor, pago | Portal da Transparência (chave de API) | **decisão 3** |
 | Monitorar | navegador (localStorage) | **decisão 1** |
-| Comparar com outro político | ver Comparar | E26b |
+| Comparar com outro político | ver Comparar | E23f |
 | Compartilhar | card `next/og` | E33 |
 
 **O que o card atual tem e o crachá do protótipo não mostra.** Tudo continua, porque é o objeto
@@ -98,7 +98,7 @@ central do `CLAUDE.md`. Na E23, achar o lugar de cada um no layout do crachá:
   - "Discursou no Plenário": discursos estão fora de escopo.
   - Atos do Executivo, contratos de prefeitura: sem fonte aberta no escopo atual.
 
-### Comparar (`Comparar`, `CompararCom`) → E26b (depois de patrimônio e fidelidade)
+### Comparar (`Comparar`, `CompararCom`) → E23f (só as linhas com dado)
 - **De 2 a 5 lado a lado, sem nota nem ranking:** bate com o princípio 4.
 - **Linhas:** partido, idade, salário, cota, patrimônio, votos na última eleição, propostas,
   participação, mandatos.
@@ -129,7 +129,16 @@ central do `CLAUDE.md`. Na E23, achar o lugar de cada um no layout do crachá:
 | "Consultado há 0 min", "sem sessão agora" | princípio 2 (nada ao vivo) | data da coleta do cron |
 | Números de exemplo | princípio 5 | só dado oficial, ou "—" com o porquê |
 
-## Decisões abertas (do usuário)
+## Decisões (do usuário)
+
+**Respondidas em 2026-11-04:** o site fica igual ao protótipo, tela por tela, com dado real; o que
+não tem dado ainda fica oculto (não aparece). A colinha sai da interface e os links `/c/...`
+redirecionam para o crachá. Monitorar só neste aparelho, sem Entrar nem conta (decisão 1). A Visão
+geral e a Me representa entram já, só com o Congresso (decisão 4). "Quem vota mais parecido" entra
+no crachá completo (E23i), com critério em `/como-funciona` (decisão 2). Emendas ficam ocultas até
+haver coleta (decisão 3). Ordem das telas no `PLANO.md`, E23c a E23i.
+
+Texto original das decisões, para referência:
 
 1. **Colinha × Monitorando.** O protótipo não tem a colinha, que hoje é o centro do produto
    ("monta a colinha em < 1 min", `/c/[ids]`). Opções:

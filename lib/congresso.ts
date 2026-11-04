@@ -32,6 +32,12 @@ export function bancadas(mandatos: Mandato[], politicos: Map<string, Politico>):
     .sort((a, b) => b.membros.length - a.membros.length || a.partido.localeCompare(b.partido, "pt-BR"));
 }
 
+/** Cor do partido no tema (variáveis `--serie-N` de app/globals.css); fora das 8, cinza. */
+export const corPartido = (partido: string, cores: string[]) => {
+  const i = cores.indexOf(partido);
+  return i === -1 ? "var(--serie-outros)" : `var(--serie-${i + 1})`;
+};
+
 /** Quantos partidos ganham cor própria; os demais viram "outros partidos" (a paleta tem 8 cores). */
 export const CORES_PARTIDO = 8;
 
@@ -73,17 +79,22 @@ export interface CongressoDados {
   normas: { proposicao: Proposicao; autores: { id: string; nomeUrna: string; ordem: number }[] }[];
 }
 
-export async function montarCongresso(repo: Repo, hoje = new Date().toISOString().slice(0, 10)): Promise<CongressoDados> {
-  const [politicos, mandatos, afastamentos, vc, vs, normas] = await Promise.all([
-    repo.listarPoliticos(), repo.listarMandatosEmCurso(), repo.listarAfastamentosEm(hoje),
-    repo.ultimasVotacoes("camara", 10), repo.ultimasVotacoes("senado", 10), repo.ultimasNormas(10),
-  ]);
+/** Quem ocupa cada cadeira na data, por Casa (a mesma regra em /congresso e na Visão geral). */
+export async function casasHoje(repo: Repo, hoje: string): Promise<{ casas: CasaHoje[]; politicos: Map<string, Politico> }> {
+  const [politicos, mandatos, afastamentos] = await Promise.all([repo.listarPoliticos(), repo.listarMandatosEmCurso(), repo.listarAfastamentosEm(hoje)]);
   const porId = new Map(politicos.map((p) => [p.id, p]));
   const exercicio = emExercicio(mandatos, afastamentos, hoje);
   const casas: CasaHoje[] = (["camara", "senado"] as const).map((casa) => {
     const ms = exercicio.filter((m) => (m.cargo === "senador") === (casa === "senado"));
     return { casa, total: ms.length, bancadas: bancadas(ms, porId) };
   });
+  return { casas, politicos: porId };
+}
+
+export async function montarCongresso(repo: Repo, hoje = new Date().toISOString().slice(0, 10)): Promise<CongressoDados> {
+  const [{ casas, politicos: porId }, vc, vs, normas] = await Promise.all([
+    casasHoje(repo, hoje), repo.ultimasVotacoes("camara", 10), repo.ultimasVotacoes("senado", 10), repo.ultimasNormas(10),
+  ]);
   return {
     casas,
     cores: ordemDasCores(casas),

@@ -7,7 +7,7 @@
 /** Seções de /como-funciona, na ordem da página. Os ids são as âncoras (`/como-funciona#participacao`). */
 export const SECOES = [
   { id: "cobertura", titulo: "O que o site cobre" },
-  { id: "cidade", titulo: "Mais votados na sua cidade" },
+  { id: "cidade", titulo: "Mapa e cidade" },
   { id: "participacao", titulo: "Participação em votações" },
   { id: "governismo", titulo: "Governismo" },
   { id: "ceap", titulo: "Cota parlamentar (CEAP)" },

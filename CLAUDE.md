@@ -16,13 +16,13 @@ continua sendo o recorte de SP da sonda (testes e modo JSON); o estado do cron e
 
 1. **Custo zero.** Vercel Hobby, Supabase free, GitHub Actions. Nenhuma assinatura, nenhum serviço pago. Se uma solução exige plano pago, ela está errada. Cada fase de expansão mede o volume contra os limites free antes de coletar.
 2. **Nenhuma requisição de usuário chama LLM ou API externa.** Toda página lê do Supabase (ou de JSON estático na fase de protótipo). APIs oficiais são tocadas apenas pelo cron.
-3. **Sem conta, sem e-mail, sem dado pessoal.** A colinha vive na URL (`/c/[ids]`) e no localStorage. Não existe tabela de usuários nem login. Analytics só cookieless. Avisos são só *fake door* (ver abaixo): nenhum campo de contato.
+3. **Sem conta, sem e-mail, sem dado pessoal.** Quem a pessoa monitora fica só no navegador (localStorage), sem Entrar (decisão de 2026-11-04; a colinha saiu da interface). Não existe tabela de usuários nem login. Analytics só cookieless. Avisos são só *fake door* (ver abaixo): nenhum campo de contato.
 4. **Dado oficial, zero adjetivo.** O site mostra número e fonte; nunca qualifica um político nem um partido (sem nota, ranking, "melhores e piores" ou régua ideológica). Toda métrica tem link para a metodologia em `/como-funciona` e para a página oficial de origem.
 5. **Nenhum dado inventado, nem em protótipo.** Se o campo não veio da fonte, não entra na interface. Placeholders são proibidos. Dado não publicado aparece como "—" com o porquê, nunca zero.
 6. **Completo, mas legível.** Cada página abre com um resumo de poucos números com fonte; o detalhe vem abaixo, em seções que a pessoa abre. Antes de adicionar algo, perguntar: a pessoa entende em 10 segundos o que é?
 
 **Fake door de avisos:** botão "Receber avisos" nos lugares onde um aviso faria sentido (página do
-político, votação, cidade, colinha). Ao tocar, explica que ainda não existe e conta o toque de
+político, votação, cidade). Ao tocar, explica que ainda não existe e conta o toque de
 forma anônima (cookieless, só página e tipo). Nunca pede e-mail, telefone ou qualquer contato.
 
 ## Stack
@@ -62,8 +62,9 @@ Presença literal em sessões · discursos · conta, login, "monitorar" com cada
 
 Hoje (protótipo, SP):
 ```
-/                   entrada: cidade ou nome → monta a colinha
-/c/[ids]            colinha: cards + OG image
+/                   Visão geral (E23c): mapa por estado, quem está no cargo hoje, lista A–Z
+/congresso          Plenário de hoje, últimas votações, o que virou norma (E23b)
+/c/[ids]            links antigos da colinha: redireciona para o crachá (a colinha saiu em 2026-11-04)
 /p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
 /como-funciona      metodologia, fontes, licença, código
 ```
@@ -71,9 +72,9 @@ Planejadas (detalhar no PLANO ao chegar): `/votacoes` (lista do Plenário, E30),
 `/uf/[uf]`, `/cidade/[ibge]` ("quem me representa"), `/comparar`, `/eleicoes`, `/governos`,
 `/partidos`, `/cargos`, `/dicionario`, `/mais-vistos`, `/atualizacoes`.
 
-A colinha tem `opengraph-image.tsx` (preview com foto, cargo, status e números; Casa e período sempre explícitos, porque um senador eleito pode ter números da Câmara). `metadataBase` vem de `VERCEL_PROJECT_PRODUCTION_URL` (ou `NEXT_PUBLIC_SITE_URL`). A fonte padrão do `next/og` só tem peso regular; buscar fonte externa na hora não é permitido.
+A colinha tinha `opengraph-image.tsx` (preview com foto, cargo, status e números; saiu com a colinha na E23c); o card de compartilhamento do crachá entra na E33, com Casa e período sempre explícitos, porque um senador eleito pode ter números da Câmara. `metadataBase` vem de `VERCEL_PROJECT_PRODUCTION_URL` (ou `NEXT_PUBLIC_SITE_URL`). A fonte padrão do `next/og` só tem peso regular; buscar fonte externa na hora não é permitido.
 
-Apoio (não são páginas): `/dados/municipios` (as 5.571 cidades, baixada quando a pessoa toca na busca), `/dados/politicos` (índice de busca por nome, mais votados primeiro, com nome de urna, nome civil e número de urna; ~190 KB comprimido) e `/dados/cidade/[ibge]` (top-20 da cidade com o cabeçalho do card de cada um, gerado na primeira busca, ISR), servidos pela CDN. No build, só as páginas de quem tem mandato (659); as demais, na primeira visita. O top-20 cobre ~2/3 dos votos para deputado: a busca por nome ou número é o caminho do resto. `/amostra` é a vitrine dos 20 da sonda (noindex). A colinha usa ids separados por `+` (`/c/kiko-celeguim+andre-do-prado`): 1 deputado e até 2 senadores.
+Apoio (não são páginas): `/dados/municipios` (as 5.571 cidades, baixada quando a pessoa toca na busca), `/dados/politicos` (índice de busca por nome, mais votados primeiro, com nome de urna, nome civil e número de urna; ~190 KB comprimido) servidos pela CDN (`/dados/cidade/[ibge]`, o top-20 da cidade, saiu com a colinha). No build, só as páginas de quem tem mandato (659); as demais, na primeira visita. `/amostra` é a vitrine dos 20 da sonda (noindex). Links antigos da colinha (`/c/a+b`, ids separados por `+`) redirecionam para o crachá do primeiro.
 
 ## O card do político (objeto central)
 
@@ -188,7 +189,7 @@ Desenho em `docs/CRON.md`. Desde a E22 só o Actions publica; localmente, apenas
 
 ## Definição de pronto (Passo 4, Congresso no Brasil inteiro)
 
-Uma pessoa de qualquer estado digita a cidade ou um nome, reconhece os rostos, monta a colinha em < 1 min, abre a página de cada um e entende em 10 segundos o resumo do mandato, vê como votou em qualquer votação do Plenário, acha os canais oficiais para cobrar e compartilha a colinha com preview e números. Tudo sem conta e sem custo.
+Uma pessoa de qualquer estado acha quem a representa pelo mapa, pela cidade ou pelo nome, reconhece os rostos, abre o crachá de cada um e entende em 10 segundos o resumo do mandato, vê como votou em qualquer votação do Plenário, monitora quem quiser neste aparelho, acha os canais oficiais para cobrar e compartilha a página. Tudo sem conta e sem custo. O site segue o protótipo (`docs/PROTOTIPO.md`), tela por tela.
 
 ## Retomada de sessão
 

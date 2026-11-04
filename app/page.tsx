@@ -1,19 +1,21 @@
+import type { Metadata } from "next";
 import { BarraTopo } from "@/components/BarraTopo";
-import { MontarColinha } from "@/components/MontarColinha";
+import { VisaoGeral } from "@/components/VisaoGeral";
+import { repo } from "@/lib/repo";
+import { montarVisao } from "@/lib/visao";
 
 export const revalidate = 86400;
+export const metadata: Metadata = {
+  title: "Fiscaliza · quem representa cada estado no Congresso",
+  description: "Toque no seu estado ou digite a cidade: senadores e deputados federais em exercício, com o que cada um fez no mandato. Dados oficiais do TSE, da Câmara e do Senado.",
+};
 
 export default async function Home() {
+  const d = await montarVisao(repo);
   return (
     <>
-    <BarraTopo secao="Fiscaliza" pagina="Monte sua colinha" busca={false} />
-    <main className="mx-auto max-w-xl pb-8">
-      <h1 className="text-3xl font-bold tracking-tight">Fiscaliza</h1>
-      <p className="mt-2 text-suave">Em quem você votou para o Congresso em 2026? Ache pela cidade e monte sua colinha.</p>
-      <div className="mt-6">
-        <MontarColinha />
-      </div>
-    </main>
+      <BarraTopo secao="Páginas" pagina="Visão geral" />
+      <VisaoGeral d={d} />
     </>
   );
 }

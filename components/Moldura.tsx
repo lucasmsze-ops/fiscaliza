@@ -32,7 +32,7 @@ function CartaoFontes() {
 
 /**
  * Moldura de todas as páginas (app/layout.tsx): menu lateral no computador; no celular, cabeçalho
- * com o menu numa gaveta (popover nativo, sem JS), porque o rodapé do celular é da barra da colinha.
+ * com o menu numa gaveta (popover nativo, sem JS), como no protótipo (a lista de itens fica igual nas duas).
  */
 export function Moldura({ children }: { children: React.ReactNode }) {
   return (
