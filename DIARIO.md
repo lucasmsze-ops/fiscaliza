@@ -15,6 +15,18 @@ Modelo:
 
 ---
 
+## 2026-11-04 · celular e títulos das votações
+**Feito:** pedido do usuário (títulos pouco claros, celular ruim). Votações (aba Votos, agenda e última
+sessão do /congresso): título = ementa da matéria, "Votado: …" com o procedimento embaixo (ementa
+já estava em `votacoes`, 1.536 de 1.537). Propostas com o tipo por extenso. Celular: crachá com faixa
+baixa e foto ao lado do nome, números em 2 colunas, gráficos menores, Propostas e Votos em lista (a
+tabela fica do tablet para cima), lista da Visão geral em linhas compactas, letras numa linha
+rolável, campos com 16 px (o iOS dá zoom abaixo disso), título da barra do topo só no tablet+.
+Conferido no navegador: celular sem rolagem horizontal, desktop igual; 83 testes.
+**Decidido:** tema oficial (Câmara `proposicoesTemas`, Senado `classificacoes`) vira a E23j: pede
+migração e coleta nova.
+**Próximo passo:** push → cron manual (resumos com a ementa nas votações) → push deste diário.
+
 ## 2026-11-04 · E23i
 **Feito:** crachá no layout do protótipo: `components/Cracha.tsx` (faixa, foto redonda, cargo pelo
 estado, sigla e nome do partido, em exercício desde · mandato até, salário, participação,

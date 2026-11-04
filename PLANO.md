@@ -483,6 +483,14 @@ emendas seguem ocultos até ter dado.
       fora (quase todo 2025 de MDB, Republicanos, Podemos, PSDB); mínimo de 20 votações.
 - Pronto quando: o crachá no layout do protótipo, só com dado real, no ar com os números novos.
 
+### E23j · Temas das propostas e votações
+Classificação oficial de tema, nas duas Casas: Câmara, arquivo anual `proposicoesTemas-{ano}.csv`
+(ex.: "Meio Ambiente e Desenvolvimento Sustentável"); Senado, `classificacoes` de `/processo/{id}`
+(ex.: "Segurança Pública"). Coluna de temas em `proposicoes` (migração), coleta no job
+`proposicoes` (Senado: reabrir os ~2.900 processos já em cache, 2 em voo), filtro "tema" na aba
+Propostas do crachá (o do protótipo) e etiqueta de tema nas votações (pela matéria principal).
+- Pronto quando: cada proposta e votação mostra o tema oficial, e a aba Propostas filtra por ele.
+
 ### E24 · Patrimônio e contas de campanha (TSE)
 Patrimônio por eleição, sem descrição dos bens; arrecadado, gasto e % de dinheiro público. Redes
 sociais declaradas ao TSE (veio da E23). Bloco de patrimônio do crachá.
