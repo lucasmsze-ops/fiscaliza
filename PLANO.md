@@ -3,7 +3,8 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E22** (atualizar esta linha ao avançar)
+**Etapa atual: E22** (atualizar esta linha ao avançar). Falta só o run agendado; E22b e E23 foram feitas
+adiantadas a pedido do usuário (2026-11-03). Depois da E22, seguir para a E23b.
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -390,6 +391,14 @@ Mandato atual e próximo, salário e "quanto custa o mandato" (ato legal), data 
 mandatos e afastamentos, últimas votações, propostas de autoria (resumo). Sem perder "Como cobrar"
 e "Receber avisos". Fora até ter dado: patrimônio (E24), "votou com o partido" (E26), emendas
 (decisão 3), "quem vota mais parecido" (decisão 2). "Monitorar" espera a decisão 1 (não bloqueia).
+- [x] Crachá (`components/Cracha.tsx`) com os mesmos `CardDados`: em exercício desde, participação,
+      governismo, cota. Abas Propostas (novas no resumo da página) e Votos.
+- [x] Salário: DL 172/2022, art. 1º, conferido no texto oficial (`lib/salario.ts`, teste).
+- [x] Data da coleta (`atualizacoes`) e "o que está e o que não está nesta página", só com o que a
+      página mostra.
+- [x] Metodologia de propostas e salário em `/como-funciona` e `docs/METODOLOGIA.md`.
+- Saíram para quando houver dado: redes declaradas ao TSE (E24), "quanto custa o mandato" (E27).
+- Pronto quando: a página do político no layout do crachá, só com dado real, no ar com as propostas.
 
 ### E23b · Congresso: bancadas e o que já foi votado
 Página `/congresso` com o que já existe: Plenário em bolinhas por partido (parlamentares em
@@ -406,7 +415,8 @@ Passo 5; até lá a página diz só o que cobre.
 junta os termos de `lib/glossario.ts`, sem duplicar. Menu ganha os itens das páginas novas.
 
 ### E24 · Patrimônio e contas de campanha (TSE)
-Patrimônio por eleição, sem descrição dos bens; arrecadado, gasto e % de dinheiro público.
+Patrimônio por eleição, sem descrição dos bens; arrecadado, gasto e % de dinheiro público. Redes
+sociais declaradas ao TSE (veio da E23). Bloco de patrimônio do crachá.
 
 ### E25 · Propostas de autoria
 Autor principal vs coautoria, "podem virar lei" vs pedidos, quantas viraram lei, filtro por ano.
@@ -426,7 +436,8 @@ porque as linhas dependem delas (patrimônio, fidelidade). Idade só se a data d
 passar a ser gravada.
 
 ### E27 · Cota completa
-Câmara e Senado: por mês, categoria e maiores fornecedores. Decisão de 2026-11-02: agregada, sem
+Câmara e Senado: por mês, categoria e maiores fornecedores. "Quanto custa o mandato" (veio da
+E23): salário, cota, verba de gabinete e auxílios, cada um com o ato legal ou a fonte. Decisão de 2026-11-02: agregada, sem
 nota a nota (não cabe no free); link para as notas na página oficial. CPF de fornecedor pessoa
 física nunca é gravado.
 

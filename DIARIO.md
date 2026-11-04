@@ -15,6 +15,25 @@ Modelo:
 
 ---
 
+## 2026-11-03 · E23
+**Feito:** adiantada a pedido do usuário, com a E22 aguardando o run agendado. Plano reordenado
+para antecipar as telas do protótipo com dado real (E23–E23d; Comparar na E26b). Página do
+político no layout do crachá: `components/Cracha.tsx` (mesmos `CardDados` do card),
+`components/Abas.tsx`, `/p/[slug]` com abas Propostas e Votos, cota mês a mês, mandatos, contatos
+com Como cobrar, "sobre esta página". Propostas no resumo da página (`lib/pagina.ts`; `Repo`
+ganhou `getAutorias`, `getContagemProposicoes`, `getAtualizacoes`). Salário em `lib/salario.ts`
+(DL 172/2022, conferido no texto oficial; teste). Conferido no navegador com `estado/dados`:
+deputada, senador, eleito sem posse, não eleita; celular, desktop, escuro; 0 erros; números iguais
+aos do site no ar em 3 páginas; 66 testes. Resumos crescem ~3 MB (5,5 → 8,5 MB; maior 7 KB).
+**Decidido:** bloco sem dado coletado não aparece (patrimônio, fidelidade, emendas, mais parecidos,
+Monitorar). Propostas só onde foram coletadas (`camara_id` ou `senado_codigo`); para os demais a
+aba não existe. Salário com centavos (valor legal). Sem "?" em cada sigla da lista de propostas.
+Redes do TSE e "quanto custa o mandato" foram para a E24 e a E27.
+**Lacunas:** nenhuma nova.
+**Próximo passo:** publicar na ordem do `docs/CRON.md` (push do código → cron manual regrava os
+resumos com as propostas → push deste diário como novo deploy). Depois conferir o run agendado de
+2026-11-04 (fecha a E22) e seguir para a E23b.
+
 ## 2026-11-03 · E22b
 **Feito:** feita no mesmo dia, com a E22 aguardando o run agendado (exceção pedida pelo usuário; não
 toca no cron). `docs/PROTOTIPO.md` cruza o protótipo do Claude Design com o plano. Tema do
