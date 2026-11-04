@@ -14,6 +14,12 @@
   --destaque: #4fd1c5;
   --destaque-texto: #1a202c;
   --link: #2c7a7b;
+  /* Cores de categoria (partidos no Plenário): paleta de referência validada (skill dataviz), 8 cores
+     em ordem fixa + cinza para "outros partidos". Contra o branco, 3 ficam abaixo de 3:1: a lista
+     com nome e número de cadeiras ao lado é obrigatória. */
+  --serie-1: #2a78d6; --serie-2: #eb6834; --serie-3: #1baf7a; --serie-4: #eda100;
+  --serie-5: #e87ba4; --serie-6: #008300; --serie-7: #6250d6; --serie-8: #e34948;
+  --serie-outros: #a0aec0;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -26,6 +32,9 @@
     --destaque: #4fd1c5;
     --destaque-texto: #1a202c;
     --link: #81e6d9;
+    --serie-1: #3987e5; --serie-2: #d95926; --serie-3: #199e70; --serie-4: #c98500;
+    --serie-5: #d55181; --serie-6: #008300; --serie-7: #9085e9; --serie-8: #e66767;
+    --serie-outros: #718096;
   }
 }
 

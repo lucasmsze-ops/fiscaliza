@@ -64,6 +64,17 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
   outros pedidos").
 - A página mostra as 10 mais recentes por data de apresentação (`lib/pagina.ts`).
 
+## Congresso hoje (`/congresso`)
+- Cadeira ocupada na data = mandato em curso (`mandatos.fim` nulo, `inicio` ≤ data) sem afastamento
+  que cubra a data (`lib/congresso.ts#emExercicio`). Em 2026-11-04: 575 mandatos em curso na Câmara
+  (62 titulares licenciados) → 513 cadeiras; Senado 81.
+- Bancadas por tamanho (empate pelo nome). Cor: os 8 partidos com mais cadeiras nas duas Casas
+  somadas, na ordem fixa da paleta de referência validada (CVD e contraste); o resto em cinza. Nunca
+  por posição política. A lista com nome e cadeiras é obrigatória (3 cores ficam abaixo de 3:1 no
+  branco).
+- Últimas votações: as 10 mais recentes das duas Casas por data. "O que virou norma": as 10
+  proposições com `virou_norma` mais recentes pela apresentação (a data da norma não é coletada).
+
 ## Salário
 - Subsídio mensal bruto dos membros do Congresso, igual para deputados e senadores: Decreto
   Legislativo nº 172/2022, art. 1º (39.293,32 desde 01/01/2023; 41.650,92 desde 01/04/2023;

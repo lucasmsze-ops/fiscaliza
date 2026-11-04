@@ -12,6 +12,7 @@ export const SECOES = [
   { id: "governismo", titulo: "Governismo" },
   { id: "ceap", titulo: "Cota parlamentar (CEAP)" },
   { id: "propostas", titulo: "Propostas de autoria" },
+  { id: "congresso", titulo: "Congresso hoje" },
   { id: "salario", titulo: "Salário" },
   { id: "cobrar", titulo: "Como cobrar" },
   { id: "fora", titulo: "O que fica fora dos números" },

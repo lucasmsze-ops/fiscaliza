@@ -51,6 +51,14 @@ export interface Repo {
   getContagemProposicoes(politicoId: string): Promise<ProposicaoContagem[]>;
   /** Última coleta bem-sucedida de cada fonte (`{casa}_{job}`). */
   getAtualizacoes(): Promise<Atualizacao[]>;
+  /** Mandatos no Congresso ainda em curso (`fim` nulo), de todos os políticos. */
+  listarMandatosEmCurso(): Promise<Mandato[]>;
+  /** Afastamentos que cobrem a data (AAAA-MM-DD), de todos os políticos. */
+  listarAfastamentosEm(data: string): Promise<Afastamento[]>;
+  /** Votações nominais mais recentes da Casa (data desc). */
+  ultimasVotacoes(casa: Casa, limite: number): Promise<Votacao[]>;
+  /** Proposições que viraram norma, mais recentes pela apresentação, com os autores do site. */
+  ultimasNormas(limite: number): Promise<{ proposicao: Proposicao; autores: { politicoId: string; ordem: number }[] }[]>;
 }
 
 export { normalizar } from "./texto";
@@ -165,6 +173,21 @@ export class JsonRepo implements Repo {
   }
   async getAtualizacoes() {
     return this.tabela("atualizacoes");
+  }
+  async listarMandatosEmCurso() {
+    return (await this.tabela("mandatos")).filter((m) => m.fim === null);
+  }
+  async listarAfastamentosEm(data: string) {
+    return (await this.tabela("afastamentos")).filter((a) => a.inicio <= data && (a.fim === null || a.fim >= data));
+  }
+  async ultimasVotacoes(casa: Casa, limite: number) {
+    return (await this.getVotacoes(casa)).sort((a, b) => b.data.localeCompare(a.data) || b.id.localeCompare(a.id)).slice(0, limite);
+  }
+  async ultimasNormas(limite: number) {
+    const [ps, autores] = await Promise.all([this.tabela("proposicoes"), this.por("proposicoes_autores", "proposicaoId")]);
+    return ps.filter((p) => p.virouNorma)
+      .sort((a, b) => b.apresentacao.localeCompare(a.apresentacao) || b.id.localeCompare(a.id)).slice(0, limite)
+      .map((proposicao) => ({ proposicao, autores: (autores.get(proposicao.id) ?? []).map((a) => ({ politicoId: a.politicoId, ordem: a.ordem })) }));
   }
 }
 

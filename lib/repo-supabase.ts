@@ -59,6 +59,20 @@ export class SupabaseRepo implements Repo {
   getAtualizacoes() {
     return this.lembrar("atualizacoes", () => this.linhas<Atualizacao>("atualizacoes", "select=*&order=fonte"));
   }
+  listarMandatosEmCurso() {
+    return this.linhas<Mandato>("mandatos", "select=*&fim=is.null&order=politico_id,inicio");
+  }
+  listarAfastamentosEm(data: string) {
+    return this.linhas<Afastamento>("afastamentos", `select=*&inicio=lte.${v(data)}&or=(fim.is.null,fim.gte.${v(data)})&order=politico_id,inicio`);
+  }
+  ultimasVotacoes(casa: Casa, limite: number) {
+    return this.linhas<Votacao>("votacoes", `select=*&casa=eq.${v(casa)}&order=data.desc,id.desc&limit=${limite}`);
+  }
+  async ultimasNormas(limite: number) {
+    const ls = await selecionar<Linha<Proposicao> & { autores: { politico_id: string; ordem: number }[] }>(this.cli, "proposicoes",
+      `select=*,autores:proposicoes_autores(politico_id,ordem)&virou_norma=is.true&order=apresentacao.desc,id.desc&limit=${limite}`);
+    return ls.map(({ autores, ...p }) => ({ proposicao: deLinha<Proposicao>(p as Linha<Proposicao>), autores: autores.map((a) => ({ politicoId: a.politico_id, ordem: a.ordem })) }));
+  }
   async getPagina(id: string) {
     const [r] = await selecionar<{ pagina: PaginaDados }>(this.cli, "resumos", `select=pagina&politico_id=eq.${v(id)}&order=politico_id`);
     return r?.pagina ?? null;

@@ -218,6 +218,23 @@ export default async function ComoFunciona() {
         </p>
       </Secao>
 
+      <Secao id="congresso">
+        <p>
+          <strong>Quem ocupa a cadeira hoje:</strong> quem tem mandato em curso na Casa e não está afastado na data. O titular
+          licenciado continua com o mandato, mas a cadeira é do suplente que assumiu. O partido é o que a Câmara ou o Senado
+          registra hoje.
+        </p>
+        <p>
+          <strong>Cores e ordem:</strong> as fatias do Plenário seguem o tamanho da bancada, da maior para a menor; não há ordem de
+          esquerda ou direita. Os 8 partidos com mais cadeiras nas duas Casas somadas ganham cor própria, a mesma na Câmara e no
+          Senado; os demais aparecem em cinza. A lista ao lado do desenho traz o nome e o número de cadeiras de cada partido.
+        </p>
+        <p>
+          <strong>Últimas votações:</strong> as votações nominais mais recentes do Plenário das duas Casas, com o placar publicado pela
+          fonte. Nas votações secretas o Senado publica só quem votou, não como.
+        </p>
+      </Secao>
+
       <Secao id="salario">
         <p>
           O subsídio mensal dos membros do Congresso é o mesmo para deputados federais e senadores e é fixado por decreto legislativo:

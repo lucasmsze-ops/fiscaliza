@@ -3,8 +3,8 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E22** (atualizar esta linha ao avançar). Falta só o run agendado; E22b e E23 foram feitas
-adiantadas a pedido do usuário (2026-11-03). Depois da E22, seguir para a E23b.
+**Etapa atual: E22** (atualizar esta linha ao avançar). Falta só o run agendado (o de 04/11 não disparou);
+E22b, E23 e E23b foram feitas adiantadas a pedido do usuário. Depois da E22, seguir para a E23c.
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -404,6 +404,15 @@ e "Receber avisos". Fora até ter dado: patrimônio (E24), "votou com o partido"
 Página `/congresso` com o que já existe: Plenário em bolinhas por partido (parlamentares em
 exercício, Câmara e Senado), lista de quem está em cada bancada, últimas votações nominais com
 placar e "o que virou lei" (`proposicoes.virou_norma`). Agenda e pauta ficam na E32 (coleta nova).
+- [x] Cadeiras de hoje: mandato em curso sem afastamento na data (`lib/congresso.ts#emExercicio`):
+      513 e 81, iguais à lista de exercício da Câmara (diferença só da troca de cadeira posterior
+      à coleta). Plenário em SVG, bancadas por tamanho, 8 cores validadas + "outros"; a lista com
+      nome e cadeiras é o conteúdo (`components/Plenario.tsx`).
+- [x] Últimas 10 votações nominais das duas Casas com placar; secreta e votação de pessoa sem
+      direção dizem isso, nunca "0 sim". "O que virou norma": as 10 mais recentes.
+- [x] Consultas enxutas no `Repo` (mandatos em curso, afastamentos na data, `limit`), menu,
+      metodologia "Congresso hoje", testes.
+- Pronto quando: `/congresso` no ar só com dado real, conferido contra a fonte.
 
 ### E23c · Quem me representa no Congresso
 Cidade ou estado → os 3 senadores e os deputados federais da UF (rota `/uf/[uf]`, já planejada),

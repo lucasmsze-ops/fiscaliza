@@ -15,6 +15,25 @@ Modelo:
 
 ---
 
+## 2026-11-04 · E23b
+**Feito:** o run agendado de 04/11 (09:17 UTC) não disparou: workflow ativo, nenhum evento
+`schedule` até 11:04 UTC (atraso ou descarte do Actions); a E22 segue aberta. E23b adiantada:
+`/congresso` com o Plenário de hoje (`lib/congresso.ts`, `components/Plenario.tsx`), últimas 10
+votações nominais das duas Casas e "o que virou norma". `Repo` ganhou `listarMandatosEmCurso`,
+`listarAfastamentosEm`, `ultimasVotacoes` e `ultimasNormas` (consultas com filtro e `limit`).
+Paleta de partidos validada no claro e no escuro (skill dataviz). Conferido com `estado/dados`:
+desktop, celular, escuro, abas Câmara/Senado, 0 erros; 70 testes. Contra a API da Câmara de hoje:
+513 = 513; única diferença, Priscila Costa (PL-CE) assumiu no lugar de Dayany do Capitão
+(UNIÃO-CE) depois da coleta.
+**Decidido:** cadeira = mandato em curso sem afastamento na data (575 mandatos → 513 cadeiras). Cor
+pela soma das duas Casas (mesmo partido, mesma cor), 8 cores + cinza; fatias por tamanho, nunca por
+posição política. Placar zerado em votação de pessoa vira texto (lacuna registrada). No Senado,
+PSB (7) fica cinza e PODE (3) tem cor: a ordem é a da soma das Casas.
+**Lacunas:** votação de pessoa sem direção dos votos (`docs/LACUNAS.md`).
+**Próximo passo:** cron manual (traz a troca de cadeira) e só então o push da E23b, para o build já
+sair com o dado novo. Conferir o run agendado de 05/11; se de novo não disparar, investigar o
+agendamento. Depois, E23c.
+
 ## 2026-11-03 · E23
 **Feito:** adiantada a pedido do usuário, com a E22 aguardando o run agendado. Plano reordenado
 para antecipar as telas do protótipo com dado real (E23–E23d; Comparar na E26b). Página do
