@@ -15,6 +15,22 @@ Modelo:
 
 ---
 
+## 2026-11-04 · E23i
+**Feito:** crachá no layout do protótipo: `components/Cracha.tsx` (faixa, foto redonda, cargo pelo
+estado, sigla e nome do partido, em exercício desde · mandato até, salário, participação,
+participação × média da Casa, quem vota mais parecido), `components/AbasMandato.tsx` (Propostas em
+tabela com ano e busca, lista completa por `/dados/propostas/[id]`; Votos em tabela). Resumo da página
+ganhou `comparacao` (média e parecidos, `lib/comparacoes.ts`), `coresPartido` e o resultado de cada
+votação. Nomes dos partidos do TSE. Conferido com `estado/dados`: deputada, senador, eleito sem posse,
+não eleita; desktop, celular, escuro, 0 erros. 3.724 páginas em ~2 s; resumos +0,6 MB.
+**Decidido (usuário):** saem do crachá governismo, cota, mandatos, contatos, Como cobrar e Receber
+avisos (seguem no resumo e na metodologia). "Votou com o partido?" vai para a E26: sem o partido no
+dia de cada voto e sem a composição histórica dos blocos, o número sairia errado.
+**Lacunas:** blocos abreviados da Câmara; partido no dia da votação (`docs/LACUNAS.md`).
+**Próximo passo:** publicar na ordem do `docs/CRON.md`: push do código → cron manual (regrava os
+resumos com os números novos e as 20 siglas PCdoB) → push deste diário (novo deploy). Depois conferir
+o run agendado de 05/11 e seguir para a E23d.
+
 ## 2026-11-04 · E23b (refeita no layout do protótipo)
 **Feito:** `/congresso` refeita como a tela Congresso do protótipo: cabeçalho com as votações nominais
 do ano (192 em 2026), Plenário interativo (`components/Plenario.tsx`: Casa, Hoje / A partir de

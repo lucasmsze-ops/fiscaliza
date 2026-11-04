@@ -4,7 +4,7 @@ Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
 **Etapa atual: E22** (atualizar esta linha ao avançar). Falta só o run agendado (o de 04/11 não disparou);
-E22b, E23, E23b e E23c foram feitas adiantadas a pedido do usuário. Depois da E22, seguir para a E23d.
+E22b, E23, E23b, E23c e E23i foram feitas adiantadas a pedido do usuário. Depois da E22, seguir para a E23d.
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -468,6 +468,20 @@ O que falta do crachá do protótipo com dado que já existe: "Votou com o parti
 partido × voto), participação ao lado da média da Casa e "Quem vota mais parecido" (votações
 nominais em comum, % de votos iguais, mínimo de votações; regra em `/como-funciona`). Patrimônio e
 emendas seguem ocultos até ter dado.
+- [x] Crachá no layout do protótipo (`components/Cracha.tsx`): faixa, foto redonda, "Senadora pelo
+      Pará", sigla e nome do partido (TSE, `lib/partidos.ts`), "em exercício desde · mandato até" (fim
+      da legislatura ou 8 anos da posse do senador titular), salário e participação.
+- [x] Participação ao lado da média de quem está em exercício na Casa e "quem vota mais parecido"
+      (`lib/comparacoes.ts`, vetores por Casa uma vez por execução; 3.724 páginas em ~2 s).
+- [x] Abas em pílula (`components/AbasMandato.tsx`): Propostas em tabela com ano e busca, lista
+      completa sob demanda (`/dados/propostas/[id]`); Votos em tabela com voto e resultado.
+- [x] Fora da página por decisão do usuário: governismo, cota, mandatos, contatos, Como cobrar,
+      Receber avisos (seguem no resumo). Ocultos sem dado: patrimônio, emendas, tema das propostas.
+- [ ] "Votou com o partido?" e a coluna "orientação do partido" na aba Votos: foram para a E26.
+      Precisam do partido de cada um no dia da votação (a janela partidária de 2026 trocou muitos) e
+      da composição dos blocos da Câmara (a API só lista os blocos de hoje; os de 2023–2025 vêm só
+      abreviados nas orientações).
+- Pronto quando: o crachá no layout do protótipo, só com dado real, no ar com os números novos.
 
 ### E24 · Patrimônio e contas de campanha (TSE)
 Patrimônio por eleição, sem descrição dos bens; arrecadado, gasto e % de dinheiro público. Redes
@@ -482,7 +496,10 @@ Decidir aqui se entram temas por palavra-chave da ementa.
 
 ### E26 · Todos os votos e fidelidade ao partido
 Lista completa com filtros (ano, voto, busca); % de votos iguais à orientação do partido. Aba Votos
-do crachá e "votou com o partido?"; participação ao lado da média da Casa.
+do crachá e "votou com o partido?" (pizza do protótipo) e a coluna "orientação do partido". Antes:
+gravar o partido de cada voto (a resposta de `/votacoes/{id}/votos` e do `/votacao` do Senado traz) e
+resolver os blocos da Câmara (orientação por bloco, nomes abreviados; decidir se o voto conta contra
+o bloco ou fica fora). A participação ao lado da média já veio na E23i.
 
 ### E27 · Cota completa
 Câmara e Senado: por mês, categoria e maiores fornecedores. "Quanto custa o mandato" (veio da
