@@ -31,6 +31,11 @@ partido, federação ou bloco cujo nome abreviado o lista; bloco cortado sem o p
 fonte: Nikolas Ferreira 73 votos contra o PL, ex.: urgência de 15/04/2026 (355 × 29), PL orientou Sim.
 Resultado em `estado/dados/fidelidade.json`, fora do banco; só o resumo da página leva o número.
 **Lacunas:** blocos de nome cortado na Câmara (`docs/LACUNAS.md`).
+**Publicação:** run 41835209481 falhou na fidelidade: o estado inicial (tar feito no Mac) trazia
+`._*.json` binários (AppleDouble); corrigido em `b1e314d` (leitura pula ocultos, workflow apaga `._*`).
+Run 41836008147: fidelidade ok (354.057 de 456.711 votos identificados), 658 resumos regravados.
+Os dois runs ficaram vermelhos só pelo `parlamentares` (504 da Câmara em `/deputados`): a sigla
+PCdoB das 20 linhas segue pendente até um run com a Câmara respondendo.
 **Próximo passo:** publicar na ordem do `docs/CRON.md`: push do código → cron manual (regrava os
 resumos com os números novos e as 20 siglas PCdoB) → push deste diário (novo deploy). Depois conferir
 o run agendado de 05/11 e seguir para a E23d.
