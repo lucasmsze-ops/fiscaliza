@@ -2,7 +2,8 @@
 # publica no Supabase só o que mudou. Também é o keep-alive do Supabase free.
 #
 # Estado (estado/: dados, publicado, caches das fontes) vive no cache do Actions, uma entrada por
-# execução, sempre restaurando a mais recente. Sem cache (primeira execução, ou cache expirado),
+# execução e tentativa (um Re-run não pode regravar a chave da tentativa anterior: o cache é
+# imutável), sempre restaurando a mais recente. Sem cache (primeira execução, ou cache expirado),
 # o estado vem do asset `estado.tar.gz` da release `estado-inicial`. Nenhum dos dois tem CPF: os
 # arquivos do TSE com CPF são baixados a cada execução para a pasta temporária do runner e nunca
 # vão para o cache (o repositório é público).
@@ -36,10 +37,10 @@ jobs:
 
       - name: Estado (cache da última execução)
         id: estado
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: estado
-          key: estado-${{ github.run_id }}
+          key: estado-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: estado-
       - name: Estado inicial (release), se não havia cache
         if: steps.estado.outputs.cache-matched-key == ''
@@ -75,7 +76,7 @@ jobs:
         # Sempre: o publicado tem de acompanhar o que já foi gravado no Supabase, mesmo quando um job
         # falha depois (a próxima execução tenta de novo o que falhou).
         if: always() && hashFiles('estado/publicado/politicos.json') != ''
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: estado
-          key: estado-${{ github.run_id }}
+          key: estado-${{ github.run_id }}-${{ github.run_attempt }}
