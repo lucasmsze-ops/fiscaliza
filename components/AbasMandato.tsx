@@ -84,12 +84,14 @@ function Propostas({ id, p }: { id: string; p: NonNullable<PaginaDados["proposta
 
 function Votos({ v }: { v: NonNullable<PaginaDados["votacoes"]> }) {
   const casa = v.casa === "senado" ? "no Senado" : "na Câmara";
+  // A coluna só aparece quando o resumo já traz a orientação (gravado a partir da E23i).
+  const comOrientacao = v.ultimas.some((u) => u.partidoNoDia !== undefined);
   return (
     <div className="grid gap-3">
       <p className="text-sm text-suave">{inteiro(v.total)} votações nominais do plenário {v.casa === "senado" ? "do Senado" : "da Câmara"} durante o mandato, 2023–2026. As 10 mais recentes:</p>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[560px] border-collapse">
-          <thead><tr><th className={th}>Votação</th><th className={th}>Voto</th><th className={th}>Página oficial</th></tr></thead>
+          <thead><tr><th className={th}>Votação</th>{comOrientacao && <th className={th}>Orientação do partido</th>}<th className={th}>Voto</th><th className={th}>Página oficial</th></tr></thead>
           <tbody>
             {v.ultimas.map((u, i) => (
               <tr key={i}>
@@ -99,6 +101,11 @@ function Votos({ v }: { v: NonNullable<PaginaDados["votacoes"]> }) {
                     <span className="text-xs text-suave">{[u.proposicao, dataBr(u.data), u.resultado].filter(Boolean).join(" · ")}</span>
                   </span>
                 </td>
+                {comOrientacao && (
+                  <td className={`${td} text-suave`}>
+                    {u.partidoNoDia && u.orientacaoPartido ? <>{u.partidoNoDia}: {u.orientacaoPartido === "Liberado" ? "liberou" : u.orientacaoPartido}</> : "—"}
+                  </td>
+                )}
                 <td className={td}><span className={`inline-block rounded-lg px-2.5 py-1 text-xs font-bold whitespace-nowrap ${COR_VOTO[u.voto] ?? "bg-fundo"}`}>{ROTULO[u.voto]}</span></td>
                 <td className={td}><a href={u.urlOficial} {...externo} className="text-xs font-bold whitespace-nowrap">Ver {casa} ↗</a></td>
               </tr>

@@ -50,7 +50,7 @@ export default async function PaginaPolitico({ params }: Props) {
     <>
     <BarraTopo secao={`Visão geral / ${NOME_UF[uf] ?? uf}`} pagina="Crachá do político" />
     <main className="grid gap-6 pb-8">
-      <Cracha d={c} mandato={mandato} salario={salario} comparacao={pg.comparacao ?? null} cores={pg.coresPartido ?? []} />
+      <Cracha d={c} mandato={mandato} salario={salario} comparacao={pg.comparacao ?? null} fidelidade={pg.fidelidade ?? null} cores={pg.coresPartido ?? []} />
       <AbasMandato id={c.id} propostas={pg.propostas ?? null} votacoes={pg.votacoes} />
       <p className="text-xs text-suave">
         Fonte: {c.numeros.tipo === "mandato" ? (c.numeros.casa === "senado" ? "Senado Federal" : "Câmara dos Deputados") + " e " : ""}TSE

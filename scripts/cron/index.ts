@@ -6,6 +6,7 @@
  */
 import { spawnSync } from "node:child_process";
 import { jobCota } from "./cota";
+import { calcularFidelidade } from "./fidelidade";
 import { jobProposicoes } from "./proposicoes";
 import { DADOS, gravarTabela, iniciarEstado, lerTabela, mesclar, type LinhaBruta } from "./estado";
 import { publicar } from "./publicar";
@@ -58,6 +59,16 @@ const coletadoEm = new Date().toISOString();
 const m = mesclar("atualizacoes", lerTabela("atualizacoes"), atualizadas.map((fonte) => ({ fonte, coletado_em: coletadoEm })));
 gravarTabela("atualizacoes", m.linhas);
 console.log(`[${seg()}] atualizacoes: ${atualizadas.join(", ") || "nenhuma fonte coletada"}`);
+
+// "Votou com o partido?": derivado do partido no dia de cada voto (caches das fontes); só os resumos leem.
+try {
+  const f = calcularFidelidade();
+  gravarTabela("fidelidade", f.linhas);
+  for (const l of f.relatorio) console.log(`[${seg()}] fidelidade: ${l}`);
+} catch (e) {
+  falhou = true;
+  console.error(`[${seg()}] fidelidade FALHOU: ${(e as Error).stack ?? e}`);
+}
 
 const v = spawnSync("npx", ["tsx", "scripts/sonda/validar.ts"], { env: { ...process.env, DATA_DIR: DADOS }, encoding: "utf8" });
 console.log(`[${seg()}] validação: ${(v.stdout + v.stderr).trim().split("\n").at(-1)}`);

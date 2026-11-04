@@ -16,6 +16,9 @@ export interface VotoListado {
   voto: TipoVoto;
   /** Opcional: resumos gravados antes da E23i não têm. */
   resultado?: "aprovada" | "rejeitada" | null;
+  /** Partido no dia e orientação da bancada dele; null quando não deu para saber (lib/fidelidade.ts). */
+  partidoNoDia?: string | null;
+  orientacaoPartido?: string | null;
   urlOficial: string;
 }
 
@@ -72,6 +75,8 @@ export interface PaginaDados {
   propostas?: PropostasPagina | null;
   /** Participação média da Casa e "quem vota mais parecido" (E23i); só para quem está em exercício hoje. */
   comparacao?: ComparacaoCasa | null;
+  /** "Votou com o partido?": votos de posição com e contra a orientação da bancada do partido no dia. */
+  fidelidade?: { casa: Casa; com: number; contra: number } | null;
   /** Ordem das cores de partido do dia (etiqueta do partido no crachá, como em /congresso). */
   coresPartido?: string[];
 }
@@ -104,9 +109,12 @@ export async function montarPagina(repo: Repo, id: string, hoje = new Date().toI
       .filter((v) => v.data >= PERIODO_GOVERNO.inicio && v.data <= PERIODO_GOVERNO.fim && noMandato(v.data))
       .sort((a, b) => b.data.localeCompare(a.data) || b.id.localeCompare(a.id));
     const meus = new Map((await repo.getVotos(id)).map((v) => [v.votacaoId, v.voto]));
+    const fid = await repo.getFidelidade(id);
+    const noDia = new Map((fid?.ultimas ?? []).map((u) => [u.votacao_id, u]));
     votacoes = {
       casa, total: vs.length, totais: contarVotos(vs.map((v) => v.id), meus),
-      ultimas: vs.slice(0, 10).map((v) => ({ data: v.data, proposicao: v.proposicao, descricao: v.descricao, voto: meus.get(v.id) ?? "ausente", resultado: v.resultado, urlOficial: v.urlOficial })),
+      ultimas: vs.slice(0, 10).map((v) => ({ data: v.data, proposicao: v.proposicao, descricao: v.descricao, voto: meus.get(v.id) ?? "ausente", resultado: v.resultado, urlOficial: v.urlOficial,
+        partidoNoDia: noDia.get(v.id)?.partido ?? null, orientacaoPartido: noDia.get(v.id)?.orientacao ?? null })),
     };
   }
 
@@ -141,9 +149,11 @@ export async function montarPagina(repo: Repo, id: string, hoje = new Date().toI
   }
 
   const comparacao = card.comoCobrar ? await compararComCasa(repo, id, card.comoCobrar.casa, hoje) : null;
+  const fid = await repo.getFidelidade(id);
+  const fidelidade = fid && card.numeros.tipo === "mandato" && fid.casa === card.numeros.casa ? { casa: fid.casa, com: fid.com, contra: fid.contra } : null;
 
   return {
-    card, votacoes, ceap, propostas, comparacao, coresPartido: await coresDoDia(repo, hoje),
+    card, votacoes, ceap, propostas, comparacao, fidelidade, coresPartido: await coresDoDia(repo, hoje),
     mandatos: [...mandatos].sort((a, b) => b.inicio.localeCompare(a.inicio)),
     afastamentos: afastamentos.filter((a) => (a.fim ?? hoje) >= PERIODO_GOVERNO.inicio).sort((a, b) => b.inicio.localeCompare(a.inicio)),
     contatos: { email: p.email, telefone: p.telefone, redesSociais: p.redesSociais, urlPerfil: p.urlPerfil },

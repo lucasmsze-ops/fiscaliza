@@ -96,7 +96,15 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
 - "Mandato até": deputado na legislatura 57 → 31/01/2027; senador titular com posse em 01/02/2019 →
   31/01/2027, em 01/02/2023 → 31/01/2031; suplente: não se mostra (depende do titular).
 - Nome do partido: `NM_PARTIDO` do TSE 2026, em caixa de título (`lib/partidos.ts`).
-- "Votou com o partido?" fica fora até a E26 (partido no dia de cada voto e blocos da Câmara).
+- "Votou com o partido?" (`lib/fidelidade.ts`, `scripts/cron/fidelidade.ts`): partido no dia de cada
+  voto das respostas em cache (Câmara `/votacoes/{id}/votos`, Senado `/votacao`); bancada = partido,
+  senão federação ("Fdr A-B-C"), senão bloco cujo nome abreviado o lista (de-para de abreviações com
+  teste para todos os nomes de 2023–2026); bloco cortado ("...") sem o partido no trecho visível → fora.
+  Senado: sinônimos Republica/Republicanos, Podemos, Progressistas. Voto e orientação de posição
+  (Sim, Não, Obstrução), como no governismo. Mínimo 20 votações para o percentual. Cobertura em
+  2026-11-04: 354 mil de 457 mil votos com a bancada identificada; PL, PT, União, PP, PSOL, PV,
+  NOVO, REDE 100%; MDB, Republicanos, Podemos, PSDB sem 2025 (bloco cortado). Gravado em
+  `estado/dados/fidelidade.json` (não vai ao banco; só o resumo da página).
 
 ## Salário
 - Subsídio mensal bruto dos membros do Congresso, igual para deputados e senadores: Decreto

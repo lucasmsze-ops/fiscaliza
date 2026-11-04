@@ -14,7 +14,7 @@ import { deLinha } from "./linhas";
 import { montarPagina, type PaginaDados } from "./pagina";
 import type {
   Afastamento, Atualizacao, Cargo, Casa, DespesaMediaUf, DespesaMes, EleitoMunicipio, Linha, ListaEleitoral, Mandato, Municipio,
-  Orientacao, Politico, Proposicao, ProposicaoAutor, ProposicaoContagem, Votacao, Voto,
+  FidelidadePolitico, Orientacao, Politico, Proposicao, ProposicaoAutor, ProposicaoContagem, Votacao, Voto,
 } from "./types";
 
 export interface EleitoNaCidade {
@@ -57,6 +57,8 @@ export interface Repo {
   listarAfastamentosEm(data: string): Promise<Afastamento[]>;
   /** Votações nominais mais recentes da Casa (data desc). */
   ultimasVotacoes(casa: Casa, limite: number): Promise<Votacao[]>;
+  /** "Votou com o partido?" do político (só no cron, de estado/dados; o site lê o resumo pronto). */
+  getFidelidade(politicoId: string): Promise<FidelidadePolitico | null>;
   /** Data e Casa de todas as votações nominais (calendário da agenda). */
   listarDatasVotacoes(): Promise<{ data: string; casa: Casa }[]>;
   /** Votações nominais das duas Casas entre as datas (AAAA-MM-DD, inclusive), mais recentes primeiro. */
@@ -73,7 +75,7 @@ type Tabelas = {
   politicos: Politico; mandatos: Mandato; afastamentos: Afastamento; listas: ListaEleitoral; municipios: Municipio;
   eleitos_mun: EleitoMunicipio; despesas_mes: DespesaMes; despesas_media_uf: DespesaMediaUf; votacoes: Votacao;
   votos: Voto; orientacoes: Orientacao; proposicoes: Proposicao; proposicoes_autores: ProposicaoAutor;
-  proposicoes_contagem: ProposicaoContagem; atualizacoes: Atualizacao;
+  proposicoes_contagem: ProposicaoContagem; atualizacoes: Atualizacao; fidelidade: FidelidadePolitico;
 };
 
 /** Lê data/*.json uma vez por processo (cada tabela só quando pedida). */
@@ -186,6 +188,10 @@ export class JsonRepo implements Repo {
   }
   async ultimasVotacoes(casa: Casa, limite: number) {
     return (await this.getVotacoes(casa)).sort((a, b) => b.data.localeCompare(a.data) || b.id.localeCompare(a.id)).slice(0, limite);
+  }
+  async getFidelidade(politicoId: string) {
+    // Só existe no estado do cron (estado/dados); em data/ (sonda) não há o arquivo.
+    try { return (await this.por("fidelidade", "politicoId")).get(politicoId)?.[0] ?? null; } catch { return null; }
   }
   async listarDatasVotacoes() {
     return (await this.tabela("votacoes")).map((v) => ({ data: v.data, casa: v.casa })).sort((a, b) => a.data.localeCompare(b.data));

@@ -56,13 +56,51 @@ function Numero({ rotulo, valor, detalhe, icone }: { rotulo: ReactNode; valor: R
  * com foto, cargo, partido e mandato, e os números principais. Exibe os `CardDados` do card
  * (lib/card.ts), nunca outro cálculo; o que é null não aparece.
  */
-export function Cracha({ d, mandato, salario, comparacao, cores }: {
+/** Mínimo de votações com a orientação identificada para mostrar o percentual. */
+const MINIMO_FIDELIDADE = 20;
+const COR_COM = "var(--destaque)", COR_CONTRA = "#f6ad55";
+
+/** "Votou com o partido?" (pizza do protótipo): com e contra a orientação da bancada do partido no dia. */
+function ComPartido({ f, periodo }: { f: { com: number; contra: number }; periodo: string }) {
+  const total = f.com + f.contra;
+  const pCom = total ? (100 * f.com) / total : 0;
+  const r = 52, c = 2 * Math.PI * r;
+  return (
+    <div className={`${card} grid content-start gap-3`}>
+      <div>
+        <h2 className="text-lg font-bold"><Termo id="cr-fid" termo="comPartido">Votou com o partido?</Termo></h2>
+        <p className="mt-1 text-[13px] text-suave">Nas {inteiro(total)} votações nominais de {periodo} em que deu para saber a orientação da bancada do partido no dia.</p>
+      </div>
+      {total < MINIMO_FIDELIDADE ? (
+        <p className="text-sm text-suave">Poucas votações com a orientação do partido identificada para um percentual. Na Câmara, a orientação de blocos de nome cortado na fonte fica fora da conta.</p>
+      ) : (
+        <div className="flex flex-wrap items-center gap-[18px]">
+          <svg width="140" height="140" viewBox="0 0 140 140" role="img" aria-label={`${umaCasa(pCom)}% com o partido, ${umaCasa(100 - pCom)}% contra`}>
+            <circle cx="70" cy="70" r={r} fill="none" stroke={COR_CONTRA} strokeWidth="22" />
+            <circle cx="70" cy="70" r={r} fill="none" stroke={COR_COM} strokeWidth="22" strokeDasharray={`${(pCom / 100) * c} ${c}`} transform="rotate(-90 70 70)" />
+          </svg>
+          <div className="grid gap-3">
+            {[[COR_COM, pCom, `com o partido (${inteiro(f.com)} votações)`], [COR_CONTRA, 100 - pCom, `contra o partido (${inteiro(f.contra)} votações)`]].map(([cor, v, t]) => (
+              <div key={String(t)} className="flex items-start gap-2.5">
+                <span className="mt-1.5 size-3 shrink-0 rounded-full" style={{ background: String(cor) }} />
+                <span><span className="text-xl font-bold tabular-nums">{umaCasa(Number(v))}%</span><br /><span className="text-xs text-suave">{t}</span></span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
   d: CardDados;
   /** Mandato em curso no Congresso, se houver. */
   mandato: Mandato | null;
   /** Subsídio em vigor, só para quem exerce mandato hoje (lib/salario.ts). */
   salario: { valor: number; desde: string } | null;
   comparacao: ComparacaoCasa | null;
+  fidelidade: { com: number; contra: number } | null;
   cores: string[];
 }) {
   const n = d.numeros;
@@ -118,32 +156,33 @@ export function Cracha({ d, mandato, salario, comparacao, cores }: {
         {n.tipo === "sem_mandato" && <Numero icone="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 16v-5M12 8h.01" rotulo="Votações" valor={`Sem mandato no Congresso em ${n.periodo}`} />}
       </section>
 
-      {comparacao && (
-      <div className="grid items-start gap-[18px] lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
-      {n.tipo === "mandato" && comparacao.mediaParticipacao != null && n.participacao.percentual !== null && (
-        <section aria-label="Gráficos" className="grid gap-[18px]">
-          <div className={`${card} grid gap-3`}>
-            <div>
-              <h2 className="text-lg font-bold">Participação nas votações</h2>
-              <p className="mt-1 text-[13px] text-suave">{n.periodo}, ao lado da média de quem está em exercício {comparacao.casa === "senado" ? "no Senado" : "na Câmara"} hoje.</p>
+      {n.tipo === "mandato" && (fidelidade || (comparacao?.mediaParticipacao != null && n.participacao.percentual !== null)) && (
+        <section aria-label="Gráficos" className="grid gap-[18px] [grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr))]">
+          {fidelidade && <ComPartido f={fidelidade} periodo={n.periodo} />}
+          {comparacao?.mediaParticipacao != null && n.participacao.percentual !== null && (
+            <div className={`${card} grid gap-3`}>
+              <div>
+                <h2 className="text-lg font-bold">Participação nas votações</h2>
+                <p className="mt-1 text-[13px] text-suave">{n.periodo}, ao lado da média de quem está em exercício {comparacao.casa === "senado" ? "no Senado" : "na Câmara"} hoje.</p>
+              </div>
+              <div className="flex h-[180px] items-end justify-center gap-9 border-b border-borda">
+                {[[d.nomeUrna, n.participacao.percentual, "var(--destaque)"], [casaMedia, comparacao.mediaParticipacao, "var(--borda-forte)"]].map(([l, v, c]) => (
+                  <div key={String(l)} className="flex h-full w-[84px] flex-col items-center justify-end gap-1.5">
+                    <span className="text-lg font-bold tabular-nums">{umaCasa(Number(v))}%</span>
+                    <span className="block w-full rounded-t-xl" style={{ height: `${Number(v) * 1.2}px`, background: String(c) }} />
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-center gap-9 text-center text-xs text-suave">
+                <span className="w-[84px] truncate">{d.nomeUrna.split(" ")[0]}</span><span className="w-[84px]">{casaMedia}</span>
+              </div>
+              <Link href={hrefSecao("participacao")} className="text-xs underline underline-offset-2">como contamos</Link>
             </div>
-            <div className="flex h-[180px] items-end justify-center gap-9 border-b border-borda">
-              {[[d.nomeUrna, n.participacao.percentual, "var(--destaque)"], [casaMedia, comparacao.mediaParticipacao, "var(--borda-forte)"]].map(([l, v, c]) => (
-                <div key={String(l)} className="flex h-full w-[84px] flex-col items-center justify-end gap-1.5">
-                  <span className="text-lg font-bold tabular-nums">{umaCasa(Number(v))}%</span>
-                  <span className="block w-full rounded-t-xl" style={{ height: `${Number(v) * 1.2}px`, background: String(c) }} />
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-center gap-9 text-center text-xs text-suave">
-              <span className="w-[84px] truncate">{d.nomeUrna.split(" ")[0]}</span><span className="w-[84px]">{casaMedia}</span>
-            </div>
-            <Link href={hrefSecao("participacao")} className="text-xs underline underline-offset-2">como contamos</Link>
-          </div>
+          )}
         </section>
       )}
 
-      {comparacao.parecidos.length > 0 && (
+      {comparacao && comparacao.parecidos.length > 0 && (
         <section className={`${card} grid gap-1.5`} aria-labelledby="cr-parecidos">
           <div className="flex flex-wrap items-baseline justify-between gap-3">
             <h2 id="cr-parecidos" className="text-lg font-bold"><Termo id="cr-parec" termo="parecidos">Quem vota mais parecido</Termo></h2>
@@ -164,8 +203,6 @@ export function Cracha({ d, mandato, salario, comparacao, cores }: {
             ))}
           </div>
         </section>
-      )}
-      </div>
       )}
 
       {salario && (

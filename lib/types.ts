@@ -245,6 +245,17 @@ export interface ProposicaoContagem {
   autorias: number;
 }
 
+/** `estado/dados/fidelidade.json` (só no cron, não é tabela do banco): "votou com o partido?" por político. */
+export interface FidelidadePolitico {
+  politicoId: string;
+  casa: Casa;
+  /** Votos de posição iguais / diferentes da orientação da bancada do partido no dia (lib/fidelidade.ts). */
+  com: number;
+  contra: number;
+  /** Partido no dia e orientação da bancada dele nas votações mais recentes da Casa. */
+  ultimas: { votacao_id: string; partido: string; orientacao: string | null }[];
+}
+
 /** Tabela `atualizacoes`: quando cada fonte foi coletada com sucesso pela última vez (base de /atualizacoes). */
 export interface Atualizacao {
   /** "camara_votacoes", "senado_cota", ... (`{casa}_{job}`). */

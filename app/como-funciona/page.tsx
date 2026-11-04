@@ -246,6 +246,15 @@ export default async function ComoFunciona() {
           não diz se os votos foram bons ou ruins.
         </p>
         <p>
+          <strong>Votou com o partido?</strong> Para cada votação nominal de 2023 a 2026, o voto (Sim, Não ou Obstrução) é comparado
+          com a orientação da bancada do partido da pessoa <em>naquele dia</em>, como a Câmara e o Senado registram no voto: quem
+          trocou de partido é comparado com o partido de cada época. A bancada é o próprio partido; se ele não orientou sozinho, a
+          federação; se não, o bloco parlamentar cujo nome o lista. Ficam fora: orientação “liberado” ou em branco, abstenção,
+          ausência, voto secreto e as votações em que a Câmara registra a orientação de um bloco com o nome cortado (“Bl
+          PlFdrPtUniPp...”) e o partido não aparece no trecho visível. É o caso de quase todo o ano de 2025 para MDB, Republicanos,
+          Podemos e PSDB. Com menos de 20 votações identificadas, o site não mostra percentual.
+        </p>
+        <p>
           <strong>Participação ao lado da média:</strong> a média é a da participação em votações (mesma regra do card) de todos os
           que estão em exercício hoje na Casa.
         </p>

@@ -68,6 +68,9 @@ export class SupabaseRepo implements Repo {
   ultimasVotacoes(casa: Casa, limite: number) {
     return this.linhas<Votacao>("votacoes", `select=*&casa=eq.${v(casa)}&order=data.desc,id.desc&limit=${limite}`);
   }
+  async getFidelidade() {
+    return null; // a página lê o resumo pronto do cron (resumos.pagina), que já traz o número
+  }
   listarDatasVotacoes() {
     return this.lembrar("datas-votacoes", () => selecionar<{ data: string; casa: Casa }>(this.cli, "votacoes", "select=data,casa&order=data,id"));
   }

@@ -76,6 +76,11 @@ export const GLOSSARIO = definir({
     texto: "Quem assina a proposta em primeiro lugar, pela ordem de assinatura registrada pela Câmara ou pelo Senado. Os demais são coautores.",
     secao: "propostas",
   },
+  comPartido: {
+    titulo: "Votou com o partido?",
+    texto: "Votos Sim, Não ou Obstrução iguais ou diferentes da orientação da bancada do partido da pessoa no dia de cada votação (o partido pode ter mudado), de 2023 a 2026. A bancada é o próprio partido, a federação ou o bloco que o lista. Liberado, sem orientação e blocos de nome cortado na fonte ficam fora.",
+    secao: "parecidos",
+  },
   parecidos: {
     titulo: "Quem vota mais parecido",
     texto: "Entre quem está em exercício hoje na mesma Casa: % de votos iguais (Sim, Não, Abstenção ou Obstrução) nas votações nominais em que os dois votaram, de 2023 a 2026. Votação secreta, voto não divulgado e ausência ficam fora. Precisa de pelo menos 50 votações em comum. Não é nota nem posição política.",
