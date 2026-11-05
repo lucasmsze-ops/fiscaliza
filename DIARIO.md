@@ -15,6 +15,18 @@ Modelo:
 
 ---
 
+## 2026-11-05 · E23d · Me representa
+**Feito:** `/me-representa` (`components/MeRepresenta.tsx`), aba no menu (no celular a faixa rola e a
+aba atual fica à vista). Só o que tem dado: em Brasília, 3 senadores e os deputados federais da UF.
+**Achado:** `politicos.uf` é a UF da candidatura de 2026: SP aparecia com 68 deputados (Rosangela
+Moro e Tiririca contados no PR e no CE), RJ com 45 (Hélio Lopes em RR). Agora `mandatos.uf` (posse no
+histórico da Câmara, mandato do Senado; migração 0007, testada no PGlite) alimenta `bancadas`, então
+Visão geral, Congresso e "mais parecidos" também passam a usar a UF da cadeira.
+**Comparação:** ensaio `--sem-publicar`: 1.452 mandatos, todos iguais aos de antes fora a coluna `uf`;
+3 antigos da sonda (João Paulo Cunha, 2003–2014) ficam com `uf` nulo; as 27 bancadas = cadeiras da
+Constituição. O crachá ainda mostra a UF da candidatura no cabeçalho (lacuna registrada).
+**Próximo passo:** rodar a 0007; push; cron manual (republica os mandatos); push de docs (redeploy).
+
 ## 2026-11-04 · E23l · página Votações
 **Feito:** `/votacoes` (agenda e última sessão, movidas sem mudança de /congresso; `montarVotacoes`
 separado de `montarCongresso`, então /congresso não lê mais votações); aba Votações no menu; título

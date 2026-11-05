@@ -215,7 +215,7 @@ export default async function ComoFunciona() {
         <p>
           <strong>Quem ocupa a cadeira hoje:</strong> quem tem mandato em curso na Casa e não está afastado na data. O titular
           licenciado continua com o mandato, mas a cadeira é do suplente que assumiu. O partido é o que a Câmara ou o Senado
-          registra hoje.
+          registra hoje, e o estado é o da cadeira, mesmo quando a pessoa disputou a eleição de 2026 por outro estado.
         </p>
         <p>
           <strong>Cores e ordem:</strong> as fatias do Plenário seguem o tamanho da bancada, da maior para a menor; não há ordem de

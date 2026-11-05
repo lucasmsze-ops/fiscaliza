@@ -67,6 +67,7 @@ Hoje (protótipo, SP):
 /votacoes           agenda do Plenário e votações da última sessão (saíram de /congresso na E23l)
 /c/[ids]            links antigos da colinha: redireciona para o crachá (a colinha saiu em 2026-11-04)
 /p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
+/me-representa      cidade ou estado → senadores e deputados federais em exercício da UF (E23d; `?uf=SP`, `?cidade=<IBGE>`)
 /votacoes/[id]      uma votação do Plenário (E23k): placar, regra, ementa, caminho, como votou cada partido (id = casa-idExterno)
 /como-funciona      metodologia, fontes, licença, código
 ```
@@ -105,6 +106,10 @@ Abaixo: cota do mês (CEAP na Câmara, CEAPS no Senado) vs média da bancada **d
 - `CD_MUNICIPIO` é código do TSE, não do IBGE. Código IBGE pela API de localidades do IBGE por nome normalizado (a API do IBGE **não responde a runners do GitHub Actions**: testado 2× em 2026-11-02, timeout de conexão; a tabela é gerada localmente por `scripts/tse/municipios.ts` e versionada em `data/municipios-ibge.json`, 5.571 cidades); No país, 13 grafias divergem (ex.: TSE "Munhoz de Mello", IBGE "Munhoz de Melo"; TSE "Boa Saúde", IBGE "Januário Cicco", nome atual), todas em de-para explícito revisado à mão.
 - `bem_candidato`: bens declarados (para v1.2).
 - Quociente eleitoral (`lib/quociente.ts`): QE com fração ≤ 0,5 desprezada; QP desprezando a fração; vaga de QP só para quem tem ≥ 10% do QE (a sobra vai para as médias); sobras primeiro entre listas com ≥ 80% do QE e candidato com ≥ 20%, depois entre todas (STF, ADIs 7228/7263/7325); divisor da média = vagas **obtidas** por QP + médias + 1. Tratar **federação** como lista única. A frase "seu voto contou para" saiu da interface (2026-11-01); o cálculo fica para mostrar como cada um foi eleito (QP ou média) na linha do tempo de candidaturas. Senador é eleição majoritária.
+
+**UF da cadeira ≠ UF da candidatura:** `politicos.uf` vem da candidatura de 2026 (ou do perfil, para
+quem não disputou). Quem disputou por outro estado (Rosangela Moro: cadeira de SP, candidatura no PR)
+fica com a UF errada para "quem representa o estado". Listas por estado usam `mandatos.uf`.
 
 ### Câmara — `https://dadosabertos.camara.leg.br/api/v2` (JSON, sem chave)
 - `/deputados`, `/deputados/{id}` (tem CPF para o join com o TSE, confirmado em 70/70 de SP). E-mail oficial em `ultimoStatus.gabinete.email` (o `email` do topo vem nulo); foto em `ultimoStatus.urlFoto`; `redeSocial` é array de URLs.
@@ -147,7 +152,7 @@ Definido em `lib/types.ts` (camelCase); `data/*.json` e as tabelas guardam as me
 politicos         id (= slug), cargo, nome, nome_urna, genero, slug, uf, partido, lista_id, federacao,
                   numero_urna, foto_url, email, url_perfil, tse_sq_candidato, camara_id,
                   senado_codigo, status, votos_2026, updated_at
-mandatos          politico_id, cargo, inicio, fim (null = em curso), titular bool
+mandatos          politico_id, cargo, inicio, fim (null = em curso), titular bool, uf (da cadeira; E23d)
 afastamentos      politico_id, inicio, fim, motivo                  (licenças dentro do mandato)
 listas            id, uf, ano, cargo, nome, composicao, votos_validos, eleitos   (quociente)
 municipios        ibge, tse, nome, uf

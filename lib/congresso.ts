@@ -21,7 +21,8 @@ export function emExercicio(mandatos: Mandato[], afastamentos: Afastamento[], da
 
 /** Bancadas por tamanho (maior primeiro); empate pelo nome. Membros em ordem alfabética. */
 export function bancadas(mandatos: Mandato[], politicos: Map<string, Politico>): Bancada[] {
-  return bancadasDe(mandatos.flatMap((m) => { const p = politicos.get(m.politicoId); return p ? [p] : []; }));
+  // A UF é a da cadeira (do mandato), não a da candidatura de 2026 guardada no político.
+  return bancadasDe(mandatos.flatMap((m) => { const p = politicos.get(m.politicoId); return p ? [{ ...p, uf: m.uf ?? p.uf }] : []; }));
 }
 
 export function bancadasDe(pessoas: Politico[]): Bancada[] {

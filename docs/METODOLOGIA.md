@@ -82,6 +82,13 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
   norma" saiu da página (não está no protótipo); o número continua no crachá.
 - Sigla de partido canônica (`lib/partidos.ts`): TSE "PCDOB" = Câmara/Senado "PCdoB" (20 políticos).
 
+## Me representa (`/me-representa`, E23d)
+- Cidade → UF (a tabela de municípios do TSE/IBGE); senadores e deputados federais são eleitos pelo
+  estado inteiro, então a cidade mostra os do estado. Em exercício hoje, pela regra de `/congresso`.
+- UF = a da cadeira (`mandatos.uf`: evento de posse no `/historico` da Câmara; `uf` do mandato no
+  Senado), não `politicos.uf` (candidatura de 2026). Conferido: as 27 bancadas batem com as cadeiras
+  da Constituição (art. 45: 8 a 70 deputados; art. 46: 3 senadores).
+
 ## Votação (`/votacoes/[id]`, E23k)
 - Pré-calculada no cron (`scripts/cron/votacoes-paginas.ts` → `resumos_votacao`), porque o partido de
   cada voto no dia só existe nas respostas em cache das fontes. ~4 KB por votação, 1.537 votações.

@@ -31,7 +31,7 @@ export function deHistoricoCamara(politicoId: string, historico: HistoricoDeputa
     const saida = doLeg.find((h) => trecho(h.descricao!, "Saída - Afastamento definitivo") !== null);
     const fimLeg = fimLegislatura(leg);
     const fim = saida ? saida.dataHora.slice(0, 10) : fimLeg < hoje ? fimLeg : null;
-    mandatos.push({ politicoId, cargo: "deputado_federal", inicio: posse.dataHora.slice(0, 10), fim, titular: posse.condicaoEleitoral !== "Suplente" });
+    mandatos.push({ politicoId, cargo: "deputado_federal", inicio: posse.dataHora.slice(0, 10), fim, titular: posse.condicaoEleitoral !== "Suplente", uf: posse.uf || null });
     let aberto: { inicio: string; motivo: string } | null = null;
     for (const h of doLeg) {
       const saidaTemp = trecho(h.descricao!, "Saída - Afastamento");
@@ -55,7 +55,7 @@ export function deSenado(politicoId: string, mandatosSenado: MandatoSenado[], li
   const mandatos: Mandato[] = [];
   for (const m of mandatosSenado) {
     const fimMandato = m.legislaturas.map((l) => l.fim).sort().at(-1)!;
-    for (const e of m.exercicios) mandatos.push({ politicoId, cargo: "senador", inicio: e.inicio, fim: e.fim ?? (fimMandato < hoje ? fimMandato : null), titular: m.titular });
+    for (const e of m.exercicios) mandatos.push({ politicoId, cargo: "senador", inicio: e.inicio, fim: e.fim ?? (fimMandato < hoje ? fimMandato : null), titular: m.titular, uf: m.uf || null });
   }
   const porChave = new Map<string, Afastamento>();
   for (const l of licencas) {

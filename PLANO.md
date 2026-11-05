@@ -3,8 +3,8 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E23d** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
-terminou verde. E22b, E23, E23b, E23c, E23i e E23k foram feitas adiantadas a pedido do usuário.
+**Etapa atual: E23e** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
+terminou verde. E22b, E23, E23b, E23c, E23i, E23k e E23l foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -445,6 +445,14 @@ crachá. Menu com os itens do protótipo que já existem.
 Cidade ou estado → os 3 senadores e os deputados federais da UF, com a contagem da Constituição e
 os anéis "Em Brasília / No seu estado". Governador, deputados estaduais, prefeito e vereadores
 ocultos até o Passo 5.
+- [x] `/me-representa` (aba no menu): busca por cidade (5.571) ou estado, exemplos, anel "Em Brasília"
+      com o que cada cargo faz; resultado com os senadores e os deputados federais em exercício
+      (8 primeiros e "Ver todos"); lugar na URL (`?uf=SP`, `?cidade=<IBGE>`) para compartilhar.
+- [x] UF da cadeira em `mandatos.uf` (migração 0007): com a UF da candidatura de 2026, SP tinha 68
+      deputados e CE, PR e RR um a mais. Agora as 27 bancadas batem com a Constituição.
+- Ocultos: o anel e o bloco "No seu estado", presidente e vice (Passo 5), "Monitorar" (E23e) e
+  "Comparar lado a lado" (E23f).
+- Pronto quando: a tela no ar, com a 0007 rodada antes do push e os mandatos republicados.
 
 ### E23e · Monitorando neste aparelho
 "+ Monitorar" no crachá, na Me representa e na lista; tela Monitorando com quem a pessoa acompanha

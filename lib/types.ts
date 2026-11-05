@@ -70,6 +70,12 @@ export interface Mandato {
   /** ISO date; null = em curso. */
   fim: string | null;
   titular: boolean;
+  /**
+   * UF da cadeira (Câmara: a do evento de posse no histórico; Senado: a do mandato). Pode diferir de
+   * `politicos.uf`, que é a da candidatura de 2026 (ex.: deputada por SP candidata no PR em 2026).
+   * Opcional: linhas da sonda (data/) não têm.
+   */
+  uf?: string | null;
 }
 
 /**

@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 /** Só páginas que existem: item de página futura seria placeholder (CLAUDE.md, princípio 5). */
 const ITENS = [
   { href: "/", rotulo: "Visão geral", icone: "M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" },
   { href: "/congresso", rotulo: "Congresso", icone: "M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6M9 11h.01M15 11h.01" },
+  { href: "/me-representa", rotulo: "Me representa", icone: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 3.6-6 8-6s8 2 8 6" },
   { href: "/votacoes", rotulo: "Votações", icone: "M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" },
   { href: "/como-funciona", rotulo: "Sobre", icone: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 16v-5M12 8h.01" },
 ];
@@ -18,8 +20,11 @@ export function MenuItens({ abas = false }: {
   abas?: boolean;
 }) {
   const caminho = usePathname();
+  const faixa = useRef<HTMLUListElement>(null);
+  // Com 5 abas a faixa rola no celular: a aba da página atual fica à vista.
+  useEffect(() => { faixa.current?.querySelector<HTMLElement>("[aria-current=page]")?.scrollIntoView({ block: "nearest", inline: "nearest" }); }, [caminho]);
   if (abas) return (
-    <ul className="-mx-4 flex gap-0.5 overflow-x-auto border-b border-borda px-4">
+    <ul ref={faixa} className="-mx-4 flex gap-0.5 overflow-x-auto [scrollbar-width:none] border-b border-borda px-4">
       {ITENS.map((i) => {
         const on = ativo(i.href, caminho);
         return (

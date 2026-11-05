@@ -44,6 +44,8 @@ for (const job of jobs) {
     // Ordem das tabelas no objeto = ordem das chaves estrangeiras (votações antes de votos).
     for (const [tabela, novas] of Object.entries(r.tabelas)) {
       const m = mesclar(tabela, lerTabela(tabela), novas);
+      // Mandato antigo que nenhuma coleta regenera (ex.: da sonda, fora dos caches) fica sem a UF da cadeira (E23d).
+      if (tabela === "mandatos") for (const l of m.linhas) if (!("uf" in l)) l.uf = null;
       gravarTabela(tabela, m.linhas);
       console.log(`[${seg()}] ${job.nome}: ${tabela} ${m.novas} novas, ${m.alteradas} alteradas (${m.linhas.length} no total)`);
     }
