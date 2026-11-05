@@ -510,7 +510,7 @@ Propostas do crachá (o do protótipo) e etiqueta de tema nas votações (pela m
       fica só com "Como está o Congresso". Aba Votações no menu (no celular, só texto até 440 px: as 4 abas
       cabem em 375 px).
 - [x] Na aba Votos do crachá, o título de cada votação abre `/votacoes/[id]`.
-- Pronto quando: no ar, com os 658 resumos regravados pelo cron.
+- Pronto quando: no ar, com os 658 resumos regravados pelo cron. (No ar em 2026-11-05.)
 
 ### E24 · Patrimônio e contas de campanha (TSE)
 Patrimônio por eleição, sem descrição dos bens; arrecadado, gasto e % de dinheiro público. Redes

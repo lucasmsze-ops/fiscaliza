@@ -23,7 +23,10 @@ de cada votação da aba Votos do crachá liga para `/votacoes/[id]` (`VotoLista
 no ar; os 266 restantes diferem só em `propostas` (209: meu estado local tem os CSVs anuais da Câmara
 mais novos que o do Actions, que traz isso no próximo `proposicoes`) e `card.numeros.diasAfastado`
 (62: a data virou para 05/11 UTC). Com o campo, os 658 resumos com votos mudam.
-**Próximo passo:** push; cron manual para regravar os 658 resumos; push de docs (redeploy).
+**No ar:** push; cron manual 41938918127 regravou os 658 resumos e trouxe as propostas novas da Câmara
+(516 proposições, 106 autorias, 169 contagens), além de 3 afastamentos e 1 político; terminou "com falhas"
+só por 3 perfis da Câmara que não responderam (tentados de novo no próximo run). Este commit é o redeploy.
+**Próximo passo:** E23d (Me representa).
 
 ## 2026-11-04 · E23k · layout e página da votação
 **Feito:** menu do celular em abas; cor oficial por partido (`lib/partidos.ts#corPartido`); Visão geral
