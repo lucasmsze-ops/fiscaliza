@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { hrefVotacao } from "@/lib/votacao";
 import { inteiro } from "@/lib/card";
 import type { PaginaDados, PropostaListada, VotoListado } from "@/lib/pagina";
 import { normalizar } from "@/lib/texto";
@@ -115,7 +117,9 @@ function TituloVoto({ u }: { u: VotoListado }) {
   const votado = u.descricao.replace(/\s*Sim:\s*\d.*$/s, "");
   return (
     <span className="grid min-w-0 gap-0.5">
-      <strong className="line-clamp-3 leading-snug">{u.ementa ?? votado}</strong>
+      {u.votacaoId
+        ? <Link href={hrefVotacao(u.votacaoId)} className="line-clamp-3 leading-snug font-bold text-texto underline decoration-borda-forte underline-offset-2 hover:decoration-link">{u.ementa ?? votado}</Link>
+        : <strong className="line-clamp-3 leading-snug">{u.ementa ?? votado}</strong>}
       {u.ementa && <span className="line-clamp-2 text-xs text-suave">Votado: {votado}</span>}
       <span className="text-xs text-suave">{[u.proposicao, dataBr(u.data), u.resultado].filter(Boolean).join(" · ")}</span>
     </span>

@@ -15,6 +15,16 @@ Modelo:
 
 ---
 
+## 2026-11-04 · E23l · página Votações
+**Feito:** `/votacoes` (agenda e última sessão, movidas sem mudança de /congresso; `montarVotacoes`
+separado de `montarCongresso`, então /congresso não lê mais votações); aba Votações no menu; título
+de cada votação da aba Votos do crachá liga para `/votacoes/[id]` (`VotoListado.votacaoId`).
+**Comparação com o publicado:** recalculando os 3.724 resumos sem o campo novo, 3.458 batem com o hash
+no ar; os 266 restantes diferem só em `propostas` (209: meu estado local tem os CSVs anuais da Câmara
+mais novos que o do Actions, que traz isso no próximo `proposicoes`) e `card.numeros.diasAfastado`
+(62: a data virou para 05/11 UTC). Com o campo, os 658 resumos com votos mudam.
+**Próximo passo:** push; cron manual para regravar os 658 resumos; push de docs (redeploy).
+
 ## 2026-11-04 · E23k · layout e página da votação
 **Feito:** menu do celular em abas; cor oficial por partido (`lib/partidos.ts#corPartido`); Visão geral
 com chips de cargo; Congresso com abas de Casa, agenda de dias úteis com bolinha e cartões de votação

@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 const ITENS = [
   { href: "/", rotulo: "Visão geral", icone: "M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" },
   { href: "/congresso", rotulo: "Congresso", icone: "M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6M9 11h.01M15 11h.01" },
+  { href: "/votacoes", rotulo: "Votações", icone: "M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" },
   { href: "/como-funciona", rotulo: "Sobre", icone: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 16v-5M12 8h.01" },
 ];
 
@@ -18,14 +19,15 @@ export function MenuItens({ abas = false }: {
 }) {
   const caminho = usePathname();
   if (abas) return (
-    <ul className="-mx-4 flex gap-1 overflow-x-auto border-b border-borda px-4">
+    <ul className="-mx-4 flex gap-0.5 overflow-x-auto border-b border-borda px-4">
       {ITENS.map((i) => {
         const on = ativo(i.href, caminho);
         return (
           <li key={i.href} className="shrink-0">
             <Link href={i.href} aria-current={on ? "page" : undefined}
-              className={`inline-flex h-11 items-center gap-2 border-b-2 px-3 text-[13px] font-bold whitespace-nowrap no-underline ${on ? "border-destaque text-texto" : "border-transparent text-suave"}`}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={i.icone} /></svg>
+              className={`inline-flex h-11 items-center gap-2 border-b-2 px-2.5 text-[13px] font-bold whitespace-nowrap no-underline min-[440px]:px-3 ${on ? "border-destaque text-texto" : "border-transparent text-suave"}`}>
+              {/* Até 440 px só o texto: as quatro abas cabem num celular de 375 px sem rolar. */}
+              <svg className="hidden min-[440px]:block" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={i.icone} /></svg>
               {i.rotulo}
             </Link>
           </li>

@@ -502,8 +502,15 @@ Propostas do crachá (o do protótipo) e etiqueta de tema nas votações (pela m
       era" (ementa oficial e termos jurídicos), caminho no Plenário, como votou cada partido. Pré-calculada no
       cron (`resumos_votacao`, migração 0006).
 - [ ] Palavras-chave oficiais da Câmara (indexação) e tema (E23j): ainda não coletados, fora da página.
-- [ ] Link da aba Votos do crachá para a página da votação (precisa do id da votação no resumo do político).
-- Pronto quando: as telas acima no ar, com a migração 0006 rodada antes do push.
+- [x] Link da aba Votos do crachá para a página da votação (E23l: `votacaoId` no resumo do político).
+- Pronto quando: as telas acima no ar, com a migração 0006 rodada antes do push. (No ar em 2026-11-04.)
+
+### E23l · Página Votações e link da aba Votos (pedido de 2026-11-04)
+- [x] `/votacoes` com a Agenda do Plenário e as Votações da última sessão, iguais às de /congresso, que
+      fica só com "Como está o Congresso". Aba Votações no menu (no celular, só texto até 440 px: as 4 abas
+      cabem em 375 px).
+- [x] Na aba Votos do crachá, o título de cada votação abre `/votacoes/[id]`.
+- Pronto quando: no ar, com os 658 resumos regravados pelo cron.
 
 ### E24 · Patrimônio e contas de campanha (TSE)
 Patrimônio por eleição, sem descrição dos bens; arrecadado, gasto e % de dinheiro público. Redes

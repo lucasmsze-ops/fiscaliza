@@ -10,6 +10,8 @@ import type { Afastamento, Casa, Mandato, TipoVoto } from "./types";
 export type TotaisVoto = Record<TipoVoto, number>;
 
 export interface VotoListado {
+  /** Id da votação (página /votacoes/[id]); opcional: resumos gravados antes da E23l não têm. */
+  votacaoId?: string;
   data: string;
   proposicao: string | null;
   /** Ementa da matéria (do que trata); opcional: resumos gravados antes não têm. */
@@ -115,7 +117,7 @@ export async function montarPagina(repo: Repo, id: string, hoje = new Date().toI
     const noDia = new Map((fid?.ultimas ?? []).map((u) => [u.votacao_id, u]));
     votacoes = {
       casa, total: vs.length, totais: contarVotos(vs.map((v) => v.id), meus),
-      ultimas: vs.slice(0, 10).map((v) => ({ data: v.data, proposicao: v.proposicao, ementa: v.ementa, descricao: v.descricao, voto: meus.get(v.id) ?? "ausente", resultado: v.resultado, urlOficial: v.urlOficial,
+      ultimas: vs.slice(0, 10).map((v) => ({ votacaoId: v.id, data: v.data, proposicao: v.proposicao, ementa: v.ementa, descricao: v.descricao, voto: meus.get(v.id) ?? "ausente", resultado: v.resultado, urlOficial: v.urlOficial,
         partidoNoDia: noDia.get(v.id)?.partido ?? null, orientacaoPartido: noDia.get(v.id)?.orientacao ?? null })),
     };
   }

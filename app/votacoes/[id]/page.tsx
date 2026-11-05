@@ -82,11 +82,11 @@ export default async function PaginaVotacao({ params }: Props) {
 
   return (
     <>
-    <BarraTopo secao="Congresso" pagina="Votação" />
+    <BarraTopo secao="Votações" pagina="Votação" />
     <main className="grid gap-6 pb-8">
       <section className={`${card} grid gap-3`}>
         <p className="text-xs text-suave">
-          <Link href="/congresso" className="underline underline-offset-2">{nomeCasa(v)}</Link> · Plenário · {dataLonga(v.data)}
+          <Link href="/votacoes" className="underline underline-offset-2">{nomeCasa(v)}</Link> · Plenário · {dataLonga(v.data)}
         </p>
         <h1 className="text-[28px] leading-tight font-bold sm:text-[34px]">{titulo(v)}</h1>
         {tipoPorExtenso(v.proposicao) && <p className="-mt-2 text-sm text-suave">{tipoPorExtenso(v.proposicao)}</p>}

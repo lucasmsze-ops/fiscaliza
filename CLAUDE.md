@@ -63,13 +63,14 @@ Presença literal em sessões · discursos · conta, login, "monitorar" com cada
 Hoje (protótipo, SP):
 ```
 /                   Visão geral (E23c): mapa por estado, quem está no cargo hoje, lista A–Z
-/congresso          Plenário de hoje, últimas votações, o que virou norma (E23b)
+/congresso          quem ocupa cada cadeira hoje (Câmara e Senado) e a Câmara de fev/2027 (E23b)
+/votacoes           agenda do Plenário e votações da última sessão (saíram de /congresso na E23l)
 /c/[ids]            links antigos da colinha: redireciona para o crachá (a colinha saiu em 2026-11-04)
 /p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
 /votacoes/[id]      uma votação do Plenário (E23k): placar, regra, ementa, caminho, como votou cada partido (id = casa-idExterno)
 /como-funciona      metodologia, fontes, licença, código
 ```
-Planejadas (detalhar no PLANO ao chegar): `/votacoes` (lista do Plenário, E30),
+Planejadas (detalhar no PLANO ao chegar): lista completa com filtros em `/votacoes` (E30),
 `/uf/[uf]`, `/cidade/[ibge]` ("quem me representa"), `/comparar`, `/eleicoes`, `/governos`,
 `/partidos`, `/cargos`, `/dicionario`, `/mais-vistos`, `/atualizacoes`.
 

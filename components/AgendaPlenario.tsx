@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { CongressoDados, VotacaoResumo } from "@/lib/congresso";
+import type { VotacoesDados, VotacaoResumo } from "@/lib/congresso";
 import { CartaoVotacao } from "./CartaoVotacao";
 
 const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
@@ -16,11 +16,11 @@ const somaMes = (mes: string, m: number) => {
 };
 
 /**
- * Agenda do Plenário (tela Congresso do protótipo) com o que existe: quantas votações nominais
+ * Agenda do Plenário (página Votações; era a tela Congresso do protótipo) com o que existe: quantas votações nominais
  * houve em cada dia, nas duas Casas, e quais foram. A pauta marcada (sessões futuras) não é coletada
  * e não aparece. As votações de outro mês vêm de /dados/votacoes/[mes] (CDN).
  */
-export function AgendaPlenario({ porDia, mesInicial, diaInicial, votacoesMes }: Pick<CongressoDados, "porDia" | "mesInicial" | "diaInicial" | "votacoesMes">) {
+export function AgendaPlenario({ porDia, mesInicial, diaInicial, votacoesMes }: Pick<VotacoesDados, "porDia" | "mesInicial" | "diaInicial" | "votacoesMes">) {
   const [mes, setMes] = useState(mesInicial);
   const [dia, setDia] = useState(diaInicial);
   const [porMes, setPorMes] = useState<Record<string, VotacaoResumo[]>>({ [mesInicial]: votacoesMes });

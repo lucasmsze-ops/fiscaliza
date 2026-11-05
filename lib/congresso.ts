@@ -115,6 +115,15 @@ export interface CongressoDados {
   casas: CasaHoje[];
   camara2027: CasaHoje;
   cores: string[];
+}
+
+export async function montarCongresso(repo: Repo, hoje = new Date().toISOString().slice(0, 10)): Promise<CongressoDados> {
+  const { casas, politicos } = await casasHoje(repo, hoje);
+  return { casas, camara2027: camaraEleita([...politicos.values()]), cores: ordemDasCores(casas) };
+}
+
+/** Dados da página /votacoes: agenda do Plenário e a última sessão de cada Casa. */
+export interface VotacoesDados {
   /** AAAA-MM-DD → votações nominais por Casa no dia. */
   porDia: Record<string, { camara: number; senado: number }>;
   /** Mês (AAAA-MM) e dia da votação mais recente, com as votações desse mês. */
@@ -125,20 +134,15 @@ export interface CongressoDados {
   ultimaSessao: { casa: Casa; data: string; votacoes: VotacaoResumo[] }[];
 }
 
-export async function montarCongresso(repo: Repo, hoje = new Date().toISOString().slice(0, 10)): Promise<CongressoDados> {
-  const [{ casas, politicos }, datas, vc, vs] = await Promise.all([
-    casasHoje(repo, hoje), repo.listarDatasVotacoes(), repo.ultimasVotacoes("camara", 40), repo.ultimasVotacoes("senado", 40),
-  ]);
-  const porDia: CongressoDados["porDia"] = {};
+export async function montarVotacoes(repo: Repo, hoje = new Date().toISOString().slice(0, 10)): Promise<VotacoesDados> {
+  const [datas, vc, vs] = await Promise.all([repo.listarDatasVotacoes(), repo.ultimasVotacoes("camara", 40), repo.ultimasVotacoes("senado", 40)]);
+  const porDia: VotacoesDados["porDia"] = {};
   for (const x of datas) (porDia[x.data] ??= { camara: 0, senado: 0 })[x.casa]++;
   const ultimo = datas.at(-1)?.data ?? hoje;
   const mesInicial = ultimo.slice(0, 7);
   const votacoesMes = (await repo.votacoesEntre(...limitesDoMes(mesInicial))).map(resumirVotacao);
   const sessao = (casa: Casa, vs: Votacao[]) => ({ casa, data: vs[0]?.data ?? "", votacoes: vs.filter((v) => v.data === vs[0]?.data).map(resumirVotacao) });
   return {
-    casas,
-    camara2027: camaraEleita([...politicos.values()]),
-    cores: ordemDasCores(casas),
     porDia, mesInicial, diaInicial: ultimo, votacoesMes,
     ultimaSessao: [sessao("camara", vc), sessao("senado", vs)].filter((x) => x.data),
   };
