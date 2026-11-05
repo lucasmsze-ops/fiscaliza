@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { MunicipioJson } from "@/app/dados/municipios/route";
+import { useMonitorando } from "@/lib/monitorando";
 import { corPartido } from "@/lib/partidos";
 import { NOME_UF, regiaoDe } from "@/lib/regioes";
 import { normalizar } from "@/lib/texto";
 import type { PessoaNoCargo } from "@/lib/visao";
+import { BotaoMonitorar, classeMonitorar } from "./BotaoMonitorar";
 
 type Lugar = { tipo: "cidade"; nome: string; uf: string; ibge: number } | { tipo: "estado"; nome: string; uf: string };
 
@@ -21,7 +23,8 @@ const PRIMEIROS = 8;
 
 function Rosto({ p }: { p: PessoaNoCargo }) {
   return (
-    <Link href={`/p/${p.id}`} className="flex flex-col items-center gap-1 rounded-xl border border-borda bg-card px-1.5 py-2.5 text-center text-texto no-underline hover:border-destaque">
+    <div className="flex flex-col items-center gap-1.5 rounded-xl border border-borda bg-card px-1.5 py-2.5 text-center">
+    <Link href={`/p/${p.id}`} className="flex flex-col items-center gap-1 text-texto no-underline">
       {p.fotoUrl
         // <img> de propósito: a foto vem direto da URL oficial, sem passar pela Vercel (CLAUDE.md).
         ? <img src={p.fotoUrl} alt="" width={64} height={64} loading="lazy" className="size-16 rounded-full bg-fundo object-cover object-top" />
@@ -31,13 +34,28 @@ function Rosto({ p }: { p: PessoaNoCargo }) {
         {p.cargo} · <span className="size-2 rounded-full" style={{ background: corPartido(p.partido) }} aria-hidden="true" />{p.partido}
       </span>
     </Link>
+    <BotaoMonitorar id={p.id} nome={p.nomeUrna} classe={classeMonitorar} />
+    </div>
+  );
+}
+
+/** Bandeja "Monitorando (n)" do protótipo: quem está na lista deste aparelho, com atalho para o painel. */
+function Bandeja() {
+  const e = useMonitorando();
+  if (!e.pessoas.length) return null;
+  return (
+    <div className="sticky bottom-4 z-20 mx-auto flex w-full max-w-[760px] flex-wrap items-center gap-3 rounded-2xl bg-destaque px-3.5 py-3 text-destaque-texto shadow-xl">
+      <strong className="text-sm">Monitorando ({e.pessoas.length})</strong>
+      <span className="min-w-0 flex-1 truncate text-[13px]">{e.pessoas.map((p) => p.nome).join(", ")}</span>
+      <Link href="/monitorando" className="inline-flex h-10 items-center rounded-full bg-card px-4 text-sm font-bold text-texto no-underline">Ver no painel →</Link>
+    </div>
   );
 }
 
 /**
  * Me representa (tela `Representantes` do protótipo, E23d), só com o que tem dado: em Brasília, os
  * 3 senadores e os deputados federais do estado. Governador, deputados estaduais, prefeito,
- * vereadores e presidente entram no Passo 5; "Monitorar" e "Comparar", nas E23e e E23f.
+ * vereadores e presidente entram no Passo 5; "Comparar", na E23f.
  * O lugar fica na URL (?uf=SP ou ?cidade=<IBGE>), para compartilhar.
  */
 export function MeRepresenta({ pessoas }: { pessoas: PessoaNoCargo[] }) {
@@ -172,6 +190,7 @@ export function MeRepresenta({ pessoas }: { pessoas: PessoaNoCargo[] }) {
           </div>
         </section>
       )}
+      <Bandeja />
     </main>
   );
 }

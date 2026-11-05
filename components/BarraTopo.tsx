@@ -1,4 +1,5 @@
 import { BuscaTopo } from "./BuscaTopo";
+import { SinoMonitorando } from "./SinoMonitorando";
 
 /** Barra do topo de cada página (protótipo): onde a pessoa está, o título e a busca de político ou página. */
 export function BarraTopo({ secao, pagina }: { secao: string; pagina: string }) {
@@ -8,7 +9,10 @@ export function BarraTopo({ secao, pagina }: { secao: string; pagina: string }) 
         <p className="text-xs text-suave">{secao} <span className="text-texto">/ {pagina}</span></p>
         <p className="mt-1 hidden text-sm font-bold sm:block">{pagina}</p>
       </div>
-      <BuscaTopo />
+      <div className="flex w-full items-center gap-2 sm:w-auto">
+        <div className="min-w-0 flex-1 sm:flex-none"><BuscaTopo /></div>
+        <SinoMonitorando />
+      </div>
     </div>
   );
 }

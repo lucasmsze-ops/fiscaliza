@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { useMonitorando } from "@/lib/monitorando";
 
 /** Só páginas que existem: item de página futura seria placeholder (CLAUDE.md, princípio 5). */
 const ITENS = [
@@ -11,6 +12,8 @@ const ITENS = [
   { href: "/me-representa", rotulo: "Me representa", icone: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 3.6-6 8-6s8 2 8 6" },
   { href: "/votacoes", rotulo: "Votações", icone: "M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" },
   { href: "/como-funciona", rotulo: "Sobre", icone: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 16v-5M12 8h.01" },
+  // Neste aparelho (no protótipo, a seção "Conta"; aqui sem Entrar nem conta).
+  { href: "/monitorando", rotulo: "Monitorando", icone: "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" },
 ];
 
 const ativo = (href: string, caminho: string) => href === "/" ? caminho === "/" : caminho.startsWith(href);
@@ -20,6 +23,10 @@ export function MenuItens({ abas = false }: {
   abas?: boolean;
 }) {
   const caminho = usePathname();
+  const n = useMonitorando().pessoas.length;
+  const badge = (href: string) => href === "/monitorando" && n > 0
+    ? <span className="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-destaque px-1.5 text-[11px] font-bold text-destaque-texto" aria-label={`${n} ${n === 1 ? "pessoa" : "pessoas"}`}>{n}</span>
+    : null;
   const faixa = useRef<HTMLUListElement>(null);
   // Com 5 abas a faixa rola no celular: a aba da página atual fica à vista.
   useEffect(() => { faixa.current?.querySelector<HTMLElement>("[aria-current=page]")?.scrollIntoView({ block: "nearest", inline: "nearest" }); }, [caminho]);
@@ -33,7 +40,7 @@ export function MenuItens({ abas = false }: {
               className={`inline-flex h-11 items-center gap-2 border-b-2 px-2.5 text-[13px] font-bold whitespace-nowrap no-underline min-[440px]:px-3 ${on ? "border-destaque text-texto" : "border-transparent text-suave"}`}>
               {/* Até 440 px só o texto: as quatro abas cabem num celular de 375 px sem rolar. */}
               <svg className="hidden min-[440px]:block" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={i.icone} /></svg>
-              {i.rotulo}
+              {i.rotulo}{badge(i.href)}
             </Link>
           </li>
         );
@@ -51,7 +58,7 @@ export function MenuItens({ abas = false }: {
               <span className={`inline-flex size-[30px] shrink-0 items-center justify-center rounded-xl shadow-card ${on ? "bg-destaque text-destaque-texto" : "bg-card text-link"}`}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={i.icone} /></svg>
               </span>
-              {i.rotulo}
+              {i.rotulo}{badge(i.href)}
             </Link>
           </li>
         );

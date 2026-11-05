@@ -8,6 +8,7 @@ import { APAGADO } from "@/lib/mapa-brasil";
 import { NOME_UF, REGIOES, regiaoDe } from "@/lib/regioes";
 import { normalizar } from "@/lib/texto";
 import type { PessoaNoCargo, VisaoDados } from "@/lib/visao";
+import { BotaoMonitorar, classeMonitorar } from "./BotaoMonitorar";
 import { MapaBrasil } from "./MapaBrasil";
 
 const POR_PAGINA = 24;
@@ -218,16 +219,16 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
           {/* Celular: linhas compactas; a partir do tablet, os cartões do protótipo. */}
           <div className="grid gap-2 sm:gap-4 sm:[grid-template-columns:repeat(auto-fill,minmax(200px,1fr))]">
             {filtradas.slice(0, lim).map((p) => (
-              <Link key={p.id} href={`/p/${p.id}`} className="flex items-center gap-3 rounded-card border border-borda bg-card p-3 text-texto no-underline shadow-card hover:border-destaque sm:flex-col sm:gap-1 sm:p-4 sm:text-center">
+              <div key={p.id} className="relative flex items-center gap-3 rounded-card border border-borda bg-card p-3 text-texto shadow-card hover:border-destaque sm:flex-col sm:gap-1 sm:p-4 sm:text-center">
                 <Foto p={p} tamanho={64} classe="size-12 sm:size-16" />
                 <span className="grid min-w-0 flex-1 gap-0.5 sm:justify-items-center">
-                  <strong className="truncate text-sm sm:mt-1 sm:whitespace-normal">{p.nomeUrna}</strong>
+                  {/* Link esticado: o cartão inteiro abre o crachá, e o "Monitorar" fica por cima. */}
+                  <Link href={`/p/${p.id}`} className="truncate text-sm font-bold text-texto no-underline after:absolute after:inset-0 after:rounded-card sm:mt-1 sm:whitespace-normal">{p.nomeUrna}</Link>
                   <span className="text-xs text-suave">{p.cargo} · {p.uf}</span>
                   <span className="sm:mt-0.5"><SelecaoPartido partido={p.partido} cores={d.cores} /></span>
                 </span>
-                <span aria-hidden="true" className="text-lg text-suave sm:hidden">›</span>
-                <span className="hidden text-xs font-bold text-link sm:mt-1.5 sm:inline">Ver crachá ›</span>
-              </Link>
+                <span className="relative z-10 sm:mt-1.5"><BotaoMonitorar id={p.id} nome={p.nomeUrna} classe={classeMonitorar} /></span>
+              </div>
             ))}
           </div>
           {filtradas.length === 0 && <p className="text-[13px] text-suave">Ninguém encontrado com esses filtros.</p>}

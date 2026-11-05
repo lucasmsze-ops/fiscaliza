@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E23e** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
+**Etapa atual: E23f** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
 terminou verde. E22b, E23, E23b, E23c, E23i, E23k e E23l foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
@@ -458,6 +458,17 @@ ocultos até o Passo 5.
 "+ Monitorar" no crachá, na Me representa e na lista; tela Monitorando com quem a pessoa acompanha
 e "o que aconteceu desde a última visita" (votos, propostas, cota), tudo no localStorage. Sem Entrar,
 sem e-mail, sem alertas (princípio 3). Sino e contagem no menu e na barra do topo.
+- [x] "+ Monitorar" no crachá, nos rostos da Me representa (com a bandeja "Monitorando (n)") e na lista
+      da Visão geral; item Monitorando no menu com a contagem e sino na barra do topo.
+- [x] `/monitorando`: aviso de que a lista é só deste navegador; "o que aconteceu desde a última visita"
+      (votos e propostas novos, "Marcar tudo como visto"); cartões com participação, média da Casa e
+      votou com o partido; feed com filtro por pessoa e tipo; busca para monitorar mais alguém.
+- [x] `/dados/acompanhar/[id]` (CDN): o resumo pronto da página reduzido ao que a tela usa; nada do
+      aparelho vai ao servidor. Novidade = chave (voto ou proposta) ainda não vista; quem acabou de
+      entrar começa com tudo visto.
+- Fora: cota (saiu do crachá por decisão de 2026-11-04), falas (fora de escopo), alertas, resumo por
+  e-mail, "Criar conta" e Entrar (princípio 3).
+- Pronto quando: no ar, testado no celular.
 
 ### E23f · Comparar
 `/comparar`, 2 a 5 lado a lado, sem nota nem ranking; "Comparar com outro político" no crachá. Só

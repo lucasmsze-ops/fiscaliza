@@ -8,7 +8,10 @@ import { normalizar } from "@/lib/texto";
 /** Páginas que a busca acha pelo nome (só as que existem). */
 const PAGINAS = [
   { href: "/", t: "Visão geral", d: "Página · mapa e quem está no cargo" },
-  { href: "/congresso", t: "Congresso", d: "Página · Plenário, votações e normas" },
+  { href: "/congresso", t: "Congresso", d: "Página · quem ocupa cada cadeira hoje" },
+  { href: "/me-representa", t: "Me representa", d: "Página · senadores e deputados da sua cidade ou estado" },
+  { href: "/votacoes", t: "Votações", d: "Página · agenda do Plenário e última sessão" },
+  { href: "/monitorando", t: "Monitorando", d: "Página · quem você monitora neste aparelho" },
   { href: "/como-funciona", t: "Sobre e metodologia", d: "Página · como cada número é calculado" },
 ];
 

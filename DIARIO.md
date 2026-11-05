@@ -15,6 +15,18 @@ Modelo:
 
 ---
 
+## 2026-11-05 · E23e · Monitorando neste aparelho
+**Feito:** `lib/monitorando.ts` (localStorage, `useSyncExternalStore`, avisos entre abas),
+`components/BotaoMonitorar.tsx` (crachá, Me representa, lista da Visão geral), bandeja na Me representa,
+`/monitorando` (`components/Monitorando.tsx`), `/dados/acompanhar/[id]` (`lib/acompanhar.ts`), item no
+menu com contagem e sino na barra do topo; páginas novas na busca do topo.
+**Decidido:** novidade por chave vista (voto `v:<votação>`, proposta `p:<casa>:<matéria>`), não por data:
+a coleta pode trazer um voto de dias antes. Quem entra na lista começa com o que já existia como visto;
+os vistos são podados para o que ainda aparece nos resumos. Cota fora (saiu do crachá).
+**Corrigido:** com 6 abas, o cabeçalho do celular alargava a página (566 px numa tela de 375):
+`grid-cols-1` e `min-w-0` na Moldura.
+**Próximo passo:** push (sem migração nem cron); depois E23f (Comparar).
+
 ## 2026-11-05 · E23d · Me representa
 **Feito:** `/me-representa` (`components/MeRepresenta.tsx`), aba no menu (no celular a faixa rola e a
 aba atual fica à vista). Só o que tem dado: em Brasília, 3 senadores e os deputados federais da UF.

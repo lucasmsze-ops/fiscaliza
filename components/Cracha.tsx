@@ -7,6 +7,7 @@ import { hrefSecao } from "@/lib/glossario";
 import { nomePartido } from "@/lib/partidos";
 import { pelaUf } from "@/lib/regioes";
 import { SUBSIDIO_CONGRESSO } from "@/lib/salario";
+import { BotaoMonitorar } from "./BotaoMonitorar";
 import type { Mandato } from "@/lib/types";
 import { Compartilhar } from "./Compartilhar";
 import { Termo } from "./Termo";
@@ -136,6 +137,7 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
+            <BotaoMonitorar id={d.id} nome={d.nomeUrna} />
             <Compartilhar rotulo="Compartilhar" titulo={`${d.nomeUrna} · ${d.cargo} · ${d.partidoUf}`} texto="O que fez no mandato, com dados oficiais."
               classe="inline-flex h-10 items-center rounded-xl border border-borda bg-card px-4 text-xs font-bold hover:border-destaque" />
           </div>

@@ -330,6 +330,8 @@ export default async function ComoFunciona() {
         <ul className="list-disc space-y-1 pl-5">
           <li>Sem conta, sem e-mail, sem cadastro. Não existe tabela de usuários.</li>
           <li>O que você filtra ou procura fica só no seu navegador; o servidor não registra nada.</li>
+          <li>Quem você monitora fica guardado só neste navegador (armazenamento local), junto com o que você já viu. Nada disso vai para o
+            nosso servidor: o navegador baixa os dados públicos de cada pessoa e compara ali mesmo. Limpar os dados do navegador apaga a lista.</li>
           <li>O botão “Receber avisos” só explica que avisos ainda não existem. Ele não pede nem guarda e-mail, telefone ou qualquer contato.</li>
           <li>Sem cookies e, nesta versão, sem ferramenta de medição de audiência.</li>
           <li>As fotos são carregadas direto dos servidores oficiais da Câmara, do Senado e do TSE. Esses servidores recebem o pedido da imagem, sem o endereço da página que você está vendo (política de referência <code>same-origin</code>).</li>

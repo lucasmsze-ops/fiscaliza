@@ -47,9 +47,10 @@ export function Moldura({ children }: { children: React.ReactNode }) {
       </aside>
 
       <div className="min-w-0 flex-1">
-        <header className="grid gap-3 pt-4 pb-2 lg:hidden">
+        {/* grid-cols-1 e min-w-0: a faixa de abas rola por dentro em vez de alargar a página. */}
+        <header className="grid grid-cols-1 gap-3 pt-4 pb-2 lg:hidden">
           <Marca />
-          <nav aria-label="Menu principal"><MenuItens abas /></nav>
+          <nav aria-label="Menu principal" className="min-w-0"><MenuItens abas /></nav>
         </header>
 
         {children}
