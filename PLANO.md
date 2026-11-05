@@ -452,7 +452,7 @@ ocultos até o Passo 5.
       deputados e CE, PR e RR um a mais. Agora as 27 bancadas batem com a Constituição.
 - Ocultos: o anel e o bloco "No seu estado", presidente e vice (Passo 5), "Monitorar" (E23e) e
   "Comparar lado a lado" (E23f).
-- Pronto quando: a tela no ar, com a 0007 rodada antes do push e os mandatos republicados.
+- Pronto quando: a tela no ar, com a 0007 rodada antes do push e os mandatos republicados. (No ar em 2026-11-05.)
 
 ### E23e · Monitorando neste aparelho
 "+ Monitorar" no crachá, na Me representa e na lista; tela Monitorando com quem a pessoa acompanha

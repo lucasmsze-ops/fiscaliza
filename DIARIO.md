@@ -25,7 +25,9 @@ Visão geral, Congresso e "mais parecidos" também passam a usar a UF da cadeira
 **Comparação:** ensaio `--sem-publicar`: 1.452 mandatos, todos iguais aos de antes fora a coluna `uf`;
 3 antigos da sonda (João Paulo Cunha, 2003–2014) ficam com `uf` nulo; as 27 bancadas = cadeiras da
 Constituição. O crachá ainda mostra a UF da candidatura no cabeçalho (lacuna registrada).
-**Próximo passo:** rodar a 0007; push; cron manual (republica os mandatos); push de docs (redeploy).
+**No ar:** 0007 rodada pelo usuário; push; cron manual 41956487823 verde (1.452 mandatos publicados com
+`uf`, 659 resumos regravados: a lista "mais parecidos" passa a mostrar a UF da cadeira); este commit é o redeploy.
+**Próximo passo:** E23e (Monitorando neste aparelho).
 
 ## 2026-11-04 · E23l · página Votações
 **Feito:** `/votacoes` (agenda e última sessão, movidas sem mudança de /congresso; `montarVotacoes`
