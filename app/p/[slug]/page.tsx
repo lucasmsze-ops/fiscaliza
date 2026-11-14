@@ -25,8 +25,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pg = await repo.getPagina((await params).slug);
   if (!pg) return { title: "Fiscaliza" };
   const c = pg.card;
+  // Com mandato em curso, o título diz a cadeira (como o cabeçalho do crachá), não a candidatura de 2026.
+  const m = pg.mandatos.find((x) => x.fim === null);
+  const fem = /^(Senadora|Deputada)/.test(c.cargo);
+  const cargo = m ? (m.cargo === "senador" ? (fem ? "Senadora" : "Senador") : (fem ? "Deputada federal" : "Deputado federal")) : c.cargo;
+  const partidoUf = m?.uf ? `${c.partidoUf.slice(0, -3)}-${m.uf}` : c.partidoUf;
   return {
-    title: `${c.nomeUrna} · ${c.cargo} · ${c.partidoUf} · Fiscaliza`,
+    title: `${c.nomeUrna} · ${cargo} · ${partidoUf} · Fiscaliza`,
     description: `${c.status}. ${resumoNumeros(c).replace(/^./, (x) => x.toUpperCase())}. Dados oficiais do TSE, da Câmara e do Senado.`,
   };
 }
@@ -44,7 +49,8 @@ export default async function PaginaPolitico({ params }: Props) {
   const mandato = pg.mandatos.find((m) => m.fim === null) ?? null;
   const salario = c.comoCobrar ? subsidioEm(hoje) : null;
   const coleta = (await repo.getAtualizacoes()).map((a) => a.coletadoEm).sort().at(-1);
-  const uf = c.partidoUf.slice(-2);
+  // A UF da cadeira, quando há mandato em curso (a de `partidoUf` é a da candidatura de 2026).
+  const uf = mandato?.uf ?? c.partidoUf.slice(-2);
 
   return (
     <>

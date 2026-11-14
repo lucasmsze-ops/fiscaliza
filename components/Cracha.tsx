@@ -105,7 +105,13 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
   cores: string[];
 }) {
   const n = d.numeros;
-  const partido = d.partidoUf.slice(0, -3), uf = d.partidoUf.slice(-2);
+  const partido = d.partidoUf.slice(0, -3), ufCandidatura = d.partidoUf.slice(-2);
+  // Com mandato em curso, o cabeçalho diz a cadeira (cargo e UF do mandato): `partidoUf` e `cargo` vêm da
+  // candidatura de 2026, que pode ser outra (deputada por SP candidata no PR; deputada candidata ao Senado).
+  const fem = /^(Senadora|Deputada)/.test(d.cargo);
+  const cargoCadeira = mandato ? (mandato.cargo === "senador" ? (fem ? "Senadora" : "Senador") : (fem ? "Deputada federal" : "Deputado federal")) : d.cargo;
+  const uf = mandato?.uf ?? ufCandidatura;
+  const candidaturaDiferente = mandato && (cargoCadeira !== d.cargo || uf !== ufCandidatura);
   const nome = nomePartido(partido);
   const fim = mandato ? fimDoMandato(mandato) : null;
   const casaMedia = comparacao?.casa === "senado" ? `Média dos ${comparacao.membros} senadores` : `Média dos ${comparacao?.membros} deputados`;
@@ -123,7 +129,7 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
             <div className="grid min-w-0 gap-1.5">
               <h1 id="nome-politico" className="text-xl leading-tight font-black break-words sm:text-3xl">{d.nomeUrna}</h1>
               <div className="flex flex-wrap items-center gap-2.5">
-                <span className="text-sm font-bold text-suave sm:text-base">{d.cargo} {pelaUf(uf)}</span>
+                <span className="text-sm font-bold text-suave sm:text-base">{cargoCadeira} {pelaUf(uf)}</span>
                 <span className="inline-flex h-[26px] items-center rounded-lg px-3 text-xs font-bold"
                   style={{ background: `color-mix(in srgb, ${corPartido(partido)} 24%, transparent)` }}>
                   {partido}{nome && nome.toLowerCase() !== partido.toLowerCase() ? ` · ${nome}` : ""}
@@ -133,6 +139,7 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
                 {mandato
                   ? <>Em exercício{mandato.titular ? "" : " como suplente"} desde {dataBr(mandato.inicio)}{fim ? ` · mandato até ${dataBr(fim)}` : ""}</>
                   : d.status}
+                {candidaturaDiferente && <><br />{d.status} ({d.cargo.toLowerCase()} {pelaUf(ufCandidatura)})</>}
               </span>
             </div>
           </div>
