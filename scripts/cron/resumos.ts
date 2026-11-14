@@ -39,6 +39,7 @@ export async function gravarResumosVotacao(dir: string) {
     const hash = createHash("sha256").update(JSON.stringify(l.pagina)).digest("hex");
     return existentes.get(l.votacao_id) === hash ? [] : [{ votacao_id: l.votacao_id, pagina: l.pagina, hash, calculado_em: new Date().toISOString() }];
   });
-  await upsert(c, "resumos_votacao", novos, ["votacao_id"], 200);
+  // ~30 KB por votação da Câmara (com a lista de cada parlamentar): lotes de 50 (~1,5 MB por pedido).
+  await upsert(c, "resumos_votacao", novos, ["votacao_id"], 50);
   return { votacoes: linhas.length, gravados: novos.length };
 }
