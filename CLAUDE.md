@@ -68,17 +68,18 @@ Hoje (protótipo, SP):
 /c/[ids]            links antigos da colinha: redireciona para o crachá (a colinha saiu em 2026-11-04)
 /p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
 /monitorando        quem a pessoa monitora neste navegador e o que apareceu desde a última visita (E23e)
+/comparar           de 2 a 5 políticos lado a lado, sem nota nem ranking (E23f; `?ids=a,b`)
 /me-representa      cidade ou estado → senadores e deputados federais em exercício da UF (E23d; `?uf=SP`, `?cidade=<IBGE>`)
 /votacoes/[id]      uma votação do Plenário (E23k): placar, regra, ementa, caminho, como votou cada partido (id = casa-idExterno)
 /como-funciona      metodologia, fontes, licença, código
 ```
 Planejadas (detalhar no PLANO ao chegar): lista completa com filtros em `/votacoes` (E30),
-`/uf/[uf]`, `/cidade/[ibge]` ("quem me representa"), `/comparar`, `/eleicoes`, `/governos`,
+`/uf/[uf]`, `/cidade/[ibge]` ("quem me representa"), `/eleicoes`, `/governos`,
 `/partidos`, `/cargos`, `/dicionario`, `/mais-vistos`, `/atualizacoes`.
 
 A colinha tinha `opengraph-image.tsx` (preview com foto, cargo, status e números; saiu com a colinha na E23c); o card de compartilhamento do crachá entra na E33, com Casa e período sempre explícitos, porque um senador eleito pode ter números da Câmara. `metadataBase` vem de `VERCEL_PROJECT_PRODUCTION_URL` (ou `NEXT_PUBLIC_SITE_URL`). A fonte padrão do `next/og` só tem peso regular; buscar fonte externa na hora não é permitido.
 
-Apoio (não são páginas): `/dados/municipios` (as 5.571 cidades, baixada quando a pessoa toca na busca), `/dados/politicos` (índice de busca por nome, mais votados primeiro, com nome de urna, nome civil e número de urna; ~190 KB comprimido) servidos pela CDN; `/dados/acompanhar/[id]` (resumo do político para a tela Monitorando, ISR) (`/dados/cidade/[ibge]`, o top-20 da cidade, saiu com a colinha). No build, só as páginas de quem tem mandato (659); as demais, na primeira visita. `/amostra` é a vitrine dos 20 da sonda (noindex). Links antigos da colinha (`/c/a+b`, ids separados por `+`) redirecionam para o crachá do primeiro.
+Apoio (não são páginas): `/dados/municipios` (as 5.571 cidades, baixada quando a pessoa toca na busca), `/dados/politicos` (índice de busca por nome, mais votados primeiro, com nome de urna, nome civil e número de urna; ~190 KB comprimido) servidos pela CDN; `/dados/acompanhar/[id]` e `/dados/comparar/[id]` (resumo do político para as telas Monitorando e Comparar, ISR) (`/dados/cidade/[ibge]`, o top-20 da cidade, saiu com a colinha). No build, só as páginas de quem tem mandato (659); as demais, na primeira visita. `/amostra` é a vitrine dos 20 da sonda (noindex). Links antigos da colinha (`/c/a+b`, ids separados por `+`) redirecionam para o crachá do primeiro.
 
 ## O card do político (objeto central)
 

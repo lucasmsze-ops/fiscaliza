@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E23f** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
+**Etapa atual: E23g** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
 terminou verde. E22b, E23, E23b, E23c, E23i, E23k e E23l foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
@@ -474,6 +474,15 @@ sem e-mail, sem alertas (princípio 3). Sino e contagem no menu e na barra do to
 `/comparar`, 2 a 5 lado a lado, sem nota nem ranking; "Comparar com outro político" no crachá. Só
 as linhas com dado (partido, salário, cota, votos na eleição, propostas, participação, mandatos);
 patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a ser gravada.
+- [x] `/comparar` (aba no menu): busca por nome, atalhos "Senadores de SP/RJ/MG/BA" com quem está no
+      cargo hoje, sugestões da mesma Casa e UF quando há uma pessoa só; seleção na URL (`?ids=a,b`).
+- [x] Linhas (os mesmos números do crachá, `lib/comparar.ts`): partido, situação em 2026, salário,
+      votos em 2026, participação, votou com o partido, propostas que podem virar lei, "Na Casa desde".
+      "—" sempre com o porquê. `/dados/comparar/[id]` (CDN) a partir do resumo pronto da página.
+- [x] "Comparar com outro político" no crachá (abre com a pessoa selecionada).
+- Fora: cota (saiu do crachá em 2026-11-04), idade (nascimento não gravado), patrimônio (E24).
+  "No Congresso desde" virou "Na Casa desde": de quem é senador só temos os mandatos do Senado.
+- Pronto quando: no ar, testado no celular.
 
 ### E23g · Propostas
 `/propostas`: lista geral com filtros (Casa, tipo, situação, busca na ementa) e link oficial. A

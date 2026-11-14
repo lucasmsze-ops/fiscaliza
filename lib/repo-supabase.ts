@@ -92,7 +92,11 @@ export class SupabaseRepo implements Repo {
     return r?.pagina ?? null;
   }
   async getPolitico(id: string) {
-    return (await this.listarPoliticos()).find((p) => p.id === id) ?? null;
+    // Uma linha só (~1 KB), em vez da lista inteira (~1 MB), quando a lista não está em memória.
+    const m = this.memo.get("politicos");
+    if (m && m.ate > Date.now()) return ((await m.valor) as Politico[]).find((p) => p.id === id) ?? null;
+    const [p] = await this.linhas<Politico>("politicos", `select=*&id=eq.${v(id)}&order=id`);
+    return p ?? null;
   }
   listarPoliticos() {
     return this.lembrar("politicos", () => this.linhas<Politico>("politicos", "select=*&order=id"));

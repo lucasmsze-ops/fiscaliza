@@ -15,6 +15,17 @@ Modelo:
 
 ---
 
+## 2026-11-13 · E23f · Comparar
+**Feito:** `/comparar` (`components/Comparar.tsx`, `lib/comparar.ts`, `/dados/comparar/[id]`), aba no
+menu, link no crachá. `SupabaseRepo.getPolitico` passa a buscar uma linha só quando a lista não está em
+memória (a rota precisa de `votos_2026`, que não está no resumo).
+**Decidido:** só as linhas que o crachá já mostra, para as telas não se contradizerem; sem ordenar
+colunas nem destacar o maior valor. Cota fora (decisão de 2026-11-04). "Na Casa desde" no lugar de "No
+Congresso desde": Mara Gabrilli (deputada de 2011 a 2019) aparecia "desde 2019", porque de senadores só
+coletamos os mandatos do Senado.
+**Lacunas:** idade (o cron não grava a data de nascimento do TSE) e patrimônio (E24).
+**Próximo passo:** push (sem migração nem cron); depois E23g (Propostas).
+
 ## 2026-11-05 · E23e · Monitorando neste aparelho
 **Feito:** `lib/monitorando.ts` (localStorage, `useSyncExternalStore`, avisos entre abas),
 `components/BotaoMonitorar.tsx` (crachá, Me representa, lista da Visão geral), bandeja na Me representa,

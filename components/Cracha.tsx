@@ -138,6 +138,7 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
           </div>
           <div className="flex flex-wrap gap-2">
             <BotaoMonitorar id={d.id} nome={d.nomeUrna} />
+            <Link href={`/comparar?ids=${d.id}`} className="inline-flex h-10 items-center rounded-xl border border-borda bg-card px-4 text-xs font-bold text-texto no-underline hover:border-destaque">Comparar com outro político</Link>
             <Compartilhar rotulo="Compartilhar" titulo={`${d.nomeUrna} · ${d.cargo} · ${d.partidoUf}`} texto="O que fez no mandato, com dados oficiais."
               classe="inline-flex h-10 items-center rounded-xl border border-borda bg-card px-4 text-xs font-bold hover:border-destaque" />
           </div>
