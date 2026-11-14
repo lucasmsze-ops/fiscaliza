@@ -29,8 +29,10 @@ no cargo hoje); títulos = assunto + tema oficial, nada escrito por nós.
 da sonda não há o detalhe em cache, então o id da matéria sai de `/proposicoes?siglaTipo&numero&ano`.
 **2026-11-14:** busca de cidade saiu da Visão geral; níveis com subtítulo e cartões; deputados em grade no
 celular; menu com 5 itens (Comparar fica fora do menu, só pelo crachá); regra de aprovação num "i".
-**Próximo passo:** rodar 0008 e 0009; push; cron manual (executivos, pauta, temas, resumos de votação com
-`membros`); push de docs (redeploy).
+**No ar:** 0008 e 0009 rodadas pelo usuário; push; cron manual 43549848221 verde: 28 executivos, 7 itens de
+pauta (Senado), 800 matérias consultadas para temas (1.289 de 1.541 votações com tema), 1.541 votações
+republicadas com `temas`, 1.541 resumos de votação regravados com `membros`; este commit é o redeploy.
+**Próximo passo:** E23g (Propostas) ou os executivos (ideia do usuário).
 
 ## 2026-11-13 · E23f · Comparar
 **Feito:** `/comparar` (`components/Comparar.tsx`, `lib/comparar.ts`, `/dados/comparar/[id]`), aba no

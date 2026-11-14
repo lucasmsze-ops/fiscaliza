@@ -501,7 +501,7 @@ patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a s
       Visão geral, Congresso, Votações, Monitorando, Sobre ("Outros" e Comparar saem do menu; a página
       Comparar segue pelo crachá); no detalhe da votação, sem "Descrição oficial" e com a regra de
       aprovação num "i" no canto do resultado.
-- Pronto quando: no ar, com 0008 e 0009 rodadas antes do push e um cron manual.
+- Pronto quando: no ar, com 0008 e 0009 rodadas antes do push e um cron manual. (No ar em 2026-11-14.)
 
 ### E23g · Propostas
 `/propostas`: lista geral com filtros (Casa, tipo, situação, busca na ementa) e link oficial. A
