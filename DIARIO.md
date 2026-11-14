@@ -15,6 +15,89 @@ Modelo:
 
 ---
 
+## 2026-11-14 · E23o · design system do iOS
+**Feito:** visual trocado pelo do iOS, adaptado para site. `app/globals.css` com as cores do sistema da
+Apple no claro e no escuro, fonte do sistema (sai a Roboto: nenhum download de fonte) e a escala do Dynamic
+Type nos tamanhos do Tailwind. `lib/estilo.ts` ganhou CHIP, BOTAO, BLOCO, ETIQUETA, CAMPO e ROTULO, usados
+no lugar dos chips que cada tela definia. Cartões sem borda nem sombra; botões e filtros em cápsula; blocos
+dentro do cartão em preenchimento cinza; popovers sem borda; menu lateral em lista simples com ícones azuis;
+no celular, a barra do topo fica translúcida e fixa; crachás (político e executivo) sem a faixa colorida;
+Câmara/Senado num controle segmentado; regiões do mapa nas cores de sistema; rótulos sem caixa alta.
+`docs/PROTOTIPO.md` registra os tokens novos e mantém os antigos como histórico.
+**Decidido (perguntas ao usuário):** azul do sistema como destaque; é um site, não um app, então nada de
+tab bar no rodapé. Onde o azul ou o cinza do iOS ficariam abaixo de 4,5:1 com texto pequeno, entram as
+variantes acessíveis da Apple (botão `#0071E3`, link `#0066CC`, no escuro `#409CFF`; cinza `#6C6C70`).
+**Corrigido:** aviso de hidratação no Plenário (o último dígito de `Math.cos` diferia entre o Node e o
+navegador): coordenadas arredondadas em `cadeirasHemiciclo`.
+**Apoio:** preview `fiscaliza-dev` (porta 3111, `next dev` com Supabase) no launch.json do $HOME; os outros
+três rodam `next start` e mostram o build antigo.
+**Sempre escuro (mesmo dia, pedido do usuário):** só os tokens do escuro em `:root`, `color-scheme: dark` e
+`themeColor` preto no viewport; as variações `dark:` saíram; verdes e vermelhos antigos viraram os do iOS
+(`--verde` #30D158, `--vermelho` #FF453A, laranja #FF9F0A na pizza). Conferido com o aparelho no tema claro.
+**Congresso (mesmo dia, pedido do usuário):** título "Congresso Federal", sem o subtítulo; vão do hemiciclo de
+40% para 47% do raio e número em 24 px no celular (o 513 encostava nas cadeiras); filtro de estado virou um
+chip com seta e nome do estado (o `<select>` nativo fica invisível por cima, em 16 px, para o Safari não dar zoom).
+**Mapa (mesmo dia, pedido do usuário):** regiões em tons pastel, como as bolinhas do Congresso, com a sigla
+em `#1C1C1E` (`ROTULO_REGIAO`, contraste > 9:1); com um estado escolhido, os outros esmaecem e a sigla fica clara.
+**Navegação (mesmo dia, pedido do usuário):** sai o sino (atalho para Monitorando) e o `SinoMonitorando`. A
+busca do topo ganhou escopo: políticos na Visão geral e no Congresso (sem páginas nos resultados); projetos e
+votações em Votações, com índice novo `/dados/busca-votacoes` (pauta + 1.541 votações nominais desde 2023,
+~120 KB comprimido, baixado ao tocar no campo); nenhuma busca em Monitorando, Sobre e nas N2. Telas do menu são
+N1 (`lib/navegacao.ts`); as demais são N2: no celular o cabeçalho com o menu some (`CabecalhoCelular`) e a
+`BarraVoltar` mostra "‹ Congresso", "‹ Votações" etc. (volta no histórico se a pessoa veio do site, guardado
+em sessionStorage; senão, vai para a N1 de origem). No computador o menu lateral continua.
+**Cabeçalho (mesmo dia, pedido do usuário):** saiu o caminho "Páginas / ..." de todas as telas (a `BarraTopo`
+virou só a busca) e as reticências do texto das buscas; Sobre saiu do menu (ficam 4 abas, que cabem sem rolar)
+e abre pelo ícone de Dúvidas ao lado da marca, no celular e no menu lateral; como não está no menu, é N2.
+**Não feito:** botão de Login no cabeçalho (fake door com modal). Login está em "Fora de escopo" e fere o
+princípio 3 do CLAUDE.md; o usuário decidiu deixar sem Login.
+**Menu do celular (mesmo dia):** as quatro abas espalhadas na largura, alinhadas às margens da página e com o
+mesmo espaço entre elas (14 px; 15 px a partir de 430 px; 13 px abaixo de 360 px). Em 320 px com o contador de
+Monitorando a faixa rola por dentro, sem alargar a página.
+**Votações (mesmo dia, pedido do usuário):** título fora de cartão ("Votações do Plenário"), com o filtro por dia
+à direita (no celular só o ícone, para caber na mesma linha) e "Atualizado em dd/mm/aaaa" embaixo; o calendário
+abre num cartão próprio. "Últimas votações" vem antes de "Próximas votações"; saíram os subtítulos das duas e a
+linha "Sessão de ...: N votações". Corrigido: `capitalize` fazia "Novembro De 2026" no calendário e no título do
+dia; o dia escolhido ganhava borda branca depois da troca de tema.
+**Propostas no crachá (mesmo dia, pedido do usuário):** no topo da aba Propostas, "Apresentadas" e "Viraram norma"
+(com o % das apresentadas) e colunas por ano de apresentação, a parte que virou norma em azul (`--serie-1`) e o
+resto em cinza (skill dataviz, forma de ênfase; validador: CVD e contraste ok contra #1C1C1E). Dados da lista
+completa que a aba já baixa: sem cron nem migração. Dica por coluna no hover e no foco, tabela para leitor de
+tela. Votos sem gráfico (pedido). Conferido em Esperidião Amin: 121 apresentadas, 11 viraram norma (5+1+5+0).
+No mesmo dia, a pedido: as colunas por ano viraram uma pizza (viraram norma × não viraram, como a do "Votou
+com o partido?"); a explicação foi para um botão "i" (popover nativo) no canto da pizza; o filtro de ano subiu
+para cima dos números e da pizza, que passam a seguir o ano (todos os anos = o total); a busca no resumo fica
+acima da lista. Conferido: 2025 dá 34 apresentadas e 5 viraram norma (15%).
+**Crachá (mesmo dia, pedido do usuário):** saíram os ícones coloridos dos cartões de salário e participação (já
+não apareciam no celular). O "?" do `Termo` ficou proporcional ao texto (em) e centrado na altura das letras:
+antes era um círculo fixo de 20 px que ficava ~3 px abaixo do centro em texto de 12 px; medido depois, ±0,1 px
+em texto de 12 e de 20 px.
+**Revisão de UX do site todo (mesmo dia, pedido do usuário), celular e computador:**
+- Visão geral: "+ Monitorar" no pé dos cartões de deputados (alinhado entre vizinhos quando o nome quebra);
+  rótulos de grupo (Presidente, Governador, Senadores, Regiões) de 11 px para 13 px (`ROTULO`).
+- Números em destaque com um estilo só (`ROTULO` + `NUMERO` em `lib/estilo.ts`) no crachá, no executivo e
+  nas Propostas; no celular o rótulo reserva duas linhas para os números lado a lado ficarem na mesma altura;
+  o período da participação foi para o detalhe. O detalhe "916 de 1.107" deixou de ser verde (cor de "bom"
+  julga o número; princípio 4).
+- Ementas da lista de propostas em peso normal, 15 px, até 4 linhas (3 na tabela), com o texto inteiro no
+  `title` e na página oficial; antes eram parágrafos inteiros em negrito.
+- Filtros de escolha única viraram o mesmo chip com seta (`components/SelectChip.tsx`): estado (Congresso),
+  ano (Propostas), área (plano de governo) e pessoa (Monitorando). "Ver mais" com o mesmo botão em todo lugar.
+- Links: sublinhado só no meio de frase; links e botões soltos ("Como contamos", "Ver os N partidos",
+  "Fechar", "Parar de monitorar", rodapé) sem sublinhado. Rodapé centralizado, com separador.
+- Congresso com o título fora do cartão e "Atualizado em", como Votações (a nota solta no fim saiu).
+- Comparar: "viraram lei" → "viraram norma", como no crachá. Rodapé do hemiciclo e cabeçalho da tabela de
+  propostas de 11 px para 12 px.
+**Mapa (mesmo dia, pedido do usuário):** o pastel saiu; as regiões usam as cores da paleta de partidos do
+Congresso (`--serie-*`). Entre as 8, escolhida por busca exaustiva a combinação em que regiões vizinhas se
+distinguem com daltonismo (pior par vizinho ΔE 8,6 simulado, 22,5 em visão normal; validador da skill dataviz):
+Norte roxo, Nordeste coral, Centro-Oeste verde, Sudeste azul, Sul rosa. Rótulo escuro, branco no verde
+(`rotuloRegiao`).
+Logo depois, a pedido, as matizes trocaram: Norte verde `#199E70`, Nordeste laranja `#D95926`, Centro-Oeste roxo
+`#6250D6` (o mais fechado, para se afastar do azul do Sul), Sudeste rosa `#E87BA4`, Sul azul `#3987E5`; pior par
+vizinho ΔE 9,0 com daltonismo e 13,4 em visão normal (roxo × azul); rótulo branco só no roxo.
+**Próximo passo:** push (sem migração nem cron); depois decidir onde hospedar os PDFs dos planos (E23n).
+
 ## 2026-11-14 · ajustes e pente-fino de layout
 **Feito:** crachá com o cargo e a UF da cadeira no cabeçalho e no título (a candidatura de 2026 vai abaixo
 quando é outra: Rosangela Moro, Tiririca, Hélio Lopes; e quem é deputado e disputou o Senado, como Erika

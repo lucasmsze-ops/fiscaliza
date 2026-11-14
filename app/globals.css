@@ -1,41 +1,37 @@
 @import "tailwindcss";
 
 /*
- * Tema do protótipo do Claude Design (docs/PROTOTIPO.md, seção Visual): fundo claro, cards brancos
- * com raio 15, destaque teal com texto escuro. O escuro segue o sistema, com os mesmos papéis.
+ * Design system do iOS adaptado para site (pedido de 2026-11-14): cores do sistema da Apple (Human
+ * Interface Guidelines) no tema escuro, fixo, fonte do sistema (SF nos aparelhos Apple), escala de
+ * tipos do Dynamic Type, cartões agrupados sem sombra e botões em cápsula. Nada de tab bar ou outro
+ * gesto de app: o menu continua o de site.
+ *
+ * Contraste: onde o valor do iOS fica abaixo de 4,5:1 com texto pequeno, vale a variante acessível
+ * da própria Apple (azul de botão #0071E3, o de apple.com; azul de link de alto contraste #409CFF).
  */
+/* Sempre escuro (decisão de 2026-11-14): o site não segue o tema do aparelho. */
 :root {
-  --fundo: #f7fafc;
-  --card: #ffffff;
-  --texto: #2d3748;
-  --suave: #5f6b7e;
-  --borda: #e2e8f0;
-  --borda-forte: #cbd5e0;
-  --destaque: #4fd1c5;
-  --destaque-texto: #1a202c;
-  --link: #2c7a7b;
+  color-scheme: dark;         /* barras de rolagem, campos e controles nativos no escuro */
+  --fundo: #000000;           /* systemGroupedBackground */
+  --card: #1c1c1e;            /* secondarySystemGroupedBackground */
+  --texto: #ffffff;           /* label */
+  --suave: #98989f;           /* secondaryLabel */
+  --borda: #38383a;           /* opaqueSeparator */
+  --borda-forte: #636366;     /* systemGray2 */
+  --preench: rgba(118, 118, 128, 0.24);       /* tertiarySystemFill: blocos dentro do cartão */
+  --preench-forte: rgba(118, 118, 128, 0.36); /* systemFill: hover e campo pressionado */
+  --destaque: #0071e3;        /* systemBlue para fundo com texto branco */
+  --destaque-texto: #ffffff;
+  --link: #409cff;            /* systemBlue de alto contraste, para texto e ícone */
+  --verde: #30d158;           /* systemGreen */
+  --vermelho: #ff453a;        /* systemRed */
+  --segmento: #636366;        /* segmento escolhido do controle segmentado */
+  --vidro: rgba(22, 22, 23, 0.78);            /* barra do topo translúcida (material do iOS) */
   /* Cores de categoria (partidos no Plenário): paleta de referência validada (skill dataviz), 8 cores
-     em ordem fixa + cinza para "outros partidos". Contra o branco, 3 ficam abaixo de 3:1: a lista
-     com nome e número de cadeiras ao lado é obrigatória. */
-  --serie-1: #2a78d6; --serie-2: #eb6834; --serie-3: #1baf7a; --serie-4: #eda100;
-  --serie-5: #e87ba4; --serie-6: #008300; --serie-7: #6250d6; --serie-8: #e34948;
-  --serie-outros: #a0aec0;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --fundo: #12171f;
-    --card: #1b222d;
-    --texto: #e2e8f0;
-    --suave: #a0aec0;
-    --borda: #2d3748;
-    --borda-forte: #4a5568;
-    --destaque: #4fd1c5;
-    --destaque-texto: #1a202c;
-    --link: #81e6d9;
-    --serie-1: #3987e5; --serie-2: #d95926; --serie-3: #199e70; --serie-4: #c98500;
-    --serie-5: #d55181; --serie-6: #008300; --serie-7: #9085e9; --serie-8: #e66767;
-    --serie-outros: #718096;
-  }
+     em ordem fixa + cinza para "outros partidos", na versão para fundo escuro. */
+  --serie-1: #3987e5; --serie-2: #d95926; --serie-3: #199e70; --serie-4: #c98500;
+  --serie-5: #d55181; --serie-6: #008300; --serie-7: #9085e9; --serie-8: #e66767;
+  --serie-outros: #718096;
 }
 
 @theme inline {
@@ -45,20 +41,40 @@
   --color-suave: var(--suave);
   --color-borda: var(--borda);
   --color-borda-forte: var(--borda-forte);
+  --color-preench: var(--preench);
+  --color-preench-forte: var(--preench-forte);
   --color-destaque: var(--destaque);
   --color-destaque-texto: var(--destaque-texto);
   --color-link: var(--link);
-  --radius-card: 15px;
-  --shadow-card: 0 3.5px 5.5px rgba(0, 0, 0, 0.02);
-  --font-sans: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
+  --color-vidro: var(--vidro);
+  --color-verde: var(--verde);
+  --color-vermelho: var(--vermelho);
+  --color-segmento: var(--segmento);
+  --radius-card: 18px;
+  --shadow-card: none;
+  /* Fonte do sistema: SF Pro nos aparelhos Apple, Segoe no Windows, Roboto no Android. Nenhum download. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Segoe UI", Roboto, system-ui, sans-serif;
+  /* Escala do Dynamic Type (tamanho padrão): Caption 1, Subheadline, Body, Title 3, Title 2, Title 1, Large Title. */
+  --text-xs: 12px; --text-xs--line-height: 16px;
+  --text-sm: 15px; --text-sm--line-height: 20px;
+  --text-base: 17px; --text-base--line-height: 22px;
+  --text-lg: 20px; --text-lg--line-height: 25px;
+  --text-xl: 22px; --text-xl--line-height: 28px;
+  --text-2xl: 28px; --text-2xl--line-height: 34px;
+  --text-3xl: 34px; --text-3xl--line-height: 41px;
 }
 
 @layer base {
   body {
     background: var(--fundo);
     color: var(--texto);
+    -webkit-font-smoothing: antialiased;
   }
   a {
     color: var(--link);
+  }
+  /* Títulos grandes do iOS: tracking levemente negativo, como o SF Pro Display. */
+  h1, h2 {
+    letter-spacing: -0.01em;
   }
 }

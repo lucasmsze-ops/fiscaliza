@@ -2,12 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AbasMandato } from "@/components/AbasMandato";
-import { BarraTopo } from "@/components/BarraTopo";
+import { BarraVoltar } from "@/components/BarraVoltar";
 import { Cracha } from "@/components/Cracha";
 import { resumoNumeros } from "@/lib/card";
 import { hrefSecao } from "@/lib/glossario";
 import { repo } from "@/lib/repo";
-import { NOME_UF } from "@/lib/regioes";
 import { subsidioEm } from "@/lib/salario";
 
 export const revalidate = 86400;
@@ -54,7 +53,7 @@ export default async function PaginaPolitico({ params }: Props) {
 
   return (
     <>
-    <BarraTopo secao={`Visão geral / ${NOME_UF[uf] ?? uf}`} pagina="Crachá do político" />
+    <BarraVoltar volta={`/?uf=${uf}`} rotulo="Visão geral" />
     <main className="grid gap-6 pb-8">
       <Cracha d={c} mandato={mandato} salario={salario} comparacao={pg.comparacao ?? null} fidelidade={pg.fidelidade ?? null} cores={pg.coresPartido ?? []} />
       <AbasMandato id={c.id} propostas={pg.propostas ?? null} votacoes={pg.votacoes} />

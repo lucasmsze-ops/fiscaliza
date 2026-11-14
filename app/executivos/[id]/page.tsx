@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BarraTopo } from "@/components/BarraTopo";
+import { BarraVoltar } from "@/components/BarraVoltar";
 import { ChecklistPlano } from "@/components/ChecklistPlano";
 import { inteiro } from "@/lib/card";
 import { corPartido, nomePartido } from "@/lib/partidos";
 import { planoDe } from "@/lib/promessas";
-import { NOME_UF, pelaUf } from "@/lib/regioes";
+import { pelaUf } from "@/lib/regioes";
 import { repo } from "@/lib/repo";
 import type { ExecutivoEleito } from "@/lib/types";
-import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
+import { CARD, NUMERO, ROTULO, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
 
 export const revalidate = 86400;
 export const dynamicParams = true;
@@ -85,20 +85,19 @@ export default async function PaginaExecutivo({ params }: Props) {
 
   return (
     <>
-    <BarraTopo secao={e.uf ? `Visão geral / ${NOME_UF[e.uf]}` : "Visão geral"} pagina="Crachá do executivo" />
+    <BarraVoltar volta={e.uf ? `/?uf=${e.uf}` : "/"} rotulo="Visão geral" />
     <main className="grid gap-6 pb-8">
-      <section aria-labelledby="nome-executivo" className="relative pb-2">
-        <div className="h-20 rounded-card bg-destaque sm:h-[160px]" />
-        <div className="relative mx-3 -mt-10 flex items-center gap-3 rounded-card border-[1.5px] border-card bg-card/95 p-4 shadow-card backdrop-blur-xl sm:mx-[22px] sm:-mt-[70px] sm:gap-5 sm:px-[22px] sm:py-[18px]">
+      <section aria-labelledby="nome-executivo">
+        <div className="flex items-center gap-3 rounded-card bg-card p-4 sm:gap-5 sm:p-5">
           {e.fotoUrl
             // <img> de propósito: a foto vem direto da URL oficial do TSE, sem passar pela Vercel (CLAUDE.md).
-            ? <img src={e.fotoUrl} alt={`Foto oficial de ${e.nomeUrna}`} width={90} height={90} decoding="async" className="size-16 shrink-0 rounded-full bg-fundo object-cover object-top sm:size-[90px]" />
-            : <span aria-hidden="true" className="size-16 shrink-0 rounded-full bg-fundo sm:size-[90px]" />}
+            ? <img src={e.fotoUrl} alt={`Foto oficial de ${e.nomeUrna}`} width={90} height={90} decoding="async" className="size-16 shrink-0 rounded-full bg-preench object-cover object-top sm:size-[90px]" />
+            : <span aria-hidden="true" className="size-16 shrink-0 rounded-full bg-preench sm:size-[90px]" />}
           <div className="grid min-w-0 flex-1 gap-1.5">
-            <h1 id="nome-executivo" className="text-xl leading-tight font-black break-words sm:text-3xl">{e.nomeUrna}</h1>
+            <h1 id="nome-executivo" className="text-2xl font-bold break-words sm:text-3xl">{e.nomeUrna}</h1>
             <div className="flex flex-wrap items-center gap-2.5">
-              <span className="text-sm font-bold text-suave sm:text-base">{cargoEleito(e)}</span>
-              <span className="inline-flex h-[26px] items-center rounded-lg px-3 text-xs font-bold" style={{ background: `color-mix(in srgb, ${corPartido(e.partido)} 24%, transparent)` }}>
+              <span className="text-sm font-semibold text-suave sm:text-base">{cargoEleito(e)}</span>
+              <span className="inline-flex h-[26px] items-center rounded-lg px-3 text-xs font-semibold" style={{ background: `color-mix(in srgb, ${corPartido(e.partido)} 24%, transparent)` }}>
                 {e.partido}{nome && nome.toLowerCase() !== e.partido.toLowerCase() ? ` · ${nome}` : ""}
               </span>
             </div>
@@ -113,8 +112,8 @@ export default async function PaginaExecutivo({ params }: Props) {
       <section aria-label="Números principais" className="grid grid-cols-2 gap-3 sm:gap-[18px]">
         {decisivo && (
           <div className={`${card} col-span-2 grid content-start gap-1 sm:col-span-1`}>
-            <span className="text-xs font-bold text-suave">Votos em 2026</span>
-            <span className="text-xl font-bold tabular-nums sm:text-2xl">{inteiro(decisivo.votos)}</span>
+            <span className={ROTULO}>Votos em 2026</span>
+            <span className={NUMERO}>{inteiro(decisivo.votos)}</span>
             <span className="text-xs text-suave">
               {pct(decisivo.pct)} dos votos válidos {v?.t2 ? "no 2º turno" : "no 1º turno"}
               {v?.t2 && v.t1 && <> · 1º turno: {inteiro(v.t1.votos)} ({pct(v.t1.pct)})</>}
@@ -122,21 +121,21 @@ export default async function PaginaExecutivo({ params }: Props) {
           </div>
         )}
         <div className={`${card} col-span-2 grid content-start gap-1 sm:col-span-1`}>
-          <span className="text-xs font-bold text-suave">Patrimônio declarado ao TSE</span>
+          <span className={ROTULO}>Patrimônio declarado ao TSE</span>
           {e.bensTotal != null
-            ? <><span className="text-xl font-bold tabular-nums sm:text-2xl">{reais(e.bensTotal)}</span><span className="text-xs text-suave">soma de {e.bensN} {e.bensN === 1 ? "bem declarado" : "bens declarados"} no registro da candidatura de 2026</span></>
-            : <><span className="text-xl font-bold">—</span><span className="text-xs text-suave">nenhum bem declarado no registro da candidatura</span></>}
+            ? <><span className={NUMERO}>{reais(e.bensTotal)}</span><span className="text-xs text-suave">soma de {e.bensN} {e.bensN === 1 ? "bem declarado" : "bens declarados"} no registro da candidatura de 2026</span></>
+            : <><span className={NUMERO}>—</span><span className="text-xs text-suave">nenhum bem declarado no registro da candidatura</span></>}
         </div>
         {e.idadeNaPosse != null && (
           <div className={`${card} grid content-start gap-1`}>
-            <span className="text-xs font-bold text-suave">Idade na posse</span>
-            <span className="text-xl font-bold tabular-nums">{e.idadeNaPosse} anos</span>
+            <span className={ROTULO}>Idade na posse</span>
+            <span className={NUMERO}>{e.idadeNaPosse} anos</span>
           </div>
         )}
         {(e.instrucao || e.ocupacao) && (
           <div className={`${card} grid content-start gap-1`}>
-            <span className="text-xs font-bold text-suave">Declarou ao TSE</span>
-            {e.instrucao && <span className="text-sm font-bold">{titulo(e.instrucao)}</span>}
+            <span className={ROTULO}>Declarou ao TSE</span>
+            {e.instrucao && <span className="text-[15px] font-semibold">{titulo(e.instrucao)}</span>}
             {e.ocupacao && <span className="text-xs text-suave">Ocupação: {titulo(noGenero(e.ocupacao, fem(e)))}</span>}
           </div>
         )}
@@ -144,12 +143,12 @@ export default async function PaginaExecutivo({ params }: Props) {
 
       {(e.coligacao || e.composicao) && (
         <section className={`${card} grid gap-2`} aria-labelledby="ex-coligacao">
-          <h2 id="ex-coligacao" className="text-lg font-bold">Coligação</h2>
-          {e.coligacao && <p className="text-[15px] font-bold">{titulo(e.coligacao)}</p>}
+          <h2 id="ex-coligacao" className="text-lg font-semibold">Coligação</h2>
+          {e.coligacao && <p className="text-[15px] font-semibold">{titulo(e.coligacao)}</p>}
           {e.composicao && (
             <p className="flex flex-wrap gap-1.5">
               {partesColigacao(e.composicao).map((x) => (
-                <span key={x} className="rounded-lg border border-borda px-2 py-0.5 text-xs">{x}</span>
+                <span key={x} className="rounded-md bg-preench px-2 py-0.5 text-xs">{x}</span>
               ))}
             </p>
           )}
@@ -157,13 +156,13 @@ export default async function PaginaExecutivo({ params }: Props) {
       )}
 
       <section className={`${card} grid gap-2.5`} aria-labelledby="ex-plano">
-        <h2 id="ex-plano" className="text-lg font-bold">{plano ? "Plano de governo: o que foi prometido" : "Proposta de governo"}</h2>
+        <h2 id="ex-plano" className="text-lg font-semibold">{plano ? "Plano de governo: o que foi prometido" : "Proposta de governo"}</h2>
         {plano
           ? <ChecklistPlano plano={plano} posse={e.posse} nome={e.nomeUrna} antesDaPosse={new Date().toISOString().slice(0, 10) < e.posse} />
           : <p className="text-sm leading-relaxed text-suave">O plano de governo é o documento que {fem(e) ? "a candidata" : "o candidato"} registrou no TSE. O acompanhamento ponto a ponto, só com atos oficiais, ainda não foi preparado para {e.nomeUrna}.</p>}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-borda pt-2.5">
           <a href={`https://cdn.tse.jus.br/estatistica/sead/odsele/proposta_governo/proposta_governo_2026_${e.cargo === "presidente" ? "BR" : e.uf}.zip`} {...externo}
-            className="inline-flex h-10 w-fit items-center rounded-xl border border-borda px-4 text-[13px] font-bold text-texto no-underline hover:border-destaque">
+            className="inline-flex h-10 w-fit items-center rounded-full bg-preench px-4 text-[13px] font-semibold text-texto no-underline hover:bg-preench-forte">
             Plano completo no TSE ›
           </a>
           <span className="text-xs break-all text-suave">Arquivo com as propostas de {e.cargo === "presidente" ? "todos os candidatos a presidente" : `todos os candidatos ${pelaUf(e.uf ?? "")}`}; a de {e.nomeUrna} é o PDF 2026{e.cargo === "presidente" ? "BR" : e.uf}{e.tseSqCandidato}_01.</span>
@@ -172,7 +171,7 @@ export default async function PaginaExecutivo({ params }: Props) {
 
       {e.historico && e.historico.length > 0 && (
         <section className={`${card} grid gap-2`} aria-labelledby="ex-hist">
-          <h2 id="ex-hist" className="text-lg font-bold">Candidaturas anteriores</h2>
+          <h2 id="ex-hist" className="text-lg font-semibold">Candidaturas anteriores</h2>
           <ol className="grid">
             {e.historico.map((h) => (
               <li key={`${h.ano}-${h.cargo}-${h.lugar}`} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 border-b border-borda py-2.5 text-sm last:border-b-0">

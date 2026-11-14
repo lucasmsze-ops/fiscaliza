@@ -1,4 +1,10 @@
-/** Regiões e nomes dos estados (IBGE), para o mapa e os filtros. Cores das regiões: as do protótipo. */
+/**
+ * Regiões e nomes dos estados (IBGE), para o mapa e os filtros. Cores das regiões (pedido de 2026-11-14): Norte
+ * verde, Nordeste laranja, Centro-Oeste roxo, Sudeste rosa, Sul azul, nos tons da paleta de partidos do Congresso
+ * (skill dataviz), escolhidos para vizinhas se distinguirem com daltonismo (pior par ΔE 9,0 simulado). Roxo e
+ * azul (Centro-Oeste e Sul) ficam mais próximos em visão normal (ΔE 13,4): o roxo é o mais fechado da paleta, e
+ * as divisas e as siglas separam os estados.
+ */
 export const NOME_UF: Record<string, string> = {
   AC: "Acre", AL: "Alagoas", AP: "Amapá", AM: "Amazonas", BA: "Bahia", CE: "Ceará", DF: "Distrito Federal", ES: "Espírito Santo",
   GO: "Goiás", MA: "Maranhão", MT: "Mato Grosso", MS: "Mato Grosso do Sul", MG: "Minas Gerais", PA: "Pará", PB: "Paraíba",
@@ -7,12 +13,16 @@ export const NOME_UF: Record<string, string> = {
 };
 
 export const REGIOES = [
-  { k: "N", nome: "Norte", cor: "#65a556", ufs: ["AC", "AM", "AP", "PA", "RO", "RR", "TO"] },
-  { k: "NE", nome: "Nordeste", cor: "#b07a12", ufs: ["AL", "BA", "CE", "MA", "PB", "PE", "PI", "RN", "SE"] },
-  { k: "CO", nome: "Centro-Oeste", cor: "#9f7ed6", ufs: ["DF", "GO", "MS", "MT"] },
-  { k: "SE", nome: "Sudeste", cor: "#b0508a", ufs: ["ES", "MG", "RJ", "SP"] },
-  { k: "S", nome: "Sul", cor: "#1aa3c2", ufs: ["PR", "RS", "SC"] },
+  { k: "N", nome: "Norte", cor: "#199e70", ufs: ["AC", "AM", "AP", "PA", "RO", "RR", "TO"] },
+  { k: "NE", nome: "Nordeste", cor: "#d95926", ufs: ["AL", "BA", "CE", "MA", "PB", "PE", "PI", "RN", "SE"] },
+  { k: "CO", nome: "Centro-Oeste", cor: "#6250d6", ufs: ["DF", "GO", "MS", "MT"] },
+  { k: "SE", nome: "Sudeste", cor: "#e87ba4", ufs: ["ES", "MG", "RJ", "SP"] },
+  { k: "S", nome: "Sul", cor: "#3987e5", ufs: ["PR", "RS", "SC"] },
 ] as const;
+
+/** Cor do texto sobre a cor de uma região (sigla no mapa, letra na lista): a de maior contraste (todas ≥ 4,4:1). */
+const BRANCO_EM = new Set(["#6250d6"]);
+export const rotuloRegiao = (cor: string) => (BRANCO_EM.has(cor) ? "#ffffff" : "#1c1c1e");
 
 export const regiaoDe = (uf: string) => REGIOES.find((r) => (r.ufs as readonly string[]).includes(uf));
 

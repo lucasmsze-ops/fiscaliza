@@ -15,7 +15,28 @@ Referência visual e de conteúdo para o Passo 4 em diante. Lido e cruzado com o
 
 ## Visual
 
-Tema claro inspirado no Purity UI Dashboard (Creative Tim): usar as escolhas visuais, não o código.
+**Desde 2026-11-14 o site usa o design system do iOS adaptado para site** (pedido do usuário), não mais o
+tema abaixo. Tokens em `app/globals.css`, padrões em `lib/estilo.ts`:
+
+**Sempre escuro** (decisão do mesmo dia): o site não segue o tema do aparelho (`color-scheme: dark`).
+
+| Token | Valor no site |
+|-------|---------------|
+| Fundo da página | systemGroupedBackground escuro `#000000` |
+| Cartão | `#1C1C1E`, raio 18 px, sem borda nem sombra |
+| Bloco dentro do cartão | tertiarySystemFill `rgba(118,118,128,.24)` |
+| Destaque | azul do sistema: botão `#0071E3` com texto branco; link e ícone `#409CFF` (alto contraste) |
+| Texto | label `#FFF`; secundário `#98989F`; separador `#38383A`; verde `#30D158`, vermelho `#FF453A`, laranja `#FF9F0A` |
+| Fonte | a do sistema (SF Pro nos aparelhos Apple, Segoe no Windows, Roboto no Android); nenhum download |
+| Tipos | escala do Dynamic Type: 12, 15, 17, 20, 22, 28, 34 px |
+| Botões e filtros | cápsula; controle segmentado para Câmara/Senado (segmento `#636366`); barra do topo translúcida no celular |
+| Regiões do mapa | tons da paleta de partidos do Congresso, nas matizes pedidas: Norte verde `#199E70`, Nordeste laranja `#D95926`, Centro-Oeste roxo `#6250D6`, Sudeste rosa `#E87BA4`, Sul azul `#3987E5`; rótulo escuro `#1C1C1E` (branco no roxo); estado esmaecido tem rótulo claro |
+
+É um site, não um app: nada de tab bar no rodapé nem gestos de app; o menu lateral e as abas no topo
+continuam. Onde o valor do iOS fica abaixo de 4,5:1 com texto pequeno, vale a variante acessível da
+própria Apple. A paleta de partidos (`--serie-*`) não mudou.
+
+Tema anterior (E22b a 2026-11-14), inspirado no Purity UI Dashboard (Creative Tim):
 
 | Token | Valor no protótipo |
 |-------|--------------------|
@@ -25,7 +46,7 @@ Tema claro inspirado no Purity UI Dashboard (Creative Tim): usar as escolhas vis
 | Texto | `#2D3748`; secundário `#64748B` (no site `#5F6B7E`: 5,15:1 sobre o fundo, contra 4,54:1); bordas `#E2E8F0` |
 | Fonte | Roboto 400/500/700/900 |
 
-No site (aplicado na E22b, `app/globals.css`, `components/Moldura.tsx`):
+No site (aplicado na E22b, substituído em 2026-11-14):
 - Roboto entra por `next/font`, servida pelo próprio site no build, nunca buscada na hora.
 - O tema escuro continua, seguindo o sistema como hoje, com tokens derivados destes. O botão
   claro/escuro segue no Passo 7.

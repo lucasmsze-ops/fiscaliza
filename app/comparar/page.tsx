@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BarraTopo } from "@/components/BarraTopo";
+import { BarraVoltar } from "@/components/BarraVoltar";
 import { Comparar, type Atalho } from "@/components/Comparar";
 import { doUf } from "@/lib/regioes";
 import { repo } from "@/lib/repo";
@@ -22,7 +22,7 @@ export default async function PaginaComparar() {
   })).filter((a) => a.pessoas.length >= 2);
   return (
     <>
-      <BarraTopo secao="Páginas" pagina="Comparar" />
+      <BarraVoltar volta="/" rotulo="Visão geral" />
       <Comparar atalhos={atalhos} pessoas={pessoas} />
     </>
   );

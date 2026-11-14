@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BarraTopo } from "@/components/BarraTopo";
+import { BarraVoltar } from "@/components/BarraVoltar";
 import { Termo } from "@/components/Termo";
 import { PERIODO_GOVERNO, reais } from "@/lib/card";
 import { GLOSSARIO, SECOES, type Secao } from "@/lib/glossario";
@@ -71,7 +71,7 @@ export default async function ComoFunciona() {
 
   return (
     <>
-    <BarraTopo secao="Fiscaliza" pagina="Como funciona" />
+    <BarraVoltar volta="/" rotulo="Visão geral" />
     <main className="mx-auto max-w-xl pb-8">
       <h1 className={TITULO_PAGINA}>Como funciona</h1>
       <p className="mt-3 text-sm leading-relaxed">
@@ -80,9 +80,9 @@ export default async function ComoFunciona() {
         O site não qualifica ninguém: mostra o número e a fonte. Nenhum dado é inventado: o que a fonte não traz aparece como lacuna, nunca como zero.
       </p>
 
-      <nav aria-label="Seções" className="mt-6 rounded-card border border-borda bg-card p-4 text-sm shadow-card">
+      <nav aria-label="Seções" className="mt-6 rounded-card bg-card p-4 text-sm">
         <ol className="grid gap-1 sm:grid-cols-2">
-          {SECOES.map((s) => <li key={s.id}><a href={`#${s.id}`} className="underline underline-offset-2">{s.titulo}</a></li>)}
+          {SECOES.map((s) => <li key={s.id}><a href={`#${s.id}`} className="no-underline hover:underline">{s.titulo}</a></li>)}
         </ol>
       </nav>
 
@@ -204,6 +204,12 @@ export default async function ComoFunciona() {
           quantas o parlamentar é o <strong>primeiro autor</strong> (ordem de assinatura 1) e quantas viraram norma jurídica (situação
           “Transformado em Norma Jurídica” na Câmara, “Transformada em Norma Jurídica” no Senado). Os demais tipos (requerimentos,
           indicações, emendas, pareceres) aparecem só como contagem, porque são pedidos e não leis.
+        </p>
+        <p>
+          <strong>Gráfico:</strong> o percentual que virou norma é a divisão das que viraram norma pelas apresentadas (primeiro autor e
+          coautor juntos), arredondada. Com &quot;todos os anos&quot;, vale o total desde 2023; escolhendo um ano, só as apresentadas
+          naquele ano. Uma proposta pode levar anos para virar norma: as mais recentes ainda podem estar em tramitação, e o número
+          não compara ninguém com ninguém.
         </p>
         <p>
           <strong>Fonte:</strong> arquivos anuais de proposições e autores dos dados abertos da Câmara e o serviço de processos dos

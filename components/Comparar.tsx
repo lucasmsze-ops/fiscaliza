@@ -7,16 +7,16 @@ import { LINHAS, MAX_COMPARAR, type ColunaComparar } from "@/lib/comparar";
 import { corPartido } from "@/lib/partidos";
 import { normalizar } from "@/lib/texto";
 import type { PessoaNoCargo } from "@/lib/visao";
-import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
+import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO, CHIP } from "@/lib/estilo";
 
-const chip = "inline-flex h-9 items-center rounded-xl border border-borda bg-card px-4 text-xs font-bold whitespace-nowrap hover:border-destaque";
+const chip = CHIP;
 export interface Atalho { titulo: string; pessoas: { id: string; nomeUrna: string; fotoUrl: string | null }[] }
 
 function Foto({ url, tamanho }: { url: string | null; tamanho: number }) {
   return url
     // <img> de propósito: a foto vem direto da URL oficial, sem passar pela Vercel (CLAUDE.md).
-    ? <img src={url} alt="" width={tamanho} height={tamanho} loading="lazy" className="shrink-0 rounded-full bg-fundo object-cover object-top" style={{ width: tamanho, height: tamanho }} />
-    : <span aria-hidden="true" className="shrink-0 rounded-full bg-fundo" style={{ width: tamanho, height: tamanho }} />;
+    ? <img src={url} alt="" width={tamanho} height={tamanho} loading="lazy" className="shrink-0 rounded-full bg-preench object-cover object-top" style={{ width: tamanho, height: tamanho }} />
+    : <span aria-hidden="true" className="shrink-0 rounded-full bg-preench" style={{ width: tamanho, height: tamanho }} />;
 }
 
 /**
@@ -81,11 +81,11 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
         <label htmlFor="cq" className="sr-only">Nome de quem você quer comparar</label>
         <input id="cq" type="search" autoComplete="off" value={q} disabled={ids.length >= MAX_COMPARAR} onFocus={carregar} onChange={(x) => { setQ(x.target.value); carregar(); }}
           placeholder={ids.length >= MAX_COMPARAR ? "Limite de 5 pessoas" : "Digite um nome para comparar"}
-          className="h-[50px] w-full rounded-[14px] border border-borda bg-card pr-4 pl-11 text-base outline-none focus:border-link disabled:opacity-60" />
+          className="h-11 w-full rounded-xl bg-card pr-4 pl-11 text-base text-texto outline-none placeholder:text-suave focus:ring-2 focus:ring-destaque/40 disabled:opacity-60" />
         {sugestoes.length > 0 && (
-          <div className="absolute inset-x-0 top-14 z-10 overflow-hidden rounded-[14px] border border-borda bg-card shadow-xl">
+          <div className="absolute inset-x-0 top-14 z-10 overflow-hidden rounded-[14px] bg-card shadow-xl">
             {sugestoes.map((p) => (
-              <button key={p.id} type="button" onClick={() => adicionar(p.id)} className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-sm hover:bg-fundo">
+              <button key={p.id} type="button" onClick={() => adicionar(p.id)} className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-sm hover:bg-preench-forte">
                 <Foto url={p.fotoUrl} tamanho={34} />
                 <span><strong>{p.nomeUrna}</strong> <span className="text-xs text-suave">{p.cargo} · {p.partidoUf} · {p.status}</span></span>
               </button>
@@ -100,14 +100,14 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
           <div className="grid gap-2.5 [grid-template-columns:repeat(auto-fill,minmax(230px,1fr))]">
             {atalhos.map((a) => (
               <button key={a.titulo} type="button" onClick={() => trocar(a.pessoas.map((p) => p.id))}
-                className="grid gap-2 rounded-[14px] border border-t-[3px] border-borda border-t-destaque bg-card p-3.5 text-left hover:bg-fundo">
+                className="grid gap-2 rounded-card bg-card p-4 text-left hover:bg-preench">
                 <span className="flex items-center">
                   {a.pessoas.map((p, i) => <span key={p.id} className={`rounded-full ring-2 ring-card ${i ? "-ml-2.5" : ""}`}><Foto url={p.fotoUrl} tamanho={40} /></span>)}
-                  <span className="ml-2.5 text-[11px] font-bold text-suave">LADO A LADO</span>
+                  <span className="ml-2.5 text-xs font-semibold text-suave">Lado a lado</span>
                 </span>
                 <strong className="text-base">{a.titulo}</strong>
                 <span className="text-xs text-suave">{a.pessoas.map((p) => p.nomeUrna).join(" · ")}</span>
-                <span className="text-[13px] font-bold text-link">Comparar ›</span>
+                <span className="text-[13px] font-semibold text-link">Comparar ›</span>
               </button>
             ))}
           </div>
@@ -136,7 +136,7 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
             <strong>{ids.length} de {MAX_COMPARAR} pessoas</strong>
             <button type="button" onClick={() => trocar([])} className={chip}>Limpar comparação</button>
           </div>
-          <div className="overflow-x-auto rounded-[14px] border border-borda bg-card">
+          <div className="overflow-x-auto rounded-card bg-card">
             <table className="w-full border-collapse" style={{ minWidth: 170 + ids.length * 170 }}>
               <thead>
                 <tr>
@@ -148,11 +148,11 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
                         {!c ? <span className="text-sm text-suave">Carregando…</span> : c === "erro" ? <span className="text-sm text-suave">Não deu para carregar.</span> : (
                           <span className="grid justify-items-start gap-1.5">
                             <Foto url={c.fotoUrl} tamanho={52} />
-                            <Link href={`/p/${c.id}`} className="text-[15px] font-bold text-texto">{c.nomeUrna}</Link>
+                            <Link href={`/p/${c.id}`} className="text-[15px] font-semibold text-texto">{c.nomeUrna}</Link>
                             <span className="inline-flex items-center gap-1 text-xs text-suave">{c.cargo} · <span aria-hidden="true" className="size-2 rounded-full" style={{ background: corPartido(c.partidoUf.slice(0, -3)) }} />{c.partidoUf}</span>
                           </span>
                         )}
-                        <button type="button" onClick={() => trocar(ids.filter((x) => x !== id))} className="mt-1 min-h-7 text-xs text-suave underline underline-offset-2">Tirar ×</button>
+                        <button type="button" onClick={() => trocar(ids.filter((x) => x !== id))} className="mt-1 min-h-7 text-xs text-suave hover:text-texto">Tirar ×</button>
                       </th>
                     );
                   })}
@@ -168,7 +168,7 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
                       return (
                         <td key={id} className="border-b border-borda px-3 py-3 align-top">
                           {v && <>
-                            <span className="block text-xl leading-tight font-bold tabular-nums">{v.valor ?? "—"}</span>
+                            <span className="block text-xl leading-tight font-semibold tabular-nums">{v.valor ?? "—"}</span>
                             {v.nota && <span className="mt-0.5 block text-xs text-suave">{v.nota}</span>}
                           </>}
                         </td>

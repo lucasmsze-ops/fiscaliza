@@ -71,7 +71,9 @@ export function cadeirasHemiciclo(n: number, fileiras: number, raioInterno = 0.4
       pts.push({ x: r * Math.cos(a), y: r * Math.sin(a), a });
     }
   });
-  return pts.sort((p, q) => q.a - p.a || Math.hypot(p.x, p.y) - Math.hypot(q.x, q.y)).map(({ x, y }) => ({ x, y }));
+  // Arredondado: Math.cos/sin podem diferir no último dígito entre o Node e o navegador (aviso de hidratação).
+  const arred = (v: number) => Math.round(v * 1e10) / 1e10;
+  return pts.sort((p, q) => q.a - p.a || Math.hypot(p.x, p.y) - Math.hypot(q.x, q.y)).map(({ x, y }) => ({ x: arred(x), y: arred(y) }));
 }
 
 /** Quem ocupa cada cadeira na data, por Casa (a mesma regra em /congresso e na Visão geral). */

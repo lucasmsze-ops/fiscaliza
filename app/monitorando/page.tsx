@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function PaginaMonitorando() {
   return (
     <>
-      <BarraTopo secao="Neste aparelho" pagina="Monitorando" />
+      <BarraTopo />
       <Monitorando />
     </>
   );

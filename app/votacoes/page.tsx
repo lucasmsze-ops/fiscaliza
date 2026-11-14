@@ -17,7 +17,7 @@ export default async function Votacoes() {
   const coleta = atualizacoes.map((a) => a.coletadoEm).sort().at(-1) ?? null;
   return (
     <>
-      <BarraTopo secao="Páginas" pagina="Votações" />
+      <BarraTopo busca="votacoes" />
       <PainelVotacoes pauta={pauta} porDia={d.porDia} mesInicial={d.mesInicial} votacoesMes={d.votacoesMes} ultimaSessao={d.ultimaSessao} coleta={coleta} />
     </>
   );

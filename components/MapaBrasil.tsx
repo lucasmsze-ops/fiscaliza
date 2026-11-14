@@ -1,6 +1,7 @@
 "use client";
 
 import { APAGADO, ESTADOS_MAPA, MAPA_H, MAPA_W, ROTULO_FORA } from "@/lib/mapa-brasil";
+import { rotuloRegiao } from "@/lib/regioes";
 
 /**
  * Mapa do Brasil por estado (contornos de lib/mapa-brasil.ts). Cada estado é um botão; a cor vem de
@@ -36,8 +37,8 @@ export function MapaBrasil({ cores, sel, nomes, onPick }: {
         const [x, y] = fora ?? [e.x, e.y];
         return (
           <span key={uf} aria-hidden="true"
-            className={`pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 text-[11px] font-bold ${fora || cores[uf] === APAGADO ? "text-texto" : "text-white [text-shadow:0_1px_2px_#000a]"}`}
-            style={{ left: `${(x / MAPA_W) * 100}%`, top: `${(y / MAPA_H) * 100}%`, opacity: sel && sel !== uf ? 0.55 : 1 }}>
+            className={`pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 text-[11px] font-semibold ${fora || cores[uf] === APAGADO || (sel && sel !== uf) ? "text-texto" : ""}`}
+            style={{ left: `${(x / MAPA_W) * 100}%`, top: `${(y / MAPA_H) * 100}%`, opacity: sel && sel !== uf ? 0.55 : 1, color: fora || cores[uf] === APAGADO || (sel && sel !== uf) ? undefined : rotuloRegiao(cores[uf]!) }}>
             {uf}
           </span>
         );

@@ -8,11 +8,12 @@ import { alternar, limpar, marcarVistos, podarVistos, useMonitorando } from "@/l
 import { corPartido } from "@/lib/partidos";
 import { normalizar } from "@/lib/texto";
 import type { TipoVoto } from "@/lib/types";
-import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
+import { SelectChip } from "./SelectChip";
+import { BOTAO, CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO, CHIP, CHIP_ON } from "@/lib/estilo";
 
 const card = CARD;
-const chip = "inline-flex h-9 items-center rounded-xl border border-borda bg-card px-4 text-xs font-bold whitespace-nowrap hover:border-destaque";
-const chipOn = "inline-flex h-9 items-center rounded-xl border border-destaque bg-destaque px-4 text-xs font-bold whitespace-nowrap text-destaque-texto";
+const chip = CHIP;
+const chipOn = CHIP_ON;
 const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
 const VOTO: Record<TipoVoto, string> = {
   sim: "Votou Sim", nao: "Votou Não", abstencao: "Absteve-se", obstrucao: "Votou obstrução", art17: "Presidia a sessão",
@@ -80,7 +81,7 @@ export function Monitorando() {
         </div>
         {e.pessoas.length > 0 && <button type="button" onClick={() => { if (window.confirm("Parar de monitorar todo mundo neste aparelho?")) limpar(); }} className={chip}>Limpar a lista</button>}
       </div>
-      <p className="rounded-xl border border-borda p-3.5 text-sm leading-relaxed text-suave">
+      <p className="rounded-xl bg-preench p-3.5 text-sm leading-relaxed text-suave">
         A lista fica só neste navegador: sem conta, sem e-mail e sem nada guardado no nosso servidor. Se você limpar os dados do
         navegador ou usar uma aba anônima, ela some. O Fiscaliza não manda avisos.
       </p>
@@ -100,7 +101,7 @@ export function Monitorando() {
                 return (
                   <button key={t} type="button" aria-pressed={tipo === t} onClick={() => setTipo(tipo === t ? "todos" : t)}
                     className={`grid gap-1 rounded-xl border bg-card p-3 text-left ${tipo === t ? "border-link" : "border-borda"}`}>
-                    <span className="text-[28px] leading-none font-bold tabular-nums">{c.n}</span>
+                    <span className="text-[28px] leading-none font-semibold tabular-nums">{c.n}</span>
                     <strong className="text-sm">{c.n === 1 ? um : varios}</strong>
                     <span className="text-xs text-suave">{c.de.length ? `de ${c.de.join(", ")}` : "nada novo"}</span>
                   </button>
@@ -134,15 +135,15 @@ export function Monitorando() {
                     <div className="flex items-center gap-3">
                       {r.fotoUrl
                         // <img> de propósito: a foto vem direto da URL oficial, sem passar pela Vercel (CLAUDE.md).
-                        ? <img src={r.fotoUrl} alt="" width={48} height={48} loading="lazy" className="size-12 shrink-0 rounded-full bg-fundo object-cover object-top" />
-                        : <span aria-hidden="true" className="size-12 shrink-0 rounded-full bg-fundo" />}
+                        ? <img src={r.fotoUrl} alt="" width={48} height={48} loading="lazy" className="size-12 shrink-0 rounded-full bg-preench object-cover object-top" />
+                        : <span aria-hidden="true" className="size-12 shrink-0 rounded-full bg-preench" />}
                       <Link href={`/p/${r.id}`} className="grid min-w-0 flex-1 text-texto no-underline">
                         <strong className="truncate text-base">{r.nomeUrna}</strong>
                         <span className="inline-flex items-center gap-1 text-xs text-suave">
                           {r.cargo} · <span aria-hidden="true" className="size-2 rounded-full" style={{ background: corPartido(r.partidoUf.slice(0, -3)) }} />{r.partidoUf}
                         </span>
                       </Link>
-                      {n > 0 && <span className="shrink-0 rounded-full bg-destaque px-2.5 py-1 text-xs font-bold whitespace-nowrap text-destaque-texto">{plural(n, "novidade", "novidades")}</span>}
+                      {n > 0 && <span className="shrink-0 rounded-full bg-destaque px-2.5 py-1 text-xs font-semibold whitespace-nowrap text-destaque-texto">{plural(n, "novidade", "novidades")}</span>}
                     </div>
                     <dl className="grid text-[13px]">
                       <div className="flex justify-between gap-2.5 border-t border-borda py-2">
@@ -157,8 +158,8 @@ export function Monitorando() {
                       </div>
                     </dl>
                     <div className="flex flex-wrap justify-between gap-2.5 border-t border-borda pt-2.5">
-                      <Link href={`/p/${r.id}`} className="text-sm font-bold">Abrir crachá ›</Link>
-                      <button type="button" onClick={() => alternar(p.id, p.nome)} className="text-[13px] text-suave underline underline-offset-2">Parar de monitorar</button>
+                      <Link href={`/p/${r.id}`} className="text-sm font-semibold">Abrir crachá ›</Link>
+                      <button type="button" onClick={() => alternar(p.id, p.nome)} className="text-[13px] text-suave hover:text-texto">Parar de monitorar</button>
                     </div>
                   </>
                 )}
@@ -173,10 +174,8 @@ export function Monitorando() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 id="mo-feed" className={TITULO_SECAO}>O que aconteceu</h2>
             <div className="flex flex-wrap items-center gap-1.5">
-              <select value={quem} onChange={(x) => { setQuem(x.target.value); setLim(12); }} aria-label="Pessoa" className="h-9 rounded-xl border border-borda bg-card px-2.5 text-base sm:text-xs">
-                <option value="todos">Todas as pessoas</option>
-                {resumos.map((r) => <option key={r.id} value={r.id}>{r.nomeUrna}</option>)}
-              </select>
+              <SelectChip valor={quem} padrao="todos" rotulo="Pessoa" onChange={(v) => { setQuem(v); setLim(12); }}
+                opcoes={[{ valor: "todos", texto: "Todas as pessoas" }, ...resumos.map((r) => ({ valor: r.id, texto: r.nomeUrna }))]} />
               {([["todos", "Tudo"], ["voto", "Votos"], ["proposta", "Propostas"]] as const).map(([k, l]) => (
                 <button key={k} type="button" aria-pressed={tipo === k} onClick={() => { setTipo(k); setLim(12); }} className={tipo === k ? chipOn : chip}>{l}</button>
               ))}
@@ -188,21 +187,21 @@ export function Monitorando() {
               <li key={`${x.quem.id}|${x.chave}`} className="flex gap-3 border-b border-borda py-3 last:border-b-0">
                 <span className="grid w-[86px] shrink-0 content-start gap-1">
                   <span className="text-xs text-suave tabular-nums">{ddmm(x.data)}</span>
-                  <span className={`w-fit rounded-md px-1.5 py-0.5 text-[11px] font-bold ${x.tipo === "voto" ? "bg-link/15 text-link" : "bg-destaque/25 text-texto"}`}>{x.tipo === "voto" ? "voto" : "proposta"}</span>
+                  <span className={`w-fit rounded-md px-1.5 py-0.5 text-[11px] font-semibold ${x.tipo === "voto" ? "bg-link/15 text-link" : "bg-destaque/25 text-texto"}`}>{x.tipo === "voto" ? "voto" : "proposta"}</span>
                 </span>
                 <span className="grid min-w-0 flex-1 gap-0.5 text-sm">
-                  <Link href={`/p/${x.quem.id}`} className="font-bold text-texto no-underline">{x.quem.nomeUrna}</Link>
-                  <span className="font-bold">{x.tipo === "voto" ? `${VOTO[x.voto!]}${x.orientacao ? ` (${x.orientacao})` : ""}` : `Apresentou ${x.materia}`}</span>
+                  <Link href={`/p/${x.quem.id}`} className="font-semibold text-texto no-underline">{x.quem.nomeUrna}</Link>
+                  <span className="font-semibold">{x.tipo === "voto" ? `${VOTO[x.voto!]}${x.orientacao ? ` (${x.orientacao})` : ""}` : `Apresentou ${x.materia}`}</span>
                   {x.externo
                     ? <a href={x.href} {...externo} className="line-clamp-2 text-[13px] text-suave">{x.titulo} ↗</a>
                     : <Link href={x.href} className="line-clamp-2 text-[13px] text-suave">{x.tipo === "voto" && x.materia ? `${x.materia} · ` : ""}{x.titulo}</Link>}
                 </span>
-                {x.novo && <span className="shrink-0 self-start text-[11px] font-bold tracking-wider text-link">NOVO</span>}
+                {x.novo && <span className="shrink-0 self-start text-[11px] font-semibold text-link">NOVO</span>}
               </li>
             ))}
             {feed.length === 0 && <li className="py-3 text-sm text-suave">Nada com esses filtros.</li>}
           </ul>
-          {feed.length > lim && <button type="button" onClick={() => setLim(lim + 20)} className={`${chip} justify-self-start`}>Ver mais ({feed.length - lim})</button>}
+          {feed.length > lim && <button type="button" onClick={() => setLim(lim + 20)} className={`${BOTAO} justify-self-center`}>Ver mais ({feed.length - lim})</button>}
         </section>
       )}
     </main>
@@ -225,12 +224,12 @@ function Adicionar({ ja }: { ja: Set<string> }) {
     <div className="relative w-full min-w-[260px] sm:w-auto sm:flex-[0_1_420px]">
       <label htmlFor="mo-add" className="sr-only">Monitorar mais alguém</label>
       <input id="mo-add" type="search" autoComplete="off" value={q} onFocus={carregar} onChange={(x) => { setQ(x.target.value); carregar(); }}
-        placeholder="+ Monitorar mais alguém (digite o nome)" className="h-11 w-full rounded-xl border border-borda bg-card px-3.5 text-base outline-none focus:border-link sm:text-sm" />
+        placeholder="+ Monitorar mais alguém (digite o nome)" className="h-11 w-full rounded-xl bg-preench px-3.5 text-base text-texto outline-none placeholder:text-suave focus:ring-2 focus:ring-destaque/40 sm:text-[15px]" />
       {sugestoes.length > 0 && (
-        <div className="absolute inset-x-0 top-12 z-10 overflow-hidden rounded-xl border border-borda bg-card shadow-xl">
+        <div className="absolute inset-x-0 top-12 z-10 overflow-hidden rounded-xl bg-card shadow-xl">
           {sugestoes.map((p) => (
-            <button key={p.id} type="button" onClick={() => { alternar(p.id, p.nomeUrna); setQ(""); }} className="flex w-full items-center gap-2.5 px-3.5 py-2.5 text-left text-sm hover:bg-fundo">
-              {p.fotoUrl ? <img src={p.fotoUrl} alt="" width={32} height={32} loading="lazy" className="size-8 shrink-0 rounded-full bg-fundo object-cover object-top" /> : <span aria-hidden="true" className="size-8 shrink-0 rounded-full bg-fundo" />}
+            <button key={p.id} type="button" onClick={() => { alternar(p.id, p.nomeUrna); setQ(""); }} className="flex w-full items-center gap-2.5 px-3.5 py-2.5 text-left text-sm hover:bg-preench-forte">
+              {p.fotoUrl ? <img src={p.fotoUrl} alt="" width={32} height={32} loading="lazy" className="size-8 shrink-0 rounded-full bg-preench object-cover object-top" /> : <span aria-hidden="true" className="size-8 shrink-0 rounded-full bg-preench" />}
               <span><strong>{p.nomeUrna}</strong> <span className="text-xs text-suave">{p.cargo} · {p.partidoUf}</span></span>
             </button>
           ))}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BarraTopo } from "@/components/BarraTopo";
+import { BarraVoltar } from "@/components/BarraVoltar";
 import { BarraPlacar } from "@/components/CartaoVotacao";
 import { TextoLongo } from "@/components/TextoLongo";
 import { inteiro } from "@/lib/card";
@@ -58,7 +58,7 @@ function LinhaPartido({ p, v }: { p: PartidoNaVotacao; v: VotacaoPagina }) {
           <strong className="text-[15px]">{p.partido}</strong>
           <span className="truncate text-[13px] text-suave">· {p.total} {pessoas}</span>
         </span>
-        {p.membros && <span aria-hidden="true" className="shrink-0 text-xs font-bold text-link group-open:hidden">ver quem ▾</span>}
+        {p.membros && <span aria-hidden="true" className="shrink-0 text-xs font-semibold text-link group-open:hidden">ver quem ▾</span>}
       </span>
       {!v.secreta && (
         <span className="text-xs text-suave">
@@ -80,14 +80,14 @@ function LinhaPartido({ p, v }: { p: PartidoNaVotacao; v: VotacaoPagina }) {
     <li className="border-b border-borda last:border-b-0">
       <details className="group">
         <summary className="cursor-pointer list-none py-3 [&::-webkit-details-marker]:hidden">{resumo}</summary>
-        <ul className="mb-3 grid gap-x-4 rounded-xl bg-fundo px-3 py-1 sm:grid-cols-2">
+        <ul className="mb-3 grid gap-x-4 rounded-xl bg-preench px-3 py-1 sm:grid-cols-2">
           {p.membros.map((m) => (
             <li key={`${m.n}|${m.u}`} className="flex items-center justify-between gap-2 border-b border-borda py-2 text-[13px] last:border-b-0">
               <span className="min-w-0 truncate">
-                {m.i ? <Link href={`/p/${m.i}`} className="font-bold text-texto">{m.n}</Link> : <strong>{m.n}</strong>}
+                {m.i ? <Link href={`/p/${m.i}`} className="font-semibold text-texto">{m.n}</Link> : <strong>{m.n}</strong>}
                 <span className="text-suave"> · {m.u}</span>
               </span>
-              <span className={`shrink-0 rounded-md px-2 py-0.5 text-xs font-bold ${m.v === "sim" ? "bg-texto text-card" : m.v === "nao" ? "bg-suave text-card" : "border border-borda text-suave"}`}>{VOTO_PESSOA[m.v] ?? m.v}</span>
+              <span className={`shrink-0 rounded-md px-2 py-0.5 text-xs font-semibold ${m.v === "sim" ? "bg-texto text-card" : m.v === "nao" ? "bg-suave text-card" : "border border-borda text-suave"}`}>{VOTO_PESSOA[m.v] ?? m.v}</span>
             </li>
           ))}
         </ul>
@@ -111,18 +111,18 @@ export default async function PaginaVotacao({ params }: Props) {
 
   return (
     <>
-    <BarraTopo secao="Votações" pagina="Votação" />
+    <BarraVoltar volta="/votacoes" rotulo="Votações" />
     <main className="grid gap-6 pb-8">
       <section className={`${card} grid gap-3.5`}>
         <p className="text-xs text-suave">
           <Link href="/votacoes" className="underline underline-offset-2">{nomeCasa(v)}</Link> · Plenário · {dataLonga(v.data)}
         </p>
         <div>
-          <h1 className="text-[28px] leading-tight font-bold sm:text-[34px]">{titulo(v)}</h1>
+          <h1 className="text-[28px] leading-tight font-semibold sm:text-[34px]">{titulo(v)}</h1>
           {tipoPorExtenso(v.proposicao) && <p className="mt-1 text-sm text-suave">{tipoPorExtenso(v.proposicao)}</p>}
           {v.temas && (
             <p className="mt-2 flex flex-wrap gap-1.5" aria-label="Temas oficiais">
-              {v.temas.map((t) => <span key={t} className="rounded-md bg-destaque/20 px-2 py-0.5 text-xs font-bold">{t}</span>)}
+              {v.temas.map((t) => <span key={t} className="rounded-md bg-destaque/20 px-2 py-0.5 text-xs font-semibold">{t}</span>)}
             </p>
           )}
         </div>
@@ -142,7 +142,7 @@ export default async function PaginaVotacao({ params }: Props) {
             )}
           </div>
         )}
-        <a href={v.urlOficial} {...externo} className="inline-flex h-11 w-fit items-center rounded-xl border border-borda px-4 text-[13px] font-bold text-texto no-underline hover:border-destaque">
+        <a href={v.urlOficial} {...externo} className="inline-flex h-11 w-fit items-center rounded-full bg-preench px-4 text-[13px] font-semibold text-texto no-underline hover:bg-preench-forte">
           Texto completo {v.casa === "senado" ? "no Senado" : "na Câmara"} ›
         </a>
       </section>
@@ -153,17 +153,17 @@ export default async function PaginaVotacao({ params }: Props) {
           {/* A regra de aprovação do tipo fica num "i" no canto (pedido de 2026-11-14); popover nativo, sem JavaScript. */}
           {regra && <>
             <button type="button" popoverTarget="vt-regra" aria-label="Como este tipo de proposta é aprovado"
-              className="inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-borda text-sm font-bold text-link hover:border-destaque">i</button>
-            <div id="vt-regra" popover="auto" className="m-auto max-w-[min(24rem,calc(100vw-2rem))] rounded-card border border-borda bg-card p-4 text-left text-sm leading-relaxed text-texto shadow-xl backdrop:bg-black/40">
+              className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-preench text-sm font-semibold text-link hover:bg-preench-forte">i</button>
+            <div id="vt-regra" popover="auto" className="m-auto max-w-[min(24rem,calc(100vw-2rem))] rounded-card bg-card p-4 text-left text-sm leading-relaxed text-texto shadow-xl backdrop:bg-black/40">
               <p>{regra}</p>
-              <button type="button" popoverTarget="vt-regra" popoverTargetAction="hide" className="mt-3 text-xs underline underline-offset-2">Fechar</button>
+              <button type="button" popoverTarget="vt-regra" popoverTargetAction="hide" className="mt-3 text-[13px] font-semibold text-link">Fechar</button>
             </div>
           </>}
         </div>
         <p className="text-[15px] leading-relaxed">
           <strong>Votado nesse dia:</strong> {objeto ? EXPLICA_OBJETO[objeto] : "a descrição está na página oficial"}{turno ? `, ${turno}` : ""}.
         </p>
-        <p className="text-[32px] leading-none font-bold">
+        <p className="text-[32px] leading-none font-semibold">
           {v.resultado === "aprovada" ? "Aprovada" : v.resultado === "rejeitada" ? "Rejeitada" : "Resultado não informado pela fonte"}
         </p>
         {v.secreta || v.semDirecao ? (
@@ -187,7 +187,7 @@ export default async function PaginaVotacao({ params }: Props) {
               <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-borda-forte" aria-hidden="true" /><strong>{inteiro(c.abstencao)}</strong> Abst.</li>
               {c.obstrucao > 0 && <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-borda-forte" aria-hidden="true" /><strong>{inteiro(c.obstrucao)}</strong> Obstrução</li>}
               {c.outros > 0 && <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm border border-borda" aria-hidden="true" /><strong>{inteiro(c.outros)}</strong> {v.casa === "senado" ? "presidente da sessão" : "sem direção divulgada"}</li>}
-              <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm border border-borda bg-fundo" aria-hidden="true" /><strong>{inteiro(c.naoVotou)}</strong> Não votou</li>
+              <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm border border-borda bg-preench" aria-hidden="true" /><strong>{inteiro(c.naoVotou)}</strong> Não votou</li>
             </ul>
           </>
         )}
@@ -204,14 +204,14 @@ export default async function PaginaVotacao({ params }: Props) {
         <ul>{v.partidos.slice(0, PRIMEIROS).map((p) => <LinhaPartido key={p.partido} p={p} v={v} />)}</ul>
         {v.partidos.length > PRIMEIROS && (
           <details className="group">
-            <summary className="flex h-11 cursor-pointer list-none items-center text-[13px] font-bold text-link underline underline-offset-2 group-open:hidden">Ver os {v.partidos.length} partidos</summary>
+            <summary className="flex h-11 cursor-pointer list-none items-center text-[13px] font-semibold text-link group-open:hidden">Ver os {v.partidos.length} partidos</summary>
             <ul>{v.partidos.slice(PRIMEIROS).map((p) => <LinhaPartido key={p.partido} p={p} v={v} />)}</ul>
           </details>
         )}
         {v.naoVotouSemPartido > 0 && (
           <p className="pt-2 text-xs text-suave">Mais {v.naoVotouSemPartido} deputados não votaram e não têm o partido identificado aqui: não estão no nosso registro de mandatos (como quem saiu da Câmara e não disputou 2026).</p>
         )}
-        <p className="pt-2 text-xs text-suave"><Link href={hrefSecao("congresso")} className="underline underline-offset-2">Como contamos</Link></p>
+        <p className="pt-2"><Link href={hrefSecao("congresso")} className="text-[13px] no-underline">Como contamos</Link></p>
       </section>
       {v.caminho.length > 1 && (
         <section className={`${card} grid gap-3`} aria-labelledby="vt-caminho">
@@ -230,7 +230,7 @@ export default async function PaginaVotacao({ params }: Props) {
                     <span className="text-xs text-suave">{ddmmaaaa(x.data)}{x.atual && <strong className="text-texto"> · esta votação</strong>}</span>
                     {x.atual
                       ? <strong className="text-sm">{rotulo}</strong>
-                      : <Link href={hrefVotacao(x.id)} className="text-sm font-bold underline underline-offset-2">{rotulo}</Link>}
+                      : <Link href={hrefVotacao(x.id)} className="text-sm font-semibold no-underline">{rotulo}</Link>}
                     <span className="line-clamp-2 text-xs leading-relaxed text-suave">{x.descricao}</span>
                   </span>
                 </li>

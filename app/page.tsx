@@ -14,7 +14,7 @@ export default async function Home() {
   const d = await montarVisao(repo);
   return (
     <>
-      <BarraTopo secao="Páginas" pagina="Visão geral" />
+      <BarraTopo busca="politicos" />
       <VisaoGeral d={d} />
     </>
   );

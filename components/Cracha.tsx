@@ -11,7 +11,7 @@ import { BotaoMonitorar } from "./BotaoMonitorar";
 import type { Mandato } from "@/lib/types";
 import { Compartilhar } from "./Compartilhar";
 import { Termo } from "./Termo";
-import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
+import { CARD, NUMERO, ROTULO, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
 
 const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
 const dataBr = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
@@ -33,22 +33,15 @@ export function fimDoMandato(m: Mandato): string | null {
   return null;
 }
 
-function Icone({ d }: { d: string }) {
+/** Número principal do crachá (sem o ícone colorido do protótipo, que saiu em 2026-11-14). */
+function Numero({ rotulo, valor, detalhe, largo = false }: { rotulo: ReactNode; valor: ReactNode; detalhe?: ReactNode; largo?: boolean }) {
   return (
-    <span className="hidden size-[45px] shrink-0 items-center justify-center rounded-xl bg-destaque text-destaque-texto sm:inline-flex">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={d} /></svg>
-    </span>
-  );
-}
-
-function Numero({ rotulo, valor, detalhe, icone, largo = false }: { rotulo: ReactNode; valor: ReactNode; detalhe?: ReactNode; icone: string; largo?: boolean }) {
-  return (
-    <div className={`${card} flex items-center justify-between gap-3 ${largo ? "col-span-2" : ""}`}>
-      <span className="grid gap-1">
-        <span className="text-xs font-bold text-suave">{rotulo}</span>
-        <span className="text-lg font-bold tabular-nums sm:text-xl">{valor} {detalhe && <span className="block text-xs font-bold text-[#2f855a] sm:inline dark:text-[#68d391]">{detalhe}</span>}</span>
-      </span>
-      <Icone d={icone} />
+    // Rótulo no topo e número embaixo, alinhados entre os cartões vizinhos mesmo quando o rótulo quebra.
+    <div className={`${card} grid content-start gap-1 ${largo ? "col-span-2" : ""}`}>
+      {/* No celular o rótulo reserva duas linhas: os números dos dois cartões lado a lado ficam na mesma altura. */}
+      <span className={`${ROTULO} ${largo ? "" : "max-sm:min-h-[2lh]"}`}>{rotulo}</span>
+      <span className={NUMERO}>{valor}</span>
+      {detalhe && <span className="text-xs text-suave tabular-nums">{detalhe}</span>}
     </div>
   );
 }
@@ -60,7 +53,7 @@ function Numero({ rotulo, valor, detalhe, icone, largo = false }: { rotulo: Reac
  */
 /** Mínimo de votações com a orientação identificada para mostrar o percentual. */
 const MINIMO_FIDELIDADE = 20;
-const COR_COM = "var(--destaque)", COR_CONTRA = "#f6ad55";
+const COR_COM = "var(--destaque)", COR_CONTRA = "#ff9f0a"; // systemOrange (escuro)
 
 /** "Votou com o partido?" (pizza do protótipo): com e contra a orientação da bancada do partido no dia. */
 function ComPartido({ f, periodo }: { f: { com: number; contra: number }; periodo: string }) {
@@ -70,7 +63,7 @@ function ComPartido({ f, periodo }: { f: { com: number; contra: number }; period
   return (
     <div className={`${card} grid content-start gap-3`}>
       <div>
-        <h2 className="text-lg font-bold"><Termo id="cr-fid" termo="comPartido">Votou com o partido?</Termo></h2>
+        <h2 className="text-lg font-semibold"><Termo id="cr-fid" termo="comPartido">Votou com o partido?</Termo></h2>
         <p className="mt-1 text-[13px] text-suave">Nas {inteiro(total)} votações nominais de {periodo} em que deu para saber a orientação da bancada do partido no dia.</p>
       </div>
       {total < MINIMO_FIDELIDADE ? (
@@ -85,7 +78,7 @@ function ComPartido({ f, periodo }: { f: { com: number; contra: number }; period
             {[[COR_COM, pCom, `com o partido (${inteiro(f.com)} votações)`], [COR_CONTRA, 100 - pCom, `contra o partido (${inteiro(f.contra)} votações)`]].map(([cor, v, t]) => (
               <div key={String(t)} className="flex items-start gap-2.5">
                 <span className="mt-1.5 size-3 shrink-0 rounded-full" style={{ background: String(cor) }} />
-                <span><span className="text-xl font-bold tabular-nums">{umaCasa(Number(v))}%</span><br /><span className="text-xs text-suave">{t}</span></span>
+                <span><span className="text-xl font-semibold tabular-nums">{umaCasa(Number(v))}%</span><br /><span className="text-xs text-suave">{t}</span></span>
               </div>
             ))}
           </div>
@@ -119,19 +112,18 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
 
   return (
     <>
-      <section aria-labelledby="nome-politico" className="relative pb-2">
-        <div className="h-20 rounded-card bg-destaque sm:h-[180px]" />
-        <div className="relative mx-3 -mt-10 flex flex-wrap items-center justify-between gap-4 rounded-card border-[1.5px] border-card bg-card/95 p-4 shadow-card backdrop-blur-xl sm:mx-[22px] sm:-mt-[70px] sm:gap-5 sm:px-[22px] sm:py-[18px]">
+      <section aria-labelledby="nome-politico">
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-card bg-card p-4 sm:gap-5 sm:p-5">
           <div className="flex min-w-0 items-center gap-3 sm:gap-[18px]">
             {d.fotoUrl
               // <img> de propósito: a foto vem direto da URL oficial, sem passar pela Vercel (CLAUDE.md).
-              ? <img src={d.fotoUrl} alt={`Foto oficial de ${d.nomeUrna}`} width={90} height={90} decoding="async" className="size-16 shrink-0 rounded-full bg-fundo object-cover object-top sm:size-[90px]" />
-              : <span aria-hidden="true" className="inline-flex size-16 shrink-0 items-center justify-center rounded-full bg-fundo text-xl font-black sm:size-[90px] sm:text-3xl">{iniciais(d.nomeUrna)}</span>}
+              ? <img src={d.fotoUrl} alt={`Foto oficial de ${d.nomeUrna}`} width={90} height={90} decoding="async" className="size-16 shrink-0 rounded-full bg-preench object-cover object-top sm:size-[90px]" />
+              : <span aria-hidden="true" className="inline-flex size-16 shrink-0 items-center justify-center rounded-full bg-preench text-xl font-bold sm:size-[90px] sm:text-3xl">{iniciais(d.nomeUrna)}</span>}
             <div className="grid min-w-0 gap-1.5">
-              <h1 id="nome-politico" className="text-xl leading-tight font-black break-words sm:text-3xl">{d.nomeUrna}</h1>
+              <h1 id="nome-politico" className="text-2xl font-bold break-words sm:text-3xl">{d.nomeUrna}</h1>
               <div className="flex flex-wrap items-center gap-2.5">
-                <span className="text-sm font-bold text-suave sm:text-base">{cargoCadeira} {pelaUf(uf)}</span>
-                <span className="inline-flex h-[26px] items-center rounded-lg px-3 text-xs font-bold"
+                <span className="text-sm font-semibold text-suave sm:text-base">{cargoCadeira} {pelaUf(uf)}</span>
+                <span className="inline-flex h-[26px] items-center rounded-lg px-3 text-xs font-semibold"
                   style={{ background: `color-mix(in srgb, ${corPartido(partido)} 24%, transparent)` }}>
                   {partido}{nome && nome.toLowerCase() !== partido.toLowerCase() ? ` · ${nome}` : ""}
                 </span>
@@ -147,27 +139,25 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
           {/* Celular: os três botões numa linha, com o mesmo tamanho; a partir do tablet, lado a lado com o texto inteiro. */}
           <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:w-auto sm:flex-wrap">
             <BotaoMonitorar id={d.id} nome={d.nomeUrna} />
-            <Link href={`/comparar?ids=${d.id}`} className="inline-flex h-10 items-center justify-center rounded-xl border border-borda bg-card px-3 text-xs font-bold text-texto no-underline hover:border-destaque sm:px-4">
+            <Link href={`/comparar?ids=${d.id}`} className="inline-flex h-10 items-center justify-center rounded-full bg-preench px-3 text-[13px] font-semibold text-link no-underline hover:bg-preench-forte sm:px-4">
               <span className="sm:hidden">Comparar</span><span className="hidden sm:inline">Comparar com outro político</span>
             </Link>
             <Compartilhar rotulo="Compartilhar" titulo={`${d.nomeUrna} · ${cargoCadeira} · ${partido}-${uf}`} texto="O que fez no mandato, com dados oficiais."
-              classe="inline-flex h-10 w-full items-center justify-center rounded-xl border border-borda bg-card px-3 text-xs font-bold hover:border-destaque sm:w-auto sm:px-4" />
+              classe="inline-flex h-10 w-full items-center justify-center rounded-full bg-preench px-3 text-[13px] font-semibold text-link hover:bg-preench-forte sm:w-auto sm:px-4" />
           </div>
         </div>
       </section>
 
       <section aria-label="Números principais" className="grid grid-cols-2 gap-3 sm:gap-[18px]">
         {salario && (
-          <Numero icone="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
-            rotulo={<Termo id="cr-salario" termo="salario">Salário por mês</Termo>} valor={reaisExatos(salario.valor)} />
+          <Numero rotulo={<Termo id="cr-salario" termo="salario">Salário por mês</Termo>} valor={reaisExatos(salario.valor)} />
         )}
         {n.tipo === "mandato" && (
-          <Numero icone="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
-            rotulo={<Termo id="cr-part" termo="participacao">Participação em votações, {n.periodo}</Termo>}
-            valor={pct(n.participacao)} detalhe={`${inteiro(n.participacao.numerador)} de ${inteiro(n.participacao.denominador)}`} />
+          <Numero rotulo={<Termo id="cr-part" termo="participacao">Participação em votações</Termo>}
+            valor={pct(n.participacao)} detalhe={`${inteiro(n.participacao.numerador)} de ${inteiro(n.participacao.denominador)} · ${n.periodo}`} />
         )}
-        {n.tipo === "primeiro_voto" && <Numero icone="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" rotulo="Votações" valor="Primeiro voto em fevereiro de 2027" largo />}
-        {n.tipo === "sem_mandato" && <Numero icone="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 16v-5M12 8h.01" rotulo="Votações" valor={`Sem mandato no Congresso em ${n.periodo}`} largo />}
+        {n.tipo === "primeiro_voto" && <Numero rotulo="Votações" valor="Primeiro voto em fevereiro de 2027" largo />}
+        {n.tipo === "sem_mandato" && <Numero rotulo="Votações" valor={`Sem mandato no Congresso em ${n.periodo}`} largo />}
       </section>
 
       {n.tipo === "mandato" && (fidelidade || (comparacao?.mediaParticipacao != null && n.participacao.percentual !== null)) && (
@@ -176,13 +166,13 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
           {comparacao?.mediaParticipacao != null && n.participacao.percentual !== null && (
             <div className={`${card} grid gap-3`}>
               <div>
-                <h2 className="text-lg font-bold">Participação nas votações</h2>
+                <h2 className="text-lg font-semibold">Participação nas votações</h2>
                 <p className="mt-1 text-[13px] text-suave">{n.periodo}, ao lado da média de quem está em exercício {comparacao.casa === "senado" ? "no Senado" : "na Câmara"} hoje.</p>
               </div>
               <div className="flex h-[140px] items-end justify-center gap-9 border-b border-borda sm:h-[180px]">
                 {[[d.nomeUrna, n.participacao.percentual, "var(--destaque)"], [casaMedia, comparacao.mediaParticipacao, "var(--borda-forte)"]].map(([l, v, c]) => (
                   <div key={String(l)} className="flex h-full w-[84px] flex-col items-center justify-end gap-1.5">
-                    <span className="text-lg font-bold tabular-nums">{umaCasa(Number(v))}%</span>
+                    <span className="text-lg font-semibold tabular-nums">{umaCasa(Number(v))}%</span>
                     <span className="block w-full rounded-t-xl" style={{ height: `calc((100% - 32px) * ${Number(v) / 100})`, background: String(c) }} />
                   </div>
                 ))}
@@ -190,7 +180,7 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
               <div className="flex justify-center gap-9 text-center text-xs text-suave">
                 <span className="w-[84px] truncate">{d.nomeUrna.split(" ")[0]}</span><span className="w-[84px]">{casaMedia}</span>
               </div>
-              <Link href={hrefSecao("participacao")} className="text-xs underline underline-offset-2">como contamos</Link>
+              <Link href={hrefSecao("participacao")} className="text-[13px] no-underline">Como contamos</Link>
             </div>
           )}
         </section>
@@ -199,18 +189,18 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
       {comparacao && comparacao.parecidos.length > 0 && (
         <section className={`${card} grid gap-1.5`} aria-labelledby="cr-parecidos">
           <div className="flex flex-wrap items-baseline justify-between gap-3">
-            <h2 id="cr-parecidos" className="text-lg font-bold"><Termo id="cr-parec" termo="parecidos">Quem vota mais parecido</Termo></h2>
+            <h2 id="cr-parecidos" className="text-lg font-semibold"><Termo id="cr-parec" termo="parecidos">Quem vota mais parecido</Termo></h2>
             <span className="text-xs text-suave">% de votos iguais nas mesmas votações nominais, {n.tipo === "mandato" ? n.periodo : "2023–2026"}</span>
           </div>
           <div className="grid gap-x-7 [grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))]">
             {comparacao.parecidos.map((s) => (
-              <Link key={s.id} href={`/p/${s.id}`} className="flex items-center gap-3 border-b border-borda py-2.5 text-texto no-underline hover:bg-fundo">
+              <Link key={s.id} href={`/p/${s.id}`} className="flex items-center gap-3 border-b border-borda py-2.5 text-texto no-underline hover:bg-preench-forte">
                 {s.fotoUrl
-                  ? <img src={s.fotoUrl} alt="" width={40} height={40} loading="lazy" className="size-10 shrink-0 rounded-full bg-fundo object-cover object-top" />
-                  : <span aria-hidden="true" className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-fundo text-xs font-bold">{iniciais(s.nomeUrna)}</span>}
+                  ? <img src={s.fotoUrl} alt="" width={40} height={40} loading="lazy" className="size-10 shrink-0 rounded-full bg-preench object-cover object-top" />
+                  : <span aria-hidden="true" className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-preench text-xs font-semibold">{iniciais(s.nomeUrna)}</span>}
                 <span className="grid flex-1 gap-1.5">
                   <span className="flex justify-between gap-2"><strong className="text-[13px]">{s.nomeUrna}</strong><strong className="text-[13px] text-link tabular-nums">{umaCasa(s.pct)}%</strong></span>
-                  <span className="block h-1 rounded bg-fundo"><span className="block h-1 rounded bg-destaque" style={{ width: `${s.pct}%` }} /></span>
+                  <span className="block h-1 rounded bg-preench"><span className="block h-1 rounded bg-destaque" style={{ width: `${s.pct}%` }} /></span>
                   <span className="text-xs text-suave">{s.partido} · {s.uf} · {inteiro(s.comuns)} votações em comum</span>
                 </span>
               </Link>

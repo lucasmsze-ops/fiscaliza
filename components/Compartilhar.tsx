@@ -27,11 +27,11 @@ export function Compartilhar({ titulo, texto, rotulo = "Compartilhar", classe }:
   return (
     <div className="relative flex items-center">
       <button type="button" onClick={() => void compartilhar()}
-        className={classe ?? "rounded-xl bg-destaque px-6 py-3 text-sm font-bold text-destaque-texto"}>
+        className={classe ?? "rounded-full bg-destaque px-6 py-3 text-[15px] font-semibold text-destaque-texto"}>
         {rotulo}
       </button>
       {/* Balão abaixo do botão: não empurra nem aperta os botões vizinhos. */}
-      {aviso && <span role="status" className="absolute top-full right-0 z-10 mt-1.5 rounded-lg border border-borda bg-card px-2.5 py-1.5 text-xs whitespace-nowrap shadow-card">{aviso}</span>}
+      {aviso && <span role="status" className="absolute top-full right-0 z-10 mt-1.5 rounded-lg bg-card px-2.5 py-1.5 text-xs shadow-lg whitespace-nowrap">{aviso}</span>}
     </div>
   );
 }

@@ -63,6 +63,10 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
   Jurídica"). Os demais tipos só como soma de `proposicoes_contagem` ("requerimentos, emendas e
   outros pedidos").
 - A página mostra as 10 mais recentes por data de apresentação (`lib/pagina.ts`).
+- **Números e pizza da aba Propostas (2026-11-14):** apresentadas = `leis`; viraram norma = `viraramNorma`,
+  com `round(viraramNorma / leis × 100)`% ("<1%" quando fica entre 0 e 1). Com um ano no filtro, as mesmas
+  contas sobre as propostas daquele `ano`, no navegador, a partir da lista completa (`/dados/propostas/[id]`);
+  nada novo no cron nem no banco.
 
 ## Congresso hoje (`/congresso`)
 - Cadeira ocupada na data = mandato em curso (`mandatos.fim` nulo, `inicio` ≤ data) sem afastamento

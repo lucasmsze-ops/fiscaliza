@@ -4,7 +4,7 @@ Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
 **Etapa atual: E23n** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
-terminou verde. E22b, E23, E23b, E23c, E23i, E23k e E23l foram feitas adiantadas a pedido do usuário.
+terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l e E23o foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -516,6 +516,21 @@ patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a s
       com link; sem ato, "sem ato oficial ainda". Sem %, sem "em risco"/"descumprida", sem notícias.
 - [ ] Onde hospedar os PDFs dos planos (hoje o link é o zip do TSE com o nome do arquivo).
 - Pronto quando: crachá no ar; checklist dos dois com a lista aprovada pelo usuário.
+
+### E23o · Design system do iOS (pedido de 2026-11-14)
+- [x] Tokens do iOS em `app/globals.css` (cores do sistema no claro e no escuro, variantes acessíveis onde o
+      contraste ficaria abaixo de 4,5:1, fonte do sistema no lugar da Roboto, escala do Dynamic Type) e padrões
+      em `lib/estilo.ts` (cartão, chip, botão, bloco, etiqueta, campo).
+- [x] Todas as telas: cartões sem borda nem sombra, cápsulas, blocos em preenchimento cinza, crachás sem a
+      faixa colorida, controle segmentado Câmara/Senado, barra do topo translúcida no celular, mapa com as
+      cores de sistema. Adaptado para site, sem tab bar (decisão do usuário).
+- [x] Sempre escuro (decisão do usuário no mesmo dia): não segue o tema do aparelho.
+- [x] Navegação N1/N2 (mesmo dia): sem o sino; busca de políticos na Visão geral e no Congresso, de projetos e
+      votações em Votações (`/dados/busca-votacoes`), nenhuma nas outras telas; nas N2 o menu do topo some
+      no celular e entra o botão de voltar (`components/BarraVoltar.tsx`, `lib/navegacao.ts`).
+- [x] Sem o caminho "Páginas / ..." e sem reticências nas buscas; Sobre fora do menu, aberto pelo ícone de
+      Dúvidas no cabeçalho (vira N2).
+- Pronto quando: todas as telas no visual novo, claro e escuro, celular e computador, no ar.
 
 ### E23g · Propostas
 `/propostas`: lista geral com filtros (Casa, tipo, situação, busca na ementa) e link oficial. A

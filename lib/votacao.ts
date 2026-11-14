@@ -6,8 +6,8 @@
  */
 import { orientacaoDoPartido } from "./fidelidade";
 import { siglaPartido } from "./partidos";
-import { semCpf } from "./texto";
-import type { Casa, TipoVoto, Votacao } from "./types";
+import { normalizar, semCpf } from "./texto";
+import type { Casa, ItemPauta, TipoVoto, Votacao } from "./types";
 
 /** Id na URL: "camara:106701-223" → "camara-106701-223" (os dois-pontos ficam fora da URL). */
 export const slugVotacao = (id: string) => id.replace(":", "-");
@@ -201,5 +201,36 @@ export function montarPaginaVotacao(
     caminho: mesmaMateria.sort((a, b) => a.data.localeCompare(b.data) || a.id.localeCompare(b.id, "pt-BR", { numeric: true }))
       .map((x) => ({ id: x.id, data: x.data, descricao: descricaoLimpa(x.descricao), resultado: x.resultado, atual: x.id === v.id })),
     proposta,
+  };
+}
+
+/**
+ * Item da busca da tela Votações (/dados/busca-votacoes): uma votação nominal do Plenário (abre a página
+ * da votação) ou um item da pauta (abre a página oficial, como o cartão da pauta). `busca` é a matéria,
+ * o tipo por extenso, a ementa e os temas, normalizados.
+ */
+export interface ItemBuscaVotacao { href: string; externo: boolean; t: string; d: string; busca: string }
+
+const CASA_NOME: Record<Casa, string> = { camara: "Câmara", senado: "Senado" };
+const dataBr = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
+/** Ementa encurtada para a lista de resultados (o índice inteiro vai para o navegador). */
+const curta = (s: string) => (s.length > 150 ? `${s.slice(0, 149).trimEnd()}…` : s);
+
+export function itemBuscaVotacao(v: Votacao): ItemBuscaVotacao {
+  const texto = semCpf(v.ementa ?? v.descricao.replace(/\s*Sim:\s*\d.*$/s, ""));
+  const resultado = v.resultado ? ` · ${v.resultado}` : "";
+  return {
+    href: hrefVotacao(v.id), externo: false, t: curta(texto),
+    d: `${v.proposicao ?? "Votação"} · ${CASA_NOME[v.casa]} · ${dataBr(v.data)}${resultado}`,
+    busca: normalizar(`${v.proposicao ?? ""} ${tipoPorExtenso(v.proposicao) ?? ""} ${texto} ${(v.temas ?? []).join(" ")}`),
+  };
+}
+
+export function itemBuscaPauta(x: ItemPauta): ItemBuscaVotacao {
+  const texto = semCpf((x.relacionada ? x.ementaRelacionada ?? x.ementa : x.ementa) ?? x.materia);
+  return {
+    href: x.urlOficial, externo: true, t: curta(texto),
+    d: `${x.materia} · na pauta · ${CASA_NOME[x.casa]} · ${dataBr(x.data)}`,
+    busca: normalizar(`${x.materia} ${x.relacionada ?? ""} ${tipoPorExtenso(x.materia) ?? ""} ${texto} ${(x.temas ?? []).join(" ")}`),
   };
 }

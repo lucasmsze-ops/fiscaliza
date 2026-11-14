@@ -12,7 +12,7 @@ function Cabecalho({ r, compacto = false }: { r: CardResumo; compacto?: boolean 
       {r.fotoUrl && (
         // <img> de propósito: a foto vem direto da URL oficial, sem passar pela Vercel (CLAUDE.md).
         <img src={r.fotoUrl} alt={`Foto oficial de ${r.nomeUrna}`} width={compacto ? 48 : 72} height={compacto ? 64 : 96} loading="lazy" decoding="async"
-          className={`${compacto ? "h-16 w-12" : "h-24 w-[4.5rem]"} shrink-0 rounded-lg bg-fundo object-cover`} />
+          className={`${compacto ? "h-16 w-12" : "h-24 w-[4.5rem]"} shrink-0 rounded-lg bg-preench object-cover`} />
       )}
       <div className="min-w-0">
         <h2 id={`nome-${r.id}`} className={`${compacto ? "text-base" : "text-lg"} font-semibold leading-tight break-words`}>{r.nomeUrna}</h2>
@@ -45,7 +45,7 @@ export function PoliticoCard({ d, linkPagina = false }: { d: CardDados; linkPagi
   // Avisos (fake door) só fazem sentido para quem tem ou terá mandato.
   const temAvisos = n.tipo !== "sem_mandato";
   return (
-    <article className="w-full max-w-sm rounded-card border border-borda bg-card p-4 shadow-card" aria-labelledby={`nome-${d.id}`}>
+    <article className="w-full max-w-sm rounded-card bg-card p-4" aria-labelledby={`nome-${d.id}`}>
       <Cabecalho r={d} />
 
       <section className="mt-4 border-t border-borda pt-4" aria-label="Números do mandato">

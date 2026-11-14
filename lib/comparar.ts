@@ -68,7 +68,7 @@ export function montarColuna(pg: PaginaDados, p: Politico | null, hoje: string):
       comPartido: f && totalF >= MINIMO_FIDELIDADE
         ? c(pct(Math.round((1000 * f.com) / totalF) / 10), `em ${int(totalF)} votações com orientação do partido`)
         : c(null, n.tipo === "mandato" ? "poucas votações com a orientação do partido identificada" : "sem mandato no Congresso no período"),
-      propostas: pr ? c(int(pr.leis), `${int(pr.primeiroAutor)} como primeiro autor · ${int(pr.viraramNorma)} ${pr.viraramNorma === 1 ? "virou" : "viraram"} lei`) : c(null, "sem registro na Câmara ou no Senado"),
+      propostas: pr ? c(int(pr.leis), `${int(pr.primeiroAutor)} como primeiro autor · ${int(pr.viraramNorma)} ${pr.viraramNorma === 1 ? "virou" : "viraram"} norma`) : c(null, "sem registro na Câmara ou no Senado"),
       desde: inicio && ultimo
         ? c(inicio.slice(0, 4), `${ultimo.cargo === "senador" ? "no Senado" : "na Câmara"} · ${naCasa.length === 1 ? "1 período de exercício registrado" : `${naCasa.length} períodos de exercício registrados`}`)
         : c(null, "sem mandato no Congresso registrado"),

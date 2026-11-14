@@ -14,7 +14,7 @@ export function BarraPlacar({ sim, nao, abst, cadeiras, necessarios, alto = fals
   const pc = (n: number) => `${(n / cadeiras) * 100}%`;
   return (
     <span className="relative block" aria-hidden="true">
-      <span className={`flex w-full gap-[2px] overflow-hidden rounded-md bg-fundo ${alto ? "h-4" : "h-2.5"}`}>
+      <span className={`flex w-full gap-[2px] overflow-hidden rounded-md bg-preench ${alto ? "h-4" : "h-2.5"}`}>
         {sim > 0 && <span className="bg-texto" style={{ width: pc(sim) }} />}
         {nao > 0 && <span className="bg-suave" style={{ width: pc(nao) }} />}
         {abst > 0 && <span className="bg-borda-forte" style={{ width: pc(abst) }} />}
@@ -37,10 +37,10 @@ export function CartaoVotacao({ v }: { v: VotacaoResumo }) {
   const total = p ? p.sim + p.nao + p.abstencao + p.obstrucao : 0;
   const resto = linhaMateria(v);
   return (
-    <Link href={hrefVotacao(v.id)} className="grid gap-2 rounded-xl border border-borda bg-card p-3.5 text-texto no-underline hover:border-destaque">
+    <Link href={hrefVotacao(v.id)} className="grid gap-2 rounded-xl bg-preench p-3.5 text-texto no-underline hover:bg-preench-forte">
       <span className="flex flex-wrap items-center gap-1.5 text-xs text-suave">
         {v.casa === "senado" ? "Senado" : "Câmara"}
-        {v.temas?.slice(0, 2).map((t) => <span key={t} className="rounded-md bg-destaque/20 px-1.5 py-0.5 font-bold text-texto">{t}</span>)}
+        {v.temas?.slice(0, 2).map((t) => <span key={t} className="rounded-md bg-destaque/20 px-1.5 py-0.5 font-semibold text-texto">{t}</span>)}
       </span>
       {/* O assunto (ementa oficial) é o título; número e tipo ficam pequenos (pedido de 2026-11-13). */}
       <strong className="line-clamp-2 text-[15px] leading-snug">{v.ementa ?? v.descricao}</strong>

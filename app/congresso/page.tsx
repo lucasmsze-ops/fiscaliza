@@ -21,19 +21,19 @@ export default async function Congresso() {
 
   return (
     <>
-    <BarraTopo secao="Páginas" pagina="Congresso" />
+    <BarraTopo busca="politicos" />
     <main className="grid gap-6 pb-8">
-      <h1 className="sr-only">Congresso</h1>
-      <section className={`${card} grid gap-3.5`} aria-labelledby="cg-como">
+      {/* Título fora do cartão, como em Votações: "Como contamos" à direita e a data da coleta embaixo (2026-11-14). */}
+      <header className="grid gap-1">
         <div className="flex items-baseline justify-between gap-3">
-          <h2 id="cg-como" className={TITULO_CARTAO}>Como está o Congresso</h2>
-          <Link href={hrefSecao("congresso")} className="shrink-0 text-xs underline underline-offset-2">como contamos</Link>
+          <h1 className={TITULO_PAGINA}>Congresso Federal</h1>
+          <Link href={hrefSecao("congresso")} className="shrink-0 text-[13px] no-underline hover:underline">Como contamos</Link>
         </div>
-        <p className="text-sm text-suave">Cada bolinha é uma cadeira, na cor do partido. Toque numa cadeira ou num partido para ver a lista de quem está nele.</p>
+        {coleta && <p className="text-[13px] text-suave">Atualizado em {new Date(coleta).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })}</p>}
+      </header>
+      <section className={`${card} grid gap-3.5`} aria-label="Cadeiras por partido">
         <Plenario casas={d.casas} camara2027={d.camara2027} cores={d.cores} />
       </section>
-
-      {coleta && <p className="text-xs text-suave">Dados coletados nas fontes oficiais em {new Date(coleta).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })}. As votações do Plenário estão em <Link href="/votacoes" className="underline underline-offset-2">Votações</Link>.</p>}
     </main>
     </>
   );
