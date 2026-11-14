@@ -6,6 +6,7 @@
  */
 import { spawnSync } from "node:child_process";
 import { jobCota } from "./cota";
+import { jobExecutivos } from "./executivos";
 import { calcularFidelidade } from "./fidelidade";
 import { calcularPaginasVotacao } from "./votacoes-paginas";
 import { jobProposicoes } from "./proposicoes";
@@ -32,6 +33,7 @@ const jobs: Job[] = [
   // Depois de parlamentares: despesas_mes só guarda quem está em politicos.
   { nome: "cota", rodar: () => jobCota(hoje) },
   { nome: "proposicoes", rodar: () => jobProposicoes(hoje) },
+  { nome: "executivos", rodar: () => jobExecutivos() },
 ];
 
 let falhou = false;

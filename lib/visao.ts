@@ -19,7 +19,22 @@ export interface PessoaNoCargo {
   fotoUrl: string | null;
 }
 
+/** Presidente ou governador eleito em 2026 (TSE), com posse em 1º/1/2027. Sem crachá por enquanto. */
+export interface Executivo {
+  cargoChave: "presidente" | "governador";
+  /** "Presidente", "Governador" (masculino; o cartão flexiona por `feminino`). */
+  cargo: string;
+  feminino: boolean;
+  /** null para presidente. */
+  uf: string | null;
+  nomeUrna: string;
+  partido: string;
+  fotoUrl: string | null;
+}
+
 export interface VisaoDados {
+  /** Eleitos em 2026 para presidente e governador; vazio enquanto o cron não os grava. */
+  executivos?: Executivo[];
   /** Em exercício hoje, em ordem alfabética. */
   pessoas: PessoaNoCargo[];
   /** Ordem das cores de partido (a mesma de /congresso). */
@@ -28,12 +43,16 @@ export interface VisaoDados {
 }
 
 export async function montarVisao(repo: Repo, hoje = new Date().toISOString().slice(0, 10)): Promise<VisaoDados> {
-  const [{ casas, politicos }, municipios] = await Promise.all([casasHoje(repo, hoje), repo.listarMunicipios()]);
+  const [{ casas, politicos }, municipios, eleitos] = await Promise.all([casasHoje(repo, hoje), repo.listarMunicipios(), repo.listarExecutivos()]);
   const pessoas = casas.flatMap((c) => c.bancadas.flatMap((b) => b.membros.map((m) => {
     const p = politicos.get(m.id)!;
     return { id: p.id, nomeUrna: p.nomeUrna, cargo: rotuloCargo({ ...p, cargo: c.casa === "senado" ? "senador" : "deputado_federal" }), casa: c.casa, uf: m.uf, partido: b.partido, fotoUrl: p.fotoUrl };
   }))).sort((a, b) => a.nomeUrna.localeCompare(b.nomeUrna, "pt-BR"));
   const municipiosPorUf: Record<string, number> = {};
   for (const m of municipios) municipiosPorUf[m.uf] = (municipiosPorUf[m.uf] ?? 0) + 1;
-  return { pessoas, cores: ordemDasCores(casas), municipiosPorUf };
+  const executivos: Executivo[] = eleitos.filter((e) => e.ano === 2026).map((e) => ({
+    cargoChave: e.cargo, cargo: e.cargo === "presidente" ? (e.genero === "feminino" ? "Presidenta" : "Presidente") : (e.genero === "feminino" ? "Governadora" : "Governador"),
+    feminino: e.genero === "feminino", uf: e.uf, nomeUrna: e.nomeUrna, partido: e.partido, fotoUrl: e.fotoUrl,
+  }));
+  return { pessoas, cores: ordemDasCores(casas), municipiosPorUf, executivos };
 }

@@ -61,6 +61,23 @@ export interface Politico {
   updatedAt: string;
 }
 
+/** Tabela `executivos`: presidente e governadores eleitos (TSE), com a data da posse. Sem crachá ainda. */
+export interface ExecutivoEleito {
+  id: string;
+  ano: number;
+  cargo: "presidente" | "governador";
+  /** null para presidente. */
+  uf: string | null;
+  nome: string;
+  nomeUrna: string;
+  genero: "feminino" | "masculino" | null;
+  partido: string;
+  numeroUrna: number | null;
+  tseSqCandidato: string;
+  fotoUrl: string | null;
+  posse: string;
+}
+
 /** Tabela `mandatos`: períodos em exercício do cargo (posse → saída), da Câmara ou do Senado. */
 export interface Mandato {
   politicoId: string;

@@ -37,6 +37,7 @@ const ESQUEMA: Record<string, { pk: string[]; obrig: string[]; opc: string[] }> 
   proposicoes_autores: { pk: ["proposicao_id", "politico_id"], obrig: ["proposicao_id", "politico_id", "ordem"], opc: [] },
   proposicoes_contagem: { pk: ["politico_id", "casa", "ano", "tipo"], obrig: ["politico_id", "casa", "ano", "tipo", "autorias"], opc: [] },
   atualizacoes: { pk: ["fonte"], obrig: ["fonte", "coletado_em"], opc: [] },
+  executivos: { pk: ["id"], obrig: ["id", "ano", "cargo", "nome", "nome_urna", "partido", "tse_sq_candidato", "posse"], opc: ["uf", "genero", "numero_urna", "foto_url"] },
 };
 const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   politicos: { genero: ["feminino", "masculino", null], cargo: ["deputado_federal", "senador"], status: ["eleito", "reeleito", "nao_eleito", "suplente", "em_exercicio"] },
@@ -47,6 +48,7 @@ const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   orientacoes: { orientacao: ["Sim", "Não", "Obstrução", "Liberado", ""] },
   proposicoes: { casa: ["camara", "senado"], virou_norma: [true, false] },
   proposicoes_contagem: { casa: ["camara", "senado"] },
+  executivos: { cargo: ["presidente", "governador"], genero: ["feminino", "masculino", null] },
 };
 
 const dados: Record<string, L[]> = {};

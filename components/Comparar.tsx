@@ -110,7 +110,7 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
               </button>
             ))}
           </div>
-          <p className="text-[13px] text-suave">Não sabe o nome? <Link href="/me-representa" className="underline underline-offset-2">Veja quem representa a sua cidade ou o seu estado</Link>.</p>
+          <p className="text-[13px] text-suave">Não sabe o nome? <Link href="/" className="underline underline-offset-2">Veja quem representa a sua cidade ou o seu estado</Link>.</p>
         </div>
       )}
 

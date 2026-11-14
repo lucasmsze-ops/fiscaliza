@@ -116,7 +116,7 @@ export function Monitorando() {
           <Adicionar ja={new Set(e.pessoas.map((p) => p.id))} />
         </div>
         {e.pessoas.length === 0 && (
-          <p className="text-[15px] text-suave">Você ainda não monitora ninguém. Digite um nome acima ou toque em “+ Monitorar” num crachá ou na <Link href="/me-representa" className="underline underline-offset-2">Me representa</Link>.</p>
+          <p className="text-[15px] text-suave">Você ainda não monitora ninguém. Digite um nome acima ou toque em “+ Monitorar” num crachá ou na <Link href="/" className="underline underline-offset-2">Visão geral</Link>.</p>
         )}
         <div className="grid gap-3 [grid-template-columns:repeat(auto-fill,minmax(min(360px,100%),1fr))]">
           {e.pessoas.map((p) => {

@@ -15,7 +15,7 @@ import { montarPagina, type PaginaDados } from "./pagina";
 import type { VotacaoPagina } from "./votacao";
 import type {
   Afastamento, Atualizacao, Cargo, Casa, DespesaMediaUf, DespesaMes, EleitoMunicipio, Linha, ListaEleitoral, Mandato, Municipio,
-  FidelidadePolitico, Orientacao, Politico, Proposicao, ProposicaoAutor, ProposicaoContagem, Votacao, Voto,
+  ExecutivoEleito, FidelidadePolitico, Orientacao, Politico, Proposicao, ProposicaoAutor, ProposicaoContagem, Votacao, Voto,
 } from "./types";
 
 export interface EleitoNaCidade {
@@ -68,6 +68,8 @@ export interface Repo {
   ultimasNormas(limite: number): Promise<{ proposicao: Proposicao; autores: { politicoId: string; ordem: number }[] }[]>;
   /** Página pronta de uma votação (lib/votacao.ts; calculada pelo cron, que tem o partido de cada voto no dia). */
   getVotacaoPagina(id: string): Promise<VotacaoPagina | null>;
+  /** Presidente e governadores eleitos (tabela `executivos`). */
+  listarExecutivos(): Promise<ExecutivoEleito[]>;
 }
 
 export { normalizar } from "./texto";
@@ -78,7 +80,7 @@ type Tabelas = {
   politicos: Politico; mandatos: Mandato; afastamentos: Afastamento; listas: ListaEleitoral; municipios: Municipio;
   eleitos_mun: EleitoMunicipio; despesas_mes: DespesaMes; despesas_media_uf: DespesaMediaUf; votacoes: Votacao;
   votos: Voto; orientacoes: Orientacao; proposicoes: Proposicao; proposicoes_autores: ProposicaoAutor;
-  proposicoes_contagem: ProposicaoContagem; atualizacoes: Atualizacao; fidelidade: FidelidadePolitico;
+  proposicoes_contagem: ProposicaoContagem; atualizacoes: Atualizacao; fidelidade: FidelidadePolitico; executivos: ExecutivoEleito;
 };
 
 /** Lê data/*.json uma vez por processo (cada tabela só quando pedida). */
@@ -207,6 +209,10 @@ export class JsonRepo implements Repo {
     return ps.filter((p) => p.virouNorma)
       .sort((a, b) => b.apresentacao.localeCompare(a.apresentacao) || b.id.localeCompare(a.id)).slice(0, limite)
       .map((proposicao) => ({ proposicao, autores: (autores.get(proposicao.id) ?? []).map((a) => ({ politicoId: a.politicoId, ordem: a.ordem })) }));
+  }
+  async listarExecutivos() {
+    // Pasta sem o arquivo (estado antigo do cron): nenhum executivo, a Visão geral só não os mostra.
+    try { return await this.tabela("executivos"); } catch { return []; }
   }
   private paginasVotacao: Promise<Map<string, VotacaoPagina>> | null = null;
   async getVotacaoPagina(id: string) {
