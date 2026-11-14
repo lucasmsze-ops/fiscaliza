@@ -7,8 +7,10 @@
 import { spawnSync } from "node:child_process";
 import { jobCota } from "./cota";
 import { jobExecutivos } from "./executivos";
+import { jobPauta } from "./pauta";
 import { calcularFidelidade } from "./fidelidade";
 import { calcularPaginasVotacao } from "./votacoes-paginas";
+import { aplicarTemas } from "./temas";
 import { jobProposicoes } from "./proposicoes";
 import { DADOS, gravarTabela, iniciarEstado, lerTabela, mesclar, type LinhaBruta } from "./estado";
 import { publicar } from "./publicar";
@@ -34,6 +36,7 @@ const jobs: Job[] = [
   { nome: "cota", rodar: () => jobCota(hoje) },
   { nome: "proposicoes", rodar: () => jobProposicoes(hoje) },
   { nome: "executivos", rodar: () => jobExecutivos() },
+  { nome: "pauta", rodar: () => jobPauta(hoje) },
 ];
 
 let falhou = false;
@@ -64,6 +67,16 @@ const coletadoEm = new Date().toISOString();
 const m = mesclar("atualizacoes", lerTabela("atualizacoes"), atualizadas.map((fonte) => ({ fonte, coletado_em: coletadoEm })));
 gravarTabela("atualizacoes", m.linhas);
 console.log(`[${seg()}] atualizacoes: ${atualizadas.join(", ") || "nenhuma fonte coletada"}`);
+
+// Temas oficiais nas votações e na pauta (classificação da Câmara e do Senado), antes das páginas de votação.
+try {
+  const t = await aplicarTemas(hoje);
+  for (const l of t.relatorio) console.log(`[${seg()}] temas: ${l}`);
+  if (t.falhas) falhou = true;
+} catch (e) {
+  falhou = true;
+  console.error(`[${seg()}] temas FALHOU: ${(e as Error).stack ?? e}`);
+}
 
 // "Votou com o partido?": derivado do partido no dia de cada voto (caches das fontes); só os resumos leem.
 try {

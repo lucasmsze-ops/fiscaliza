@@ -11,12 +11,12 @@ import type { CardDados } from "./card";
 import { ordemNaCidade } from "./cidade";
 import { deLinha } from "./linhas";
 import type { PaginaDados } from "./pagina";
-import type { EleitoNaCidade, Repo } from "./repo";
+import { ultimaColeta, type EleitoNaCidade, type Repo } from "./repo";
 import { cliente, selecionar, type Cliente } from "./supabase";
 import { normalizar } from "./texto";
 import type { VotacaoPagina } from "./votacao";
 import type {
-  Afastamento, Atualizacao, Cargo, ExecutivoEleito, Casa, DespesaMediaUf, DespesaMes, Linha, ListaEleitoral, Mandato, Municipio, Orientacao, Politico,
+  Afastamento, Atualizacao, Cargo, ExecutivoEleito, ItemPauta, Casa, DespesaMediaUf, DespesaMes, Linha, ListaEleitoral, Mandato, Municipio, Orientacao, Politico,
   Proposicao, ProposicaoContagem, Votacao, Voto,
 } from "./types";
 
@@ -82,6 +82,9 @@ export class SupabaseRepo implements Repo {
     const ls = await selecionar<Linha<Proposicao> & { autores: { politico_id: string; ordem: number }[] }>(this.cli, "proposicoes",
       `select=*,autores:proposicoes_autores(politico_id,ordem)&virou_norma=is.true&order=apresentacao.desc,id.desc&limit=${limite}`);
     return ls.map(({ autores, ...p }) => ({ proposicao: deLinha<Proposicao>(p as Linha<Proposicao>), autores: autores.map((a) => ({ politicoId: a.politico_id, ordem: a.ordem })) }));
+  }
+  async listarPauta(desde: string) {
+    return ultimaColeta(await this.linhas<ItemPauta>("pauta", `select=*&data=gte.${v(desde)}&order=data,id`));
   }
   listarExecutivos() {
     return this.lembrar("executivos", () => this.linhas<ExecutivoEleito>("executivos", "select=*&order=id"));

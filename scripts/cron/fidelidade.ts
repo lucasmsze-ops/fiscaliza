@@ -15,7 +15,7 @@ import { FONTES, lerTabela, type LinhaBruta } from "./estado";
 /** Votações mais recentes de cada Casa com a orientação guardada (coluna da aba Votos do crachá). */
 const ULTIMAS = 20;
 
-export interface VotoNoDia { votacaoId: string; politicoId: string; voto: TipoVoto; partido: string }
+export interface VotoNoDia { votacaoId: string; politicoId: string; voto: TipoVoto; partido: string; uf?: string; nome?: string }
 
 const ler = <T>(f: string): T => JSON.parse(readFileSync(f, "utf8")) as T;
 /** Só os JSON de verdade: o tar do macOS põe ao lado de cada arquivo um `._nome.json` binário (AppleDouble). */
@@ -32,16 +32,16 @@ export function votosComPartido(politicos = lerTabela("politicos"), incluirSemPa
   const votos: VotoNoDia[] = [];
   const dirCamara = `${FONTES}/camara-votos`;
   if (existsSync(dirCamara)) for (const f of jsons(dirCamara)) {
-    for (const v of ler<{ votacaoId: string; camaraId: number; voto: TipoVoto; partido: string }[]>(`${dirCamara}/${f}`)) {
+    for (const v of ler<{ votacaoId: string; camaraId: number; voto: TipoVoto; partido: string; uf?: string }[]>(`${dirCamara}/${f}`)) {
       const pid = porCamara.get(v.camaraId) ?? (incluirSemPagina ? `camara-id:${v.camaraId}` : undefined);
-      if (pid) votos.push({ votacaoId: `camara:${v.votacaoId}`, politicoId: pid, voto: v.voto, partido: v.partido });
+      if (pid) votos.push({ votacaoId: `camara:${v.votacaoId}`, politicoId: pid, voto: v.voto, partido: v.partido, uf: v.uf });
     }
   }
   for (const f of existsSync(FONTES) ? jsons(FONTES).filter((x) => /^senado-votacao-\d{4}\.json$/.test(x)) : []) {
-    for (const vt of ler<{ idExterno: string; votos: { senadoCodigo: string; voto: TipoVoto; partido: string }[] }[]>(`${FONTES}/${f}`)) {
+    for (const vt of ler<{ idExterno: string; votos: { senadoCodigo: string; voto: TipoVoto; partido: string; uf?: string; nome?: string }[] }[]>(`${FONTES}/${f}`)) {
       for (const v of vt.votos) {
         const pid = porSenado.get(String(v.senadoCodigo)) ?? (incluirSemPagina ? `senado-id:${v.senadoCodigo}` : undefined);
-        if (pid) votos.push({ votacaoId: `senado:${vt.idExterno}`, politicoId: pid, voto: v.voto, partido: v.partido });
+        if (pid) votos.push({ votacaoId: `senado:${vt.idExterno}`, politicoId: pid, voto: v.voto, partido: v.partido, uf: v.uf, nome: v.nome });
       }
     }
   }

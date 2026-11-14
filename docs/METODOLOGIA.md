@@ -76,10 +76,19 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
 - Câmara a partir de 01/02/2027 (`camaraEleita`): `politicos` com cargo deputado_federal e status eleito
   ou reeleito = 513, partido de hoje. Senado fora: das 27 cadeiras de 2022, 18 têm o titular em
   exercício; nas outras 9 não se sabe com dado quem ocupará a cadeira em fevereiro.
-- Agenda: contagem de votações nominais por dia e Casa (`listarDatasVotacoes`); as votações de cada
-  mês vêm de `/dados/votacoes/[mes]` (limites reais do mês: o Postgres recusa dia 31 inexistente).
-  "Votações da última sessão": as do último dia com votação nominal em cada Casa. "O que virou
-  norma" saiu da página (não está no protótipo); o número continua no crachá.
+- (Desde 2026-11-13 em `/votacoes`.) Calendário como filtro: dias com votação nominal
+  (`listarDatasVotacoes`) e dias com pauta; as votações de cada mês vêm de `/dados/votacoes/[mes]`
+  (limites reais do mês: o Postgres recusa dia 31 inexistente). "Últimas votações": as do último dia
+  com votação nominal em cada Casa. "O que virou norma" saiu (não está no protótipo).
+- Próximas votações (job `pauta`): Câmara, sessões cujo tipo começa com "Sessão Deliberativa" em
+  `/eventos?idOrgao=180` nas próximas 3 semanas (não canceladas) e `/eventos/{id}/pauta` (item com
+  `proposicao_`; `proposicaoRelacionada_` quando o item é um pedido sobre outra matéria). Senado,
+  `/plenario/agenda/mes` do mês e do seguinte, só Casa "SF" e tipo deliberativo, sessão não cancelada
+  nem "não realizada". O site mostra só a coleta mais recente (`coletado_em`), de hoje em diante.
+- Temas (passo `temas`): Câmara `/proposicoes/{id}/temas` da matéria principal de cada votação
+  (`proposicoesAfetadas[0]` do detalhe em cache) e de cada item da pauta; Senado `classificacoes` de
+  `/processo/{id}` (id por `/processo?codigoMateria=`, o código da URL da matéria). Cache por matéria,
+  refeito depois de 90 dias. O cartão mostra até 2 temas, na ordem da fonte.
 - Sigla de partido canônica (`lib/partidos.ts`): TSE "PCDOB" = Câmara/Senado "PCdoB" (20 políticos).
 
 ## Me representa (`/me-representa`, E23d)
@@ -112,6 +121,12 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
   Casa, por data e id. Não junta Câmara e Senado: a numeração da matéria muda entre as Casas.
 
 ## Visão geral (`/`)
+- Desde 2026-11-13 também é a "Me representa" (a página saiu; `/me-representa` redireciona com
+  `?uf=`/`?cidade=`). Sem estado escolhido, só o mapa; com estado, presidente e governador eleitos em
+  2026 (tabela `executivos`, job `executivos`: `consulta_cand` de 2026, `DS_SIT_TOT_TURNO = ELEITO`,
+  só os CSV por UF e o `_BR`, porque o `_BRASIL` repete as UFs; 1 presidente e 27 governadores,
+  senão nada é gravado), os senadores e a lista de deputados federais do estado. Foto do TSE: a do
+  presidente está na eleição federal (6257), a do governador na estadual (6259).
 - Mesmas cadeiras de `/congresso` (`lib/congresso.ts#casasHoje`), por estado: 3 senadores e os
   deputados federais da UF (`politicos.uf`). Municípios por UF de `municipios` (5.571).
 - Cidade → estado: a cidade não muda quem a representa no Congresso (eleição pelo estado inteiro).

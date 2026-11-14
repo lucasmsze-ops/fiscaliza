@@ -110,6 +110,12 @@ export interface PartidoNaVotacao extends Contagem {
   /** "Sim" | "Não" | "Liberado" | "Obstrução"; null = a bancada do partido não orientou ou não se identifica. */
   orientacao: string | null;
   via: "partido" | "federacao" | "bloco" | null;
+  /**
+   * Cada parlamentar do partido no dia: nome, id da página no site (null para quem não tem, como
+   * ex-deputado que não disputou 2026), UF e voto. Chaves curtas: ~25 KB por votação da Câmara.
+   * Opcional: páginas gravadas antes de 2026-11-13 não têm.
+   */
+  membros?: { n: string; i: string | null; u: string; v: TipoVoto }[];
 }
 
 export interface PassoCaminho { id: string; data: string; descricao: string; resultado: Votacao["resultado"]; atual: boolean }
@@ -117,6 +123,8 @@ export interface PassoCaminho { id: string; data: string; descricao: string; res
 export interface VotacaoPagina {
   id: string; casa: Casa; data: string; proposicao: string | null; ementa: string | null; descricao: string;
   resultado: Votacao["resultado"]; secreta: boolean; urlOficial: string;
+  /** Temas oficiais da matéria; opcional (páginas gravadas antes de 2026-11-13 não têm). */
+  temas?: string[];
   /** Câmara: votação de escolha de pessoa, com o voto registrado e a direção não divulgada. */
   semDirecao: boolean;
   contagem: Contagem;
@@ -149,7 +157,7 @@ function somar(c: Contagem, voto: TipoVoto | "ausente") {
  */
 export function montarPaginaVotacao(
   v: Votacao,
-  votos: { voto: TipoVoto; partido: string }[],
+  votos: { voto: TipoVoto; partido: string; nome?: string; id?: string | null; uf?: string }[],
   orientacoes: { bancada: string; orientacao: string }[],
   mesmaMateria: Votacao[],
   proposta: VotacaoPagina["proposta"],
@@ -162,11 +170,18 @@ export function montarPaginaVotacao(
     let p = por.get(partido);
     if (!p) {
       const o = orientacaoDoPartido(partido, orientacoes);
-      p = { partido, total: 0, ...vazia(), orientacao: o?.orientacao || null, via: o?.via ?? null };
+      p = { partido, total: 0, ...vazia(), orientacao: o?.orientacao || null, via: o?.via ?? null, membros: [] };
       por.set(partido, p);
     }
     p.total++;
     somar(p, x.voto);
+    if (x.nome) p.membros!.push({ n: x.nome, i: x.id ?? null, u: x.uf ?? "", v: x.voto });
+  }
+  // Pessoas por voto (Sim, Não, Abstenção, Obstrução, os demais, não votou) e, dentro, pelo nome.
+  const ORDEM: TipoVoto[] = ["sim", "nao", "abstencao", "obstrucao", "art17", "nao_informado", "secreto", "ausente"];
+  for (const p of por.values()) {
+    if (!p.membros?.length) { delete p.membros; continue; }
+    p.membros.sort((a, b) => ORDEM.indexOf(a.v) - ORDEM.indexOf(b.v) || a.n.localeCompare(b.n, "pt-BR"));
   }
   const registrados = votos.filter((x) => x.voto !== "ausente");
   // Câmara: 513 cadeiras; quem não votou = 513 − quem votou, mesmo quando o partido não se identifica.
@@ -179,6 +194,7 @@ export function montarPaginaVotacao(
   return {
     id: v.id, casa: v.casa, data: v.data, proposicao: v.proposicao, ementa: v.ementa ? semCpf(v.ementa) : null,
     descricao: descricaoLimpa(v.descricao), resultado: v.resultado, secreta: v.secreta, urlOficial: v.urlOficial,
+    ...(v.temas?.length ? { temas: v.temas } : {}),
     semDirecao: !v.secreta && registrados.length > 0 && registrados.every((x) => x.voto === "nao_informado"),
     contagem, naoVotouSemPartido,
     partidos: [...por.values()].sort((a, b) => b.total - a.total || a.partido.localeCompare(b.partido, "pt-BR")),

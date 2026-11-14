@@ -8,7 +8,6 @@ import { inteiro } from "@/lib/card";
 import { hrefSecao } from "@/lib/glossario";
 import { corPartido } from "@/lib/partidos";
 import { repo } from "@/lib/repo";
-import { termosNaEmenta } from "@/lib/termos-ementa";
 import {
   CADEIRAS, EXPLICA_OBJETO, hrefVotacao, idDoSlug, objetoVotado, regraDoTipo, rotuloVotado, tipoPorExtenso, turnoDe,
   votosNecessarios, type PartidoNaVotacao, type VotacaoPagina,
@@ -41,11 +40,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const ORIENTOU: Record<string, string> = { Sim: "orientou Sim", Não: "orientou Não", Liberado: "liberou a bancada", Obstrução: "orientou obstrução" };
 const VIA = { federacao: " (pela federação)", bloco: " (pelo bloco)", partido: "" } as const;
 
+const VOTO_PESSOA: Record<string, string> = {
+  sim: "Sim", nao: "Não", abstencao: "Abstenção", obstrucao: "Obstrução", art17: "Presidia a sessão",
+  nao_informado: "Votou (não divulgado)", secreto: "Votou (secreta)", ausente: "Não votou",
+};
+
+/** Um partido: a linha resume; tocando nela, abre a lista de quem votou como (pedido de 2026-11-13). */
 function LinhaPartido({ p, v }: { p: PartidoNaVotacao; v: VotacaoPagina }) {
   const sem = v.secreta || v.semDirecao;
   const pessoas = v.casa === "senado" ? (p.total === 1 ? "senador" : "senadores") : p.total === 1 ? "deputado" : "deputados";
-  return (
-    <li className="grid gap-1.5 border-b border-borda py-3 last:border-b-0">
+  const resumo = (
+    <span className="grid w-full gap-1.5">
       <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
         <span className="size-2.5 shrink-0 rounded-full" style={{ background: corPartido(p.partido) }} aria-hidden="true" />
         <strong className="text-[15px]">{p.partido}</strong>
@@ -57,11 +62,33 @@ function LinhaPartido({ p, v }: { p: PartidoNaVotacao; v: VotacaoPagina }) {
         )}
       </span>
       {!sem && <BarraPlacar sim={p.sim} nao={p.nao} abst={p.abstencao + p.obstrucao} cadeiras={p.total} />}
-      <span className="text-[13px] text-suave tabular-nums">
-        {sem
-          ? <>{p.total - p.naoVotou} {p.total - p.naoVotou === 1 ? "votou" : "votaram"} · {p.naoVotou} não {p.naoVotou === 1 ? "votou" : "votaram"}</>
-          : <>{p.sim} Sim · {p.nao} Não · {p.abstencao} Abst.{p.obstrucao > 0 && <> · {p.obstrucao} Obstr.</>}{p.outros > 0 && <> · {p.outros} outro{p.outros > 1 ? "s" : ""}</>} · {p.naoVotou} não {p.naoVotou === 1 ? "votou" : "votaram"}</>}
+      <span className="flex items-center justify-between gap-2 text-[13px] text-suave tabular-nums">
+        <span>
+          {sem
+            ? <>{p.total - p.naoVotou} {p.total - p.naoVotou === 1 ? "votou" : "votaram"} · {p.naoVotou} não {p.naoVotou === 1 ? "votou" : "votaram"}</>
+            : <>{p.sim} Sim · {p.nao} Não · {p.abstencao} Abst.{p.obstrucao > 0 && <> · {p.obstrucao} Obstr.</>}{p.outros > 0 && <> · {p.outros} outro{p.outros > 1 ? "s" : ""}</>} · {p.naoVotou} não {p.naoVotou === 1 ? "votou" : "votaram"}</>}
+        </span>
+        {p.membros && <span aria-hidden="true" className="shrink-0 text-xs font-bold text-link group-open:hidden">ver quem ▾</span>}
       </span>
+    </span>
+  );
+  if (!p.membros) return <li className="border-b border-borda py-3 last:border-b-0">{resumo}</li>;
+  return (
+    <li className="border-b border-borda last:border-b-0">
+      <details className="group">
+        <summary className="cursor-pointer list-none py-3 [&::-webkit-details-marker]:hidden">{resumo}</summary>
+        <ul className="mb-3 grid gap-x-4 rounded-xl bg-fundo px-3 py-1 sm:grid-cols-2">
+          {p.membros.map((m) => (
+            <li key={`${m.n}|${m.u}`} className="flex items-center justify-between gap-2 border-b border-borda py-2 text-[13px] last:border-b-0">
+              <span className="min-w-0 truncate">
+                {m.i ? <Link href={`/p/${m.i}`} className="font-bold text-texto">{m.n}</Link> : <strong>{m.n}</strong>}
+                <span className="text-suave"> · {m.u}</span>
+              </span>
+              <span className={`shrink-0 rounded-md px-2 py-0.5 text-xs font-bold ${m.v === "sim" ? "bg-texto text-card" : m.v === "nao" ? "bg-suave text-card" : "border border-borda text-suave"}`}>{VOTO_PESSOA[m.v] ?? m.v}</span>
+            </li>
+          ))}
+        </ul>
+      </details>
     </li>
   );
 }
@@ -76,7 +103,6 @@ export default async function PaginaVotacao({ params }: Props) {
   const c = v.contagem;
   const cadeiras = CADEIRAS[v.casa];
   const votaram = cadeiras - c.naoVotou;
-  const termos = v.ementa ? termosNaEmenta(v.ementa) : [];
   const PRIMEIROS = 8;
   const pessoas = v.casa === "senado" ? "senadores" : "deputados";
 
@@ -84,21 +110,47 @@ export default async function PaginaVotacao({ params }: Props) {
     <>
     <BarraTopo secao="Votações" pagina="Votação" />
     <main className="grid gap-6 pb-8">
-      <section className={`${card} grid gap-3`}>
+      <section className={`${card} grid gap-3.5`}>
         <p className="text-xs text-suave">
           <Link href="/votacoes" className="underline underline-offset-2">{nomeCasa(v)}</Link> · Plenário · {dataLonga(v.data)}
         </p>
-        <h1 className="text-[28px] leading-tight font-bold sm:text-[34px]">{titulo(v)}</h1>
-        {tipoPorExtenso(v.proposicao) && <p className="-mt-2 text-sm text-suave">{tipoPorExtenso(v.proposicao)}</p>}
-        <p className="text-[15px] leading-relaxed">
-          <strong>Votado nesse dia:</strong> {objeto ? EXPLICA_OBJETO[objeto] : "veja a descrição oficial abaixo"}{turno ? `, ${turno}` : ""}.
-        </p>
-        <p className="text-[13px] leading-relaxed text-suave">Descrição oficial: {v.descricao}</p>
-        {regra && <p className="rounded-xl bg-fundo p-3.5 text-[13px] leading-relaxed">{regra}</p>}
+        <div>
+          <h1 className="text-[28px] leading-tight font-bold sm:text-[34px]">{titulo(v)}</h1>
+          {tipoPorExtenso(v.proposicao) && <p className="mt-1 text-sm text-suave">{tipoPorExtenso(v.proposicao)}</p>}
+          {v.temas && (
+            <p className="mt-2 flex flex-wrap gap-1.5" aria-label="Temas oficiais">
+              {v.temas.map((t) => <span key={t} className="rounded-md bg-destaque/20 px-2 py-0.5 text-xs font-bold">{t}</span>)}
+            </p>
+          )}
+        </div>
+        {v.ementa && (
+          <div className="grid gap-2 border-t border-borda pt-3.5" aria-labelledby="vt-oque">
+            <div>
+              <h2 id="vt-oque" className="text-lg font-bold">O que é</h2>
+              <p className="text-xs text-suave">Ementa oficial, sem resumo nosso</p>
+            </div>
+            <TextoLongo texto={v.ementa} rotulo="Ler a ementa inteira" />
+            {v.proposta && (
+              <p className="text-[13px] text-suave">
+                {v.proposta.apresentacao && <>Apresentada em {ddmmaaaa(v.proposta.apresentacao)}</>}
+                {v.proposta.apresentacao && v.proposta.situacao && " · "}
+                {v.proposta.situacao && <>situação: {v.proposta.situacao}</>}
+              </p>
+            )}
+          </div>
+        )}
+        <a href={v.urlOficial} {...externo} className="inline-flex h-11 w-fit items-center rounded-xl border border-borda px-4 text-[13px] font-bold text-texto no-underline hover:border-destaque">
+          Texto completo {v.casa === "senado" ? "no Senado" : "na Câmara"} ›
+        </a>
       </section>
 
       <section className={`${card} grid gap-3`} aria-labelledby="vt-resultado">
         <h2 id="vt-resultado" className="text-xs font-bold tracking-wider text-suave uppercase">Resultado</h2>
+        <p className="text-[15px] leading-relaxed">
+          <strong>Votado nesse dia:</strong> {objeto ? EXPLICA_OBJETO[objeto] : "veja a descrição oficial abaixo"}{turno ? `, ${turno}` : ""}.
+        </p>
+        <p className="-mt-1.5 text-[13px] leading-relaxed text-suave">Descrição oficial: {v.descricao}</p>
+        {regra && <p className="rounded-xl bg-fundo p-3.5 text-[13px] leading-relaxed">{regra}</p>}
         <p className="text-[32px] leading-none font-bold">
           {v.resultado === "aprovada" ? "Aprovada" : v.resultado === "rejeitada" ? "Rejeitada" : "Resultado não informado pela fonte"}
         </p>
@@ -132,34 +184,23 @@ export default async function PaginaVotacao({ params }: Props) {
         </p>
       </section>
 
-      {v.ementa && (
-        <section className={`${card} grid gap-3.5`} aria-labelledby="vt-oque">
-          <div>
-            <h2 id="vt-oque" className="text-xl font-bold">O que era</h2>
-            <p className="text-xs text-suave">Ementa oficial, sem resumo nosso</p>
-          </div>
-          <TextoLongo texto={v.ementa} rotulo="Ler a ementa inteira" />
-          {v.proposta && (
-            <p className="text-[13px] text-suave">
-              {v.proposta.apresentacao && <>Apresentada em {ddmmaaaa(v.proposta.apresentacao)}</>}
-              {v.proposta.apresentacao && v.proposta.situacao && " · "}
-              {v.proposta.situacao && <>situação: {v.proposta.situacao}</>}
-            </p>
-          )}
-          {termos.length > 0 && (
-            <div className="grid gap-2 rounded-xl bg-fundo p-3.5">
-              <h3 className="text-[13px] font-bold">Termos jurídicos da ementa</h3>
-              <dl className="grid gap-1.5 text-[13px] leading-relaxed">
-                {termos.map((t) => <div key={t.termo}><dt className="inline font-bold">{t.termo}:</dt> <dd className="inline text-suave">{t.explica}</dd></div>)}
-              </dl>
-            </div>
-          )}
-          <a href={v.urlOficial} {...externo} className="inline-flex h-11 w-fit items-center rounded-xl border border-borda px-4 text-[13px] font-bold text-texto no-underline hover:border-destaque">
-            Texto completo {v.casa === "senado" ? "no Senado" : "na Câmara"} ›
-          </a>
-        </section>
-      )}
-
+      <section className={`${card} grid gap-1`} aria-labelledby="vt-partidos">
+        <div className="mb-1">
+          <h2 id="vt-partidos" className="text-xl font-bold">Como votou cada partido</h2>
+          <p className="text-xs text-suave">Pelo partido de cada parlamentar no dia da votação, em ordem de tamanho da bancada. A orientação é a do líder do partido (ou da federação ou do bloco que o inclui). Toque num partido para ver como votou cada um.</p>
+        </div>
+        <ul>{v.partidos.slice(0, PRIMEIROS).map((p) => <LinhaPartido key={p.partido} p={p} v={v} />)}</ul>
+        {v.partidos.length > PRIMEIROS && (
+          <details className="group">
+            <summary className="flex h-11 cursor-pointer list-none items-center text-[13px] font-bold text-link underline underline-offset-2 group-open:hidden">Ver os {v.partidos.length} partidos</summary>
+            <ul>{v.partidos.slice(PRIMEIROS).map((p) => <LinhaPartido key={p.partido} p={p} v={v} />)}</ul>
+          </details>
+        )}
+        {v.naoVotouSemPartido > 0 && (
+          <p className="pt-2 text-xs text-suave">Mais {v.naoVotouSemPartido} deputados não votaram e não têm o partido identificado aqui: não estão no nosso registro de mandatos (como quem saiu da Câmara e não disputou 2026).</p>
+        )}
+        <p className="pt-2 text-xs text-suave"><Link href={hrefSecao("congresso")} className="underline underline-offset-2">Como contamos</Link></p>
+      </section>
       {v.caminho.length > 1 && (
         <section className={`${card} grid gap-3`} aria-labelledby="vt-caminho">
           <div>
@@ -187,23 +228,6 @@ export default async function PaginaVotacao({ params }: Props) {
         </section>
       )}
 
-      <section className={`${card} grid gap-1`} aria-labelledby="vt-partidos">
-        <div className="mb-1">
-          <h2 id="vt-partidos" className="text-xl font-bold">Como votou cada partido</h2>
-          <p className="text-xs text-suave">Pelo partido de cada parlamentar no dia da votação, em ordem de tamanho da bancada. A orientação é a do líder do partido (ou da federação ou do bloco que o inclui).</p>
-        </div>
-        <ul>{v.partidos.slice(0, PRIMEIROS).map((p) => <LinhaPartido key={p.partido} p={p} v={v} />)}</ul>
-        {v.partidos.length > PRIMEIROS && (
-          <details className="group">
-            <summary className="flex h-11 cursor-pointer list-none items-center text-[13px] font-bold text-link underline underline-offset-2 group-open:hidden">Ver os {v.partidos.length} partidos</summary>
-            <ul>{v.partidos.slice(PRIMEIROS).map((p) => <LinhaPartido key={p.partido} p={p} v={v} />)}</ul>
-          </details>
-        )}
-        {v.naoVotouSemPartido > 0 && (
-          <p className="pt-2 text-xs text-suave">Mais {v.naoVotouSemPartido} deputados não votaram e não têm o partido identificado aqui: não estão no nosso registro de mandatos (como quem saiu da Câmara e não disputou 2026).</p>
-        )}
-        <p className="pt-2 text-xs text-suave"><Link href={hrefSecao("congresso")} className="underline underline-offset-2">Como contamos</Link></p>
-      </section>
     </main>
     </>
   );

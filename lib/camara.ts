@@ -329,3 +329,46 @@ export async function listarDespesas(camaraId: number, legislatura: number, ano:
     valorLiquido: d.valorLiquido, fornecedor: d.nomeFornecedor, dataDocumento: d.dataDocumento, urlDocumento: d.urlDocumento,
   }));
 }
+
+// ---------- pauta do Plenário (eventos) ----------
+
+export interface SessaoPlenarioCamara { id: number; dataHoraInicio: string; situacao: string; tipo: string; descricao: string }
+export interface ItemPautaCamara {
+  ordem: number;
+  regime: string | null;
+  proposicao: ProposicaoPauta | null;
+  /** A matéria de que o item trata, quando o item é um pedido sobre outra (ex.: urgência para um PL). */
+  relacionada: ProposicaoPauta | null;
+}
+export interface ProposicaoPauta { id: number; tipo: string; numero: number; ano: number; ementa: string | null }
+
+interface RawEvento { id: number; dataHoraInicio: string; situacao: string; descricaoTipo: string; descricao: string | null }
+interface RawPropPauta { id: number; siglaTipo: string; numero: number | string; ano: number | string; ementa: string | null }
+interface RawItemPauta { ordem: number; regime: string | null; proposicao_: RawPropPauta | null; proposicaoRelacionada_: RawPropPauta | null }
+
+const propPauta = (p: RawPropPauta | null): ProposicaoPauta | null =>
+  p && p.siglaTipo ? { id: p.id, tipo: p.siglaTipo, numero: Number(p.numero), ano: Number(p.ano), ementa: p.ementa?.trim() || null } : null;
+
+/** Sessões deliberativas do Plenário (idOrgao=180) entre duas datas: as solenes e não deliberativas ficam de fora. */
+export async function listarSessoesDeliberativas(inicio: string, fim: string): Promise<SessaoPlenarioCamara[]> {
+  const raw = await paginar<RawEvento>(`/eventos?idOrgao=180&dataInicio=${inicio}&dataFim=${fim}&ordem=ASC&ordenarPor=dataHoraInicio`, "camara:/eventos");
+  return raw.filter((e) => e.descricaoTipo.startsWith("Sessão Deliberativa"))
+    .map((e) => ({ id: e.id, dataHoraInicio: e.dataHoraInicio, situacao: e.situacao, tipo: e.descricaoTipo, descricao: e.descricao?.trim().split("\n")[0] ?? e.descricaoTipo }));
+}
+
+export async function getPautaEvento(id: number): Promise<ItemPautaCamara[]> {
+  const { dados } = await fetchJson<Envelope<RawItemPauta[]>>(`${CAMARA_API}/eventos/${id}/pauta`, { label: "camara:/eventos/{id}/pauta" });
+  return dados.map((x) => ({ ordem: x.ordem, regime: x.regime?.trim() || null, proposicao: propPauta(x.proposicao_), relacionada: propPauta(x.proposicaoRelacionada_) }));
+}
+
+/** Temas oficiais da proposição (classificação da Câmara: "Saúde", "Direitos Humanos e Minorias"...). */
+export async function getTemasProposicao(id: number): Promise<string[]> {
+  const { dados } = await fetchJson<Envelope<{ codTema: number; tema: string }[]>>(`${CAMARA_API}/proposicoes/${id}/temas`, { label: "camara:/proposicoes/{id}/temas" });
+  return dados.map((t) => t.tema.trim()).filter(Boolean);
+}
+
+/** Id da proposição pelo tipo, número e ano ("PL 5809/2025"); null se a Câmara não achar. */
+export async function getIdProposicao(tipo: string, numero: number, ano: number): Promise<number | null> {
+  const { dados } = await fetchJson<Envelope<{ id: number }[]>>(`${CAMARA_API}/proposicoes?siglaTipo=${encodeURIComponent(tipo)}&numero=${numero}&ano=${ano}`, { label: "camara:/proposicoes?siglaTipo" });
+  return dados[0]?.id ?? null;
+}

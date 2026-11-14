@@ -30,13 +30,14 @@ const ESQUEMA: Record<string, { pk: string[]; obrig: string[]; opc: string[] }> 
   eleitos_mun: { pk: ["municipio_ibge", "cargo", "politico_id"], obrig: ["municipio_ibge", "cargo", "politico_id", "votos", "posicao"], opc: [] },
   despesas_mes: { pk: ["politico_id", "casa", "ano", "mes"], obrig: ["politico_id", "casa", "uf", "ano", "mes", "total", "por_categoria"], opc: [] },
   despesas_media_uf: { pk: ["casa", "uf", "ano", "mes"], obrig: ["casa", "uf", "ano", "mes", "media", "parlamentares", "total", "fechado"], opc: [] },
-  votacoes: { pk: ["id"], obrig: ["id", "id_externo", "casa", "data", "descricao", "secreta", "url_oficial"], opc: ["proposicao", "ementa", "objeto", "resultado", "placar"] },
+  votacoes: { pk: ["id"], obrig: ["id", "id_externo", "casa", "data", "descricao", "secreta", "url_oficial"], opc: ["proposicao", "ementa", "objeto", "resultado", "placar", "temas"] },
   votos: { pk: ["votacao_id", "politico_id"], obrig: ["votacao_id", "politico_id", "voto"], opc: ["detalhe"] },
   orientacoes: { pk: ["votacao_id", "bancada"], obrig: ["votacao_id", "bancada"], opc: ["orientacao"] },
   proposicoes: { pk: ["id"], obrig: ["id", "id_externo", "casa", "tipo", "numero", "ano", "apresentacao", "virou_norma", "url_oficial"], opc: ["ementa", "situacao"] },
   proposicoes_autores: { pk: ["proposicao_id", "politico_id"], obrig: ["proposicao_id", "politico_id", "ordem"], opc: [] },
   proposicoes_contagem: { pk: ["politico_id", "casa", "ano", "tipo"], obrig: ["politico_id", "casa", "ano", "tipo", "autorias"], opc: [] },
   atualizacoes: { pk: ["fonte"], obrig: ["fonte", "coletado_em"], opc: [] },
+  pauta: { pk: ["id"], obrig: ["id", "casa", "data", "sessao", "ordem", "materia", "tipo", "url_oficial", "coletado_em"], opc: ["hora", "ementa", "relacionada", "ementa_relacionada", "apreciacao", "temas"] },
   executivos: { pk: ["id"], obrig: ["id", "ano", "cargo", "nome", "nome_urna", "partido", "tse_sq_candidato", "posse"], opc: ["uf", "genero", "numero_urna", "foto_url"] },
 };
 const ENUM: Record<string, Record<string, readonly unknown[]>> = {
@@ -48,6 +49,7 @@ const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   orientacoes: { orientacao: ["Sim", "Não", "Obstrução", "Liberado", ""] },
   proposicoes: { casa: ["camara", "senado"], virou_norma: [true, false] },
   proposicoes_contagem: { casa: ["camara", "senado"] },
+  pauta: { casa: ["camara", "senado"] },
   executivos: { cargo: ["presidente", "governador"], genero: ["feminino", "masculino", null] },
 };
 

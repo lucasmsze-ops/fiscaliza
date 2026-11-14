@@ -38,12 +38,13 @@ export function CartaoVotacao({ v }: { v: VotacaoResumo }) {
   const resto = linhaMateria(v);
   return (
     <Link href={hrefVotacao(v.id)} className="grid gap-2 rounded-xl border border-borda bg-card p-3.5 text-texto no-underline hover:border-destaque">
-      <span className="text-xs text-suave">{v.casa === "senado" ? "Senado" : "Câmara"}</span>
-      <span className="text-[15px] leading-snug">
-        <strong>{v.proposicao ?? "Sem matéria principal informada"}</strong>
-        {resto && <span className="text-suave"> · {resto}</span>}
+      <span className="flex flex-wrap items-center gap-1.5 text-xs text-suave">
+        {v.casa === "senado" ? "Senado" : "Câmara"}
+        {v.temas?.slice(0, 2).map((t) => <span key={t} className="rounded-md bg-destaque/20 px-1.5 py-0.5 font-bold text-texto">{t}</span>)}
       </span>
-      <span className="line-clamp-2 text-sm leading-snug text-suave">{v.ementa ?? v.descricao}</span>
+      {/* O assunto (ementa oficial) é o título; número e tipo ficam pequenos (pedido de 2026-11-13). */}
+      <strong className="line-clamp-2 text-[15px] leading-snug">{v.ementa ?? v.descricao}</strong>
+      <span className="text-xs text-suave">{v.proposicao ?? "Sem matéria principal informada"}{resto && ` · ${resto}`}</span>
       {p && !v.secreta && total > 0 && <BarraPlacar sim={p.sim} nao={p.nao} abst={p.abstencao + p.obstrucao} cadeiras={CADEIRAS[v.casa]} />}
       <span className="text-xs tabular-nums">
         {v.resultado && <strong>{RESULTADO[v.resultado]}</strong>}

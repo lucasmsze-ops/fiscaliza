@@ -11,13 +11,15 @@
 import { siglaPartido } from "../../lib/partidos";
 import type { Casa, TipoVoto, Votacao } from "../../lib/types";
 import { montarPaginaVotacao, tipoDe } from "../../lib/votacao";
-import { lerTabela, type LinhaBruta } from "./estado";
+import { existsSync, readFileSync } from "node:fs";
+import { FONTES, lerTabela, type LinhaBruta } from "./estado";
 import { votosComPartido } from "./fidelidade";
 
 const votacaoDe = (l: LinhaBruta): Votacao => ({
   id: String(l.id), idExterno: String(l.id_externo), casa: l.casa as Casa, data: String(l.data), proposicao: (l.proposicao as string) ?? null,
   ementa: (l.ementa as string) ?? null, objeto: (l.objeto as string) ?? null, descricao: String(l.descricao),
   resultado: (l.resultado as Votacao["resultado"]) ?? null, placar: (l.placar as Votacao["placar"]) ?? null, secreta: Boolean(l.secreta), urlOficial: String(l.url_oficial),
+  temas: (l.temas as string[] | null) ?? null,
 });
 
 export function calcularPaginasVotacao(): { linhas: LinhaBruta[]; relatorio: string[] } {
@@ -26,7 +28,25 @@ export function calcularPaginasVotacao(): { linhas: LinhaBruta[]; relatorio: str
   const votacoes = lerTabela("votacoes").map(votacaoDe);
   const dataDe = new Map(votacoes.map((v) => [v.id, v.data]));
 
-  const porVotacao = new Map<string, { politicoId: string; voto: TipoVoto; partido: string }[]>();
+  // Nome de cada parlamentar: o de urna de quem tem página; senão o eleitoral do perfil da Câmara em
+  // cache (ex-deputado que não disputou 2026) ou o nome que o Senado manda junto do voto.
+  const comPagina = new Map(politicos.map((p) => [String(p.id), { nome: String(p.nome_urna), uf: String(p.uf) }]));
+  const perfilCamara = (id: string): string | null => {
+    const f = `${FONTES}/camara-deputados/${id}.json`;
+    if (!existsSync(f)) return null;
+    try { const j = JSON.parse(readFileSync(f, "utf8")) as { perfil?: { nomeEleitoral?: string; nome?: string } }; return j.perfil?.nomeEleitoral ?? j.perfil?.nome ?? null; } catch { return null; }
+  };
+  const nomes = new Map<string, string | null>();
+  const nomeDe = (pid: string, doVoto?: string) => {
+    // Em caixa alta, como o nome de urna dos demais.
+    if (comPagina.has(pid)) return comPagina.get(pid)!.nome;
+    if (doVoto) return doVoto.toLocaleUpperCase("pt-BR");
+    if (!nomes.has(pid)) nomes.set(pid, pid.startsWith("camara-id:") ? perfilCamara(pid.slice(10))?.toLocaleUpperCase("pt-BR") ?? null : null);
+    return nomes.get(pid) ?? "Nome não informado pela fonte";
+  };
+  const ufDaCadeira = new Map(lerTabela("mandatos").filter((m) => m.fim === null && m.uf).map((m) => [String(m.politico_id), String(m.uf)]));
+
+  const porVotacao = new Map<string, { politicoId: string; voto: TipoVoto; partido: string; uf?: string; nome?: string }[]>();
   const historico = new Map<string, { data: string; partido: string }[]>();
   for (const x of votosComPartido(politicos, true)) {
     const l = porVotacao.get(x.votacaoId) ?? [];
@@ -66,10 +86,11 @@ export function calcularPaginasVotacao(): { linhas: LinhaBruta[]; relatorio: str
   for (const v of votacoes) {
     const registrados = porVotacao.get(v.id) ?? [];
     if (!registrados.length) { semVotos++; continue; }
-    const votos = registrados.map((x) => ({ voto: x.voto, partido: x.partido }));
+    const pessoa = (pid: string) => (comPagina.has(pid) ? pid : null);
+    const votos = registrados.map((x) => ({ voto: x.voto, partido: x.partido, nome: nomeDe(x.politicoId, x.nome), id: pessoa(x.politicoId), uf: x.uf ?? comPagina.get(x.politicoId)?.uf ?? "" }));
     if (v.casa === "camara") {
       const votaram = new Set(registrados.map((x) => x.politicoId));
-      for (const pid of deputadosEm(v.data)) if (!votaram.has(pid)) votos.push({ voto: "ausente", partido: partidoPerto(pid, v.data) });
+      for (const pid of deputadosEm(v.data)) if (!votaram.has(pid)) votos.push({ voto: "ausente", partido: partidoPerto(pid, v.data), nome: nomeDe(pid), id: pid, uf: ufDaCadeira.get(pid) ?? comPagina.get(pid)?.uf ?? "" });
     }
     const materia = v.proposicao ? (porMateria.get(`${v.casa}|${v.proposicao}`) ?? [v]) : [v];
     const chaveProposta = v.proposicao ? `${v.casa}|${tipoDe(v.proposicao)} ${v.proposicao.replace(/^[A-Z]+\s*/, "").split(" ")[0]}` : "";

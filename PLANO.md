@@ -484,6 +484,20 @@ patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a s
   "No Congresso desde" virou "Na Casa desde": de quem é senador só temos os mandatos do Senado.
 - Pronto quando: no ar, testado no celular.
 
+### E23m · Menu, Visão geral com o estado e Votações (pedido de 2026-11-13)
+- [x] Menu: Visão geral, Congresso, Monitorando e Outros (Votações, Comparar, Sobre).
+- [x] Visão geral: sem estado, só o mapa; com estado ou cidade, quem representa (presidente e governador
+      eleitos em 2026, com a posse em 1º/1/2027, sem clique; senadores) e "Deputados federais" do estado.
+      A Me representa saiu (`/me-representa` redireciona). Job `executivos` (TSE), migração 0008.
+- [x] Detalhe da votação: nome, tipo e temas, "O que é" com o texto completo (sem "Termos jurídicos"),
+      resultado, como votou cada partido (tocando, a lista de quem votou como) e, por último, o caminho.
+- [x] `/votacoes`: próximas votações (job `pauta`, coleta diária) e últimas, cada uma com Câmara ou
+      Senado; calendário atrás de um botão, como filtro por dia; "Avisar" nos cartões da pauta (fake door).
+- [x] Títulos: o assunto (ementa oficial) em destaque, número e tipo pequenos, e os temas oficiais da
+      Câmara e do Senado (passo `temas`, coluna `temas`, migração 0009). A explicação simples do Senado
+      não existe na API atual.
+- Pronto quando: no ar, com 0008 e 0009 rodadas antes do push e um cron manual.
+
 ### E23g · Propostas
 `/propostas`: lista geral com filtros (Casa, tipo, situação, busca na ementa) e link oficial. A
 linha do tempo da tramitação fica oculta (só a situação atual é coletada).

@@ -15,6 +15,21 @@ Modelo:
 
 ---
 
+## 2026-11-13 · E23m · menu, Visão geral com o estado, Votações
+**Feito:** menu com "Outros"; Visão geral absorveu a Me representa (redirecionamento com `?uf=`/`?cidade=`);
+job `executivos` (1 presidente e 27 governadores eleitos em 2026, migração 0008); detalhe da votação
+reordenado, com a lista de cada parlamentar por partido (`membros` no resumo, ~45 MB nos 1.537 resumos);
+`/votacoes` com próximas (job `pauta`: hoje 7 matérias no Senado em 17 e 18/11, a Câmara ainda sem sessão
+deliberativa marcada) e últimas, calendário como filtro; temas oficiais (1.285 de 1.537 votações; as do
+Senado sem tema são escolhas de autoridade, que não têm classificação). Migração 0009 (pauta e temas).
+**Decidido (perguntas ao usuário):** executivos = eleitos em 2026 com a posse (não há fonte de quem está
+no cargo hoje); títulos = assunto + tema oficial, nada escrito por nós.
+**Achados:** o `consulta_cand` repete as UFs no `_BRASIL`; a foto do presidente está na eleição federal
+(6257); a pauta deliberativa da Câmara aparece em `/eventos` só poucos dias antes; das votações herdadas
+da sonda não há o detalhe em cache, então o id da matéria sai de `/proposicoes?siglaTipo&numero&ano`.
+**Próximo passo:** rodar 0008 e 0009; push; cron manual (executivos, pauta, temas, resumos de votação com
+`membros`); push de docs (redeploy).
+
 ## 2026-11-13 · E23f · Comparar
 **Feito:** `/comparar` (`components/Comparar.tsx`, `lib/comparar.ts`, `/dados/comparar/[id]`), aba no
 menu, link no crachá. `SupabaseRepo.getPolitico` passa a buscar uma linha só quando a lista não está em

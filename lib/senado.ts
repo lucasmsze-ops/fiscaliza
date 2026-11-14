@@ -408,3 +408,33 @@ export async function getAutoriaProcesso(id: string): Promise<AutoriaSenado[]> {
   const raw = await fetchJson<ProcessoRaw>(`${SENADO_API}/processo/${id}`, { label: "senado:/processo/{id}", retries: RETRIES_PROCESSO });
   return (raw.autoriaIniciativa ?? []).map((a) => ({ senadoCodigo: a.codigoParlamentar ? String(a.codigoParlamentar) : null, ordem: a.ordem }));
 }
+
+// ---------------------------------------------------------------- agenda (pauta) do Plenário
+
+export interface SessaoAgendaSenado {
+  codigo: string; data: string; hora: string | null; tipo: string; situacao: string; casa: string;
+  materias: { codigo: string; sigla: string; numero: number; ano: number; ementa: string | null; apreciacao: string | null }[];
+}
+interface MateriaAgendaRaw { CodigoMateria: string; SiglaMateria: string; NumeroMateria: string; AnoMateria: string; Ementa?: string; Apreciacao?: string }
+interface SessaoAgendaRaw { CodigoSessao: string; Data: string; Hora?: string; TipoSessao: string; SituacaoSessao: string; Casa: string; Materias?: { Materia?: MateriaAgendaRaw | MateriaAgendaRaw[] } }
+
+/** Agenda do Plenário do mês de `data` (AAAAMMDD), a partir desse dia: sessões do Senado e do Congresso, com as matérias. */
+export async function getAgendaPlenarioMes(data: string): Promise<SessaoAgendaSenado[]> {
+  const r = await get<{ AgendaPlenario?: { Sessoes?: { Sessao?: SessaoAgendaRaw | SessaoAgendaRaw[] } } }>(`/plenario/agenda/mes/${data}`, "/plenario/agenda/mes");
+  return arr(r.AgendaPlenario?.Sessoes?.Sessao).map((s) => ({
+    codigo: s.CodigoSessao, data: s.Data, hora: vazio(s.Hora), tipo: s.TipoSessao.trim(), situacao: s.SituacaoSessao.trim(), casa: s.Casa.trim(),
+    materias: arr(s.Materias?.Materia).map((m) => ({
+      codigo: m.CodigoMateria, sigla: m.SiglaMateria.trim(), numero: Number(m.NumeroMateria), ano: Number(m.AnoMateria),
+      ementa: vazio(m.Ementa), apreciacao: vazio(m.Apreciacao),
+    })),
+  }));
+}
+
+/** Classificações oficiais (temas) de uma matéria do Senado, pelo código da matéria (o da página dela). */
+export async function getClassificacoesMateria(codigoMateria: string): Promise<string[]> {
+  const lista = await get<{ id: number }[]>(`/processo?codigoMateria=${codigoMateria}`, "/processo?codigoMateria");
+  const id = arr(lista)[0]?.id;
+  if (!id) return [];
+  const p = await get<{ classificacoes?: { descricao: string }[] }>(`/processo/${id}`, "/processo/{id}");
+  return arr(p.classificacoes).map((c) => c.descricao.trim()).filter(Boolean);
+}

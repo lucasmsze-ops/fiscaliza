@@ -15,7 +15,7 @@ import { montarPagina, type PaginaDados } from "./pagina";
 import type { VotacaoPagina } from "./votacao";
 import type {
   Afastamento, Atualizacao, Cargo, Casa, DespesaMediaUf, DespesaMes, EleitoMunicipio, Linha, ListaEleitoral, Mandato, Municipio,
-  ExecutivoEleito, FidelidadePolitico, Orientacao, Politico, Proposicao, ProposicaoAutor, ProposicaoContagem, Votacao, Voto,
+  ExecutivoEleito, FidelidadePolitico, ItemPauta, Orientacao, Politico, Proposicao, ProposicaoAutor, ProposicaoContagem, Votacao, Voto,
 } from "./types";
 
 export interface EleitoNaCidade {
@@ -70,9 +70,18 @@ export interface Repo {
   getVotacaoPagina(id: string): Promise<VotacaoPagina | null>;
   /** Presidente e governadores eleitos (tabela `executivos`). */
   listarExecutivos(): Promise<ExecutivoEleito[]>;
+  /** Pauta do Plenário de `desde` (AAAA-MM-DD) em diante, só a coleta mais recente. */
+  listarPauta(desde: string): Promise<ItemPauta[]>;
 }
 
 export { normalizar } from "./texto";
+
+/** Só os itens da coleta mais recente, em ordem de data, hora e ordem na pauta. */
+export function ultimaColeta(ls: ItemPauta[]): ItemPauta[] {
+  const ultima = ls.map((x) => x.coletadoEm).sort().at(-1);
+  return ls.filter((x) => x.coletadoEm === ultima)
+    .sort((a, b) => a.data.localeCompare(b.data) || (a.hora ?? "").localeCompare(b.hora ?? "") || a.casa.localeCompare(b.casa) || a.ordem - b.ordem);
+}
 import { SupabaseRepo } from "./repo-supabase";
 import { normalizar } from "./texto";
 
@@ -80,7 +89,7 @@ type Tabelas = {
   politicos: Politico; mandatos: Mandato; afastamentos: Afastamento; listas: ListaEleitoral; municipios: Municipio;
   eleitos_mun: EleitoMunicipio; despesas_mes: DespesaMes; despesas_media_uf: DespesaMediaUf; votacoes: Votacao;
   votos: Voto; orientacoes: Orientacao; proposicoes: Proposicao; proposicoes_autores: ProposicaoAutor;
-  proposicoes_contagem: ProposicaoContagem; atualizacoes: Atualizacao; fidelidade: FidelidadePolitico; executivos: ExecutivoEleito;
+  proposicoes_contagem: ProposicaoContagem; atualizacoes: Atualizacao; fidelidade: FidelidadePolitico; executivos: ExecutivoEleito; pauta: ItemPauta;
 };
 
 /** Lê data/*.json uma vez por processo (cada tabela só quando pedida). */
@@ -213,6 +222,11 @@ export class JsonRepo implements Repo {
   async listarExecutivos() {
     // Pasta sem o arquivo (estado antigo do cron): nenhum executivo, a Visão geral só não os mostra.
     try { return await this.tabela("executivos"); } catch { return []; }
+  }
+  async listarPauta(desde: string) {
+    let ls: ItemPauta[];
+    try { ls = await this.tabela("pauta"); } catch { return []; }
+    return ultimaColeta(ls.filter((x) => x.data >= desde));
   }
   private paginasVotacao: Promise<Map<string, VotacaoPagina>> | null = null;
   async getVotacaoPagina(id: string) {

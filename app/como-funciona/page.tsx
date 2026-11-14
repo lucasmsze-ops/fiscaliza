@@ -229,9 +229,20 @@ export default async function ComoFunciona() {
           visão não aparece: das 27 cadeiras eleitas em 2022, só se sabe quem ocupa hoje, não quem ocupará em fevereiro.
         </p>
         <p>
-          <strong>Agenda e última sessão:</strong> quantas votações nominais houve em cada dia nas duas Casas e quais foram, com o placar
-          publicado pela fonte. A pauta marcada (sessões futuras) não é coletada e não aparece. Nas votações secretas o Senado publica só
-          quem votou, não como; em votação de pessoa a Câmara registra o voto, mas não divulga a direção.
+          <strong>Próximas e últimas votações:</strong> as próximas são a pauta que a Câmara e o Senado publicam para as sessões
+          deliberativas do Plenário, coletada uma vez por dia (pode mudar até a sessão, e nem tudo da pauta vai a votação nominal). As
+          últimas são as votações nominais da última sessão de cada Casa, com o placar publicado pela fonte; o calendário filtra por dia.
+          Nas votações secretas o Senado publica só quem votou, não como; em votação de pessoa a Câmara registra o voto, mas não divulga a
+          direção.
+        </p>
+        <p>
+          <strong>Temas:</strong> a classificação de assunto que a própria Câmara e o próprio Senado dão a cada matéria (por exemplo,
+          &quot;Saúde&quot; ou &quot;Segurança Pública&quot;). Não é classificação nossa; matéria sem classificação fica sem tema.
+        </p>
+        <p>
+          <strong>Presidente e governador:</strong> na Visão geral, os eleitos em 2026 segundo o TSE, com a posse em 1º de janeiro de 2027.
+          Não há fonte aberta de quem está no cargo hoje (governadores que renunciaram em abril de 2026 para disputar a eleição foram
+          substituídos pelos vices), por isso o site mostra só o eleito e a data da posse.
         </p>
         <p>
           <strong>Página de cada votação:</strong> o que foi votado naquele momento (texto principal, emenda, destaque, requerimento,

@@ -61,6 +61,29 @@ export interface Politico {
   updatedAt: string;
 }
 
+/** Tabela `pauta`: o que está marcado para o Plenário (job `pauta`, uma coleta por dia). */
+export interface ItemPauta {
+  id: string;
+  casa: Casa;
+  data: string;
+  hora: string | null;
+  sessao: string;
+  ordem: number;
+  /** "PL 479/2025". */
+  materia: string;
+  tipo: string;
+  ementa: string | null;
+  /** Câmara: a matéria de que o item trata, quando ele é um pedido sobre outra (urgência para um PL). */
+  relacionada: string | null;
+  ementaRelacionada: string | null;
+  /** Câmara: regime de tramitação; Senado: como será apreciada ("Discussão, em turno único"). */
+  apreciacao: string | null;
+  urlOficial: string;
+  /** Dia da coleta: o site mostra só a mais recente (item que saiu da pauta fica com a antiga). */
+  coletadoEm: string;
+  temas?: string[] | null;
+}
+
 /** Tabela `executivos`: presidente e governadores eleitos (TSE), com a data da posse. Sem crachá ainda. */
 export interface ExecutivoEleito {
   id: string;
@@ -191,6 +214,8 @@ export interface Votacao {
   placar: Placar | null;
   secreta: boolean;
   urlOficial: string;
+  /** Temas oficiais da matéria (Câmara/Senado), do passo `temas` do cron; null sem classificação. */
+  temas?: string[] | null;
 }
 
 /**

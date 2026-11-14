@@ -20,6 +20,7 @@ export const TABELAS: readonly { nome: string; pk: readonly string[] }[] = [
   { nome: "proposicoes_autores", pk: ["proposicao_id", "politico_id"] },
   { nome: "proposicoes_contagem", pk: ["politico_id", "casa", "ano", "tipo"] },
   { nome: "atualizacoes", pk: ["fonte"] },
+  { nome: "pauta", pk: ["id"] },
 ];
 
 /** Tipos de proposição que podem virar lei ou norma (decisão de 2026-11-02): ficam com a íntegra; os outros, só contagem. */

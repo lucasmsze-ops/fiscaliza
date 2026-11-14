@@ -96,10 +96,12 @@ export function limitesDoMes(mes: string): [string, string] {
 export interface VotacaoResumo {
   id: string; casa: Casa; data: string; proposicao: string | null; ementa: string | null; descricao: string;
   resultado: Votacao["resultado"]; placar: Votacao["placar"]; secreta: boolean; urlOficial: string;
+  /** Temas oficiais da matéria (Câmara/Senado); ausente enquanto não coletados. */
+  temas?: string[];
 }
 export const resumirVotacao = (v: Votacao): VotacaoResumo => ({
   id: v.id, casa: v.casa, data: v.data, proposicao: v.proposicao, ementa: v.ementa, descricao: v.descricao.replace(/\s*Sim:\s*\d.*$/s, ""),
-  resultado: v.resultado, placar: v.placar, secreta: v.secreta, urlOficial: v.urlOficial,
+  resultado: v.resultado, placar: v.placar, secreta: v.secreta, urlOficial: v.urlOficial, ...(v.temas?.length ? { temas: v.temas } : {}),
 });
 
 /**

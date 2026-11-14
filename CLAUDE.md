@@ -62,14 +62,14 @@ Presença literal em sessões · discursos · conta, login, "monitorar" com cada
 
 Hoje (protótipo, SP):
 ```
-/                   Visão geral (E23c): mapa por estado, quem está no cargo hoje, lista A–Z
+/                   Visão geral: mapa; com estado ou cidade (?uf=, ?cidade=), quem representa (presidente e governador eleitos em 2026, senadores) e os deputados federais do estado
 /congresso          quem ocupa cada cadeira hoje (Câmara e Senado) e a Câmara de fev/2027 (E23b)
-/votacoes           agenda do Plenário e votações da última sessão (saíram de /congresso na E23l)
+/votacoes           próximas votações (pauta, coleta diária), últimas votações e calendário como filtro
 /c/[ids]            links antigos da colinha: redireciona para o crachá (a colinha saiu em 2026-11-04)
 /p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
 /monitorando        quem a pessoa monitora neste navegador e o que apareceu desde a última visita (E23e)
 /comparar           de 2 a 5 políticos lado a lado, sem nota nem ranking (E23f; `?ids=a,b`)
-/me-representa      cidade ou estado → senadores e deputados federais em exercício da UF (E23d; `?uf=SP`, `?cidade=<IBGE>`)
+/me-representa      redireciona para a Visão geral (a página saiu em 2026-11-13; `?uf=` e `?cidade=` seguem)
 /votacoes/[id]      uma votação do Plenário (E23k): placar, regra, ementa, caminho, como votou cada partido (id = casa-idExterno)
 /como-funciona      metodologia, fontes, licença, código
 ```
@@ -96,8 +96,9 @@ Abaixo: cota do mês (CEAP na Câmara, CEAPS no Senado) vs média da bancada **d
 ## Fontes de dados e armadilhas conhecidas
 
 ### TSE — `dadosabertos.tse.jus.br` (CSV, download único) e `resultados.tse.jus.br` (JSON de divulgação)
+- `consulta_cand` de 2026 traz cada UF num CSV próprio e de novo no consolidado `_BRASIL` (ler as UFs e o `_BR`, nunca os três). No 2º turno o candidato tem uma linha por turno (`NR_TURNO`).
 - `consulta_cand`: candidatos, nome de urna, partido, federação, situação de totalização (`#NULO` em 421 candidaturas a deputado federal e senador de 2026: status desconhecido, nunca inventado), nascimento, CPF. **CPF nunca é persistido, nem em hash**: o join por SHA-256 do CPF acontece em memória no cron, a cada execução, e só o par de ids (`tse_sq_candidato` ↔ `camara_id`) é gravado. Não tem coluna de foto nem indica quem concorre à reeleição (em 2026 não há `ST_REELEICAO`): "reeleito" sai do join com a Câmara/Senado.
-- **Foto**: URL pública por candidato em `https://resultados.tse.jus.br/oficial/ele2026/6259/fotos/{uf}/{sq_candidato}.jpeg` (JPEG ~6 KB; 17/17 da amostra de 2026). `lib/tse.ts#fotoUrlTse`. O zip `foto_cand{ano}_{UF}_div.zip` só serve para conferência. O DivulgaCand bloqueia acesso automatizado; não usar.
+- **Foto**: URL pública por candidato em `https://resultados.tse.jus.br/oficial/ele2026/6259/fotos/{uf}/{sq_candidato}.jpeg` (6259 = eleição estadual: governador, senador, deputados; o presidente está na federal, `6257/fotos/br/`) (JPEG ~6 KB; 17/17 da amostra de 2026). `lib/tse.ts#fotoUrlTse`. O zip `foto_cand{ano}_{UF}_div.zip` só serve para conferência. O DivulgaCand bloqueia acesso automatizado; não usar.
 - Zips só por ano (um CSV por UF dentro). Catálogo via API CKAN: `dadosabertos.tse.jus.br/api/3/action/package_show?id=candidatos-2026` e `?id=resultados-2026`.
 - CSV latin-1, `;`. Nulos: `#NULO`, `#NE` (2026) e `#NULO#`, `#NE#` (2018). `DS_CARGO` é MAIÚSCULO em `consulta_cand` e Capitalizado em `votacao_*_munzona`. `SG_FEDERACAO` em 2026 é a composição, não uma sigla.
 - **O TSE regenera os arquivos sem aviso** (novo `DT_GERACAO`, linhas reordenadas, zip de outro tamanho) sem mudar o conteúdo: em 01/11/2026 os 1.058 candidatos a deputado federal e senador de SP tinham votos e situação idênticos aos de 29/10. O cron compara conteúdo agregado, nunca bytes ou data.
@@ -124,6 +125,7 @@ fica com a UF errada para "quem representa o estado". Listas por estado usam `ma
 - `/votacoes?idOrgao=180&dataInicio&dataFim` — plenário. **Máximo 3 meses por chamada** e 100 itens por página (`lib/camara.ts#janelas` divide). ~1.700 votações/ano listadas, ~280 nominais/ano. Depois `/votacoes/{id}` (`proposicoesAfetadas` = matéria principal), `/votos` e `/orientacoes`.
 - Nominal tem placar na `descricao` (`Sim: N; Não: M`): precisão 100%, recall 99% (medido). O cron confirma por `/votos` mesmo assim.
 - `orientacaoVoto` ∈ {`Sim`, `Não`, `Obstrução`, `Liberado`, `""`}. Vazio e `Liberado` ficam fora do denominador do governismo. `aprovacao` vem `null` em ~17% das nominais.
+- **Pauta do Plenário:** `/eventos?idOrgao=180&dataInicio&dataFim` lista sessões (inclusive solenes e não deliberativas: filtrar `descricaoTipo` começando por "Sessão Deliberativa"); a deliberativa aparece só poucos dias antes. `/eventos/{id}/pauta` traz os itens com `proposicao_` e, em pedidos (urgência, recurso), `proposicaoRelacionada_`. Temas: `/proposicoes/{id}/temas`.
 - `/proposicoes?idDeputadoAutor` retorna **coautorias**. Filtrar por `/proposicoes/{id}/autores` com `proponente = true`. Em PEC, as ~170 assinaturas de apoio vêm com `proponente = 0` (conferido: os 2 casos a mais da API para uma deputada em 2025 eram apoio).
 - **Arquivos anuais** `dadosabertos.camara.leg.br/arquivos/{nome}/csv/{nome}-{ano}.csv` (`proposicoes`, `proposicoesAutores`; CSV `;`, UTF-8 com BOM, CRLF): o servidor **corta a transferência a cada ~17 s** (43 de 90 MB) e aceita `Range` (206): `lib/http.ts#baixarArquivo` retoma até o tamanho bater. Regenerados todo dia (~04h). O arquivo do ano traz também proposições sem número (`ano` 0: pareceres, relatórios). Em `proposicoesAutores`, `ordemAssinatura = 1` marca exatamente um primeiro autor por proposição; "virou lei" = `ultimoStatus_descricaoSituacao` "Transformado em Norma Jurídica".
 - `tipoVoto` tem 5 valores: `Sim`, `Não`, `Abstenção`, `Obstrução`, `Artigo 17`, e vem **`null`** em votações de pessoa (→ `nao_informado`: conta na participação, não no governismo). Quem não aparece no array = `ausente`. Tratar todos explicitamente.
@@ -139,6 +141,7 @@ fica com a UF errada para "quem representa o estado". Listas por estado usam `ma
 - Orientação de bancada: `GET /plenario/votacao/orientacaoBancada/{AAAAMMDD}/{AAAAMMDD}` (aceitou o período inteiro numa chamada). Junta com `/votacao` por `sequencialVotacao` (nulo em ~2% das votações → sem orientação). Bancadas: partidos na grafia da API ("Republica", "Podemos", "UNIÃO"), "Governo", "Oposição", "Maioria", "Minoria", "Banc Fem". Valores SIM/NÃO/LIVRE/OBSTRUÇÃO/null, normalizados no adapter para Sim/Não/Liberado/Obstrução/"" (vocabulário da Câmara).
 - XML→JSON: objeto em vez de array quando há um só item (`Partidos.Partido`), chave ausente quando vazio. Normalizar em `lib/senado.ts`; nunca usar o shape cru fora dele.
 - **Nenhum endpoint expõe CPF** (0 ocorrências no OpenAPI). Join com o TSE por nome completo + UF (`NomeCompletoParlamentar` × `NM_CANDIDATO`, sem acento, maiúsculas), gravando o método em `join`; revisão manual se houver ambiguidade. `codigo` do Senado não tem relação com `id` da Câmara.
+- **Pauta do Plenário:** `/plenario/agenda/mes/{AAAAMMDD}` (do dia ao fim do mês) traz sessões do Senado ("SF") e do Congresso ("CN"), com `Materias.Materia` (código, sigla, número, ano, ementa, `Apreciacao`, que pode vir "-"). Temas: `classificacoes` de `/processo/{id}`; o id sai de `/processo?codigoMateria=`. O `/processo/{id}` não traz explicação da ementa em linguagem simples (conferido em 5 matérias, 2026-11-13).
 - Foto: `UrlFotoParlamentar` vem em `http://` e redireciona até `https://legis.senado.leg.br/senadores/fotos-oficiais/{codigo}` (JPEG). O adapter troca o esquema para https.
 - 2026 renovou 2/3 do Senado: a maioria dos senadores eleitos não tem dado até 01/02/2027.
 - **Autoria:** `GET /processo?codigoParlamentarAutor={codigo}&dataInicioApresentacao&dataFimApresentacao` (janela ≤ 1 ano, sem paginação; `/senador/{codigo}/autorias` está DEPRECATED). `identificacao` é "PL 1234/2025", às vezes com sufixo de comissão ("REQ 4/2023 - CDH"). Ordem dos autores só em `/processo/{id}` (`autoriaIniciativa[].ordem`, `codigoParlamentar` ausente quando o autor é comissão). A listagem por autor inclui quem não está na autoria de iniciativa (membros da Comissão Diretora num PL dela; assinatura retirada): vale a autoria de iniciativa. Virou norma = situação "TRANSFORMADA EM NORMA JURÍDICA" (com ou sem veto parcial). Com 3 chamadas em voo, `/processo` responde **429** (225 em 3.466): 2 em voo e 5 tentativas. Página da matéria: `www25.senado.leg.br/web/atividade/materias/-/materia/{codigoMateria}`.
@@ -166,13 +169,17 @@ proposicoes       id (= casa:id_externo), id_externo, casa, tipo, numero, ano, e
 proposicoes_autores  proposicao_id, politico_id, ordem (1 = primeiro autor; só proponentes)
 proposicoes_contagem politico_id, casa, ano, tipo, autorias   (os demais tipos: REQ, RIC, emendas...)
 votacoes          id (= casa:id_externo), id_externo, casa, data, proposicao, ementa, objeto,
-                  descricao, resultado, placar jsonb, secreta bool, url_oficial
+                  descricao, resultado, placar jsonb, secreta bool, url_oficial, temas text[] (oficiais)
 votos             votacao_id, politico_id, voto enum(sim,nao,abstencao,obstrucao,art17,
                   nao_informado,secreto,ausente), detalhe (sigla do Senado)
 orientacoes       votacao_id, bancada, orientacao
 atualizacoes      fonte ({casa}_{job}), coletado_em   (última coleta bem-sucedida; base de /atualizacoes)
 resumos           politico_id, card jsonb, pagina jsonb, hash   (crachá pronto, pelo cron)
-resumos_votacao   votacao_id, pagina jsonb, hash   (página da votação pronta, com o partido de cada voto no dia; E23k)
+resumos_votacao   votacao_id, pagina jsonb, hash   (página da votação pronta, com o partido e o voto de cada um no dia; E23k)
+executivos        id (= ano:sq), ano, cargo (presidente|governador), uf, nome, nome_urna, genero, partido,
+                  numero_urna, tse_sq_candidato, foto_url, posse   (eleitos em 2026, do TSE; sem crachá ainda)
+pauta             id, casa, data, hora, sessao, ordem, materia, tipo, ementa, relacionada, ementa_relacionada,
+                  apreciacao, url_oficial, coletado_em, temas   (Plenário de hoje em diante; o site lê a última coleta)
 ```
 A tabela `quiz` e a coluna `votacoes.quiz` saem na E17; o modelo cresce a cada passo (detalhar no PLANO).
 Tudo com `upsert` por chave externa. Nenhuma coluna de CPF ou hash de CPF; CPF que apareça em texto oficial (descrição de votação, ementa) é ocultado com `lib/texto.ts#semCpf`. Volume e limites: `docs/VOLUME.md` (decisões de 2026-11-02: dados desde 2023, cota agregada por mês/categoria/fornecedor sem nota a nota, íntegra só das proposições que podem virar lei; as páginas leem números pré-calculados pelo cron, não as votações inteiras). Tamanho na sonda (SP, 438 políticos, 2023–26): 9,6 MB de JSON; esperado < 50 MB por legislatura.
