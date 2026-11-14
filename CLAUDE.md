@@ -67,6 +67,7 @@ Hoje (protótipo, SP):
 /votacoes           próximas votações (pauta, coleta diária), últimas votações e calendário como filtro
 /c/[ids]            links antigos da colinha: redireciona para o crachá (a colinha saiu em 2026-11-04)
 /p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
+/executivos/[id]    crachá do presidente (presidente) ou governador (UF minúscula) eleito em 2026, só com dado do TSE (E23n)
 /monitorando        quem a pessoa monitora neste navegador e o que apareceu desde a última visita (E23e)
 /comparar           de 2 a 5 políticos lado a lado, sem nota nem ranking (E23f; `?ids=a,b`)
 /me-representa      redireciona para a Visão geral (a página saiu em 2026-11-13; `?uf=` e `?cidade=` seguem)
@@ -107,7 +108,9 @@ Abaixo: cota do mês (CEAP na Câmara, CEAPS no Senado) vs média da bancada **d
 - JSON de resultado por município e cargo: `resultados.tse.jus.br/oficial/ele2026/6259/dados/{uf}/{uf}{cd_municipio}-c{cargo:4}-e{eleicao:6}-u.json` (cargo 5 = senador, 6 = deputado federal; paths em `/oficial/comum/config/ele-c.json`). `{cd_municipio}` no nome do arquivo tem **5 dígitos com zeros à esquerda**; o CSV traz o código sem eles (Porto Velho é "35" no CSV e `ro00035` no arquivo): SP nunca expôs isso porque todos os códigos de SP têm 5 dígitos. Bateu com o CSV em 1.290/1.290 listas de SP. `lib/tse.ts#getResultadoMunicipio`.
 - Relatório de Resultado da Totalização (`relatorio_resultado_totalizacao`, PDF por UF): Anexos VI (QE/QP), VII (sobras, média a média) e VIII (resumo) são o gabarito do quociente.
 - `CD_MUNICIPIO` é código do TSE, não do IBGE. Código IBGE pela API de localidades do IBGE por nome normalizado (a API do IBGE **não responde a runners do GitHub Actions**: testado 2× em 2026-11-02, timeout de conexão; a tabela é gerada localmente por `scripts/tse/municipios.ts` e versionada em `data/municipios-ibge.json`, 5.571 cidades); No país, 13 grafias divergem (ex.: TSE "Munhoz de Mello", IBGE "Munhoz de Melo"; TSE "Boa Saúde", IBGE "Januário Cicco", nome atual), todas em de-para explícito revisado à mão.
-- `bem_candidato`: bens declarados (para v1.2).
+- `bem_candidato`: bens declarados (só o total entra no site, sem descrever os bens). `historico_candidatura`: candidaturas anteriores por `SQ_CANDIDATO_ATUAL`, uma linha por turno; `DS_SIT_TOT_TURNO` vem `#NE` em eleições antigas (ex.: 2006). Sem CPF nos dois.
+- `proposta_governo_2026_{UF|BR}.zip`: PDFs dos planos de governo, `2026{UF}{SQ}_01.pdf` (presidente: 15 arquivos, 18 MB no BR).
+- Resultado por cargo e UF: `{eleição}/dados/{uf}/{uf}-c{cargo:4}-e00{eleição}-u.json` (presidente: `br`, 6257/6258; governador: 6259/6260, 404 onde não houve 2º turno). `vap` = votos, `pvap` = % de válidos com vírgula, `sqcand` = SQ.
 - Quociente eleitoral (`lib/quociente.ts`): QE com fração ≤ 0,5 desprezada; QP desprezando a fração; vaga de QP só para quem tem ≥ 10% do QE (a sobra vai para as médias); sobras primeiro entre listas com ≥ 80% do QE e candidato com ≥ 20%, depois entre todas (STF, ADIs 7228/7263/7325); divisor da média = vagas **obtidas** por QP + médias + 1. Tratar **federação** como lista única. A frase "seu voto contou para" saiu da interface (2026-11-01); o cálculo fica para mostrar como cada um foi eleito (QP ou média) na linha do tempo de candidaturas. Senador é eleição majoritária.
 
 **UF da cadeira ≠ UF da candidatura:** `politicos.uf` vem da candidatura de 2026 (ou do perfil, para
@@ -177,7 +180,9 @@ atualizacoes      fonte ({casa}_{job}), coletado_em   (última coleta bem-sucedi
 resumos           politico_id, card jsonb, pagina jsonb, hash   (crachá pronto, pelo cron)
 resumos_votacao   votacao_id, pagina jsonb, hash   (página da votação pronta, com o partido e o voto de cada um no dia; E23k)
 executivos        id (= ano:sq), ano, cargo (presidente|governador), uf, nome, nome_urna, genero, partido,
-                  numero_urna, tse_sq_candidato, foto_url, posse   (eleitos em 2026, do TSE; sem crachá ainda)
+                  numero_urna, tse_sq_candidato, foto_url, posse (5/1 e 6/1/2027, EC 111/2021), vice_nome_urna,
+                  vice_partido, coligacao, composicao, ocupacao, instrucao, idade_na_posse, votos jsonb,
+                  bens_total, bens_n, historico jsonb   (eleitos em 2026, do TSE; data de nascimento não é gravada)
 pauta             id, casa, data, hora, sessao, ordem, materia, tipo, ementa, relacionada, ementa_relacionada,
                   apreciacao, url_oficial, coletado_em, temas   (Plenário de hoje em diante; o site lê a última coleta)
 ```

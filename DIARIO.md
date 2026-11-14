@@ -15,6 +15,18 @@ Modelo:
 
 ---
 
+## 2026-11-14 · E23n · crachá do executivo
+**Feito:** `/executivos/[id]` com o que o TSE publica (job `executivos` lê também `bem_candidato` e
+`historico_candidatura` de 2026, baixados pelo workflow, e o JSON de resultado por turno); migração 0010.
+Cartões de presidente e governador da Visão geral abrem o crachá.
+**Decidido (perguntas ao usuário):** crachá próprio; só os eleitos; checklist do plano só com ato oficial
+(o painel pessoal do usuário julga status e resume notícias por IA, o que fere os princípios 2, 4 e 5);
+promessas selecionadas por mim e revisadas por ele.
+**Corrigido:** posse em 5/1 (presidente) e 6/1/2027 (governadores), EC 111/2021, não 1º/1.
+**Achados:** histórico de candidaturas vem com `#NE` no resultado de eleições antigas (Lula 2006) e "Inapto"
+na de 2018; a foto e o resultado do presidente estão na eleição federal (6257/6258).
+**Próximo passo:** rodar a 0010; push; cron; depois a lista de promessas de Lula e Tarcísio para revisão.
+
 ## 2026-11-13 · E23m · menu, Visão geral com o estado, Votações
 **Feito:** menu com "Outros"; Visão geral absorveu a Me representa (redirecionamento com `?uf=`/`?cidade=`);
 job `executivos` (1 presidente e 27 governadores eleitos em 2026, migração 0008); detalhe da votação

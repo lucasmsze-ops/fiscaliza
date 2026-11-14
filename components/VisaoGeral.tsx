@@ -41,10 +41,10 @@ function Nivel({ titulo, children }: { titulo: string; children: React.ReactNode
   );
 }
 
-/** Presidente ou governador eleito em 2026 (TSE): sem crachá ainda, o cartão não abre nada. */
+/** Presidente ou governador eleito em 2026 (TSE): o cartão abre o crachá do executivo. */
 function CartaoExecutivo({ e }: { e: Executivo }) {
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-borda bg-card p-2.5">
+    <Link href={`/executivos/${e.cargoChave === "presidente" ? "presidente" : (e.uf ?? "").toLowerCase()}`} className="flex items-center gap-3 rounded-xl border border-borda bg-card p-2.5 text-texto no-underline hover:border-destaque">
       {e.fotoUrl
         // <img> de propósito: a foto vem direto da URL oficial do TSE, sem passar pela Vercel (CLAUDE.md).
         ? <img src={e.fotoUrl} alt="" width={40} height={40} loading="lazy" className="size-10 shrink-0 rounded-full bg-fundo object-cover object-top" />
@@ -54,7 +54,7 @@ function CartaoExecutivo({ e }: { e: Executivo }) {
         <span className="text-xs text-suave">Eleit{e.feminino ? "a" : "o"} em 2026 · posse em {Number(e.posse.slice(8, 10))}/{Number(e.posse.slice(5, 7))}/{e.posse.slice(0, 4)}</span>
       </span>
       <SelecaoPartido partido={e.partido} cores={[]} />
-    </div>
+    </Link>
   );
 }
 

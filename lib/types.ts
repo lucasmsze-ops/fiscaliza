@@ -99,6 +99,19 @@ export interface ExecutivoEleito {
   tseSqCandidato: string;
   fotoUrl: string | null;
   posse: string;
+  /** Do crachá (2026-11-14); opcionais enquanto a coleta não os grava. */
+  viceNomeUrna?: string | null;
+  vicePartido?: string | null;
+  coligacao?: string | null;
+  /** "PSB / PDT / FEDERAÇÃO ..." como o TSE escreve. */
+  composicao?: string | null;
+  ocupacao?: string | null;
+  instrucao?: string | null;
+  idadeNaPosse?: number | null;
+  votos?: { t1: { votos: number; pct: number } | null; t2: { votos: number; pct: number } | null } | null;
+  bensTotal?: number | null;
+  bensN?: number | null;
+  historico?: { ano: number; cargo: string; lugar: string; partido: string; resultado: string | null; situacao: string | null }[] | null;
 }
 
 /** Tabela `mandatos`: períodos em exercício do cargo (posse → saída), da Câmara ou do Senado. */

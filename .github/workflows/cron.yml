@@ -67,6 +67,12 @@ jobs:
               "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_$ano.zip"
             unzip -q -o "$FISCALIZA_TSE/$ano.zip" "consulta_cand_${ano}_*.csv" -d "$FISCALIZA_TSE/$pasta"
           done
+          # Crachá do executivo (job executivos): bens declarados e candidaturas anteriores de 2026.
+          for nome in bem_candidato historico_candidatura; do
+            curl -fsS --retry 5 --retry-all-errors -o "$FISCALIZA_TSE/$nome.zip" \
+              "https://cdn.tse.jus.br/estatistica/sead/odsele/$nome/${nome}_2026.zip"
+            unzip -q -o "$FISCALIZA_TSE/$nome.zip" "${nome}_2026_*.csv" -d "$FISCALIZA_TSE/$nome"
+          done
 
       - name: Cron
         run: npm run cron

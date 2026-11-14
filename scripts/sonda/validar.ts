@@ -38,7 +38,7 @@ const ESQUEMA: Record<string, { pk: string[]; obrig: string[]; opc: string[] }> 
   proposicoes_contagem: { pk: ["politico_id", "casa", "ano", "tipo"], obrig: ["politico_id", "casa", "ano", "tipo", "autorias"], opc: [] },
   atualizacoes: { pk: ["fonte"], obrig: ["fonte", "coletado_em"], opc: [] },
   pauta: { pk: ["id"], obrig: ["id", "casa", "data", "sessao", "ordem", "materia", "tipo", "url_oficial", "coletado_em"], opc: ["hora", "ementa", "relacionada", "ementa_relacionada", "apreciacao", "temas"] },
-  executivos: { pk: ["id"], obrig: ["id", "ano", "cargo", "nome", "nome_urna", "partido", "tse_sq_candidato", "posse"], opc: ["uf", "genero", "numero_urna", "foto_url"] },
+  executivos: { pk: ["id"], obrig: ["id", "ano", "cargo", "nome", "nome_urna", "partido", "tse_sq_candidato", "posse"], opc: ["uf", "genero", "numero_urna", "foto_url", "vice_nome_urna", "vice_partido", "coligacao", "composicao", "ocupacao", "instrucao", "idade_na_posse", "votos", "bens_total", "bens_n", "historico"] },
 };
 const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   politicos: { genero: ["feminino", "masculino", null], cargo: ["deputado_federal", "senador"], status: ["eleito", "reeleito", "nao_eleito", "suplente", "em_exercicio"] },

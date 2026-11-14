@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E23g** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
+**Etapa atual: E23n** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
 terminou verde. E22b, E23, E23b, E23c, E23i, E23k e E23l foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
@@ -502,6 +502,18 @@ patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a s
       Comparar segue pelo crachá); no detalhe da votação, sem "Descrição oficial" e com a regra de
       aprovação num "i" no canto do resultado.
 - Pronto quando: no ar, com 0008 e 0009 rodadas antes do push e um cron manual. (No ar em 2026-11-14.)
+
+### E23n · Executivos: crachá e plano de governo (pedido de 2026-11-14)
+- [x] `/executivos/[id]` (presidente; governador pela UF), aberto pelos cartões da Visão geral: foto, cargo,
+      partido, vice, posse (5/1 e 6/1/2027, EC 111/2021), votos e % de válidos por turno, patrimônio
+      declarado (total), idade na posse, instrução e ocupação declaradas, coligação, candidaturas anteriores.
+      Tudo do TSE (job `executivos` ampliado; migração 0010).
+- [ ] Checklist do plano de governo (decisão de 2026-11-14): promessas com texto literal e página do PDF
+      oficial do TSE, selecionadas por mim e revisadas pelo usuário (começa por Lula e Tarcísio, como o
+      painel pessoal dele); status só por ato oficial (projeto enviado, aprovado, lei sancionada, decreto),
+      com link; sem ato, "sem ato oficial ainda". Sem %, sem "em risco"/"descumprida", sem notícias.
+- [ ] Onde hospedar os PDFs dos planos (hoje o link é o zip do TSE com o nome do arquivo).
+- Pronto quando: crachá no ar; checklist dos dois com a lista aprovada pelo usuário.
 
 ### E23g · Propostas
 `/propostas`: lista geral com filtros (Casa, tipo, situação, busca na ementa) e link oficial. A
