@@ -507,7 +507,7 @@ patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a s
 - [x] `/executivos/[id]` (presidente; governador pela UF), aberto pelos cartões da Visão geral: foto, cargo,
       partido, vice, posse (5/1 e 6/1/2027, EC 111/2021), votos e % de válidos por turno, patrimônio
       declarado (total), idade na posse, instrução e ocupação declaradas, coligação, candidaturas anteriores.
-      Tudo do TSE (job `executivos` ampliado; migração 0010).
+      Tudo do TSE (job `executivos` ampliado; migração 0010). No ar em 2026-11-14.
 - [ ] Checklist do plano de governo (decisão de 2026-11-14): promessas com texto literal e página do PDF
       oficial do TSE, selecionadas por mim e revisadas pelo usuário (começa por Lula e Tarcísio, como o
       painel pessoal dele); status só por ato oficial (projeto enviado, aprovado, lei sancionada, decreto),
