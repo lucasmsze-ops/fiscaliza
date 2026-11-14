@@ -16,7 +16,7 @@ export function BotaoMonitorar({ id, nome, classe }: { id: string; nome: string;
     <>
       <button type="button" aria-pressed={on}
         onClick={() => { alternar(id, nome); setAviso(on ? `Você deixou de monitorar ${nome}` : `Você está monitorando ${nome} neste aparelho`); }}
-        className={classe?.(on) ?? `inline-flex h-10 items-center rounded-xl border px-4 text-xs font-bold ${on ? "border-destaque bg-destaque text-destaque-texto" : "border-borda bg-card text-link hover:border-destaque"}`}>
+        className={classe?.(on) ?? `inline-flex h-10 items-center justify-center rounded-xl border px-3 text-xs font-bold whitespace-nowrap sm:px-4 ${on ? "border-destaque bg-destaque text-destaque-texto" : "border-borda bg-card text-link hover:border-destaque"}`}>
         {on ? "✓ Monitorando" : "+ Monitorar"}
       </button>
       <span role="status" className="sr-only">{aviso}</span>

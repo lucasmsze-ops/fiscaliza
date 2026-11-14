@@ -15,6 +15,18 @@ Modelo:
 
 ---
 
+## 2026-11-14 · ajustes e pente-fino de layout
+**Feito:** crachá com o cargo e a UF da cadeira no cabeçalho e no título (a candidatura de 2026 vai abaixo
+quando é outra: Rosangela Moro, Tiririca, Hélio Lopes; e quem é deputado e disputou o Senado, como Erika
+Kokay). Estilos comuns em `lib/estilo.ts` (cartão 16/22 px, título de página 24/28 px, de seção 18 px),
+aplicados em todas as telas: antes eram 16 a 22 px de respiro e títulos de 12 a 32 px. Visão geral sem
+espaço duplo antes da lista e nomes longos em duas linhas; pauta com data curta e temas numa linha
+própria; partidos da votação com a orientação sempre na mesma linha; botões do crachá numa linha no
+celular, com o aviso de "link copiado" em balão; executivo com a foto ao lado do nome e a ocupação no
+gênero declarado; Comparar com "do/da" no nome do estado; textos que falavam em "passar o mouse" e
+"sua cidade" (busca que saiu) corrigidos.
+**Próximo passo:** push (sem migração nem cron).
+
 ## 2026-11-14 · E23n · crachá do executivo
 **Feito:** `/executivos/[id]` com o que o TSE publica (job `executivos` lê também `bem_candidato` e
 `historico_candidatura` de 2026, baixados pelo workflow, e o JSON de resultado por turno); migração 0010.

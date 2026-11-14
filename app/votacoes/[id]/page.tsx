@@ -8,6 +8,7 @@ import { inteiro } from "@/lib/card";
 import { hrefSecao } from "@/lib/glossario";
 import { corPartido } from "@/lib/partidos";
 import { repo } from "@/lib/repo";
+import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
 import {
   CADEIRAS, EXPLICA_OBJETO, hrefVotacao, idDoSlug, objetoVotado, regraDoTipo, rotuloVotado, tipoPorExtenso, turnoDe,
   votosNecessarios, type PartidoNaVotacao, type VotacaoPagina,
@@ -21,7 +22,7 @@ export async function generateStaticParams() { return []; }
 type Props = { params: Promise<{ id: string }> };
 
 const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
-const card = "rounded-card border border-borda bg-card p-[18px] shadow-card sm:p-[22px]";
+const card = CARD;
 const nomeCasa = (v: VotacaoPagina) => (v.casa === "senado" ? "Senado" : "Câmara");
 const naCasa = (v: VotacaoPagina) => (v.casa === "senado" ? "no Senado" : "na Câmara");
 const dataLonga = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString("pt-BR", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).replace(/\./g, "");
@@ -51,24 +52,26 @@ function LinhaPartido({ p, v }: { p: PartidoNaVotacao; v: VotacaoPagina }) {
   const pessoas = v.casa === "senado" ? (p.total === 1 ? "senador" : "senadores") : p.total === 1 ? "deputado" : "deputados";
   const resumo = (
     <span className="grid w-full gap-1.5">
-      <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-        <span className="size-2.5 shrink-0 rounded-full" style={{ background: corPartido(p.partido) }} aria-hidden="true" />
-        <strong className="text-[15px]">{p.partido}</strong>
-        <span className="text-[13px] text-suave">· {p.total} {pessoas}</span>
-        {!v.secreta && (
-          <span className="ml-auto rounded-full border border-borda px-2.5 py-0.5 text-xs">
-            {p.orientacao ? `${ORIENTOU[p.orientacao] ?? `orientou ${p.orientacao}`}${p.via ? VIA[p.via] : ""}` : "sem orientação registrada"}
-          </span>
-        )}
+      <span className="flex items-center justify-between gap-2">
+        <span className="flex min-w-0 items-center gap-2">
+          <span className="size-2.5 shrink-0 rounded-full" style={{ background: corPartido(p.partido) }} aria-hidden="true" />
+          <strong className="text-[15px]">{p.partido}</strong>
+          <span className="truncate text-[13px] text-suave">· {p.total} {pessoas}</span>
+        </span>
+        {p.membros && <span aria-hidden="true" className="shrink-0 text-xs font-bold text-link group-open:hidden">ver quem ▾</span>}
       </span>
+      {!v.secreta && (
+        <span className="text-xs text-suave">
+          {p.orientacao ? `${(ORIENTOU[p.orientacao] ?? `orientou ${p.orientacao}`).replace(/^./, (c) => c.toUpperCase())}${p.via ? VIA[p.via] : ""}` : "Sem orientação registrada"}
+        </span>
+      )}
       {!sem && <BarraPlacar sim={p.sim} nao={p.nao} abst={p.abstencao + p.obstrucao} cadeiras={p.total} />}
-      <span className="flex items-center justify-between gap-2 text-[13px] text-suave tabular-nums">
+      <span className="text-[13px] text-suave tabular-nums">
         <span>
           {sem
             ? <>{p.total - p.naoVotou} {p.total - p.naoVotou === 1 ? "votou" : "votaram"} · {p.naoVotou} não {p.naoVotou === 1 ? "votou" : "votaram"}</>
             : <>{p.sim} Sim · {p.nao} Não · {p.abstencao} Abst.{p.obstrucao > 0 && <> · {p.obstrucao} Obstr.</>}{p.outros > 0 && <> · {p.outros} outro{p.outros > 1 ? "s" : ""}</>} · {p.naoVotou} não {p.naoVotou === 1 ? "votou" : "votaram"}</>}
         </span>
-        {p.membros && <span aria-hidden="true" className="shrink-0 text-xs font-bold text-link group-open:hidden">ver quem ▾</span>}
       </span>
     </span>
   );
@@ -126,7 +129,7 @@ export default async function PaginaVotacao({ params }: Props) {
         {v.ementa && (
           <div className="grid gap-2 border-t border-borda pt-3.5" aria-labelledby="vt-oque">
             <div>
-              <h2 id="vt-oque" className="text-lg font-bold">O que é</h2>
+              <h2 id="vt-oque" className={TITULO_SECAO}>O que é</h2>
               <p className="text-xs text-suave">Ementa oficial, sem resumo nosso</p>
             </div>
             <TextoLongo texto={v.ementa} rotulo="Ler a ementa inteira" />
@@ -146,7 +149,7 @@ export default async function PaginaVotacao({ params }: Props) {
 
       <section className={`${card} grid gap-3`} aria-labelledby="vt-resultado">
         <div className="flex items-start justify-between gap-3">
-          <h2 id="vt-resultado" className="text-xs font-bold tracking-wider text-suave uppercase">Resultado</h2>
+          <h2 id="vt-resultado" className={TITULO_SECAO}>Resultado</h2>
           {/* A regra de aprovação do tipo fica num "i" no canto (pedido de 2026-11-14); popover nativo, sem JavaScript. */}
           {regra && <>
             <button type="button" popoverTarget="vt-regra" aria-label="Como este tipo de proposta é aprovado"
@@ -195,7 +198,7 @@ export default async function PaginaVotacao({ params }: Props) {
 
       <section className={`${card} grid gap-1`} aria-labelledby="vt-partidos">
         <div className="mb-1">
-          <h2 id="vt-partidos" className="text-xl font-bold">Como votou cada partido</h2>
+          <h2 id="vt-partidos" className={TITULO_SECAO}>Como votou cada partido</h2>
           <p className="text-xs text-suave">Pelo partido de cada parlamentar no dia da votação, em ordem de tamanho da bancada. A orientação é a do líder do partido (ou da federação ou do bloco que o inclui). Toque num partido para ver como votou cada um.</p>
         </div>
         <ul>{v.partidos.slice(0, PRIMEIROS).map((p) => <LinhaPartido key={p.partido} p={p} v={v} />)}</ul>
@@ -213,7 +216,7 @@ export default async function PaginaVotacao({ params }: Props) {
       {v.caminho.length > 1 && (
         <section className={`${card} grid gap-3`} aria-labelledby="vt-caminho">
           <div>
-            <h2 id="vt-caminho" className="text-xl font-bold">O caminho da proposta</h2>
+            <h2 id="vt-caminho" className={TITULO_SECAO}>O caminho da proposta</h2>
             <p className="text-xs text-suave">As votações nominais desta matéria no Plenário {v.casa === "senado" ? "do Senado" : "da Câmara"}. Votações simbólicas e de comissão não entram.</p>
           </div>
           <ol className="grid">

@@ -22,6 +22,12 @@ const PREPOSICAO_UF: Record<string, string> = {
   MT: "por", MS: "por", MG: "por", PA: "pelo", PB: "pela", PR: "pelo", PE: "por", PI: "pelo", RJ: "pelo", RN: "pelo",
   RS: "pelo", RO: "por", RR: "por", SC: "por", SP: "por", SE: "por", TO: "pelo",
 };
+/** "do Paraná", "da Bahia", "de São Paulo": como se diz "de" com o nome do estado. */
+export const doUf = (uf: string) => {
+  const p = PREPOSICAO_UF[uf];
+  return NOME_UF[uf] ? `${p === "pelo" ? "do" : p === "pela" ? "da" : "de"} ${NOME_UF[uf]}` : uf;
+};
+
 /** "o Paraná", "a Bahia", "São Paulo": o nome do estado com o artigo, quando ele leva. */
 export const ufComArtigo = (uf: string) => {
   const p = PREPOSICAO_UF[uf];

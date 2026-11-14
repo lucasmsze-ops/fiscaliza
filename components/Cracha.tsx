@@ -11,6 +11,7 @@ import { BotaoMonitorar } from "./BotaoMonitorar";
 import type { Mandato } from "@/lib/types";
 import { Compartilhar } from "./Compartilhar";
 import { Termo } from "./Termo";
+import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
 
 const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
 const dataBr = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
@@ -18,7 +19,7 @@ const dataBr = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.sl
 const reaisExatos = (v: number) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const umaCasa = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const iniciais = (n: string) => n.split(" ").filter(Boolean).map((w) => w[0]).slice(0, 2).join("");
-const card = "rounded-card border border-borda bg-card p-4 shadow-card sm:p-[22px]";
+const card = CARD;
 
 /**
  * Fim do mandato em curso, quando decorre da lei: deputados, o fim da legislatura (31/01/2027);
@@ -143,11 +144,14 @@ export function Cracha({ d, mandato, salario, comparacao, fidelidade, cores }: {
               </span>
             </div>
           </div>
-          <div className="flex flex-wrap gap-2">
+          {/* Celular: os três botões numa linha, com o mesmo tamanho; a partir do tablet, lado a lado com o texto inteiro. */}
+          <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:w-auto sm:flex-wrap">
             <BotaoMonitorar id={d.id} nome={d.nomeUrna} />
-            <Link href={`/comparar?ids=${d.id}`} className="inline-flex h-10 items-center rounded-xl border border-borda bg-card px-4 text-xs font-bold text-texto no-underline hover:border-destaque">Comparar com outro político</Link>
-            <Compartilhar rotulo="Compartilhar" titulo={`${d.nomeUrna} · ${d.cargo} · ${d.partidoUf}`} texto="O que fez no mandato, com dados oficiais."
-              classe="inline-flex h-10 items-center rounded-xl border border-borda bg-card px-4 text-xs font-bold hover:border-destaque" />
+            <Link href={`/comparar?ids=${d.id}`} className="inline-flex h-10 items-center justify-center rounded-xl border border-borda bg-card px-3 text-xs font-bold text-texto no-underline hover:border-destaque sm:px-4">
+              <span className="sm:hidden">Comparar</span><span className="hidden sm:inline">Comparar com outro político</span>
+            </Link>
+            <Compartilhar rotulo="Compartilhar" titulo={`${d.nomeUrna} · ${cargoCadeira} · ${partido}-${uf}`} texto="O que fez no mandato, com dados oficiais."
+              classe="inline-flex h-10 w-full items-center justify-center rounded-xl border border-borda bg-card px-3 text-xs font-bold hover:border-destaque sm:w-auto sm:px-4" />
           </div>
         </div>
       </section>

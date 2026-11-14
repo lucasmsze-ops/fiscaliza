@@ -9,6 +9,7 @@ import { planoDe } from "@/lib/promessas";
 import { NOME_UF, pelaUf } from "@/lib/regioes";
 import { repo } from "@/lib/repo";
 import type { ExecutivoEleito } from "@/lib/types";
+import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
 
 export const revalidate = 86400;
 export const dynamicParams = true;
@@ -34,8 +35,12 @@ const cargoEleito = (e: ExecutivoEleito) => e.cargo === "presidente"
 const dataBr = (iso: string) => `${Number(iso.slice(8, 10))}/${Number(iso.slice(5, 7))}/${iso.slice(0, 4)}`;
 const pct = (n: number) => `${n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`;
 const reais = (n: number) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-const titulo = (s: string) => s.toLocaleLowerCase("pt-BR").replace(/(^|[\s/(-])(\p{L})/gu, (_, a: string, b: string) => a + b.toLocaleUpperCase("pt-BR"));
-const card = "rounded-card border border-borda bg-card p-4 shadow-card sm:p-[22px]";
+/** Caixa de título, com "e", "de", "da", "do" em minúscula ("Ensino Fundamental Completo", "Técnico em Mecânica"). */
+const titulo = (s: string) => s.toLocaleLowerCase("pt-BR").replace(/(^|[\s/(-])(\p{L})/gu, (_, a: string, b: string) => a + b.toLocaleUpperCase("pt-BR"))
+  .replace(/ (E|De|Da|Do|Das|Dos|Em) /g, (m) => m.toLocaleLowerCase("pt-BR"));
+/** O TSE escreve a ocupação nos dois gêneros ("GOVERNADORA/GOVERNADOR"): fica a forma do gênero declarado. */
+const noGenero = (s: string, feminino: boolean) => s.replace(/([^\s/]+)\/([^\s/]+)/g, (_, f: string, m: string) => (feminino ? f : m));
+const card = CARD;
 
 /**
  * "PSB / PDT / FEDERAÇÃO X (13-PT / 65-PC do B)" → ["PSB", "PDT", "Federação X (PT, PC do B)"]: separa
@@ -84,12 +89,12 @@ export default async function PaginaExecutivo({ params }: Props) {
     <main className="grid gap-6 pb-8">
       <section aria-labelledby="nome-executivo" className="relative pb-2">
         <div className="h-20 rounded-card bg-destaque sm:h-[160px]" />
-        <div className="relative mx-3 -mt-10 flex flex-wrap items-center gap-4 rounded-card border-[1.5px] border-card bg-card/95 p-4 shadow-card backdrop-blur-xl sm:mx-[22px] sm:-mt-[70px] sm:gap-5 sm:px-[22px] sm:py-[18px]">
+        <div className="relative mx-3 -mt-10 flex items-center gap-3 rounded-card border-[1.5px] border-card bg-card/95 p-4 shadow-card backdrop-blur-xl sm:mx-[22px] sm:-mt-[70px] sm:gap-5 sm:px-[22px] sm:py-[18px]">
           {e.fotoUrl
             // <img> de propósito: a foto vem direto da URL oficial do TSE, sem passar pela Vercel (CLAUDE.md).
             ? <img src={e.fotoUrl} alt={`Foto oficial de ${e.nomeUrna}`} width={90} height={90} decoding="async" className="size-16 shrink-0 rounded-full bg-fundo object-cover object-top sm:size-[90px]" />
             : <span aria-hidden="true" className="size-16 shrink-0 rounded-full bg-fundo sm:size-[90px]" />}
-          <div className="grid min-w-0 gap-1.5">
+          <div className="grid min-w-0 flex-1 gap-1.5">
             <h1 id="nome-executivo" className="text-xl leading-tight font-black break-words sm:text-3xl">{e.nomeUrna}</h1>
             <div className="flex flex-wrap items-center gap-2.5">
               <span className="text-sm font-bold text-suave sm:text-base">{cargoEleito(e)}</span>
@@ -107,7 +112,7 @@ export default async function PaginaExecutivo({ params }: Props) {
 
       <section aria-label="Números principais" className="grid grid-cols-2 gap-3 sm:gap-[18px]">
         {decisivo && (
-          <div className={`${card} col-span-2 grid gap-1 sm:col-span-1`}>
+          <div className={`${card} col-span-2 grid content-start gap-1 sm:col-span-1`}>
             <span className="text-xs font-bold text-suave">Votos em 2026</span>
             <span className="text-xl font-bold tabular-nums sm:text-2xl">{inteiro(decisivo.votos)}</span>
             <span className="text-xs text-suave">
@@ -116,23 +121,23 @@ export default async function PaginaExecutivo({ params }: Props) {
             </span>
           </div>
         )}
-        <div className={`${card} col-span-2 grid gap-1 sm:col-span-1`}>
+        <div className={`${card} col-span-2 grid content-start gap-1 sm:col-span-1`}>
           <span className="text-xs font-bold text-suave">Patrimônio declarado ao TSE</span>
           {e.bensTotal != null
             ? <><span className="text-xl font-bold tabular-nums sm:text-2xl">{reais(e.bensTotal)}</span><span className="text-xs text-suave">soma de {e.bensN} {e.bensN === 1 ? "bem declarado" : "bens declarados"} no registro da candidatura de 2026</span></>
             : <><span className="text-xl font-bold">—</span><span className="text-xs text-suave">nenhum bem declarado no registro da candidatura</span></>}
         </div>
         {e.idadeNaPosse != null && (
-          <div className={`${card} grid gap-1`}>
+          <div className={`${card} grid content-start gap-1`}>
             <span className="text-xs font-bold text-suave">Idade na posse</span>
             <span className="text-xl font-bold tabular-nums">{e.idadeNaPosse} anos</span>
           </div>
         )}
         {(e.instrucao || e.ocupacao) && (
-          <div className={`${card} grid gap-1`}>
+          <div className={`${card} grid content-start gap-1`}>
             <span className="text-xs font-bold text-suave">Declarou ao TSE</span>
             {e.instrucao && <span className="text-sm font-bold">{titulo(e.instrucao)}</span>}
-            {e.ocupacao && <span className="text-xs text-suave">Ocupação: {titulo(e.ocupacao)}</span>}
+            {e.ocupacao && <span className="text-xs text-suave">Ocupação: {titulo(noGenero(e.ocupacao, fem(e)))}</span>}
           </div>
         )}
       </section>

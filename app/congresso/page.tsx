@@ -5,6 +5,7 @@ import { Plenario } from "@/components/Plenario";
 import { montarCongresso } from "@/lib/congresso";
 import { hrefSecao } from "@/lib/glossario";
 import { repo } from "@/lib/repo";
+import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
 
 export const revalidate = 86400;
 export const metadata: Metadata = {
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   description: "Quem ocupa cada cadeira da Câmara e do Senado hoje, por partido e estado, e a Câmara a partir de fevereiro de 2027. Dados oficiais.",
 };
 
-const card = "rounded-card border border-borda bg-card p-[22px] shadow-card";
+const card = CARD;
 
 export default async function Congresso() {
   const [d, atualizacoes] = await Promise.all([montarCongresso(repo), repo.getAtualizacoes()]);
@@ -25,10 +26,10 @@ export default async function Congresso() {
       <h1 className="sr-only">Congresso</h1>
       <section className={`${card} grid gap-3.5`} aria-labelledby="cg-como">
         <div className="flex items-baseline justify-between gap-3">
-          <h2 id="cg-como" className="text-xl font-bold">Como está o Congresso</h2>
+          <h2 id="cg-como" className={TITULO_CARTAO}>Como está o Congresso</h2>
           <Link href={hrefSecao("congresso")} className="shrink-0 text-xs underline underline-offset-2">como contamos</Link>
         </div>
-        <p className="text-sm text-suave">Cada bolinha é uma cadeira, na cor do partido. Passe o mouse para destacar um partido; toque numa cadeira ou num partido para ver a lista de quem está nele.</p>
+        <p className="text-sm text-suave">Cada bolinha é uma cadeira, na cor do partido. Toque numa cadeira ou num partido para ver a lista de quem está nele.</p>
         <Plenario casas={d.casas} camara2027={d.camara2027} cores={d.cores} />
       </section>
 

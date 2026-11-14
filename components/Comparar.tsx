@@ -7,6 +7,7 @@ import { LINHAS, MAX_COMPARAR, type ColunaComparar } from "@/lib/comparar";
 import { corPartido } from "@/lib/partidos";
 import { normalizar } from "@/lib/texto";
 import type { PessoaNoCargo } from "@/lib/visao";
+import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
 
 const chip = "inline-flex h-9 items-center rounded-xl border border-borda bg-card px-4 text-xs font-bold whitespace-nowrap hover:border-destaque";
 export interface Atalho { titulo: string; pessoas: { id: string; nomeUrna: string; fotoUrl: string | null }[] }
@@ -71,7 +72,7 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
   return (
     <main className="grid gap-6 pb-8">
       <div>
-        <h1 className="mb-1.5 text-[30px] leading-tight font-bold">Comparar lado a lado</h1>
+        <h1 className={`mb-1.5 ${TITULO_PAGINA}`}>Comparar lado a lado</h1>
         <p className="max-w-[620px] text-[15px] text-suave">De 2 a 5 pessoas, com o que as fontes oficiais publicam e os mesmos números do crachá. Sem nota nem ranking. “—” é dado que não existe para aquela pessoa, nunca zero, e vem com o porquê.</p>
       </div>
 
@@ -79,7 +80,7 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true" className="absolute top-4 left-4 text-suave"><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg>
         <label htmlFor="cq" className="sr-only">Nome de quem você quer comparar</label>
         <input id="cq" type="search" autoComplete="off" value={q} disabled={ids.length >= MAX_COMPARAR} onFocus={carregar} onChange={(x) => { setQ(x.target.value); carregar(); }}
-          placeholder={ids.length >= MAX_COMPARAR ? "Limite de 5 pessoas" : "Digite o nome de quem você quer comparar"}
+          placeholder={ids.length >= MAX_COMPARAR ? "Limite de 5 pessoas" : "Digite um nome para comparar"}
           className="h-[50px] w-full rounded-[14px] border border-borda bg-card pr-4 pl-11 text-base outline-none focus:border-link disabled:opacity-60" />
         {sugestoes.length > 0 && (
           <div className="absolute inset-x-0 top-14 z-10 overflow-hidden rounded-[14px] border border-borda bg-card shadow-xl">
@@ -110,7 +111,7 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
               </button>
             ))}
           </div>
-          <p className="text-[13px] text-suave">Não sabe o nome? <Link href="/" className="underline underline-offset-2">Veja quem representa a sua cidade ou o seu estado</Link>.</p>
+          <p className="text-[13px] text-suave">Não sabe o nome? <Link href="/" className="underline underline-offset-2">Veja quem representa o seu estado</Link>.</p>
         </div>
       )}
 

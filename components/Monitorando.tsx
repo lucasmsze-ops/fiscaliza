@@ -8,8 +8,9 @@ import { alternar, limpar, marcarVistos, podarVistos, useMonitorando } from "@/l
 import { corPartido } from "@/lib/partidos";
 import { normalizar } from "@/lib/texto";
 import type { TipoVoto } from "@/lib/types";
+import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
 
-const card = "rounded-card border border-borda bg-card p-[18px] shadow-card sm:p-[22px]";
+const card = CARD;
 const chip = "inline-flex h-9 items-center rounded-xl border border-borda bg-card px-4 text-xs font-bold whitespace-nowrap hover:border-destaque";
 const chipOn = "inline-flex h-9 items-center rounded-xl border border-destaque bg-destaque px-4 text-xs font-bold whitespace-nowrap text-destaque-texto";
 const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
@@ -75,11 +76,11 @@ export function Monitorando() {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="text-[13px] text-suave">Neste aparelho</p>
-          <h1 className="mt-1 text-[32px] leading-none font-bold">Monitorando</h1>
+          <h1 className={`mt-1 ${TITULO_PAGINA}`}>Monitorando</h1>
         </div>
         {e.pessoas.length > 0 && <button type="button" onClick={() => { if (window.confirm("Parar de monitorar todo mundo neste aparelho?")) limpar(); }} className={chip}>Limpar a lista</button>}
       </div>
-      <p className="rounded-xl bg-fundo p-3.5 text-sm leading-relaxed text-suave">
+      <p className="rounded-xl border border-borda p-3.5 text-sm leading-relaxed text-suave">
         A lista fica só neste navegador: sem conta, sem e-mail e sem nada guardado no nosso servidor. Se você limpar os dados do
         navegador ou usar uma aba anônima, ela some. O Fiscaliza não manda avisos.
       </p>
@@ -87,7 +88,7 @@ export function Monitorando() {
       {e.pessoas.length > 0 && (
         <section className={`${card} grid gap-3.5 border-link`} aria-labelledby="mo-novo">
           <div className="flex flex-wrap items-baseline justify-between gap-3">
-            <h2 id="mo-novo" className="text-[22px] font-bold">O que aconteceu desde a última visita</h2>
+            <h2 id="mo-novo" className={TITULO_SECAO}>O que aconteceu desde a última visita</h2>
             {novos.length > 0 && <button type="button" onClick={() => marcarVistos(novos.map((x) => x.chave))} className={chip}>Marcar tudo como visto</button>}
           </div>
           {carregando ? <p className="text-sm text-suave">Carregando…</p> : novos.length === 0 ? (
@@ -112,7 +113,7 @@ export function Monitorando() {
 
       <section className="grid gap-3" aria-labelledby="mo-quem">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 id="mo-quem" className="text-xl font-bold">Quem você monitora ({e.pessoas.length})</h2>
+          <h2 id="mo-quem" className={TITULO_SECAO}>Quem você monitora ({e.pessoas.length})</h2>
           <Adicionar ja={new Set(e.pessoas.map((p) => p.id))} />
         </div>
         {e.pessoas.length === 0 && (
@@ -170,7 +171,7 @@ export function Monitorando() {
       {resumos.length > 0 && (
         <section className="grid gap-3" aria-labelledby="mo-feed">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 id="mo-feed" className="text-xl font-bold">O que aconteceu</h2>
+            <h2 id="mo-feed" className={TITULO_SECAO}>O que aconteceu</h2>
             <div className="flex flex-wrap items-center gap-1.5">
               <select value={quem} onChange={(x) => { setQuem(x.target.value); setLim(12); }} aria-label="Pessoa" className="h-9 rounded-xl border border-borda bg-card px-2.5 text-base sm:text-xs">
                 <option value="todos">Todas as pessoas</option>

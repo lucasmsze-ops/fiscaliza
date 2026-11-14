@@ -6,6 +6,7 @@ import type { ItemPauta } from "@/lib/types";
 import { tipoPorExtenso } from "@/lib/votacao";
 import { CartaoVotacao } from "./CartaoVotacao";
 import { ReceberAvisos } from "./ReceberAvisos";
+import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
 
 const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 const SEMANA = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
@@ -14,12 +15,14 @@ const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
 const chip = "inline-flex h-9 items-center gap-1.5 rounded-xl border px-3.5 text-xs font-bold whitespace-nowrap";
 const chipOff = `${chip} border-borda bg-card hover:border-destaque`;
 const chipOn = `${chip} border-destaque bg-destaque text-destaque-texto`;
-const card = "rounded-card border border-borda bg-card p-[18px] shadow-card sm:p-[22px]";
+const card = CARD;
 type Casa = "camara" | "senado";
 const NOME: Record<Casa, string> = { camara: "Câmara", senado: "Senado" };
 
 const somaMes = (mes: string, m: number) => { const d = new Date(`${mes}-01T12:00:00Z`); d.setUTCMonth(d.getUTCMonth() + m); return d.toISOString().slice(0, 7); };
 const diaLongo = (iso: string) => { const d = new Date(`${iso}T12:00:00Z`); return `${DIA_SEMANA[d.getUTCDay()]}, ${d.getUTCDate()} de ${MESES[d.getUTCMonth()]}`; };
+/** "ter, 17/11": para os cartões, onde a data longa quebrava em duas linhas. */
+const diaCurto = (iso: string) => `${SEMANA[new Date(`${iso}T12:00:00Z`).getUTCDay()]}, ${iso.slice(8, 10)}/${iso.slice(5, 7)}`;
 const ddmm = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}`;
 
 /** Item da pauta: o assunto em destaque, a matéria pequena, e o "Receber aviso" (fake door, CLAUDE.md). */
@@ -27,13 +30,15 @@ function CartaoPauta({ x }: { x: ItemPauta }) {
   const assunto = x.relacionada ? (x.ementaRelacionada ?? x.ementa) : x.ementa;
   return (
     <div className="grid content-start gap-2 rounded-xl border border-borda bg-card p-3.5">
-      <span className="flex items-start justify-between gap-2">
-        <span className="flex flex-wrap items-center gap-1.5 text-xs text-suave">
-          {NOME[x.casa]} · {diaLongo(x.data)}{x.hora ? `, ${x.hora.replace(":", "h")}` : ""}
-          {x.temas?.slice(0, 2).map((t) => <span key={t} className="rounded-md bg-destaque/20 px-1.5 py-0.5 font-bold text-texto">{t}</span>)}
-        </span>
+      <span className="flex items-center justify-between gap-2">
+        <span className="text-xs text-suave">{NOME[x.casa]} · {diaCurto(x.data)}{x.hora ? ` · ${x.hora.replace(":00", "h").replace(":", "h")}` : ""}</span>
         <ReceberAvisos id={`pauta-${x.id.replaceAll(":", "-")}`} sobre="desta votação" pequeno />
       </span>
+      {x.temas && x.temas.length > 0 && (
+        <span className="flex flex-wrap gap-1.5 text-xs">
+          {x.temas.slice(0, 2).map((t) => <span key={t} className="rounded-md bg-destaque/20 px-1.5 py-0.5 font-bold">{t}</span>)}
+        </span>
+      )}
       <a href={x.urlOficial} {...externo} className="line-clamp-2 text-[15px] leading-snug font-bold text-texto no-underline hover:underline">{assunto ?? x.materia}</a>
       <span className="text-xs text-suave">
         {x.relacionada ? <>Pedido ({x.materia}) sobre {x.relacionada}{tipoPorExtenso(x.relacionada) ? ` · ${tipoPorExtenso(x.relacionada)}` : ""}</> : <>{x.materia}{tipoPorExtenso(x.materia) ? ` · ${tipoPorExtenso(x.materia)}` : ""}</>}
@@ -93,7 +98,7 @@ export function PainelVotacoes({ pauta, porDia, mesInicial, votacoesMes, ultimaS
       <section className={`${card} grid gap-3`}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h1 className="text-xl font-bold">Votações do Plenário</h1>
+            <h1 className={TITULO_CARTAO}>Votações do Plenário</h1>
             <p className="mt-1 text-[13px] text-suave">
               Atualização diária: o que está marcado e o que já foi votado na Câmara e no Senado.
               {coleta && <> Última coleta em {new Date(coleta).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })}.</>}
@@ -148,7 +153,7 @@ export function PainelVotacoes({ pauta, porDia, mesInicial, votacoesMes, ultimaS
 
       {dia ? (
         <section className={`${card} grid gap-3`} aria-labelledby="vt-dia">
-          <h2 id="vt-dia" className="text-xl font-bold capitalize">{diaLongo(dia)}</h2>
+          <h2 id="vt-dia" className={`${TITULO_SECAO} capitalize`}>{diaLongo(dia)}</h2>
           {carregandoDia && <p className="text-sm text-suave">Carregando…</p>}
           {!carregandoDia && doDiaPauta.length === 0 && doDiaVotos.length === 0 && (
             <p className="text-sm text-suave">Nenhuma votação nominal nem pauta marcada no Plenário neste dia.</p>
@@ -165,7 +170,7 @@ export function PainelVotacoes({ pauta, porDia, mesInicial, votacoesMes, ultimaS
       ) : <>
         <section className={`${card} grid gap-3`} aria-labelledby="vt-prox">
           <div>
-            <h2 id="vt-prox" className="text-xl font-bold">Próximas votações</h2>
+            <h2 id="vt-prox" className={TITULO_SECAO}>Próximas votações</h2>
             <p className="mt-1 text-[13px] text-suave">A pauta marcada para o Plenário, como as Casas publicam (pode mudar até a sessão). Nem tudo vai a votação nominal.</p>
           </div>
           <ChipsCasa casa={casaProx} setCasa={setCasaProx} rotulo="Casa das próximas votações"
@@ -179,7 +184,7 @@ export function PainelVotacoes({ pauta, porDia, mesInicial, votacoesMes, ultimaS
 
         <section className={`${card} grid gap-3`} aria-labelledby="vt-ult">
           <div>
-            <h2 id="vt-ult" className="text-xl font-bold">Últimas votações</h2>
+            <h2 id="vt-ult" className={TITULO_SECAO}>Últimas votações</h2>
             <p className="mt-1 text-[13px] text-suave">As votações nominais da última sessão de cada Casa. Toque numa para ver o placar e como votou cada partido.</p>
           </div>
           <ChipsCasa casa={casaUlt} setCasa={setCasaUlt} rotulo="Casa das últimas votações"

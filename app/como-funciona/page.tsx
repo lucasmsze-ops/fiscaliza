@@ -6,6 +6,7 @@ import { GLOSSARIO, SECOES, type Secao } from "@/lib/glossario";
 import { CANAIS_CONFERIDOS_EM, CANAIS_EXTERNOS, OUVIDORIA } from "@/lib/cobrar";
 import { repo } from "@/lib/repo";
 import { SUBSIDIO_CONGRESSO, subsidioEm } from "@/lib/salario";
+import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
 
 // Metodologia de cada número, fontes, privacidade e licenças (E15). Toda métrica da interface
 // linka para uma seção daqui (via components/Termo.tsx). Os números desta página saem do mesmo
@@ -30,7 +31,7 @@ function Secao({ id, children }: { id: Secao; children: React.ReactNode }) {
   const titulo = SECOES.find((s) => s.id === id)!.titulo;
   return (
     <section id={id} className="mt-10 scroll-mt-4" aria-labelledby={`h-${id}`}>
-      <h2 id={`h-${id}`} className="text-lg font-semibold"><a href={`#${id}`} className="no-underline hover:underline">{titulo}</a></h2>
+      <h2 id={`h-${id}`} className={TITULO_SECAO}><a href={`#${id}`} className="no-underline hover:underline">{titulo}</a></h2>
       <div className="mt-3 grid gap-3 text-sm leading-relaxed">{children}</div>
     </section>
   );
@@ -72,7 +73,7 @@ export default async function ComoFunciona() {
     <>
     <BarraTopo secao="Fiscaliza" pagina="Como funciona" />
     <main className="mx-auto max-w-xl pb-8">
-      <h1 className="text-2xl font-bold">Como funciona</h1>
+      <h1 className={TITULO_PAGINA}>Como funciona</h1>
       <p className="mt-3 text-sm leading-relaxed">
         O Fiscaliza mostra o que os dados abertos do TSE, da Câmara dos Deputados e do Senado Federal registram sobre quem recebeu seu voto.
         Cada número tem uma regra de cálculo, descrita nesta página, e um link para a página oficial de origem.

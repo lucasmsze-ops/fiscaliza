@@ -9,6 +9,7 @@ import { NOME_UF, REGIOES, regiaoDe, ufComArtigo } from "@/lib/regioes";
 import type { Executivo, PessoaNoCargo, VisaoDados } from "@/lib/visao";
 import { BotaoMonitorar, classeMonitorar } from "./BotaoMonitorar";
 import { MapaBrasil } from "./MapaBrasil";
+import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
 
 const POR_PAGINA = 24;
 
@@ -64,7 +65,7 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
   const [cidade, setCidade] = useState<{ nome: string; uf: string; ibge: number } | null>(null);
   const pedido = useRef<Promise<MunicipioJson[]> | null>(null);
   const [lim, setLim] = useState(POR_PAGINA);
-  const listaRef = useRef<HTMLDivElement>(null);
+  const listaRef = useRef<HTMLElement>(null);
 
   /** Lista das 5.571 cidades (~45 KB comprimida): só para links antigos com ?cidade= (a busca saiu em 2026-11-14). */
   const carregarMunicipios = () => (pedido.current ??= fetch("/dados/municipios")
@@ -108,10 +109,10 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
 
   return (
     <main className="grid gap-6 pb-8">
-      <section aria-labelledby="titulo-mapa" className="grid gap-4 rounded-card border border-borda bg-card p-5 shadow-card">
+      <section aria-labelledby="titulo-mapa" className={`grid gap-4 ${CARD}`}>
         <div className="flex flex-wrap items-end justify-between gap-3.5">
           <div>
-            <h1 id="titulo-mapa" className="text-lg font-bold">Quem representa cada estado</h1>
+            <h1 id="titulo-mapa" className={TITULO_CARTAO}>Quem representa cada estado</h1>
             <p className="mt-1 text-[13px] text-suave">Toque no seu estado para ver quem te representa.</p>
           </div>
         </div>
@@ -154,7 +155,7 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
                 </div>
                 <div className="mt-1">
                   <p className="text-xs text-suave">{cidade ? `${cidade.nome} · ${uf}` : "Estado inteiro"}</p>
-                  <h2 className="text-xl font-bold">Quem representa {cidade ? cidade.nome : ufComArtigo(uf)}</h2>
+                  <h2 className={TITULO_SECAO}>Quem representa {cidade ? cidade.nome : ufComArtigo(uf)}</h2>
                 </div>
                 {cidade && <p className="text-xs text-suave">Senadores e deputados federais são eleitos pelo estado inteiro: quem mora em {cidade.nome} é representado pelos de {NOME_UF[uf]}. Prefeito e vereadores entram depois.</p>}
                 {presidente && <Nivel titulo="Presidente"><CartaoExecutivo e={presidente} /></Nivel>}
@@ -165,7 +166,7 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
                       <div key={p.id} className="relative flex items-center gap-3 rounded-xl border border-borda bg-card p-2.5 hover:border-destaque">
                         <Foto p={p} tamanho={40} />
                         <span className="grid min-w-0 flex-1">
-                          <Link href={`/p/${p.id}`} className="truncate text-[13px] font-bold text-texto no-underline after:absolute after:inset-0">{p.nomeUrna}</Link>
+                          <Link href={`/p/${p.id}`} className="line-clamp-2 text-[13px] leading-snug font-bold text-texto no-underline after:absolute after:inset-0">{p.nomeUrna}</Link>
                           <span className="text-xs text-suave">Em exercício</span>
                         </span>
                         <SelecaoPartido partido={p.partido} cores={d.cores} />
@@ -187,11 +188,10 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
         </div>
       </section>
 
-      <div ref={listaRef} className="scroll-mt-4" />
       {uf && (
-        <section aria-labelledby="titulo-lista" className="grid gap-3.5 rounded-card border border-borda bg-card p-4 shadow-card sm:p-5">
+        <section ref={listaRef} aria-labelledby="titulo-lista" className={`grid scroll-mt-4 gap-3.5 ${CARD}`}>
           <div>
-            <h2 id="titulo-lista" className="text-lg font-bold">Deputados federais</h2>
+            <h2 id="titulo-lista" className={TITULO_SECAO}>Deputados federais</h2>
             <p className="mt-1 text-[13px] text-suave">{NOME_UF[uf]} · <strong className="text-texto">{deputados.length}</strong> em exercício hoje, em ordem alfabética</p>
           </div>
           {/* Cartões em grade também no celular: 2 por fileira, 3 a partir de 480 px (pedido de 2026-11-14). */}
