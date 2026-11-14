@@ -7,7 +7,7 @@ import { normalizar } from "@/lib/texto";
 
 /** Páginas que a busca acha pelo nome (só as que existem). */
 const PAGINAS = [
-  { href: "/", t: "Visão geral", d: "Página · mapa, quem representa a sua cidade ou o seu estado" },
+  { href: "/", t: "Visão geral", d: "Página · mapa, quem representa o seu estado" },
   { href: "/congresso", t: "Congresso", d: "Página · quem ocupa cada cadeira hoje" },
   { href: "/comparar", t: "Comparar", d: "Página · de 2 a 5 políticos lado a lado" },
   { href: "/votacoes", t: "Votações", d: "Página · agenda do Plenário e última sessão" },

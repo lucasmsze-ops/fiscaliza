@@ -496,6 +496,11 @@ patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a s
 - [x] Títulos: o assunto (ementa oficial) em destaque, número e tipo pequenos, e os temas oficiais da
       Câmara e do Senado (passo `temas`, coluna `temas`, migração 0009). A explicação simples do Senado
       não existe na API atual.
+- [x] Ajustes de 2026-11-14: sem a busca de cidade na Visão geral; Presidente, Governador e Senadores
+      com subtítulo e em cartões; deputados em grade também no celular (2 ou 3 por fileira); menu =
+      Visão geral, Congresso, Votações, Monitorando, Sobre ("Outros" e Comparar saem do menu; a página
+      Comparar segue pelo crachá); no detalhe da votação, sem "Descrição oficial" e com a regra de
+      aprovação num "i" no canto do resultado.
 - Pronto quando: no ar, com 0008 e 0009 rodadas antes do push e um cron manual.
 
 ### E23g · Propostas

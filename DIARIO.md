@@ -27,6 +27,8 @@ no cargo hoje); títulos = assunto + tema oficial, nada escrito por nós.
 **Achados:** o `consulta_cand` repete as UFs no `_BRASIL`; a foto do presidente está na eleição federal
 (6257); a pauta deliberativa da Câmara aparece em `/eventos` só poucos dias antes; das votações herdadas
 da sonda não há o detalhe em cache, então o id da matéria sai de `/proposicoes?siglaTipo&numero&ano`.
+**2026-11-14:** busca de cidade saiu da Visão geral; níveis com subtítulo e cartões; deputados em grade no
+celular; menu com 5 itens (Comparar fica fora do menu, só pelo crachá); regra de aprovação num "i".
 **Próximo passo:** rodar 0008 e 0009; push; cron manual (executivos, pauta, temas, resumos de votação com
 `membros`); push de docs (redeploy).
 

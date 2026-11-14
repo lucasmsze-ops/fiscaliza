@@ -62,7 +62,7 @@ Presença literal em sessões · discursos · conta, login, "monitorar" com cada
 
 Hoje (protótipo, SP):
 ```
-/                   Visão geral: mapa; com estado ou cidade (?uf=, ?cidade=), quem representa (presidente e governador eleitos em 2026, senadores) e os deputados federais do estado
+/                   Visão geral: mapa; com estado (?uf=; ?cidade= dos links antigos), quem representa (presidente, governador eleitos em 2026, senadores, em cartões por nível) e os deputados federais do estado
 /congresso          quem ocupa cada cadeira hoje (Câmara e Senado) e a Câmara de fev/2027 (E23b)
 /votacoes           próximas votações (pauta, coleta diária), últimas votações e calendário como filtro
 /c/[ids]            links antigos da colinha: redireciona para o crachá (a colinha saiu em 2026-11-04)

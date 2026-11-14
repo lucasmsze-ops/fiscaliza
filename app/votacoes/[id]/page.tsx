@@ -145,12 +145,21 @@ export default async function PaginaVotacao({ params }: Props) {
       </section>
 
       <section className={`${card} grid gap-3`} aria-labelledby="vt-resultado">
-        <h2 id="vt-resultado" className="text-xs font-bold tracking-wider text-suave uppercase">Resultado</h2>
+        <div className="flex items-start justify-between gap-3">
+          <h2 id="vt-resultado" className="text-xs font-bold tracking-wider text-suave uppercase">Resultado</h2>
+          {/* A regra de aprovação do tipo fica num "i" no canto (pedido de 2026-11-14); popover nativo, sem JavaScript. */}
+          {regra && <>
+            <button type="button" popoverTarget="vt-regra" aria-label="Como este tipo de proposta é aprovado"
+              className="inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-borda text-sm font-bold text-link hover:border-destaque">i</button>
+            <div id="vt-regra" popover="auto" className="m-auto max-w-[min(24rem,calc(100vw-2rem))] rounded-card border border-borda bg-card p-4 text-left text-sm leading-relaxed text-texto shadow-xl backdrop:bg-black/40">
+              <p>{regra}</p>
+              <button type="button" popoverTarget="vt-regra" popoverTargetAction="hide" className="mt-3 text-xs underline underline-offset-2">Fechar</button>
+            </div>
+          </>}
+        </div>
         <p className="text-[15px] leading-relaxed">
-          <strong>Votado nesse dia:</strong> {objeto ? EXPLICA_OBJETO[objeto] : "veja a descrição oficial abaixo"}{turno ? `, ${turno}` : ""}.
+          <strong>Votado nesse dia:</strong> {objeto ? EXPLICA_OBJETO[objeto] : "a descrição está na página oficial"}{turno ? `, ${turno}` : ""}.
         </p>
-        <p className="-mt-1.5 text-[13px] leading-relaxed text-suave">Descrição oficial: {v.descricao}</p>
-        {regra && <p className="rounded-xl bg-fundo p-3.5 text-[13px] leading-relaxed">{regra}</p>}
         <p className="text-[32px] leading-none font-bold">
           {v.resultado === "aprovada" ? "Aprovada" : v.resultado === "rejeitada" ? "Rejeitada" : "Resultado não informado pela fonte"}
         </p>
