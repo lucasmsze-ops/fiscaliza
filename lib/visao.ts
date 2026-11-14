@@ -19,7 +19,7 @@ export interface PessoaNoCargo {
   fotoUrl: string | null;
 }
 
-/** Presidente ou governador eleito em 2026 (TSE), com posse em 1º/1/2027. Sem crachá por enquanto. */
+/** Presidente ou governador eleito em 2026 (TSE), com a data da posse (5/1 e 6/1/2027, EC 111/2021). Sem crachá por enquanto. */
 export interface Executivo {
   cargoChave: "presidente" | "governador";
   /** "Presidente", "Governador" (masculino; o cartão flexiona por `feminino`). */
@@ -30,6 +30,8 @@ export interface Executivo {
   nomeUrna: string;
   partido: string;
   fotoUrl: string | null;
+  /** AAAA-MM-DD. */
+  posse: string;
 }
 
 export interface VisaoDados {
@@ -52,7 +54,7 @@ export async function montarVisao(repo: Repo, hoje = new Date().toISOString().sl
   for (const m of municipios) municipiosPorUf[m.uf] = (municipiosPorUf[m.uf] ?? 0) + 1;
   const executivos: Executivo[] = eleitos.filter((e) => e.ano === 2026).map((e) => ({
     cargoChave: e.cargo, cargo: e.cargo === "presidente" ? (e.genero === "feminino" ? "Presidenta" : "Presidente") : (e.genero === "feminino" ? "Governadora" : "Governador"),
-    feminino: e.genero === "feminino", uf: e.uf, nomeUrna: e.nomeUrna, partido: e.partido, fotoUrl: e.fotoUrl,
+    feminino: e.genero === "feminino", uf: e.uf, nomeUrna: e.nomeUrna, partido: e.partido, fotoUrl: e.fotoUrl, posse: e.posse,
   }));
   return { pessoas, cores: ordemDasCores(casas), municipiosPorUf, executivos };
 }

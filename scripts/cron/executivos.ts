@@ -1,7 +1,7 @@
 /**
  * Job `executivos` (2026-11-13): presidente e governadores eleitos em 2026, do `consulta_cand` do TSE
  * (o mesmo arquivo que o job `parlamentares` lê, baixado a cada execução). Mostrados na Visão geral
- * com "posse em 1º/1/2027": não há fonte aberta de quem está no cargo hoje (governadores que
+ * com a data da posse: não há fonte aberta de quem está no cargo hoje (governadores que
  * renunciaram em abril de 2026 para disputar a eleição), então só o eleito, com a data da posse.
  *
  * O arquivo traz cada UF num CSV próprio e, de novo, no consolidado `_BRASIL`: só os das UFs e o
@@ -29,7 +29,9 @@ export async function jobExecutivos(): Promise<{ tabelas: Record<string, LinhaBr
     nome: r.nome, nome_urna: r.nomeUrna, genero: r.genero === "FEMININO" ? "feminino" : r.genero === "MASCULINO" ? "masculino" : null,
     partido: siglaPartido(r.partido), numero_urna: Number(r.numero), tse_sq_candidato: r.sq,
     // Fotos por eleição: presidente na federal (6257), governador na estadual (6259); ver ele-c.json do TSE.
-    foto_url: fotoUrlTse("ele2026", r.cargo === "PRESIDENTE" ? "6257" : "6259", r.uf, r.sq), posse: "2027-01-01",
+    foto_url: fotoUrlTse("ele2026", r.cargo === "PRESIDENTE" ? "6257" : "6259", r.uf, r.sq),
+    // EC 111/2021: a partir dos eleitos em 2026, o presidente toma posse em 5 de janeiro e o governador em 6 (arts. 82 e 28 da Constituição).
+    posse: r.cargo === "PRESIDENTE" ? "2027-01-05" : "2027-01-06",
   })).sort((a, b) => String(a.id).localeCompare(String(b.id)));
 
   // Conferência: 1 presidente e 1 governador por UF; senão o arquivo veio incompleto e nada muda.
@@ -38,5 +40,5 @@ export async function jobExecutivos(): Promise<{ tabelas: Record<string, LinhaBr
   if (pres !== 1 || gov.size !== 27 || linhas.length !== 28) {
     return { tabelas: {}, relatorio: [`eleitos inesperados no arquivo do TSE (presidente: ${pres}, governadores: ${gov.size} UFs em ${linhas.length - pres} linhas): nada gravado`], falhas: 1, atualizadas: [] };
   }
-  return { tabelas: { executivos: linhas }, relatorio: [`1 presidente e 27 governadores eleitos em 2026 (posse em 1º/1/2027)`], falhas: 0, atualizadas: ["tse_executivos"] };
+  return { tabelas: { executivos: linhas }, relatorio: [`1 presidente e 27 governadores eleitos em 2026 (posse em 5 e 6/1/2027)`], falhas: 0, atualizadas: ["tse_executivos"] };
 }

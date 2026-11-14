@@ -487,7 +487,7 @@ patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a s
 ### E23m · Menu, Visão geral com o estado e Votações (pedido de 2026-11-13)
 - [x] Menu: Visão geral, Congresso, Monitorando e Outros (Votações, Comparar, Sobre).
 - [x] Visão geral: sem estado, só o mapa; com estado ou cidade, quem representa (presidente e governador
-      eleitos em 2026, com a posse em 1º/1/2027, sem clique; senadores) e "Deputados federais" do estado.
+      eleitos em 2026, com a posse (5/1 e 6/1/2027, EC 111/2021), sem clique; senadores) e "Deputados federais" do estado.
       A Me representa saiu (`/me-representa` redireciona). Job `executivos` (TSE), migração 0008.
 - [x] Detalhe da votação: nome, tipo e temas, "O que é" com o texto completo (sem "Termos jurídicos"),
       resultado, como votou cada partido (tocando, a lista de quem votou como) e, por último, o caminho.

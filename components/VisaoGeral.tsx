@@ -51,7 +51,7 @@ function CartaoExecutivo({ e }: { e: Executivo }) {
         : <span aria-hidden="true" className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-fundo text-sm font-bold">{iniciais(e.nomeUrna)}</span>}
       <span className="grid flex-1">
         <strong className="text-[13px]">{e.nomeUrna}</strong>
-        <span className="text-xs text-suave">Eleit{e.feminino ? "a" : "o"} em 2026 · posse em 1º/1/2027</span>
+        <span className="text-xs text-suave">Eleit{e.feminino ? "a" : "o"} em 2026 · posse em {Number(e.posse.slice(8, 10))}/{Number(e.posse.slice(5, 7))}/{e.posse.slice(0, 4)}</span>
       </span>
       <SelecaoPartido partido={e.partido} cores={[]} />
     </div>

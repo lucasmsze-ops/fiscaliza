@@ -33,6 +33,8 @@ celular; menu com 5 itens (Comparar fica fora do menu, só pelo crachá); regra 
 pauta (Senado), 800 matérias consultadas para temas (1.289 de 1.541 votações com tema), 1.541 votações
 republicadas com `temas`, 1.541 resumos de votação regravados com `membros`; este commit é o redeploy.
 **Próximo passo:** E23g (Propostas) ou os executivos (ideia do usuário).
+**Corrigido (2026-11-14):** a posse dos eleitos em 2026 não é 1º/1: pela EC 111/2021, o presidente toma
+posse em 5/1/2027 e os governadores em 6/1/2027 (visto no painel do usuário). `executivos.posse` e o texto.
 
 ## 2026-11-13 · E23f · Comparar
 **Feito:** `/comparar` (`components/Comparar.tsx`, `lib/comparar.ts`, `/dados/comparar/[id]`), aba no

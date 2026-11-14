@@ -240,7 +240,8 @@ export default async function ComoFunciona() {
           &quot;Saúde&quot; ou &quot;Segurança Pública&quot;). Não é classificação nossa; matéria sem classificação fica sem tema.
         </p>
         <p>
-          <strong>Presidente e governador:</strong> na Visão geral, os eleitos em 2026 segundo o TSE, com a posse em 1º de janeiro de 2027.
+          <strong>Presidente e governador:</strong> na Visão geral, os eleitos em 2026 segundo o TSE, com a data da posse: 5 de janeiro de 2027
+          para o presidente e 6 de janeiro para os governadores (Emenda Constitucional 111/2021).
           Não há fonte aberta de quem está no cargo hoje (governadores que renunciaram em abril de 2026 para disputar a eleição foram
           substituídos pelos vices), por isso o site mostra só o eleito e a data da posse.
         </p>
