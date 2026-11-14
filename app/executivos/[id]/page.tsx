@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BarraTopo } from "@/components/BarraTopo";
+import { ChecklistPlano } from "@/components/ChecklistPlano";
 import { inteiro } from "@/lib/card";
 import { corPartido, nomePartido } from "@/lib/partidos";
+import { planoDe } from "@/lib/promessas";
 import { NOME_UF, pelaUf } from "@/lib/regioes";
 import { repo } from "@/lib/repo";
 import type { ExecutivoEleito } from "@/lib/types";
@@ -64,14 +66,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 /**
- * Crachá do executivo eleito em 2026 (pedido de 2026-11-14), só com o que o TSE publica. O checklist
- * do plano de governo entra depois, com a lista de promessas revisada pelo usuário e status só por ato
- * oficial (docs/PLANO.md, E23n).
+ * Crachá do executivo eleito em 2026 (pedido de 2026-11-14), só com o que o TSE publica, e o checklist
+ * do plano de governo onde a lista de promessas foi aprovada (lib/promessas.ts): status só por ato oficial.
  */
 export default async function PaginaExecutivo({ params }: Props) {
   const e = await achar((await params).id);
   if (!e) notFound();
   const nome = nomePartido(e.partido);
+  const plano = planoDe(e.tseSqCandidato);
   const v = e.votos;
   const decisivo = v?.t2 ?? v?.t1 ?? null;
   const fonteResultado = e.cargo === "presidente" ? "https://resultados.tse.jus.br/oficial/app/index.html#/eleicao;e=e6257/resultados" : "https://resultados.tse.jus.br/oficial/app/index.html";
@@ -149,17 +151,18 @@ export default async function PaginaExecutivo({ params }: Props) {
         </section>
       )}
 
-      <section className={`${card} grid gap-2`} aria-labelledby="ex-plano">
-        <h2 id="ex-plano" className="text-lg font-bold">Proposta de governo</h2>
-        <p className="text-sm leading-relaxed text-suave">
-          O plano de governo é o documento que {fem(e) ? "a candidata" : "o candidato"} registrou no TSE. O acompanhamento ponto a ponto,
-          só com atos oficiais, entra aqui a partir da posse.
-        </p>
-        <a href={`https://cdn.tse.jus.br/estatistica/sead/odsele/proposta_governo/proposta_governo_2026_${e.cargo === "presidente" ? "BR" : e.uf}.zip`} {...externo}
-          className="inline-flex h-11 w-fit items-center rounded-xl border border-borda px-4 text-[13px] font-bold text-texto no-underline hover:border-destaque">
-          Baixar do TSE ›
-        </a>
-        <p className="text-xs break-all text-suave">Arquivo com as propostas de {e.cargo === "presidente" ? "todos os candidatos a presidente" : `todos os candidatos ${pelaUf(e.uf ?? "")}`}; a de {e.nomeUrna} é o PDF 2026{e.cargo === "presidente" ? "BR" : e.uf}{e.tseSqCandidato}_01.</p>
+      <section className={`${card} grid gap-2.5`} aria-labelledby="ex-plano">
+        <h2 id="ex-plano" className="text-lg font-bold">{plano ? "Plano de governo: o que foi prometido" : "Proposta de governo"}</h2>
+        {plano
+          ? <ChecklistPlano plano={plano} posse={e.posse} nome={e.nomeUrna} antesDaPosse={new Date().toISOString().slice(0, 10) < e.posse} />
+          : <p className="text-sm leading-relaxed text-suave">O plano de governo é o documento que {fem(e) ? "a candidata" : "o candidato"} registrou no TSE. O acompanhamento ponto a ponto, só com atos oficiais, ainda não foi preparado para {e.nomeUrna}.</p>}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-borda pt-2.5">
+          <a href={`https://cdn.tse.jus.br/estatistica/sead/odsele/proposta_governo/proposta_governo_2026_${e.cargo === "presidente" ? "BR" : e.uf}.zip`} {...externo}
+            className="inline-flex h-10 w-fit items-center rounded-xl border border-borda px-4 text-[13px] font-bold text-texto no-underline hover:border-destaque">
+            Plano completo no TSE ›
+          </a>
+          <span className="text-xs break-all text-suave">Arquivo com as propostas de {e.cargo === "presidente" ? "todos os candidatos a presidente" : `todos os candidatos ${pelaUf(e.uf ?? "")}`}; a de {e.nomeUrna} é o PDF 2026{e.cargo === "presidente" ? "BR" : e.uf}{e.tseSqCandidato}_01.</span>
+        </div>
       </section>
 
       {e.historico && e.historico.length > 0 && (

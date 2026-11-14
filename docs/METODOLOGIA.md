@@ -98,6 +98,15 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
   Senado), não `politicos.uf` (candidatura de 2026). Conferido: as 27 bancadas batem com as cadeiras
   da Constituição (art. 45: 8 a 70 deputados; art. 46: 3 senadores).
 
+## Planos de governo (`/executivos/[id]`, E23n)
+- Promessas em `data/promessas/2026.json` (lido por `lib/promessas.ts`): texto literal e página do PDF
+  do TSE (`proposta_governo_2026_{BR|UF}.zip`), selecionadas entre todas as frases com verbo de
+  compromisso no futuro (Lula 320, Tarcísio 271) pelo critério "entrega que um ato ou dado oficial pode
+  mostrar"; lista aprovada pelo usuário em 2026-11-14 (`docs/promessas/`). Citações conferidas contra o
+  texto extraído do PDF (56 de 56).
+- `atos`: `{data, descricao, url, fonte}`, registrados à mão a partir do DOU, DOE-SP, Câmara, Senado,
+  Alesp ou dado oficial. Sem ato: "sem ato oficial ainda". Nenhum status de cumprimento nem percentual.
+
 ## Votação (`/votacoes/[id]`, E23k)
 - Pré-calculada no cron (`scripts/cron/votacoes-paginas.ts` → `resumos_votacao`), porque o partido de
   cada voto no dia só existe nas respostas em cache das fontes. ~4 KB por votação, 1.537 votações.

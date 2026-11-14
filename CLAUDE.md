@@ -67,7 +67,7 @@ Hoje (protótipo, SP):
 /votacoes           próximas votações (pauta, coleta diária), últimas votações e calendário como filtro
 /c/[ids]            links antigos da colinha: redireciona para o crachá (a colinha saiu em 2026-11-04)
 /p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
-/executivos/[id]    crachá do presidente (presidente) ou governador (UF minúscula) eleito em 2026, só com dado do TSE (E23n)
+/executivos/[id]    crachá do presidente (presidente) ou governador (UF minúscula) eleito em 2026, só com dado do TSE, e o checklist do plano onde há lista aprovada (data/promessas/; status só por ato oficial com link) (E23n)
 /monitorando        quem a pessoa monitora neste navegador e o que apareceu desde a última visita (E23e)
 /comparar           de 2 a 5 políticos lado a lado, sem nota nem ranking (E23f; `?ids=a,b`)
 /me-representa      redireciona para a Visão geral (a página saiu em 2026-11-13; `?uf=` e `?cidade=` seguem)

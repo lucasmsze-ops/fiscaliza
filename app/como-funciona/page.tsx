@@ -257,6 +257,27 @@ export default async function ComoFunciona() {
         </p>
       </Secao>
 
+      <Secao id="promessas">
+        <p>
+          <strong>De onde vêm as promessas:</strong> do plano de governo que cada eleito em 2026 registrou no TSE (o PDF oficial,
+          publicado nos dados abertos do Tribunal). O texto de cada promessa é o do documento, entre aspas, com a página. Não resumimos
+          nem reescrevemos.
+        </p>
+        <p>
+          <strong>Quais entram:</strong> lemos todas as frases de compromisso do plano (as com verbo no futuro, como &quot;vamos&quot; e
+          &quot;criaremos&quot;) e ficamos com as que têm uma entrega concreta que um ato oficial ou um dado oficial pode mostrar: criar
+          uma política, um programa ou um órgão, mandar ou aprovar uma lei, uma obra, uma meta com número ou prazo. Compromissos genéricos
+          (&quot;fortaleceremos&quot;, &quot;continuaremos&quot;) e de manutenção do que já existe ficam fora, porque nenhum ato marca o
+          seu cumprimento. Por enquanto, os planos de Lula (28 promessas) e de Tarcísio (28).
+        </p>
+        <p>
+          <strong>Como acompanhamos:</strong> ao lado de cada promessa, só atos oficiais publicados (Diário Oficial, Câmara, Senado,
+          Assembleia) ou dados oficiais (como os do INEP e do INPE), com data, fonte e link, registrados à mão. Sem ato, a promessa
+          aparece como &quot;sem ato oficial ainda&quot;. O site não diz se uma promessa foi cumprida, está em risco ou foi descumprida,
+          nem calcula percentual do plano: isso seria um julgamento nosso, e o Fiscaliza só mostra dado oficial.
+        </p>
+      </Secao>
+
       <Secao id="parecidos">
         <p>
           <strong>O que é:</strong> para quem está em exercício hoje, os 5 parlamentares da mesma Casa que mais votaram igual a ele

@@ -14,6 +14,7 @@ export const SECOES = [
   { id: "propostas", titulo: "Propostas de autoria" },
   { id: "congresso", titulo: "Congresso hoje" },
   { id: "parecidos", titulo: "Quem vota mais parecido" },
+  { id: "promessas", titulo: "Planos de governo" },
   { id: "salario", titulo: "Salário" },
   { id: "cobrar", titulo: "Como cobrar" },
   { id: "fora", titulo: "O que fica fora dos números" },

@@ -508,7 +508,9 @@ patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a s
       partido, vice, posse (5/1 e 6/1/2027, EC 111/2021), votos e % de válidos por turno, patrimônio
       declarado (total), idade na posse, instrução e ocupação declaradas, coligação, candidaturas anteriores.
       Tudo do TSE (job `executivos` ampliado; migração 0010). No ar em 2026-11-14.
-- [ ] Checklist do plano de governo (decisão de 2026-11-14): promessas com texto literal e página do PDF
+- [x] Checklist do plano de governo (decisão de 2026-11-14; lista aprovada no mesmo dia, 28 + 28, em
+      `data/promessas/2026.json`, componente `ChecklistPlano`, seção `#promessas` em /como-funciona):
+      promessas com texto literal e página do PDF
       oficial do TSE, selecionadas por mim e revisadas pelo usuário (começa por Lula e Tarcísio, como o
       painel pessoal dele); status só por ato oficial (projeto enviado, aprovado, lei sancionada, decreto),
       com link; sem ato, "sem ato oficial ainda". Sem %, sem "em risco"/"descumprida", sem notícias.

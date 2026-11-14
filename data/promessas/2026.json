@@ -1,0 +1,530 @@
+{
+ "_sobre": "Promessas selecionadas dos planos de governo 2027-2030 registrados no TSE (texto literal e página), aprovadas pelo usuário em 2026-11-14. Atos oficiais só com fonte e link, registrados à mão; ver docs/promessas/ e /como-funciona#promessas.",
+ "planos": [
+  {
+   "cargo": "presidente",
+   "uf": null,
+   "tseSqCandidato": "280002542548",
+   "arquivo": "2026BR280002542548_01.pdf",
+   "zip": "https://cdn.tse.jus.br/estatistica/sead/odsele/proposta_governo/proposta_governo_2026_BR.zip",
+   "aprovadoEm": "2026-11-14",
+   "promessas": [
+    {
+     "id": "L1",
+     "area": "Estado e participação",
+     "texto": "\"Instituiremos uma Política Nacional de Letramento Digital, estruturada para capacitar cidadãos de todas as idades a navegar criticamente na rede, combater a desinformação, proteger sua privacidade e transformar o ecossistema digital em um espaço de geração de renda, educação continuada e pleno exercício da cidadania.\"",
+     "pagina": 17,
+     "tipo": "Política",
+     "marcaria": "Decreto ou lei que institua a política (DOU)",
+     "atos": []
+    },
+    {
+     "id": "L2",
+     "area": "Povos indígenas",
+     "texto": "\"Vamos implantar plenamente a Universidade Indígena, criada em 2026.\"",
+     "pagina": 20,
+     "tipo": "Obra/instituição",
+     "marcaria": "Atos de implantação (reitoria, primeiros cursos) no DOU",
+     "atos": []
+    },
+    {
+     "id": "L3",
+     "area": "Mulheres",
+     "texto": "\"Vamos dar sequência ao Pacto, ampliando a rede de proteção às mulheres – concluiremos as 30 Casas da Mulher Brasileira e os 15 Centros de Referência da Mulher Brasileira.\"",
+     "pagina": 21,
+     "tipo": "Obra (meta)",
+     "marcaria": "Inaugurações registradas pelo Ministério das Mulheres (contagem: X de 30 e X de 15)",
+     "atos": []
+    },
+    {
+     "id": "L4",
+     "area": "Mulheres",
+     "texto": "\"Ampliaremos as Salas Lilás e vamos adquirir e distribuir aos Estados kits para aprimorar o monitoramento de agressores.\"",
+     "pagina": 21,
+     "tipo": "Programa",
+     "marcaria": "Contrato de compra e termos de entrega aos estados (DOU)",
+     "atos": []
+    },
+    {
+     "id": "L5",
+     "area": "Cuidados",
+     "texto": "\"Vamos instituir um programa visando a capacitação de cuidadores com currículos inclusivos, para fazer frente à potencialmente forte expansão da demanda por estes trabalhadores.\"",
+     "pagina": 26,
+     "tipo": "Programa",
+     "marcaria": "Portaria ou decreto que crie o programa",
+     "atos": []
+    },
+    {
+     "id": "L6",
+     "area": "Segurança",
+     "texto": "\"Cumpriremos as metas do Plano Pena Justa e instituiremos o Pacto Nacional de Execução Penal para o Enfrentamento ao Crime Organizado, fortalecendo a governança do sistema prisional e a cooperação entre União, estados e sistema de justiça.\"",
+     "pagina": 28,
+     "tipo": "Política",
+     "marcaria": "Ato que institua o Pacto (DOU)",
+     "atos": []
+    },
+    {
+     "id": "L7",
+     "area": "Segurança",
+     "texto": "\"Fortaleceremos o sistema penitenciário federal, ampliando sua capacidade operacional e de isolamento de lideranças criminosas, e implantaremos um protocolo nacional de classificação e transferência de presos de alta periculosidade, baseado em critérios objetivos e evidências.\"",
+     "pagina": 28,
+     "tipo": "Regulamentação",
+     "marcaria": "Portaria que estabeleça o protocolo",
+     "atos": []
+    },
+    {
+     "id": "L8",
+     "area": "Segurança",
+     "texto": "\"Uma vez aprovada a PEC da Segurança Pública proposta pelo Executivo, criaremos o Ministério da Segurança Pública para coordenar, em articulação com estados e municípios, a execução das políticas nacionais de segurança pública no âmbito do Sistema Único de Segurança Pública (SUSP).\"",
+     "pagina": 30,
+     "tipo": "Lei/órgão",
+     "marcaria": "PEC 18/2025 (já no site: votações no Senado) e a lei ou MP que crie o ministério",
+     "atos": []
+    },
+    {
+     "id": "L9",
+     "area": "Segurança",
+     "texto": "\"Ampliaremos o programa de estímulos para uso de câmeras corporais, com padrões nacionais para utilização, gestão e preservação das imagens.\"",
+     "pagina": 30,
+     "tipo": "Regulamentação",
+     "marcaria": "Portaria com os padrões nacionais",
+     "atos": []
+    },
+    {
+     "id": "L10",
+     "area": "Educação",
+     "texto": "\"Seguiremos com as ações e políticas já pactuadas com os estados e municípios brasileiros para chegarmos à meta de 80% das nossas crianças alfabetizadas na idade certa.\"",
+     "pagina": 31,
+     "tipo": "Meta",
+     "marcaria": "Dado oficial do INEP (Indicador Criança Alfabetizada) a cada ano, ao lado da meta de 80%",
+     "atos": []
+    },
+    {
+     "id": "L11",
+     "area": "Educação",
+     "texto": "\"Ao mesmo tempo, continuaremos fortalecendo as políticas de enfrentamento do analfabetismo na população adulta e vamos instituir uma estratégia nacional permanente de recomposição e aceleração das aprendizagens, com atenção especial aos anos finais do ensino fundamental e ao ensino médio.\"",
+     "pagina": 31,
+     "tipo": "Política",
+     "marcaria": "Ato do MEC que institua a estratégia",
+     "atos": []
+    },
+    {
+     "id": "L12",
+     "area": "Educação",
+     "texto": "\"Também com recursos do Novo PAC, estamos levando internet de qualidade às escolas brasileiras, já tendo alcançado 75% delas com conectividade nos parâmetros adequados. Vamos universalizar este serviço no próximo mandato\"",
+     "pagina": 32,
+     "tipo": "Meta",
+     "marcaria": "Dado oficial de conectividade das escolas (MEC/Anatel), ao lado da meta de 100%",
+     "atos": []
+    },
+    {
+     "id": "L13",
+     "area": "Saúde/educação",
+     "texto": "\"No próximo mandato, avançaremos na implantação de novos hospitais universitários e na sua articulação com o Agora tem Especialistas.\"",
+     "pagina": 34,
+     "tipo": "Obra",
+     "marcaria": "Atos de criação ou inauguração de hospitais universitários (Ebserh/MEC)",
+     "atos": []
+    },
+    {
+     "id": "L14",
+     "area": "Saúde",
+     "texto": "\"Aprimoraremos ainda mais a regulação do acesso à atenção especializada, garantindo maior transparência das filas e utilizando inteligência artificial, com fila única digital e ordenada pelo risco clínico, com transporte sanitário em todas as regiões de saúde.\"",
+     "pagina": 38,
+     "tipo": "Programa",
+     "marcaria": "Portaria do Ministério da Saúde que crie a fila única digital",
+     "atos": []
+    },
+    {
+     "id": "L15",
+     "area": "Saúde",
+     "texto": "\"Consolidaremos o Supercentro Brasil de telediagnóstico do câncer, reduzindo o tempo para realização de diagnóstico das biopsias nas regiões remotas ou com déficit de profissionais.\"",
+     "pagina": 38,
+     "tipo": "Programa",
+     "marcaria": "Ato de instituição ou habilitação do Supercentro",
+     "atos": []
+    },
+    {
+     "id": "L16",
+     "area": "Cultura",
+     "texto": "\"Lançamos o Tela Brasil e vamos continuar trabalhando pela aprovação, no Congresso Nacional, de uma regulamentação do streaming (VOD) que atenda ao interesse nacional e assegure o País como um produtor e exportador ativo de obras audiovisuais.\"",
+     "pagina": 42,
+     "tipo": "Lei",
+     "marcaria": "Projeto de lei do streaming: votações na Câmara e no Senado (já no site) e sanção",
+     "atos": []
+    },
+    {
+     "id": "L17",
+     "area": "Cultura",
+     "texto": "\"Trabalharemos pela aprovação de lei do direito autoral em ambiente digital e a regulamentação da inteligência artificial, para que músicos, autores e artistas sejam pagos quando as plataformas usarem conteúdo brasileiro.\"",
+     "pagina": 42,
+     "tipo": "Lei",
+     "marcaria": "Projetos de lei de direito autoral digital e de IA: votações e sanção",
+     "atos": []
+    },
+    {
+     "id": "L18",
+     "area": "Esporte",
+     "texto": "\"No próximo mandato, realizaremos a Copa do Mundo de Futebol Feminino, que ocorrerá pela primeira vez na América do Sul.\"",
+     "pagina": 43,
+     "tipo": "Evento",
+     "marcaria": "Realização do torneio em 2027 (datas oficiais)",
+     "atos": []
+    },
+    {
+     "id": "L19",
+     "area": "Esporte",
+     "texto": "\"No próximo mandato, temos a tarefa de implementar a universidade, para formar quadros técnicos e democratizar o acesso ao esporte e instituiremos a rede nacional de pesquisa, inovação e tecnologia do esporte.\"",
+     "pagina": 43,
+     "tipo": "Política",
+     "marcaria": "Ato que institua a rede nacional",
+     "atos": []
+    },
+    {
+     "id": "L20",
+     "area": "Economia",
+     "texto": "\"Avançaremos em uma regulamentação do Sistema Brasileiro de Comércio de Emissões (SBCE), aprovado neste mandato, articulada com objetivos da Nova Indústria Brasil.\"",
+     "pagina": 51,
+     "tipo": "Regulamentação",
+     "marcaria": "Decreto de regulamentação do SBCE",
+     "atos": []
+    },
+    {
+     "id": "L21",
+     "area": "Indústria",
+     "texto": "\"Desenvolveremos uma política específica para minerais críticos e terras raras, capaz de organizar suas cadeias produtivas, diferenciar seus usos tecnológicos e evitar a simples exportação de matérias-primas estratégicas.\"",
+     "pagina": 52,
+     "tipo": "Política",
+     "marcaria": "Decreto ou projeto de lei da política",
+     "atos": []
+    },
+    {
+     "id": "L22",
+     "area": "Conectividade",
+     "texto": "\"Vamos reduzir o déficit de fibra óptica que ainda atinge 11% dos municípios e ampliar o 5G no campo, com prioridade para Norte, Nordeste e periferias.\"",
+     "pagina": 55,
+     "tipo": "Meta",
+     "marcaria": "Dado oficial da Anatel: municípios sem fibra, ao lado do ponto de partida de 11%",
+     "atos": []
+    },
+    {
+     "id": "L23",
+     "area": "Saúde/tributos",
+     "texto": "\"Ao regulamentar a reforma tributária, vamos, por meio do Imposto Seletivo, desestimular produtos nocivos à saúde.\"",
+     "pagina": 59,
+     "tipo": "Lei",
+     "marcaria": "Lei que fixa as alíquotas do Imposto Seletivo",
+     "atos": []
+    },
+    {
+     "id": "L24",
+     "area": "Energia",
+     "texto": "\"Vamos readequar o marco legal do REPETRO às necessidades de descarbonização.\"",
+     "pagina": 67,
+     "tipo": "Lei",
+     "marcaria": "Projeto de lei ou MP sobre o REPETRO: tramitação e sanção",
+     "atos": []
+    },
+    {
+     "id": "L25",
+     "area": "Meio ambiente",
+     "texto": "\"No próximo mandato, continuaremos trabalhando para alcançar o desmatamento líquido zero até 2030, meta que reafirmamos.\"",
+     "pagina": 70,
+     "tipo": "Meta",
+     "marcaria": "Dado oficial anual do PRODES/INPE, ao lado da meta",
+     "atos": []
+    },
+    {
+     "id": "L26",
+     "area": "Meio ambiente",
+     "texto": "\"Vamos aprimorar a implementação de programas de Pagamento por Serviços Ambientais (PSA) voltados à biodiversidade e reconhecer legalmente a restauração biocultural como estratégia de Estado, distinta e complementar à restauração florestal convencional.\"",
+     "pagina": 72,
+     "tipo": "Lei",
+     "marcaria": "Lei ou decreto que reconheça a restauração biocultural",
+     "atos": []
+    },
+    {
+     "id": "L27",
+     "area": "Trabalho",
+     "texto": "\"Manteremos nossa ação junto ao Senado Federal para assegurar o fim da escala 6x1 e a redução da jornada de trabalho para 40 horas, sem redução salarial, nos termos aprovados na Câmara dos Deputados.\"",
+     "pagina": 75,
+     "tipo": "Lei",
+     "marcaria": "PEC 221/2019 (já no site: aprovada em 2º turno no Senado em 14/10/2026) e a promulgação",
+     "atos": []
+    },
+    {
+     "id": "L28",
+     "area": "Trabalho",
+     "texto": "\"Vamos implementar a regulamentação do direito de negociação coletiva no setor público e apoiar um processo de atualização sindical que democratize o sistema\"",
+     "pagina": 76,
+     "tipo": "Lei",
+     "marcaria": "Projeto de lei da negociação coletiva no setor público: tramitação e sanção",
+     "atos": []
+    }
+   ]
+  },
+  {
+   "cargo": "governador",
+   "uf": "SP",
+   "tseSqCandidato": "250002541303",
+   "arquivo": "2026SP250002541303_01.pdf",
+   "zip": "https://cdn.tse.jus.br/estatistica/sead/odsele/proposta_governo/proposta_governo_2026_SP.zip",
+   "aprovadoEm": "2026-11-14",
+   "promessas": [
+    {
+     "id": "T1",
+     "area": "Segurança",
+     "texto": "\"Transformaremos o Centro de Comando e Controle (CICC) em um centro tecnológico de comando, monitoramento e resposta em tempo real, com funcionamento 24 horas e integração total de inteligências, reunindo polícias militar, civil e técnico-científica, corpo de bombeiros, guardas municipais, sistema penitenciário, defesa civil, entre outros.\"",
+     "pagina": 7,
+     "tipo": "Obra/programa",
+     "marcaria": "Decreto ou resolução estadual e inauguração (DOE-SP)",
+     "atos": []
+    },
+    {
+     "id": "T2",
+     "area": "Segurança",
+     "texto": "\"Teremos mais tecnologia e inteligência para fortalecer a presença territorial, com policiamento ostensivo, criação de equipes táticas de atuação matricial e batalhão especializado de motocicletas\"",
+     "pagina": 7,
+     "tipo": "Órgão",
+     "marcaria": "Decreto de criação do batalhão (DOE-SP)",
+     "atos": []
+    },
+    {
+     "id": "T3",
+     "area": "Segurança",
+     "texto": "\"Ampliaremos a estrutura da Divisão de Crimes Cibernéticos da Polícia Civil, com efetivo, laboratórios, inteligência e núcleos regionais de apoio técnico, além de integração permanente com instituições financeiras e plataformas digitais.\"",
+     "pagina": 9,
+     "tipo": "Órgão",
+     "marcaria": "Decreto ou resolução de criação dos núcleos regionais",
+     "atos": []
+    },
+    {
+     "id": "T4",
+     "area": "Mulheres",
+     "texto": "\"Estenderemos o Registro Integrado de Evento de Segurança Pública para violência doméstica (RIESPVDM) para todo o estado.\"",
+     "pagina": 36,
+     "tipo": "Programa",
+     "marcaria": "Resolução da SSP que estenda o registro",
+     "atos": []
+    },
+    {
+     "id": "T5",
+     "area": "Saúde",
+     "texto": "\"Vamos criar um sistema capaz de identificar, com antecedência, sinais de possíveis surtos de doenças de notificação obrigatória, reunindo informações de diferentes sistemas e utilizando inteligência artificial para apoiar ações rápidas de prevenção.\"",
+     "pagina": 13,
+     "tipo": "Programa",
+     "marcaria": "Resolução da Secretaria da Saúde que institua o sistema",
+     "atos": []
+    },
+    {
+     "id": "T6",
+     "area": "Saúde",
+     "texto": "\"Consolidaremos o Instituto Butantan Farma, com a incorporação da Fundação para o Remédio Popular (FURP), como referência em pesquisa, inovação, desenvolvimento e produção de imunobiológicos e medicamentos estratégicos para o sistema público de saúde.\"",
+     "pagina": 13,
+     "tipo": "Lei",
+     "marcaria": "Lei estadual da incorporação da FURP: tramitação na Alesp e sanção",
+     "atos": []
+    },
+    {
+     "id": "T7",
+     "area": "Saúde mental",
+     "texto": "\"Implementaremos os Hubs Regionalizados de Cuidados em Crack e Outras Drogas em outras regiões do estado, assim como foi feito na capital\"",
+     "pagina": 16,
+     "tipo": "Obra",
+     "marcaria": "Inaugurações dos hubs regionais (DOE-SP)",
+     "atos": []
+    },
+    {
+     "id": "T8",
+     "area": "Educação",
+     "texto": "\"Faremos o Pacto pela Matemática\"",
+     "pagina": 21,
+     "tipo": "Programa",
+     "marcaria": "Resolução da Secretaria da Educação que institua o pacto",
+     "atos": []
+    },
+    {
+     "id": "T9",
+     "area": "Educação",
+     "texto": "\"Criaremos o Observatório de Profissões do Futuro para apoiar a identificação de tendências do mercado, demanda por competências, setores emergentes\"",
+     "pagina": 23,
+     "tipo": "Programa",
+     "marcaria": "Ato de criação do observatório",
+     "atos": []
+    },
+    {
+     "id": "T10",
+     "area": "Educação",
+     "texto": "\"O Programa Bolsa Estágio do Ensino Médio, o BEEM, será triplicado, atingindo mais de 50 mil alunos com estágios remunerados\"",
+     "pagina": 23,
+     "tipo": "Meta",
+     "marcaria": "Número oficial de bolsistas do BEEM, ao lado da meta de 50 mil",
+     "atos": []
+    },
+    {
+     "id": "T11",
+     "area": "Educação",
+     "texto": "\"Hoje, são 45% - e vamos chegar a 60% dos alunos da rede estadual, com cursos conectados às vocações econômicas de cada região\"",
+     "pagina": 23,
+     "tipo": "Meta",
+     "marcaria": "Dado oficial de matrículas em ensino técnico na rede estadual, ao lado da meta de 60%",
+     "atos": []
+    },
+    {
+     "id": "T12",
+     "area": "Educação",
+     "texto": "\"Implantaremos novas unidades disponibilizando mais de 35 mil vagas em tempo integral.\"",
+     "pagina": 25,
+     "tipo": "Obra (meta)",
+     "marcaria": "Vagas oficiais das novas Escolas do Futuro, ao lado da meta de 35 mil",
+     "atos": []
+    },
+    {
+     "id": "T13",
+     "area": "Saúde/educação",
+     "texto": "\"No campo da saúde nas escolas, realizaremos exames e consultas para detecção de problemas de visão e audição (Saúde Ocular e Auditiva), com encaminhamento para obtenção de óculos e aparelhos auditivos, junto ao sistema de saúde.\"",
+     "pagina": 27,
+     "tipo": "Programa",
+     "marcaria": "Resolução que institua o programa",
+     "atos": []
+    },
+    {
+     "id": "T14",
+     "area": "Desenvolvimento social",
+     "texto": "\"Criaremos o Programa Cuidar Para Todos baseado na abordagem do cuidado integral e centrado no ciclo de vida, da primeira infância à pessoa idosa\"",
+     "pagina": 29,
+     "tipo": "Programa",
+     "marcaria": "Decreto ou lei de criação",
+     "atos": []
+    },
+    {
+     "id": "T15",
+     "area": "Pessoa com deficiência",
+     "texto": "\"Desenvolveremos o Programa Estadual de Tecnologia Assistiva para Crianças Vulneráveis, com fornecimento de órteses e próteses, cadeiras de rodas e demais meios auxiliares, aparelhos auditivos e implantes cocleares.\"",
+     "pagina": 29,
+     "tipo": "Programa",
+     "marcaria": "Decreto ou resolução de criação",
+     "atos": []
+    },
+    {
+     "id": "T16",
+     "area": "Pessoa idosa",
+     "texto": "\"Desenvolveremos mecanismos de apoio financeiro destinados a cuidadores familiares de pessoas idosas em situação de alta dependência e vulnerabilidade social;\"",
+     "pagina": 30,
+     "tipo": "Programa",
+     "marcaria": "Lei ou decreto que crie o benefício",
+     "atos": []
+    },
+    {
+     "id": "T17",
+     "area": "Pessoa com deficiência",
+     "texto": "\"Criaremos os Espaços da Mãe Atípica Paulista, para acolhimento e cuidado integral, incluindo saúde mental, autoestima e qualificação profissional\"",
+     "pagina": 31,
+     "tipo": "Obra/programa",
+     "marcaria": "Ato de criação e inaugurações",
+     "atos": []
+    },
+    {
+     "id": "T18",
+     "area": "Pessoa com deficiência",
+     "texto": "\"Vamos implantar novos Centros TEA (Transtorno do Espectro Autista) Paulista em todas as Regiões Administrativas\"",
+     "pagina": 31,
+     "tipo": "Obra (meta)",
+     "marcaria": "Inaugurações oficiais (contagem por Região Administrativa)",
+     "atos": []
+    },
+    {
+     "id": "T19",
+     "area": "Mulheres",
+     "texto": "\"Vamos criar um programa estadual de empreendedorismo feminino que reúne quatro perfis segmentados por estágio do negócio: Sonhadora, MEI, Em Crescimento e Em Consolidação.\"",
+     "pagina": 38,
+     "tipo": "Programa",
+     "marcaria": "Decreto ou resolução de criação",
+     "atos": []
+    },
+    {
+     "id": "T20",
+     "area": "Saúde da mulher",
+     "texto": "\"Regulamentaremos essa política em todo o território paulista\" (Política Estadual de Atenção Integral à Saúde das Mulheres no Climatério e na Menopausa, Lei Estadual nº 18.074/2024)",
+     "pagina": 40,
+     "tipo": "Regulamentação",
+     "marcaria": "Decreto que regulamente a Lei 18.074/2024 (DOE-SP)",
+     "atos": []
+    },
+    {
+     "id": "T21",
+     "area": "Saneamento",
+     "texto": "\"Será feita a universalização do saneamento até 2029, quatro anos antes do estabelecido no novo marco de saneamento, nos 371 municípios que compõem a Unidade Regional de Serviços de Abastecimento de Água Potável e Esgotamento Sanitário - URAE-1 do Estado de São Paulo, operada pela Sabesp\"",
+     "pagina": 33,
+     "tipo": "Meta",
+     "marcaria": "Indicadores oficiais de água e esgoto (SNIS/SINISA e Arsesp), ao lado da meta de 2029",
+     "atos": []
+    },
+    {
+     "id": "T22",
+     "area": "Habitação",
+     "texto": "\"Nos próximos 4 anos, focaremos em áreas de risco, palafitas, mananciais e favelas, triplicando o número de beneficiários, com mais de 30 mil famílias atendidas nessas regiões.\"",
+     "pagina": 33,
+     "tipo": "Meta",
+     "marcaria": "Número oficial de famílias atendidas pelo Casa Paulista nessas áreas, ao lado da meta de 30 mil",
+     "atos": []
+    },
+    {
+     "id": "T23",
+     "area": "Clima",
+     "texto": "\"Na Baixada Santista, serão 23 reservatórios finalizados até 2029\" e \"No interior paulista, mais de 400 reservatórios serão construídos até 2029, com um incremento de volume de 120 milhões de litros.\"",
+     "pagina": 42,
+     "paginaFim": 43,
+     "tipo": "Obra (meta)",
+     "marcaria": "Entregas oficiais da Sabesp e do governo (contagem: X de 23 e X de 400)",
+     "atos": []
+    },
+    {
+     "id": "T24",
+     "area": "Meio ambiente",
+     "texto": "\"Criaremos o Programa Estadual de Pagamentos por Serviços Ambientais Hídricos, voltado à produção de água, melhoria da qualidade hídrica e aumento da resiliência climática das bacias paulistas\"",
+     "pagina": 43,
+     "tipo": "Programa",
+     "marcaria": "Decreto ou lei de criação",
+     "atos": []
+    },
+    {
+     "id": "T25",
+     "area": "Rio Tietê",
+     "texto": "\"Vamos ampliar e modernizar o sistema de esgotamento sanitário da Região Metropolitana de São Paulo, com o acréscimo de 75% na capacidade de tratamento e a implantação de 2.100 km de redes e coletores de esgoto\"",
+     "pagina": 44,
+     "tipo": "Obra (meta)",
+     "marcaria": "Dados oficiais da Sabesp/IntegraTietê (km de rede e capacidade), ao lado da meta",
+     "atos": []
+    },
+    {
+     "id": "T26",
+     "area": "Meio ambiente",
+     "texto": "\"Vamos implantar novos Centros de Triagem e Reabilitação de Animais Silvestres (Cetras) e instituiremos a Política Estadual de Fauna Silvestre\"",
+     "pagina": 45,
+     "tipo": "Política",
+     "marcaria": "Lei ou decreto da Política Estadual de Fauna Silvestre",
+     "atos": []
+    },
+    {
+     "id": "T27",
+     "area": "Energia",
+     "texto": "\"Criaremos o Programa de Biogás e Biometano de São Paulo, estimulando a cadeia produtiva de biogás e biometano no estado.\" e \"lançaremos o Plano Paulista Decenal de Energia 2034\"",
+     "pagina": 45,
+     "tipo": "Programa",
+     "marcaria": "Decreto de criação do programa; publicação do plano",
+     "atos": []
+    },
+    {
+     "id": "T28",
+     "area": "Gestão",
+     "texto": "\"Vamos implantar nos Campos Elíseos o novo Centro Administrativo do Governo de São Paulo\" e \"Vamos implantar um novo terminal de ônibus integrado à Estação da Luz\"",
+     "pagina": 53,
+     "tipo": "Obra",
+     "marcaria": "Contratos e ordens de serviço publicados; inauguração",
+     "atos": []
+    }
+   ]
+  }
+ ]
+}
