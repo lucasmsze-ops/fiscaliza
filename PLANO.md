@@ -610,7 +610,8 @@ no Congresso (as Assembleias não têm dado aberto unificado, Passo 6); emendas 
       Moro, Cleitinho, Marcos Rogério, Zucco, Vicentinho Júnior), com participação, propostas, áreas e o crachá.
 - [ ] Emendas ao Orçamento (Portal da Transparência): esperando a chave da API, que o usuário cadastra no portal; vai
       para `.env.local` e para o secret do Actions. Só existem para quem foi parlamentar.
-- [ ] No ar: migração 0014 rodada pelo usuário antes do cron que publica (traz também a coluna da E23u); push.
+- [x] No ar (2026-11-20): 0014 rodada pelo usuário; push 9845d43; cron manual 44823398576 verde (500 proposições do
+      Executivo e 103 notícias com matérias publicadas); commit de registro como redeploy.
 - Pronto quando: o crachá do presidente lista o que o governo enviou; o dos governadores-parlamentares, o mandato; e
   as emendas, quando houver a chave.
 

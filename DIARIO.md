@@ -24,7 +24,9 @@ decisão de não escrever títulos).
 **Medido:** 28 mil ementas, mediana de 200 → 160 caracteres; 40 de 60 notícias da Câmara e 10 de 17 do Senado citam
 matéria; a votação do Senado de 18/11 (PLP 299/2026) ganha "Senado Aprova: Ajuste fiscal para 2027".
 **Lacunas:** ementa de assunto longo continua longa (as regras não resumem); notícias anteriores a hoje não têm matéria.
-**Próximo passo:** o usuário roda a 0014; push e cron.
+**No ar:** 0014 rodada pelo usuário; push 9845d43; cron manual 44823398576 verde (500 do Executivo, 103 notícias com
+matérias); o commit de registro é o redeploy das páginas geradas antes do cron.
+**Próximo passo:** emendas ao Orçamento quando o usuário tiver a chave do Portal da Transparência; ou a E23g.
 
 ---
 
