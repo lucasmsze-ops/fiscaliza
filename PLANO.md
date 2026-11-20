@@ -561,10 +561,12 @@ Hoje a tabela `executivos` só tem os 28 eleitos: quem votou em quem perdeu não
 Decisão do usuário: só Agência Câmara e Agência Senado, pelo RSS público (texto inteiro no feed), coletado
 pelo cron, nunca na visita; sem jornais privados nem resumo por IA. O político é ligado à notícia pela
 menção "Nome (PARTIDO-UF)" que as duas agências usam.
-- [ ] Job `noticias` (RSS → matérias com os políticos citados), rodando várias vezes por dia: cada feed só
-      traz as 15–20 últimas matérias.
-- [ ] Migração da tabela `noticias` (título, link, data, fonte, políticos citados); guardar 90 dias.
-- [ ] Seção "Notícias" no "O que aconteceu" do "Quem votei": título, agência, data e link.
+- [x] Job `noticias` (RSS → matérias com os políticos citados) no cron diário (decisão do usuário: uma vez por
+      dia). Câmara paginada até cobrir 48 h; Senado sem paginação (lacuna). Nomes: de urna e parlamentar oficial.
+- [x] Migração 0012 da tabela `noticias` (título, link, data, agência, políticos citados); só entram matérias que
+      citam alguém do site; o texto não é guardado.
+- [x] Seção "Notícias das agências da Câmara e do Senado" no "O que aconteceu" do "Quem votei" (`/dados/noticias/[id]`).
+- [ ] No ar: migração rodada pelo usuário, push e cron manual.
 - Pronto quando: notícias das duas agências citando quem a pessoa votou aparecem no "Quem votei".
 
 ### E23g · Propostas

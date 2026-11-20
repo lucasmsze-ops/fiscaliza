@@ -15,6 +15,19 @@ Modelo:
 
 ---
 
+## 2026-11-20 · E23r · notícias das agências oficiais
+**Feito:** job `noticias` (`scripts/cron/noticias.ts`, `lib/noticias.ts`) no cron diário: RSS da Agência Câmara
+(paginado até cobrir 48 h) e da Agência Senado (`todasnoticias` + `noticias`), sem biblioteca. Grava só as matérias
+que citam alguém do site, com título, link, data, agência e ids dos citados (migração 0012, índice GIN no array);
+o texto é lido e descartado. Ligação pela menção "Nome (PARTIDO-UF)": o trecho antes do parêntese termina no nome
+de urna ou no nome parlamentar oficial (caches da Câmara e do Senado) e a UF é a do político; nome repetido na UF
+fica de fora. Rota `/dados/noticias/[id]` (ISR) e seção "Notícias das agências da Câmara e do Senado" no "Quem votei".
+**Decidido (usuário):** coleta uma vez por dia.
+**Medido (sem publicar):** 100 matérias da Câmara (5 páginas) e 17 do Senado; 98 citam políticos do site. Com só o
+nome de urna, 58 de 64 menções ligavam; o nome parlamentar resolve "Randolfe Rodrigues", "David Soares" e afins.
+**Lacunas:** Senado sem paginação (só o fim de cada dia); menção por apelido não liga (docs/LACUNAS.md).
+**Próximo passo:** o usuário roda a 0012; push; cron manual; conferir a seção em produção.
+
 ## 2026-11-19 · E23q · todos os candidatos a presidente e governador
 **Feito:** o job `executivos` passou a gravar, além dos 28 eleitos com o crachá, todos os candidatos de 2026 em
 `candidatos_executivo` (migração 0011): 14 a presidente e 201 a governador, situação final pelo turno mais alto.

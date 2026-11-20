@@ -7,6 +7,7 @@
 import { spawnSync } from "node:child_process";
 import { jobCota } from "./cota";
 import { jobExecutivos } from "./executivos";
+import { jobNoticias } from "./noticias";
 import { removerPoliticosInvalidos } from "./estado";
 import { jobPauta } from "./pauta";
 import { calcularFidelidade } from "./fidelidade";
@@ -38,6 +39,8 @@ const jobs: Job[] = [
   { nome: "proposicoes", rodar: () => jobProposicoes(hoje) },
   { nome: "executivos", rodar: () => jobExecutivos() },
   { nome: "pauta", rodar: () => jobPauta(hoje) },
+  // Depois de parlamentares: liga as matérias aos políticos do estado (E23r).
+  { nome: "noticias", rodar: () => jobNoticias() },
 ];
 
 let falhou = false;

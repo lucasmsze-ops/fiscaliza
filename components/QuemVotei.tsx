@@ -6,6 +6,7 @@ import type { ResumoAcompanhar } from "@/lib/acompanhar";
 import type { ItemBusca } from "@/lib/card";
 import { BOTAO, CARD, ROTULO, TITULO_SECAO } from "@/lib/estilo";
 import { alternar, monitora, useMonitorando } from "@/lib/monitorando";
+import { NOME_FONTE, type Noticia } from "@/lib/noticias";
 import type { ItemPautaAutores } from "@/lib/pauta";
 import { CARGOS, ELEICOES, eleitoNoStatus, type AnoEleicao, type CargoSantinho, type Escolha, type ItemExecutivo } from "@/lib/quem-votei";
 import { definirUf, escolher, tirar, useSantinho } from "@/lib/quem-votei-estado";
@@ -21,6 +22,8 @@ const VOTO: Record<TipoVoto, string> = {
   nao_informado: "Votou (direção não divulgada)", secreto: "Votou (votação secreta)", ausente: "Não registrou voto",
 };
 const ddmm = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
+/** Data de publicação no fuso de Brasília (a matéria das 23h não vira o dia seguinte). */
+const diaBr = (iso: string) => new Date(iso).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" });
 const ufsOrdenadas = Object.keys(NOME_UF).sort((x, y) => NOME_UF[x]!.localeCompare(NOME_UF[y]!, "pt-BR"));
 
 /** Índices de busca (CDN), baixados uma vez, só quando a pessoa abre a busca de um cargo. */
@@ -151,13 +154,15 @@ function Cargo({ ano, c, s }: { ano: AnoEleicao; c: (typeof CARGOS)[number]; s: 
   );
 }
 
-/** O que aconteceu com quem a pessoa votou: votos recentes no Plenário e projetos de autoria deles na pauta. */
+/** O que aconteceu com quem a pessoa votou: votos recentes no Plenário, projetos deles na pauta e notícias das agências oficiais. */
 function OQueAconteceu({ escolhas }: { escolhas: Escolha[] }) {
   const politicos = escolhas.filter((x) => x.tipo === "politico");
   const ids = politicos.map((x) => x.id).join(",");
   const [resumos, setResumos] = useState<Record<string, ResumoAcompanhar | "erro">>({});
   const [pauta, setPauta] = useState<ItemPautaAutores[] | null>(null);
+  const [noticias, setNoticias] = useState<Record<string, Noticia[]>>({});
   const [limVotos, setLimVotos] = useState(6);
+  const [limNoticias, setLimNoticias] = useState(6);
   useEffect(() => {
     for (const x of politicos) {
       if (resumos[x.id]) continue;
@@ -165,6 +170,13 @@ function OQueAconteceu({ escolhas }: { escolhas: Escolha[] }) {
         const v = r.ok ? await r.json() as ResumoAcompanhar : "erro" as const;
         setResumos((a) => ({ ...a, [x.id]: v }));
       }).catch(() => setResumos((a) => ({ ...a, [x.id]: "erro" })));
+    }
+    for (const x of politicos) {
+      if (noticias[x.id]) continue;
+      fetch(`/dados/noticias/${x.id}`).then(async (r) => {
+        const v = r.ok ? await r.json() as Noticia[] : [];
+        setNoticias((a) => ({ ...a, [x.id]: v }));
+      }).catch(() => setNoticias((a) => ({ ...a, [x.id]: [] })));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ids]);
@@ -175,6 +187,10 @@ function OQueAconteceu({ escolhas }: { escolhas: Escolha[] }) {
     .sort((a, b) => b.data.localeCompare(a.data) || a.quem.localeCompare(b.quem, "pt-BR"));
   const pautados = (pauta ?? []).flatMap((x) => { const deles = x.autores.filter((a) => nomes.has(a)); return deles.length ? [{ ...x, deles }] : []; });
   const carregandoVotos = politicos.some((x) => !resumos[x.id]);
+  // A mesma matéria pode citar duas pessoas do santinho: uma linha só, com os dois nomes.
+  const materias = [...new Map(politicos.flatMap((x) => noticias[x.id] ?? []).map((n) => [n.id, n])).values()]
+    .sort((a, b) => b.data.localeCompare(a.data));
+  const carregandoNoticias = politicos.some((x) => !noticias[x.id]);
 
   if (!politicos.length) return null;
   return (
@@ -217,7 +233,26 @@ function OQueAconteceu({ escolhas }: { escolhas: Escolha[] }) {
           </ul>
         )}
       </div>
-      <p className="text-xs text-suave">Votos e pauta das fontes oficiais da Câmara e do Senado, na coleta diária.</p>
+      <div className="grid gap-2.5">
+        <h3 className="text-[15px] font-semibold">Notícias das agências da Câmara e do Senado</h3>
+        {carregandoNoticias ? <p className="text-sm text-suave">Carregando…</p> : materias.length === 0 ? (
+          <p className="text-[15px] text-suave">Nenhuma matéria recente da Agência Câmara ou da Agência Senado cita quem você votou.</p>
+        ) : (
+          <>
+            <ul className="grid">
+              {materias.slice(0, limNoticias).map((n) => (
+                <li key={n.id} className="grid gap-1 border-t border-borda py-2.5 first:border-t-0 first:pt-0">
+                  <span className="text-xs text-suave">{NOME_FONTE[n.fonte]} · {diaBr(n.data)} · cita {n.politicos.filter((p) => nomes.has(p)).map((p) => nomes.get(p)).join(", ")}</span>
+                  <a href={n.url} {...externo} className="line-clamp-2 text-[15px] leading-snug text-texto no-underline hover:underline">{n.titulo} <span className="text-suave">↗</span></a>
+                </li>
+              ))}
+            </ul>
+            {materias.length > limNoticias && <button type="button" onClick={() => setLimNoticias((l) => l + 10)} className={`${BOTAO} justify-self-center`}>Ver mais ({materias.length - limNoticias})</button>}
+          </>
+        )}
+      </div>
+
+      <p className="text-xs text-suave">Votos e pauta das fontes oficiais da Câmara e do Senado; notícias só das agências oficiais das duas Casas (sem jornais nem resumos). Tudo na coleta diária.</p>
     </section>
   );
 }

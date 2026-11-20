@@ -11,6 +11,7 @@ import type { CardDados } from "./card";
 import { ordemNaCidade } from "./cidade";
 import { deLinha } from "./linhas";
 import { chaveMateria, type MateriaRef } from "./pauta";
+import type { Noticia } from "./noticias";
 import type { PaginaDados } from "./pagina";
 import { ultimaColeta, type EleitoNaCidade, type Repo } from "./repo";
 import { cliente, selecionar, type Cliente } from "./supabase";
@@ -95,6 +96,9 @@ export class SupabaseRepo implements Repo {
       for (const l of ls) r.set(chaveMateria(l), l.autores.map((a) => a.politico_id));
     }
     return r;
+  }
+  noticiasDe(politicoId: string, limite: number) {
+    return this.linhas<Noticia>("noticias", `select=*&politicos=cs.{${v(politicoId)}}&order=data.desc,id&limit=${limite}`);
   }
   listarCandidatosExecutivo() {
     return this.lembrar("candidatos_executivo", () => this.linhas<CandidatoExecutivo>("candidatos_executivo", "select=*&order=id"));
