@@ -40,7 +40,8 @@ const ESQUEMA: Record<string, { pk: string[]; obrig: string[]; opc: string[] }> 
   pauta: { pk: ["id"], obrig: ["id", "casa", "data", "sessao", "ordem", "materia", "tipo", "url_oficial", "coletado_em"], opc: ["hora", "ementa", "relacionada", "ementa_relacionada", "apreciacao", "temas"] },
   executivos: { pk: ["id"], obrig: ["id", "ano", "cargo", "nome", "nome_urna", "partido", "tse_sq_candidato", "posse"], opc: ["uf", "genero", "numero_urna", "foto_url", "vice_nome_urna", "vice_partido", "coligacao", "composicao", "ocupacao", "instrucao", "idade_na_posse", "votos", "bens_total", "bens_n", "historico"] },
   candidatos_executivo: { pk: ["id"], obrig: ["id", "ano", "cargo", "nome", "nome_urna", "partido", "tse_sq_candidato"], opc: ["uf", "genero", "numero_urna", "foto_url", "situacao"] },
-  noticias: { pk: ["id"], obrig: ["id", "fonte", "titulo", "url", "data", "politicos"], opc: [] },
+  noticias: { pk: ["id"], obrig: ["id", "fonte", "titulo", "url", "data", "politicos"], opc: ["materias"] },
+  proposicoes_executivo: { pk: ["id"], obrig: ["id", "id_externo", "autor", "tipo", "numero", "ano", "apresentacao", "virou_norma", "url_oficial"], opc: ["ementa", "situacao", "temas"] },
 };
 const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   politicos: { genero: ["feminino", "masculino", null], cargo: ["deputado_federal", "senador"], status: ["eleito", "reeleito", "nao_eleito", "suplente", "em_exercicio"] },

@@ -20,6 +20,7 @@ export const TABELAS: readonly { nome: string; pk: readonly string[] }[] = [
   { nome: "proposicoes", pk: ["id"] },
   { nome: "proposicoes_autores", pk: ["proposicao_id", "politico_id"] },
   { nome: "proposicoes_contagem", pk: ["politico_id", "casa", "ano", "tipo"] },
+  { nome: "proposicoes_executivo", pk: ["id"] },
   { nome: "atualizacoes", pk: ["fonte"] },
   { nome: "pauta", pk: ["id"] },
   { nome: "noticias", pk: ["id"] },
@@ -27,3 +28,5 @@ export const TABELAS: readonly { nome: string; pk: readonly string[] }[] = [
 
 /** Tipos de proposição que podem virar lei ou norma (decisão de 2026-11-02): ficam com a íntegra; os outros, só contagem. */
 export const TIPOS_LEGISLATIVOS = { camara: ["PL", "PLP", "PEC", "PDL", "PRC"], senado: ["PL", "PLP", "PEC", "PDL", "PRS"] } as const;
+/** O que o Executivo federal envia e entra no crachá do presidente (E23t); mensagens (MSC) e concessões (TVR) ficam de fora. */
+export const TIPOS_EXECUTIVO = ["MPV", "PL", "PLP", "PEC", "PLN"] as const;

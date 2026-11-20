@@ -10,6 +10,7 @@ import type { ItemPautaAutores } from "@/lib/pauta";
 import { CARGOS, ELEICOES } from "@/lib/quem-votei";
 import { useSantinho } from "@/lib/quem-votei-estado";
 import { tipoPorExtenso } from "@/lib/votacao";
+import { manchete } from "@/lib/titulo";
 import { ChipPartido } from "./ChipPartido";
 import { normalizar } from "@/lib/texto";
 import type { TipoVoto } from "@/lib/types";
@@ -195,7 +196,7 @@ function AbaMonitorando() {
       itens.votos.push({
         chave: ev.chave, data: ev.data, quando: diaCurto(ev.data), casa: casaDe(ev.casa), novo,
         ref: [ev.materia, tipoPorExtenso(ev.materia ?? null)].filter(Boolean).join(" · ") || "Votação nominal",
-        titulo: ev.titulo, sub: ev.votado ? `Votado: ${ev.votado}` : undefined,
+        titulo: manchete(ev.titulo) || ev.titulo, sub: ev.votado ? `Votado: ${ev.votado}` : undefined,
         status: ev.resultado === "aprovada" ? "Aprovada" : ev.resultado === "rejeitada" ? "Rejeitada" : undefined,
         rotuloQuem: "COMO VOTARAM", quem: quem.map((q) => ({ id: q.r.id, nome: q.r.nomeUrna, foto: q.r.fotoUrl, v: VOTO_CURTO[q.ev.voto!], cor: COR_V[q.ev.voto!] })),
         href: ev.href, externo: ev.externo, cta: "Ver votação",
@@ -204,7 +205,7 @@ function AbaMonitorando() {
       const norma = !!ev.virouNorma;
       (norma ? itens.leis : itens.projetos).push({
         chave: ev.chave, data: ev.data, quando: ev.data.slice(0, 4), casa: casaDe(ev.casa), novo,
-        ref: [ev.materia, tipoPorExtenso(ev.materia ?? null)].filter(Boolean).join(" · "), titulo: ev.titulo,
+        ref: [ev.materia, tipoPorExtenso(ev.materia ?? null)].filter(Boolean).join(" · "), titulo: manchete(ev.titulo) || ev.titulo,
         sub: norma ? "Transformada em norma jurídica" : `Apresentada em ${ddmm(ev.data)}`,
         status: norma ? "Virou norma" : "Em tramitação",
         rotuloQuem: "AUTORIA", quem: quem.map((q) => ({ id: q.r.id, nome: q.r.nomeUrna, foto: q.r.fotoUrl, v: q.ev.primeiroAutor ? "Primeiro autor" : "Coautor" })),
@@ -218,7 +219,7 @@ function AbaMonitorando() {
     if (!deles.length) continue;
     itens.projetos.push({
       chave: `pauta:${x.id}`, data: x.data, quando: `na pauta · ${diaCurto(x.data)}`, casa: casaDe(x.casa), novo: false,
-      ref: [x.materia, tipoPorExtenso(x.materia)].filter(Boolean).join(" · "), titulo: (x.relacionada ? x.ementaRelacionada ?? x.ementa : x.ementa) ?? x.materia,
+      ref: [x.materia, tipoPorExtenso(x.materia)].filter(Boolean).join(" · "), titulo: manchete(x.relacionada ? x.ementaRelacionada ?? x.ementa : x.ementa) || x.materia,
       sub: x.apreciacao ?? undefined, status: "Na pauta",
       rotuloQuem: "AUTORIA", quem: deles.map((a) => ({ id: a, nome: porId.get(a)!.nomeUrna, foto: porId.get(a)!.fotoUrl, v: "Autor" })),
       href: x.urlOficial, externo: true, cta: "Ver na pauta",

@@ -230,6 +230,30 @@ export interface Placar {
   obstrucao: number;
 }
 
+/**
+ * Tabela `proposicoes_executivo` (E23t): o que o Poder Executivo federal enviou ao Congresso desde 2023 (medida
+ * provisória, PL, PLP, PEC; e o PLN, do orçamento, de autoria da Presidência da República), dos arquivos anuais da
+ * Câmara (autor do tipo "Órgão do Poder Executivo"). É do governo, não de uma pessoa: o crachá do presidente liga
+ * pelo mandato (eleito em 2022, no exercício de 2023 a 2026).
+ */
+export interface ProposicaoExecutivo {
+  /** camara:id_externo */
+  id: string;
+  idExterno: string;
+  /** "Poder Executivo" ou "Presidência da República", como a fonte escreve. */
+  autor: string;
+  tipo: string;
+  numero: number;
+  ano: number;
+  ementa: string | null;
+  /** AAAA-MM-DD */
+  apresentacao: string;
+  situacao: string | null;
+  virouNorma: boolean;
+  urlOficial: string;
+  temas?: string[] | null;
+}
+
 /** Tabela `votacoes`: votações nominais do plenário das duas Casas. */
 export interface Votacao {
   /** `${casa}:${idExterno}` — os ids das duas Casas não têm relação. */

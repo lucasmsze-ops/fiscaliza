@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { VotacaoResumo, VotacoesDados } from "@/lib/congresso";
 import type { ItemPauta } from "@/lib/types";
 import { tipoPorExtenso } from "@/lib/votacao";
+import { manchete } from "@/lib/titulo";
 import { BuscaTopo } from "./BuscaTopo";
 import { CartaoVotacao, Tema } from "./CartaoVotacao";
 import { ReceberAvisos } from "./ReceberAvisos";
@@ -28,12 +29,12 @@ const ddmm = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}`;
 
 /** Item da pauta (protótipo Liquid Glass): Casa e hora em azul, temas, o assunto, a matéria e o "Avisar" (fake door, CLAUDE.md). */
 function CartaoPauta({ x }: { x: ItemPauta }) {
-  const assunto = x.relacionada ? (x.ementaRelacionada ?? x.ementa) : x.ementa;
+  const assunto = manchete(x.relacionada ? (x.ementaRelacionada ?? x.ementa) : x.ementa);
   return (
     <div className="vidro grid content-start gap-2.5 rounded-card p-[18px]">
       <span className="text-[13px] font-semibold text-link">{NOME[x.casa]} · {diaCurto(x.data)}{x.hora ? ` · ${x.hora.replace(":00", "h").replace(":", "h")}` : ""}</span>
       {x.temas && x.temas.length > 0 && <span className="flex flex-wrap gap-1.5">{x.temas.slice(0, 2).map((t) => <Tema key={t} t={t} />)}</span>}
-      <a href={x.urlOficial} {...externo} className="text-[15px] leading-5 text-texto no-underline hover:text-texto hover:underline">{assunto ?? x.materia}</a>
+      <a href={x.urlOficial} {...externo} className="text-[15px] leading-5 font-semibold text-texto no-underline hover:text-texto hover:underline">{assunto || x.materia}</a>
       <span className="text-[13px] text-suave">
         {x.relacionada ? <>Pedido ({x.materia}) sobre {x.relacionada}{tipoPorExtenso(x.relacionada) ? ` · ${tipoPorExtenso(x.relacionada)}` : ""}</> : <>{x.materia}{tipoPorExtenso(x.materia) ? ` · ${tipoPorExtenso(x.materia)}` : ""}</>}
         {x.apreciacao ? ` · ${x.apreciacao}` : ""}

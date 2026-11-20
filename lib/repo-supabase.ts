@@ -19,7 +19,7 @@ import { normalizar } from "./texto";
 import type { VotacaoPagina } from "./votacao";
 import type {
   Afastamento, Atualizacao, CandidatoExecutivo, Cargo, ExecutivoEleito, ItemPauta, Casa, DespesaMediaUf, DespesaMes, Linha, ListaEleitoral, Mandato, Municipio, Orientacao, Politico,
-  Proposicao, ProposicaoContagem, Votacao, Voto,
+  Proposicao, ProposicaoContagem, ProposicaoExecutivo, Votacao, Voto,
 } from "./types";
 
 const TTL_MS = 5 * 60_000;
@@ -108,6 +108,16 @@ export class SupabaseRepo implements Repo {
   }
   noticiasDe(politicoId: string, limite: number) {
     return this.linhas<Noticia>("noticias", `select=*&politicos=cs.{${v(politicoId)}}&order=data.desc,id&limit=${limite}`);
+  }
+  noticiasDeMaterias(materias: string[], desde: string) {
+    if (!materias.length) return Promise.resolve([]);
+    // Antes da migração 0014 a coluna não existe: sem título de agência.
+    const lista = [...new Set(materias)].map((m) => `"${m.replace(/"/g, "")}"`).join(",");
+    return this.linhas<Noticia>("noticias", `select=*&materias=ov.{${encodeURIComponent(lista)}}&data=gte.${v(desde)}&order=data,id`).catch(() => []);
+  }
+  listarProposicoesExecutivo() {
+    // Antes da migração 0014 a tabela não existe: o crachá do presidente fica sem a seção.
+    return this.lembrar("proposicoes_executivo", () => this.linhas<ProposicaoExecutivo>("proposicoes_executivo", "select=*&order=apresentacao.desc,id.desc")).catch(() => []);
   }
   listarCandidatosExecutivo() {
     return this.lembrar("candidatos_executivo", () => this.linhas<CandidatoExecutivo>("candidatos_executivo", "select=*&order=id"));

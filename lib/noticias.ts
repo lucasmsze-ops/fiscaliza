@@ -19,6 +19,8 @@ export interface Noticia {
   data: string;
   /** Ids dos políticos do site citados como "Nome (PARTIDO-UF)". */
   politicos: string[];
+  /** Matérias citadas no texto, no formato das votações ("PLP 186/2026"); opcional (E23u, 2026-11-20). */
+  materias?: string[] | null;
 }
 
 export const NOME_FONTE: Record<Noticia["fonte"], string> = { camara: "Agência Câmara", senado: "Agência Senado" };
@@ -85,4 +87,54 @@ export function lerRss(xml: string): ItemRss[] {
       texto: semHtml(`${tag(item, "content:encoded")} ${tag(item, "description")}`),
     };
   }).filter((x) => x.titulo && /^https:\/\//.test(x.url) && x.data);
+}
+
+/** Nome por extenso das matérias como as agências escrevem → sigla das votações (a mais longa primeiro). */
+const SIGLAS: [string, string][] = [
+  ["projeto de lei do congresso nacional", "PLN"], ["projetos de lei do congresso nacional", "PLN"],
+  ["projeto de lei complementar", "PLP"], ["projetos de lei complementar", "PLP"],
+  ["proposta de emenda a constituicao", "PEC"], ["propostas de emenda a constituicao", "PEC"],
+  ["projeto de decreto legislativo", "PDL"], ["medida provisoria", "MPV"], ["projeto de resolucao", "PRC"],
+  ["projeto de lei", "PL"], ["projetos de lei", "PL"],
+];
+const POR_SIGLA: Record<string, string> = { PL: "PL", PLP: "PLP", PEC: "PEC", PDL: "PDL", PLN: "PLN", PRS: "PRS", PRC: "PRC", MP: "MPV", MPV: "MPV" };
+
+/**
+ * Matérias citadas no texto de uma notícia (E23u): "Projeto de Lei 928/26" (Câmara), "PLP 299/2026" (Senado),
+ * "Medida Provisória 1.300/25". Ano de 2 dígitos vira 20xx; o número perde os pontos. Formato das votações.
+ */
+export function materiasCitadas(texto: string): string[] {
+  const achadas = new Set<string>();
+  // Sem acento e em minúsculas, mas com "/" e "." (a normalizar() da busca tira os dois).
+  const t = texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, " ");
+  for (const m of t.matchAll(/\b((?:projetos? de lei(?: do congresso nacional| complementar)?)|(?:propostas? de emenda a constituicao)|(?:projeto de decreto legislativo)|(?:medida provisoria)|(?:projeto de resolucao)|plp|pln|pec|pdl|prs|prc|mpv|mp|pl)\s+(?:n[o.º°]*\s*)?(\d{1,2}(?:\.?\d{3})*|\d{1,5})\s*\/\s*(\d{4}|\d{2})\b/g)) {
+    const nome = m[1]!;
+    const sigla = SIGLAS.find(([n]) => n === nome)?.[1] ?? POR_SIGLA[nome.toUpperCase()];
+    if (!sigla) continue;
+    const ano = m[3]!.length === 2 ? `20${m[3]}` : m[3]!;
+    achadas.add(`${sigla} ${Number(m[2]!.replace(/\./g, ""))}/${ano}`);
+  }
+  return [...achadas].sort();
+}
+
+/** Título de agência para uma votação: a notícia, o link e de qual agência. */
+export interface TituloAgencia { titulo: string; url: string; fonte: Noticia["fonte"] }
+
+const diasEntre = (a: string, b: string) => (Date.parse(b.slice(0, 10)) - Date.parse(a.slice(0, 10))) / 86_400_000;
+
+/**
+ * Manchete de agência para uma votação do Plenário (E23u): notícia da agência da mesma Casa, publicada no dia ou até
+ * 3 dias depois, que cita a matéria. Fora: notícia de comissão ("Comissão aprova...", que é outra votação) e a que cita
+ * mais de 3 matérias (resumo de sessão). "Áudio:" e "Vídeo:" saem do título. Sem notícia, null.
+ */
+export function tituloDaAgencia(v: { proposicao: string | null; data: string; casa: Noticia["fonte"] }, noticias: Noticia[]): TituloAgencia | null {
+  if (!v.proposicao) return null;
+  const ok = noticias.filter((n) => n.materias?.includes(v.proposicao!) && n.fonte === v.casa && (n.materias?.length ?? 0) <= 3)
+    .filter((n) => { const d = diasEntre(v.data, n.data); return d >= 0 && d <= 3; })
+    .map((n) => ({ ...n, titulo: n.titulo.replace(/^(?:Áudio|Vídeo|Video)\s*:\s*/i, "").trim() }))
+    .filter((n) => !/^comiss(ão|ões)\b/i.test(n.titulo))
+    // Mais perto da votação e, no empate, a que cita menos matérias (mais específica).
+    .sort((a, b) => a.data.localeCompare(b.data) || (a.materias!.length - b.materias!.length));
+  const n = ok[0];
+  return n ? { titulo: n.titulo, url: n.url, fonte: n.fonte } : null;
 }

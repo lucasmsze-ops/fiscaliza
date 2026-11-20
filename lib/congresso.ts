@@ -3,6 +3,7 @@
  * últimas votações e normas. Só dado do banco; nada ao vivo (princípio 2).
  */
 import { siglaPartido } from "./partidos";
+import { tituloDaAgencia, type TituloAgencia } from "./noticias";
 import type { Repo } from "./repo";
 import type { Afastamento, Casa, Mandato, Politico, Votacao } from "./types";
 
@@ -100,6 +101,8 @@ export interface VotacaoResumo {
   resultado: Votacao["resultado"]; placar: Votacao["placar"]; secreta: boolean; urlOficial: string;
   /** Temas oficiais da matéria (Câmara/Senado); ausente enquanto não coletados. */
   temas?: string[];
+  /** Título da notícia da agência da Casa sobre esta votação (E23u), quando há. */
+  agencia?: TituloAgencia | null;
 }
 export const resumirVotacao = (v: Votacao): VotacaoResumo => ({
   id: v.id, casa: v.casa, data: v.data, proposicao: v.proposicao, ementa: v.ementa, descricao: v.descricao.replace(/\s*Sim:\s*\d.*$/s, ""),
@@ -147,8 +150,11 @@ export async function montarVotacoes(repo: Repo, hoje = new Date().toISOString()
   const mesInicial = ultimo.slice(0, 7);
   const votacoesMes = (await repo.votacoesEntre(...limitesDoMes(mesInicial))).map(resumirVotacao);
   const sessao = (casa: Casa, vs: Votacao[]) => ({ casa, data: vs[0]?.data ?? "", votacoes: vs.filter((v) => v.data === vs[0]?.data).map(resumirVotacao) });
-  return {
-    porDia, mesInicial, diaInicial: ultimo, votacoesMes,
-    ultimaSessao: [sessao("camara", vc), sessao("senado", vs)].filter((x) => x.data),
-  };
+  const ultimaSessao = [sessao("camara", vc), sessao("senado", vs)].filter((x) => x.data);
+  // Título de agência (E23u): uma consulta só, pelas matérias das votações mostradas.
+  const todas = [...votacoesMes, ...ultimaSessao.flatMap((x) => x.votacoes)];
+  const desde = todas.map((v) => v.data).sort()[0] ?? hoje;
+  const noticias = await repo.noticiasDeMaterias([...new Set(todas.flatMap((v) => (v.proposicao ? [v.proposicao] : [])))], desde);
+  for (const v of todas) { const t = tituloDaAgencia(v, noticias); if (t) v.agencia = t; }
+  return { porDia, mesInicial, diaInicial: ultimo, votacoesMes, ultimaSessao };
 }

@@ -4,6 +4,7 @@ import { QuemVoteiResumo } from "./QuemVoteiResumo";
 import { cadeirasHemiciclo, type VotacaoResumo } from "@/lib/congresso";
 import { ESTADOS_MAPA, MAPA_H, MAPA_W } from "@/lib/mapa-brasil";
 import { CADEIRAS, hrefVotacao, tipoPorExtenso } from "@/lib/votacao";
+import { manchete } from "@/lib/titulo";
 
 const NOME_CASA = { camara: "Câmara", senado: "Senado" } as const;
 const dataLonga = (iso: string) => {
@@ -50,7 +51,7 @@ function UltimaVotacao({ v }: { v: VotacaoResumo }) {
       <Link href={hrefVotacao(v.id)} className="flex gap-3 px-4 pt-4 pb-3.5 text-texto no-underline hover:text-texto">
         <div className="grid min-w-0 flex-1 content-start gap-1.5">
           <span className="text-xs font-semibold text-suave">{NOME_CASA[v.casa]} · {dataLonga(v.data)}</span>
-          <h2 id="ini-ultima" className="line-clamp-3 text-[15px] leading-5 font-semibold">{v.ementa ?? v.descricao}</h2>
+          <h2 id="ini-ultima" className="line-clamp-3 text-[15px] leading-5 font-semibold">{v.agencia?.titulo ?? (manchete(v.ementa) || v.descricao)}</h2>
           {v.proposicao && <span className="text-xs text-suave">{v.proposicao}{tipo ? ` · ${tipo}` : ""}</span>}
           {v.resultado && (
             <span className={`mt-0.5 inline-flex h-6 items-center justify-self-start rounded-full border px-2.5 text-xs font-bold ${aprovada ? "border-verde/45 bg-verde/20 text-[#5EE37E]" : "border-vermelho/45 bg-vermelho/20 text-[#FF7A70]"}`}>

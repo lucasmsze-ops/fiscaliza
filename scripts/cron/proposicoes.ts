@@ -11,6 +11,9 @@
  * algum autor está no site) e o vínculo em `proposicoes_autores`; os demais, só a contagem por
  * político, ano e tipo em `proposicoes_contagem`.
  *
+ * Executivo federal (E23t): no mesmo arquivo de autores, as proposições de autor "Órgão do Poder Executivo" (Poder
+ * Executivo; Presidência da República nos PLN) dos tipos `TIPOS_EXECUTIVO` vão para `proposicoes_executivo`.
+ *
  * Temas oficiais (Áreas de atuação no crachá, E23s): Câmara pelo arquivo anual `proposicoesTemas`; Senado
  * pelas `classificacoes` de `/processo/{id}` (a mesma chamada da autoria; cache em `senado-processos/temas`).
  *
@@ -21,7 +24,7 @@ import { DuckDBInstance } from "@duckdb/node-api";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { mapLimite } from "../../lib/async";
 import { arquivoAnualCamara } from "../../lib/camara";
-import { TIPOS_LEGISLATIVOS } from "../../lib/esquema";
+import { TIPOS_EXECUTIVO, TIPOS_LEGISLATIVOS } from "../../lib/esquema";
 import { baixarArquivo } from "../../lib/http";
 import { getDetalheProcesso, listarProcessosDoAutor, type AutoriaSenado, type ProcessoSenado } from "../../lib/senado";
 import { semCpf } from "../../lib/texto";
@@ -45,6 +48,8 @@ interface ExtratoCamara {
   contagem: { dep: string; ano: number; tipo: string; n: number }[];
   /** Temas oficiais das `proposicoes` (id → temas), do arquivo `proposicoesTemas` (E23s). Extratos antigos não têm: rebaixa. */
   temas?: Record<string, string[]>;
+  /** Do Executivo federal (E23t); temas no mesmo `temas`. Extratos antigos não têm: rebaixa. */
+  executivo?: { id: string; autor: string; tipo: string; numero: number; ano: number; ementa: string | null; apresentacao: string; situacao: string | null }[];
   total: { proposicoes: number; autorias: number };
 }
 const dias = (a: string, b: string) => Math.round((Date.parse(a) - Date.parse(b)) / 86_400_000);
@@ -66,6 +71,7 @@ export async function jobProposicoes(hoje: string): Promise<{ tabelas: Record<st
   const porSenado = new Map(politicos.filter((p) => p.senado_codigo).map((p) => [String(p.senado_codigo), String(p.id)]));
 
   const proposicoes: LinhaBruta[] = [];
+  const executivo: LinhaBruta[] = [];
   const autores: LinhaBruta[] = [];
   const contagem: LinhaBruta[] = [];
 
@@ -81,7 +87,7 @@ export async function jobProposicoes(hoje: string): Promise<{ tabelas: Record<st
     for (const ano of anos) {
       const arq = `${DIR_CAMARA}/extrato-${ano}.json`;
       const anterior = existsSync(arq) ? ler<ExtratoCamara>(arq) : null;
-      if (anterior && anterior.temas && !velho(anterior.buscadoEm, ano)) { extratos.push(anterior); np += anterior.total.proposicoes; na += anterior.total.autorias; continue; }
+      if (anterior && anterior.temas && anterior.executivo && !velho(anterior.buscadoEm, ano)) { extratos.push(anterior); np += anterior.total.proposicoes; na += anterior.total.autorias; continue; }
       const csvP = `${DIR_CAMARA}/proposicoes-${ano}.csv`, csvA = `${DIR_CAMARA}/proposicoesAutores-${ano}.csv`, csvT = `${DIR_CAMARA}/proposicoesTemas-${ano}.csv`;
       await baixarArquivo(arquivoAnualCamara("proposicoes", ano), csvP, { label: "camara:/arquivos/proposicoes" });
       await baixarArquivo(arquivoAnualCamara("proposicoesAutores", ano), csvA, { label: "camara:/arquivos/proposicoesAutores" });
@@ -99,9 +105,14 @@ export async function jobProposicoes(hoje: string): Promise<{ tabelas: Record<st
       const autLeg = await sel<{ id: string; dep: string; ordem: number }>(`select a.* from a join p using (id) where p.tipo in (${tipos}) order by id, ordem`);
       const resto = await sel<{ dep: string; ano: string; tipo: string; n: string }>(`select a.dep, year(cast(p.apresentacao as date)) ano, p.tipo, count(*) n
         from p join a using (id) where p.tipo not in (${tipos}) group by 1, 2, 3 order by 1, 2, 3`);
+      const tiposEx = TIPOS_EXECUTIVO.map((t) => `'${t}'`).join(",");
+      await c.run(`create table ex as select idProposicao id, min(nomeAutor) autor from ${csv(csvA)}
+        where codTipoAutor = '30000' and nomeAutor in ('Poder Executivo', 'Presidência da República') group by 1`);
+      const doExecutivo = await sel<{ id: string; autor: string; tipo: string; numero: string; ano: string; ementa: string | null; apresentacao: string; situacao: string | null }>(
+        `select p.*, ex.autor from p join ex using (id) where p.tipo in (${tiposEx}) order by id`);
       // Temas: o id está no fim de `uriProposicao`; só os das proposições que entram no site.
       const temasLeg = await sel<{ id: string; tema: string }>(`select distinct regexp_extract(uriProposicao, '(\\d+)$', 1) id, trim(tema) tema
-        from ${csv(csvT)} where trim(coalesce(tema, '')) <> '' and regexp_extract(uriProposicao, '(\\d+)$', 1) in (select id from p where tipo in (${tipos}) and id in (select id from a))
+        from ${csv(csvT)} where trim(coalesce(tema, '')) <> '' and regexp_extract(uriProposicao, '(\\d+)$', 1) in (select id from p where (tipo in (${tipos}) and id in (select id from a)) or (tipo in (${tiposEx}) and id in (select id from ex)))
         order by 1, 2`);
       const temas: Record<string, string[]> = {};
       for (const t of temasLeg) (temas[t.id] ??= []).push(t.tema);
@@ -113,6 +124,7 @@ export async function jobProposicoes(hoje: string): Promise<{ tabelas: Record<st
         contagem: resto.map((r) => ({ dep: r.dep, ano: Number(r.ano), tipo: r.tipo, n: Number(r.n) })),
         total: { proposicoes: Number(tot.np), autorias: Number(tot.na) },
         temas,
+        executivo: doExecutivo.map((r) => ({ id: r.id, autor: r.autor, tipo: r.tipo, numero: Number(r.numero), ano: Number(r.ano), ementa: textoOficial(r.ementa), apresentacao: r.apresentacao, situacao: textoOficial(r.situacao) })),
       };
       writeFileSync(arq, JSON.stringify(extrato));
       // Os CSVs não ficam: um deles traz CPF por extenso num texto oficial, e o cache do Actions de um repositório público não é lugar para isso.
@@ -148,8 +160,17 @@ export async function jobProposicoes(hoje: string): Promise<{ tabelas: Record<st
       if (politicoId) { contagem.push({ politico_id: politicoId, casa: "camara", ano: r.ano, tipo: r.tipo, autorias: r.n }); contCamara++; }
     }
     atualizadas.push("camara_proposicoes");
+    // Executivo federal: uma linha por proposição (o arquivo de um ano pode repetir a do ano anterior).
+    const exVistas = new Set<string>();
+    for (const r of extratos.flatMap((e) => e.executivo ?? [])) {
+      if (exVistas.has(r.id)) continue;
+      exVistas.add(r.id);
+      executivo.push({ id: `camara:${r.id}`, id_externo: r.id, autor: r.autor, tipo: r.tipo, numero: r.numero, ano: r.ano, ementa: r.ementa,
+        apresentacao: r.apresentacao, situacao: r.situacao, virou_norma: virouNorma(r.situacao), url_oficial: `https://www.camara.leg.br/propostas-legislativas/${r.id}`,
+        temas: temasCamara.get(r.id)?.sort((x, y) => x.localeCompare(y, "pt-BR")) ?? null });
+    }
     const comTemaC = proposicoes.filter((p) => p.casa === "camara" && p.temas).length;
-    relatorio.push(`Câmara: ${baixadosAgora} arquivos baixados; ${np} proposições desde ${ANO_INICIAL}, ${na} autorias de deputados; ${vistas.size} que podem virar lei com autor no site (${comTemaC} com tema), ${contCamara} contagens`);
+    relatorio.push(`Câmara: ${baixadosAgora} arquivos baixados; ${np} proposições desde ${ANO_INICIAL}, ${na} autorias de deputados; ${vistas.size} que podem virar lei com autor no site (${comTemaC} com tema), ${contCamara} contagens; Executivo federal: ${executivo.length} (${executivo.filter((p) => p.virou_norma).length} viraram norma)`);
   } catch (e) {
     falhas++;
     relatorio.push(`Câmara FALHOU: ${(e as Error).message}`);
@@ -228,5 +249,8 @@ export async function jobProposicoes(hoje: string): Promise<{ tabelas: Record<st
   const norma = proposicoes.filter((p) => p.virou_norma).length;
   relatorio.push(`total: ${proposicoes.length} proposições (${norma} viraram norma), ${autores.length} vínculos de autoria, ${contagem.length} contagens`);
   // Uma Casa que falhou não manda nada: sem ela, as tabelas mescladas continuam com o que já havia.
-  return { tabelas: { proposicoes, proposicoes_autores: autores, proposicoes_contagem: contagem }, relatorio, falhas, atualizadas };
+  // Sem a Câmara (falhou), o Executivo também não vai: a tabela mesclada fica com o que já havia.
+  const tabelas: Record<string, LinhaBruta[]> = { proposicoes, proposicoes_autores: autores, proposicoes_contagem: contagem };
+  if (executivo.length) tabelas.proposicoes_executivo = executivo;
+  return { tabelas, relatorio, falhas, atualizadas };
 }

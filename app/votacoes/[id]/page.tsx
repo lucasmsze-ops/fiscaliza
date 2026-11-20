@@ -5,6 +5,8 @@ import { BarraVoltar } from "@/components/BarraVoltar";
 import { ChipPartido } from "@/components/ChipPartido";
 import { SeloResultado, Tema } from "@/components/CartaoVotacao";
 import { TextoLongo } from "@/components/TextoLongo";
+import { manchete } from "@/lib/titulo";
+import { NOME_FONTE, tituloDaAgencia } from "@/lib/noticias";
 import { inteiro } from "@/lib/card";
 import { hrefSecao } from "@/lib/glossario";
 import { repo } from "@/lib/repo";
@@ -107,6 +109,8 @@ export default async function PaginaVotacao({ params }: Props) {
   const PRIMEIROS = 8;
   const pessoas = v.casa === "senado" ? "senadores" : "deputados";
   const sem = v.secreta || v.semDirecao;
+  // Título da notícia da agência da Casa sobre esta votação (E23u), quando há.
+  const agencia = v.proposicao ? tituloDaAgencia(v, await repo.noticiasDeMaterias([v.proposicao], v.data)) : null;
   const extras = [
     c.obstrucao > 0 && `${inteiro(c.obstrucao)} obstrução`,
     c.outros > 0 && `${inteiro(c.outros)} ${v.casa === "senado" ? "presidente da sessão" : "sem direção divulgada"}`,
@@ -122,6 +126,10 @@ export default async function PaginaVotacao({ params }: Props) {
         <span className="text-[13px] text-suave">{dataLonga(v.data)}</span>
         <h1 className="text-[34px] leading-10 font-bold tracking-[-0.6px]">{titulo(v)}</h1>
         {tipoPorExtenso(v.proposicao) && <span className="text-[15px] text-texto/80">{tipoPorExtenso(v.proposicao)}</span>}
+        {agencia
+          ? <p className="mt-1 grid gap-0.5"><span className="text-[17px] leading-[22px] font-semibold">{agencia.titulo}</span>
+              <a href={agencia.url} {...externo} className="text-[13px] no-underline">Notícia da {NOME_FONTE[agencia.fonte]} ↗</a></p>
+          : v.ementa && <p className="mt-1 text-[17px] leading-[22px] font-semibold">{manchete(v.ementa)}</p>}
         {v.temas && v.temas.length > 0 && (
           <div className="mt-1 flex flex-wrap gap-1.5" aria-label="Temas oficiais">{v.temas.map((t) => <Tema key={t} t={t} />)}</div>
         )}

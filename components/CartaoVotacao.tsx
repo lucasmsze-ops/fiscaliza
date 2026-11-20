@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { inteiro } from "@/lib/card";
+import { NOME_FONTE } from "@/lib/noticias";
+import { manchete } from "@/lib/titulo";
 import type { VotacaoResumo } from "@/lib/congresso";
 import { hrefVotacao, rotuloVotado, tipoPorExtenso } from "@/lib/votacao";
 
@@ -23,7 +25,7 @@ export function SeloResultado({ r, grande = false }: { r: "aprovada" | "rejeitad
 export const Tema = ({ t }: { t: string }) => <span className="inline-flex h-6 items-center rounded-full bg-white/10 px-2.5 text-xs font-semibold text-texto/85">{t}</span>;
 
 /**
- * Cartão de votação do protótipo Liquid Glass: temas, a ementa inteira, matéria e o que foi votado, o
+ * Cartão de votação do protótipo Liquid Glass: temas, a manchete da ementa (lib/titulo.ts), matéria e o que foi votado, o
  * resultado e o placar em texto. Abre /votacoes/[id].
  */
 export function CartaoVotacao({ v }: { v: VotacaoResumo }) {
@@ -33,7 +35,8 @@ export function CartaoVotacao({ v }: { v: VotacaoResumo }) {
   return (
     <Link href={hrefVotacao(v.id)} className="vidro grid content-start gap-2.5 rounded-card p-[18px] text-texto no-underline hover:bg-white/10 hover:text-texto">
       {v.temas && v.temas.length > 0 && <span className="flex flex-wrap gap-1.5">{v.temas.slice(0, 2).map((t) => <Tema key={t} t={t} />)}</span>}
-      <span className="text-[15px] leading-5">{v.ementa ?? v.descricao}</span>
+      <span className="text-[15px] leading-5 font-semibold" title={v.ementa ?? undefined}>{v.agencia?.titulo ?? (manchete(v.ementa) || v.descricao)}</span>
+      {v.agencia && <span className="-mt-1.5 text-xs text-suave">Título da {NOME_FONTE[v.agencia.fonte]}</span>}
       <span className="text-[13px] text-suave">{v.proposicao ?? "Sem matéria principal informada"}{resto && ` · ${resto}`}</span>
       <span className="flex flex-wrap items-center gap-2.5">
         {v.resultado && <SeloResultado r={v.resultado} />}

@@ -4,6 +4,7 @@
  * adivinhado. A página vem pré-calculada pelo cron (scripts/cron/votacoes-paginas.ts), porque o
  * partido de cada parlamentar no dia da votação só existe nas respostas das fontes em cache.
  */
+import { manchete } from "./titulo";
 import { orientacaoDoPartido } from "./fidelidade";
 import { siglaPartido } from "./partidos";
 import { normalizar, semCpf } from "./texto";
@@ -220,7 +221,7 @@ export function itemBuscaVotacao(v: Votacao): ItemBuscaVotacao {
   const texto = semCpf(v.ementa ?? v.descricao.replace(/\s*Sim:\s*\d.*$/s, ""));
   const resultado = v.resultado ? ` · ${v.resultado}` : "";
   return {
-    href: hrefVotacao(v.id), externo: false, t: curta(texto),
+    href: hrefVotacao(v.id), externo: false, t: curta(manchete(texto) || texto),
     d: `${v.proposicao ?? "Votação"} · ${CASA_NOME[v.casa]} · ${dataBr(v.data)}${resultado}`,
     busca: normalizar(`${v.proposicao ?? ""} ${tipoPorExtenso(v.proposicao) ?? ""} ${texto} ${(v.temas ?? []).join(" ")}`),
   };
@@ -229,7 +230,7 @@ export function itemBuscaVotacao(v: Votacao): ItemBuscaVotacao {
 export function itemBuscaPauta(x: ItemPauta): ItemBuscaVotacao {
   const texto = semCpf((x.relacionada ? x.ementaRelacionada ?? x.ementa : x.ementa) ?? x.materia);
   return {
-    href: x.urlOficial, externo: true, t: curta(texto),
+    href: x.urlOficial, externo: true, t: curta(manchete(texto) || texto),
     d: `${x.materia} · na pauta · ${CASA_NOME[x.casa]} · ${dataBr(x.data)}`,
     busca: normalizar(`${x.materia} ${x.relacionada ?? ""} ${tipoPorExtenso(x.materia) ?? ""} ${texto} ${(x.temas ?? []).join(" ")}`),
   };

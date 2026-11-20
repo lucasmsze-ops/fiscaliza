@@ -5,7 +5,11 @@ import { BarraVoltar } from "@/components/BarraVoltar";
 import { ChecklistPlano } from "@/components/ChecklistPlano";
 import { inteiro } from "@/lib/card";
 import { corPartido, nomePartido } from "@/lib/partidos";
+import { arquivosDoPlano, tamanho, zipDoTse } from "@/lib/planos";
 import { planoDe } from "@/lib/promessas";
+import { parlamentarDoGovernador, presidenteEmExercicio } from "@/lib/executivo-atuacao";
+import { AtuacaoCongresso } from "@/components/AtuacaoCongresso";
+import { EnviadosExecutivo } from "@/components/EnviadosExecutivo";
 import { pelaUf } from "@/lib/regioes";
 import { repo } from "@/lib/repo";
 import type { ExecutivoEleito } from "@/lib/types";
@@ -71,14 +75,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 /**
- * Crachá do executivo eleito em 2026 (pedido de 2026-11-14), só com o que o TSE publica, e o checklist
- * do plano de governo onde a lista de promessas foi aprovada (lib/promessas.ts): status só por ato oficial.
+ * Crachá do executivo eleito em 2026 (pedido de 2026-11-14), com o que o TSE publica; a atuação (E23t: o que o
+ * governo federal enviou ao Congresso, para o presidente; o mandato no Congresso, para o governador que tem); e, no
+ * fim (pedido de 2026-11-20), a proposta de governo, com o checklist onde a lista de promessas foi aprovada.
  */
 export default async function PaginaExecutivo({ params }: Props) {
   const e = await achar((await params).id);
   if (!e) notFound();
   const nome = nomePartido(e.partido);
   const plano = planoDe(e.tseSqCandidato);
+  const arquivos = arquivosDoPlano(e.tseSqCandidato);
+  // Atuação (E23t): o presidente que já governava, pelo que o Executivo enviou; o governador com mandato no Congresso, pelo crachá dele.
+  const enviados = presidenteEmExercicio(e)
+    ? (await repo.listarProposicoesExecutivo()).map((x) => ({ id: x.id, tipo: x.tipo, numero: x.numero, ano: x.ano, ementa: x.ementa, data: x.apresentacao, situacao: x.situacao, norma: x.virouNorma, url: x.urlOficial }))
+    : null;
+  const parlamentar = await parlamentarDoGovernador(repo, e);
+  const pagina = parlamentar ? await repo.getPagina(parlamentar.id) : null;
   const v = e.votos;
   const decisivo = v?.t2 ?? v?.t1 ?? null;
   const fonteResultado = e.cargo === "presidente" ? "https://resultados.tse.jus.br/oficial/app/index.html#/eleicao;e=e6257/resultados" : "https://resultados.tse.jus.br/oficial/app/index.html";
@@ -141,6 +153,36 @@ export default async function PaginaExecutivo({ params }: Props) {
         )}
       </section>
 
+      {enviados && (
+        <section className={`${card} grid gap-3`} aria-labelledby="ex-enviados">
+          <div className="grid gap-1">
+            <h2 id="ex-enviados" className="text-lg font-semibold">O que o governo enviou ao Congresso</h2>
+            <p className="text-[13px] leading-[18px] text-suave">
+              {e.nomeUrna} governa desde 1/1/2023 (eleit{fem(e) ? "a" : "o"} em 2022, segundo o TSE). Medidas provisórias, projetos e propostas de
+              emenda à Constituição que o Poder Executivo federal enviou ao Congresso, com a situação oficial na Câmara.
+            </p>
+          </div>
+          {enviados.length > 0
+            ? <EnviadosExecutivo itens={enviados} desde="2023" />
+            : <p className="text-sm text-suave">— Ainda não coletado: a lista entra com a próxima atualização diária.</p>}
+          <p className="text-xs text-suave">Fonte: arquivos de proposições e autores da Câmara dos Deputados (autor &quot;Poder Executivo&quot;; nos projetos do orçamento, &quot;Presidência da República&quot;). Mensagens e concessões de rádio e TV ficam de fora.</p>
+        </section>
+      )}
+
+      {e.cargo === "governador" && (
+        <section className={`${card} grid gap-3`} aria-labelledby="ex-congresso">
+          <h2 id="ex-congresso" className="text-lg font-semibold">Atuação no Congresso</h2>
+          {parlamentar && pagina ? (
+            <AtuacaoCongresso pagina={pagina} />
+          ) : (
+            <p className="text-[15px] leading-relaxed text-texto/80">
+              {e.nomeUrna} não tem mandato no Congresso nesta legislatura. O que fez como governador{fem(e) ? "a" : ""}, prefeit{fem(e) ? "a" : "o"} ou deputad{fem(e) ? "a" : "o"} estadual
+              vem das Assembleias e das prefeituras, que ainda não têm dado aberto reunido e não estão no site.
+            </p>
+          )}
+        </section>
+      )}
+
       {(e.coligacao || e.composicao) && (
         <section className={`${card} grid gap-2`} aria-labelledby="ex-coligacao">
           <h2 id="ex-coligacao" className="text-lg font-semibold">Coligação</h2>
@@ -155,19 +197,6 @@ export default async function PaginaExecutivo({ params }: Props) {
         </section>
       )}
 
-      <section className={`${card} grid gap-2.5`} aria-labelledby="ex-plano">
-        <h2 id="ex-plano" className="text-lg font-semibold">{plano ? "Plano de governo: o que foi prometido" : "Proposta de governo"}</h2>
-        {plano
-          ? <ChecklistPlano plano={plano} posse={e.posse} nome={e.nomeUrna} antesDaPosse={new Date().toISOString().slice(0, 10) < e.posse} />
-          : <p className="text-sm leading-relaxed text-suave">O plano de governo é o documento que {fem(e) ? "a candidata" : "o candidato"} registrou no TSE. O acompanhamento ponto a ponto, só com atos oficiais, ainda não foi preparado para {e.nomeUrna}.</p>}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-borda pt-2.5">
-          <a href={`https://cdn.tse.jus.br/estatistica/sead/odsele/proposta_governo/proposta_governo_2026_${e.cargo === "presidente" ? "BR" : e.uf}.zip`} {...externo}
-            className="inline-flex h-10 w-fit items-center rounded-full bg-preench px-4 text-[13px] font-semibold text-texto no-underline hover:bg-preench-forte">
-            Plano completo no TSE ›
-          </a>
-          <span className="text-xs break-all text-suave">Arquivo com as propostas de {e.cargo === "presidente" ? "todos os candidatos a presidente" : `todos os candidatos ${pelaUf(e.uf ?? "")}`}; a de {e.nomeUrna} é o PDF 2026{e.cargo === "presidente" ? "BR" : e.uf}{e.tseSqCandidato}_01.</span>
-        </div>
-      </section>
 
       {e.historico && e.historico.length > 0 && (
         <section className={`${card} grid gap-2`} aria-labelledby="ex-hist">
@@ -182,6 +211,30 @@ export default async function PaginaExecutivo({ params }: Props) {
           </ol>
         </section>
       )}
+
+      <section className={`${card} grid gap-2.5`} aria-labelledby="ex-plano" id="plano">
+        <h2 id="ex-plano" className="text-lg font-semibold">{plano ? "Plano de governo: o que foi prometido" : "Proposta de governo"}</h2>
+        {plano
+          ? <ChecklistPlano plano={plano} posse={e.posse} nome={e.nomeUrna} antesDaPosse={new Date().toISOString().slice(0, 10) < e.posse} />
+          : <p className="text-sm leading-relaxed text-suave">O plano de governo é o documento que {fem(e) ? "a candidata" : "o candidato"} registrou no TSE. O acompanhamento ponto a ponto, só com atos oficiais, ainda não foi preparado para {e.nomeUrna}.</p>}
+        <div className="grid gap-2 border-t border-borda pt-2.5">
+          {arquivos.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {arquivos.map((x, i) => (
+                <a key={x.nome} href={x.url} {...externo}
+                  className="vidro inline-flex h-11 items-center gap-1.5 rounded-full px-4 text-[15px] font-semibold text-texto no-underline hover:bg-preench-forte hover:text-texto">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14" /></svg>
+                  {arquivos.length > 1 ? `Parte ${i + 1}` : "Plano de governo"} <span className="font-normal text-suave">PDF, {tamanho(x.bytes)}</span>
+                </a>
+              ))}
+            </div>
+          ) : <p className="text-sm text-suave">O TSE não publicou o PDF do plano de {e.nomeUrna} no arquivo de propostas.</p>}
+          <span className="text-xs text-suave">
+            O arquivo registrado no TSE{arquivos.length > 1 ? `, em ${arquivos.length} partes` : ""}, sem alteração. Fonte:{" "}
+            <a href={zipDoTse(e.cargo === "presidente" ? null : e.uf)} {...externo} className="underline underline-offset-2">propostas de governo {e.cargo === "presidente" ? "a presidente" : pelaUf(e.uf ?? "")} no TSE</a> (zip com todos os candidatos).
+          </span>
+        </div>
+      </section>
 
       <p className="text-xs text-suave">
         Fonte: TSE (registro de candidatura, bens declarados, histórico de candidaturas e <a href={fonteResultado} {...externo} className="underline underline-offset-2">resultado</a>).

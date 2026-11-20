@@ -17,7 +17,7 @@ import { montarPagina, type PaginaDados } from "./pagina";
 import type { VotacaoPagina } from "./votacao";
 import type {
   Afastamento, Atualizacao, CandidatoExecutivo, Cargo, Casa, DespesaMediaUf, DespesaMes, EleitoMunicipio, Linha, ListaEleitoral, Mandato, Municipio,
-  ExecutivoEleito, FidelidadePolitico, ItemPauta, Orientacao, Politico, Proposicao, ProposicaoAutor, ProposicaoContagem, Votacao, Voto,
+  ExecutivoEleito, FidelidadePolitico, ItemPauta, Orientacao, Politico, Proposicao, ProposicaoAutor, ProposicaoContagem, ProposicaoExecutivo, Votacao, Voto,
 } from "./types";
 
 export interface EleitoNaCidade {
@@ -76,6 +76,10 @@ export interface Repo {
   listarExecutivos(): Promise<ExecutivoEleito[]>;
   /** Matérias das agências oficiais que citam o político, mais recentes primeiro (tabela `noticias`, E23r). */
   noticiasDe(politicoId: string, limite: number): Promise<Noticia[]>;
+  /** Notícias das agências que citam alguma das matérias ("PLP 186/2026"), publicadas desde a data (E23u). */
+  noticiasDeMaterias(materias: string[], desde: string): Promise<Noticia[]>;
+  /** O que o Executivo federal enviou ao Congresso desde 2023 (tabela `proposicoes_executivo`, E23t), mais recentes primeiro. */
+  listarProposicoesExecutivo(): Promise<ProposicaoExecutivo[]>;
   /** Todos os candidatos a presidente e governador de 2026 (tabela `candidatos_executivo`, E23q). */
   listarCandidatosExecutivo(): Promise<CandidatoExecutivo[]>;
   /** Pauta do Plenário de `desde` (AAAA-MM-DD) em diante, só a coleta mais recente. */
@@ -99,7 +103,7 @@ type Tabelas = {
   politicos: Politico; mandatos: Mandato; afastamentos: Afastamento; listas: ListaEleitoral; municipios: Municipio;
   eleitos_mun: EleitoMunicipio; despesas_mes: DespesaMes; despesas_media_uf: DespesaMediaUf; votacoes: Votacao;
   votos: Voto; orientacoes: Orientacao; proposicoes: Proposicao; proposicoes_autores: ProposicaoAutor;
-  proposicoes_contagem: ProposicaoContagem; atualizacoes: Atualizacao; fidelidade: FidelidadePolitico; executivos: ExecutivoEleito; candidatos_executivo: CandidatoExecutivo; pauta: ItemPauta; noticias: Noticia;
+  proposicoes_contagem: ProposicaoContagem; atualizacoes: Atualizacao; fidelidade: FidelidadePolitico; executivos: ExecutivoEleito; candidatos_executivo: CandidatoExecutivo; pauta: ItemPauta; noticias: Noticia; proposicoes_executivo: ProposicaoExecutivo;
 };
 
 /** Lê data/*.json uma vez por processo (cada tabela só quando pedida). */
@@ -251,6 +255,19 @@ export class JsonRepo implements Repo {
     let ls: Noticia[];
     try { ls = await this.tabela("noticias"); } catch { return []; }
     return ls.filter((n) => n.politicos.includes(politicoId)).sort((a, b) => b.data.localeCompare(a.data)).slice(0, limite);
+  }
+  async noticiasDeMaterias(materias: string[], desde: string) {
+    if (!materias.length) return [];
+    let ls: Noticia[];
+    try { ls = await this.tabela("noticias"); } catch { return []; }
+    const quer = new Set(materias);
+    return ls.filter((n) => n.data.slice(0, 10) >= desde && (n.materias ?? []).some((m) => quer.has(m)));
+  }
+  async listarProposicoesExecutivo() {
+    // Estado de antes da E23t: sem o arquivo, o crachá do presidente não mostra a seção.
+    let ls: ProposicaoExecutivo[];
+    try { ls = await this.tabela("proposicoes_executivo"); } catch { return []; }
+    return [...ls].sort((a, b) => b.apresentacao.localeCompare(a.apresentacao) || b.id.localeCompare(a.id));
   }
   async listarCandidatosExecutivo() {
     // Estado de antes da E23q: sem o arquivo, a busca do santinho fica só com os eleitos.

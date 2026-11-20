@@ -1,0 +1,242 @@
+{
+ "_sobre": "PDFs dos planos de governo dos eleitos de 2026, extraídos dos zips do TSE (proposta_governo_2026_{UF}.zip) por scripts/tse/planos.py e publicados na release planos-2026 do GitHub. Chave: SQ do candidato no TSE.",
+ "zip": "https://cdn.tse.jus.br/estatistica/sead/odsele/proposta_governo/proposta_governo_2026_{uf}.zip",
+ "planos": {
+  "280002542548": [
+   {
+    "nome": "2026BR280002542548_01.pdf",
+    "bytes": 1189907,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026BR280002542548_01.pdf"
+   }
+  ],
+  "10002544107": [
+   {
+    "nome": "2026AC10002544107_01.pdf",
+    "bytes": 656073,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026AC10002544107_01.pdf"
+   }
+  ],
+  "20002553350": [
+   {
+    "nome": "2026AL20002553350_01.pdf",
+    "bytes": 537766,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026AL20002553350_01.pdf"
+   }
+  ],
+  "40002532272": [
+   {
+    "nome": "2026AM40002532272_01.pdf",
+    "bytes": 8459864,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026AM40002532272_01.pdf"
+   },
+   {
+    "nome": "2026AM40002532272_02.pdf",
+    "bytes": 1145980,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026AM40002532272_02.pdf"
+   },
+   {
+    "nome": "2026AM40002532272_03.pdf",
+    "bytes": 10285667,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026AM40002532272_03.pdf"
+   },
+   {
+    "nome": "2026AM40002532272_04.pdf",
+    "bytes": 10167090,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026AM40002532272_04.pdf"
+   },
+   {
+    "nome": "2026AM40002532272_05.pdf",
+    "bytes": 10203763,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026AM40002532272_05.pdf"
+   },
+   {
+    "nome": "2026AM40002532272_06.pdf",
+    "bytes": 10170299,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026AM40002532272_06.pdf"
+   },
+   {
+    "nome": "2026AM40002532272_07.pdf",
+    "bytes": 10162707,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026AM40002532272_07.pdf"
+   },
+   {
+    "nome": "2026AM40002532272_08.pdf",
+    "bytes": 10195164,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026AM40002532272_08.pdf"
+   }
+  ],
+  "30002530014": [
+   {
+    "nome": "2026AP30002530014_01.pdf",
+    "bytes": 5371564,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026AP30002530014_01.pdf"
+   }
+  ],
+  "50002536314": [
+   {
+    "nome": "2026BA50002536314_01.pdf",
+    "bytes": 10342922,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026BA50002536314_01.pdf"
+   }
+  ],
+  "60002543969": [
+   {
+    "nome": "2026CE60002543969_01.pdf",
+    "bytes": 461625,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026CE60002543969_01.pdf"
+   }
+  ],
+  "70002553055": [
+   {
+    "nome": "2026DF70002553055_01.pdf",
+    "bytes": 433241,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026DF70002553055_01.pdf"
+   }
+  ],
+  "80002552682": [
+   {
+    "nome": "2026ES80002552682_01.pdf",
+    "bytes": 966686,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026ES80002552682_01.pdf"
+   }
+  ],
+  "90002540993": [
+   {
+    "nome": "2026GO90002540993_01.pdf",
+    "bytes": 1975601,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026GO90002540993_01.pdf"
+   }
+  ],
+  "100002545679": [
+   {
+    "nome": "2026MA100002545679_01.pdf",
+    "bytes": 1254382,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026MA100002545679_01.pdf"
+   }
+  ],
+  "130002552296": [
+   {
+    "nome": "2026MG130002552296_01.pdf",
+    "bytes": 1853915,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026MG130002552296_01.pdf"
+   }
+  ],
+  "120002536582": [
+   {
+    "nome": "2026MS120002536582_01.pdf",
+    "bytes": 724999,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026MS120002536582_01.pdf"
+   }
+  ],
+  "110002551480": [
+   {
+    "nome": "2026MT110002551480_01.pdf",
+    "bytes": 376276,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026MT110002551480_01.pdf"
+   }
+  ],
+  "140002549930": [
+   {
+    "nome": "2026PA140002549930_01.pdf",
+    "bytes": 450395,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026PA140002549930_01.pdf"
+   }
+  ],
+  "150002551789": [
+   {
+    "nome": "2026PB150002551789_01.pdf",
+    "bytes": 1038459,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026PB150002551789_01.pdf"
+   }
+  ],
+  "170002537227": [
+   {
+    "nome": "2026PE170002537227_01.pdf",
+    "bytes": 5965957,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026PE170002537227_01.pdf"
+   }
+  ],
+  "180002532987": [
+   {
+    "nome": "2026PI180002532987_01.pdf",
+    "bytes": 1107192,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026PI180002532987_01.pdf"
+   }
+  ],
+  "160002540833": [
+   {
+    "nome": "2026PR160002540833_01.pdf",
+    "bytes": 128430,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026PR160002540833_01.pdf"
+   },
+   {
+    "nome": "2026PR160002540833_02.pdf",
+    "bytes": 2420584,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026PR160002540833_02.pdf"
+   }
+  ],
+  "190002542887": [
+   {
+    "nome": "2026RJ190002542887_01.pdf",
+    "bytes": 1143888,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026RJ190002542887_01.pdf"
+   }
+  ],
+  "200002534001": [
+   {
+    "nome": "2026RN200002534001_01.pdf",
+    "bytes": 819488,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026RN200002534001_01.pdf"
+   }
+  ],
+  "220002541939": [
+   {
+    "nome": "2026RO220002541939_01.pdf",
+    "bytes": 2034993,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026RO220002541939_01.pdf"
+   }
+  ],
+  "230002549223": [
+   {
+    "nome": "2026RR230002549223_01.pdf",
+    "bytes": 1890868,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026RR230002549223_01.pdf"
+   }
+  ],
+  "210002547857": [
+   {
+    "nome": "2026RS210002547857_01.pdf",
+    "bytes": 2260716,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026RS210002547857_01.pdf"
+   }
+  ],
+  "240002537073": [
+   {
+    "nome": "2026SC240002537073_01.pdf",
+    "bytes": 2252980,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026SC240002537073_01.pdf"
+   }
+  ],
+  "260002542491": [
+   {
+    "nome": "2026SE260002542491_01.pdf",
+    "bytes": 1106562,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026SE260002542491_01.pdf"
+   }
+  ],
+  "250002541303": [
+   {
+    "nome": "2026SP250002541303_01.pdf",
+    "bytes": 7403347,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026SP250002541303_01.pdf"
+   }
+  ],
+  "270002544544": [
+   {
+    "nome": "2026TO270002544544_01.pdf",
+    "bytes": 1002369,
+    "url": "https://github.com/lucasmsze-ops/fiscaliza/releases/download/planos-2026/2026TO270002544544_01.pdf"
+   }
+  ]
+ }
+}

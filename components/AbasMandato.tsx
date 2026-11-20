@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { hrefVotacao } from "@/lib/votacao";
+import { manchete } from "@/lib/titulo";
 import { inteiro } from "@/lib/card";
 import type { PaginaDados, PropostaListada, VotoListado } from "@/lib/pagina";
 import { Info } from "./Termo";
@@ -104,7 +105,7 @@ function Propostas({ id, p }: { id: string; p: NonNullable<PaginaDados["proposta
           <li key={`${x.casa}-${x.tipo}-${x.numero}-${x.ano}`} className="flex gap-3 border-b border-borda py-3">
             <Selo x={x} />
             <span className="grid min-w-0 flex-1 gap-1.5">
-              <span className="line-clamp-4 text-[15px] leading-5" title={x.ementa ?? undefined}>{x.ementa ?? "— (a fonte não traz a ementa)"}</span>
+              <span className="line-clamp-4 text-[15px] leading-5" title={x.ementa ?? undefined}>{manchete(x.ementa) || "— (a fonte não traz a ementa)"}</span>
               <span className="text-xs text-suave">{meta(x)} · {x.ano}</span>
               <span className="flex items-center justify-between gap-2">
                 <span className={`inline-flex h-[22px] items-center rounded-full border px-[9px] text-[11px] font-bold ${x.virouNorma ? "border-[#0A84FF]/50 bg-[#0A84FF]/22 text-[#8CC4FF]" : "border-white/20 bg-white/10 text-texto/85"}`}>
@@ -144,7 +145,7 @@ function Votos({ v }: { v: NonNullable<PaginaDados["votacoes"]> }) {
           const votado = u.descricao.replace(/\s*Sim:\s*\d.*$/s, "");
           return (
             <li key={i} className="grid gap-2 border-b border-borda py-3">
-              <span className="line-clamp-3 text-sm leading-[19px] font-semibold">{u.ementa ?? votado}</span>
+              <span className="line-clamp-3 text-sm leading-[19px] font-semibold" title={u.ementa ?? undefined}>{manchete(u.ementa) || votado}</span>
               {u.ementa && <span className="line-clamp-2 text-xs leading-4 text-suave">Votado: {votado}</span>}
               <span className="text-xs text-suave">{[u.proposicao, dataBr(u.data), u.resultado].filter(Boolean).join(" · ")}</span>
               <span className="flex flex-wrap items-center gap-2">

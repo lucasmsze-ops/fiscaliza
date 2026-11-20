@@ -10,7 +10,7 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { fetchText } from "../../lib/http";
-import { citados, indicePorUf, lerRss, type ItemRss, type PoliticoParaNoticia } from "../../lib/noticias";
+import { citados, indicePorUf, lerRss, materiasCitadas, type ItemRss, type PoliticoParaNoticia } from "../../lib/noticias";
 import { FONTES, lerTabela, type LinhaBruta } from "./estado";
 
 const UA = { "User-Agent": "Fiscaliza (dados abertos; coleta diaria)" };
@@ -61,12 +61,17 @@ export async function jobNoticias(agora = new Date()): Promise<{ tabelas: Record
   for (const [fonte, itens] of [["camara", camara], ["senado", senado]] as const) {
     for (const x of itens) {
       const ids = citados(x.texto, indice);
-      if (ids.length) linhas.set(x.url, { id: x.url, fonte, titulo: x.titulo, url: x.url, data: x.data, politicos: ids });
+      // E23u: também quem cita uma matéria (o título vira a manchete da votação dela no site).
+      const materias = materiasCitadas(x.texto);
+      if (ids.length || materias.length) linhas.set(x.url, { id: x.url, fonte, titulo: x.titulo, url: x.url, data: x.data, politicos: ids, materias: materias.length ? materias : null });
     }
     const unicas = new Set(itens.map((x) => x.url)).size;
-    const comCitacao = [...linhas.values()].filter((l) => l.fonte === fonte).length;
+    const comCitacao = [...linhas.values()].filter((l) => l.fonte === fonte && (l.politicos as string[]).length).length;
+    const comMateria = [...linhas.values()].filter((l) => l.fonte === fonte && l.materias).length;
     const datas = itens.map((x) => x.data).sort();
-    relatorio.push(`${fonte === "camara" ? `Câmara (${paginas} páginas)` : "Senado"}: ${unicas} matérias de ${datas[0]?.slice(0, 16) ?? "—"} a ${datas.at(-1)?.slice(0, 16) ?? "—"}, ${comCitacao} citam políticos do site`);
+    relatorio.push(`${fonte === "camara" ? `Câmara (${paginas} páginas)` : "Senado"}: ${unicas} matérias de ${datas[0]?.slice(0, 16) ?? "—"} a ${datas.at(-1)?.slice(0, 16) ?? "—"}, ${comCitacao} citam políticos do site, ${comMateria} citam matérias`);
   }
+  // Notícias de dias anteriores, gravadas antes da E23u, ganham `materias: null` (a validação pede a coluna).
+  for (const l of lerTabela("noticias")) if (!linhas.has(String(l.id)) && !("materias" in l)) linhas.set(String(l.id), { ...l, materias: null });
   return { tabelas: { noticias: [...linhas.values()] }, relatorio, falhas, atualizadas };
 }
