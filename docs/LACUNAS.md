@@ -68,3 +68,4 @@ Nunca preencher com dado sintético.
 | 2026-11-13 | Câmara / Senado | A pauta da sessão deliberativa sai poucos dias antes e pode mudar até a sessão | "Próximas votações" com aviso; o site mostra só a coleta mais recente |
 | 2026-11-20 | Agência Senado | O RSS (`todasnoticias` e `noticias`) traz só as 15 matérias mais recentes, sem paginação; a coleta é diária (decisão do usuário) | Só entram as matérias do fim de cada dia; parte das da manhã fica de fora. A Câmara pagina e cobre as últimas 48 h |
 | 2026-11-20 | Agências | Menção com nome diferente do de urna e do nome parlamentar oficial (ex.: apelido) ou nome repetido na mesma UF | A matéria não é ligada ao político (nunca chutado); medido em 19/11: 58 de 64 menções ligadas só com o nome de urna, mais com o nome parlamentar |
+| 2026-11-20 | Câmara / Senado | Proposta sem tema (classificação) na fonte | Fora das "Áreas de atuação" do crachá; a nota diz quantas das propostas ainda não têm tema |

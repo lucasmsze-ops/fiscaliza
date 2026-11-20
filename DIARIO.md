@@ -15,6 +15,34 @@ Modelo:
 
 ---
 
+## 2026-11-20 · E23s · visual iOS Liquid Glass
+**Feito:** o protótipo do usuário "Fiscaliza — iOS Liquid Glass" (canvas Design de hoje, 9 telas) aplicado no site.
+Tokens em `app/globals.css` (fundo #17181D com manchas fixas, utilitários `vidro` e `vidro-forte`, raio 26 px) e
+`lib/estilo.ts` (botões de 44 px em cápsula, `SEGMENTOS`, `CAMPO_BUSCA`, `FLUTUANTE`). Componentes novos: `Marca`,
+`TabBar`, `EmBreve` (popover nativo), `ChipPartido`, `Inicio`, `QuemVoteiResumo`. `/` virou o Início e o mapa foi
+para `/mapa` (redireciona `/?uf=`, `/?cidade=` e `/me-representa`); `BuscaTopo` ganhou o tipo "tudo".
+**Decidido (usuário):** tab bar só no celular; Início + Mapa; "Em breve" para Entrar, cadastro, STF, Impostômetro e
+Avisar (exceção ao princípio 5 registrada no CLAUDE.md); Comparar escondido como "Em breve" (/comparar segue no ar).
+**Decidido:** o vidro dos cartões não usa backdrop-filter (atrás deles só há o fundo, já desfocado; o blur em dezenas
+de cartões pesaria no celular); só o vidro forte, que fica por cima do conteúdo que rola, desfoca.
+**Verificado:** 99 testes, `next build` e o preview (celular 375 px e computador 1280 px) em Início, Mapa, Congresso,
+Votações, Monitorando e crachá; aviso "Em breve" abre e fecha.
+**Revisão tela a tela (pedido do usuário no mesmo dia, "o mais similar possível"):** busca na largura dos cartões;
+Mapa e Estado com a lista em linhas e a participação de cada um (`Repo.listarNumeros`, uma consulta aos resumos);
+Congresso sem busca, com pílulas por partido e a bancada em grade; Votações e Votação na ordem e com os textos do
+protótipo; crachá com participação em barras, parecidos em lista, Efetividade, Votos em lista, "Áreas de atuação",
+"Como cobrar" e o salário na nota; Monitorando com o santinho em ingresso (número de urna no índice de busca) e a
+linha do tempo Votos/Projetos/Leis/Notícias; Como funciona com os números da cobertura.
+**Decidido:** "Presença nas votações" do protótipo fica "Participação nas votações" (CLAUDE.md: nunca "presença").
+Saíram do crachá, seguindo o protótipo: "Votou com o partido?", os cartões de salário e participação e o Compartilhar.
+Ficaram, além do protótipo: presidente e governador no estado, "O caminho da proposta" na votação e a aba Notícias.
+**Dado novo:** temas oficiais das propostas (`proposicoes.temas`, migração 0013): Câmara pelo arquivo anual
+`proposicoesTemas`, Senado pelas `classificacoes` de `/processo/{id}` (mesma chamada da autoria, cache em
+`senado-processos/temas`, ~2,9 mil processos na primeira vez).
+**Lacunas:** proposta sem classificação na fonte fica fora das áreas (a nota diz quantas).
+**Próximo passo:** o usuário roda a 0013 no SQL Editor; push; cron manual para gravar os temas e os resumos.
+---
+
 ## 2026-11-20 · E23r · notícias das agências oficiais
 **Feito:** job `noticias` (`scripts/cron/noticias.ts`, `lib/noticias.ts`) no cron diário: RSS da Agência Câmara
 (paginado até cobrir 48 h) e da Agência Senado (`todasnoticias` + `noticias`), sem biblioteca. Grava só as matérias

@@ -15,7 +15,34 @@ Referência visual e de conteúdo para o Passo 4 em diante. Lido e cruzado com o
 
 ## Visual
 
-**Desde 2026-11-14 o site usa o design system do iOS adaptado para site** (pedido do usuário), não mais o
+**Desde 2026-11-20 a referência visual é o protótipo "Fiscaliza — iOS Liquid Glass"**, feito pelo usuário no
+Claude Design: `https://claude.ai/artifact/AzQEn9odvKMkhsLpH8wgRB` (9 telas de celular, 390 px, com dados reais do
+site: Início, Mapa, Estado, Político, Congresso, Votações, Votação, Monitorando, Como funciona). Ele mantém o tema
+iOS escuro abaixo e muda o material:
+
+| Token | Valor no site (E23s) |
+|-------|----------------------|
+| Fundo da página | `#17181D` com manchas de luz fixas (`#4A5A75` e `#6B6B73`, desfocadas) |
+| Cartão (`vidro`) | branco a 7,5%, borda branca a 14%, brilho de 1 px na aresta de cima, raio 26 px |
+| Vidro forte (`vidro-forte`) | `rgba(40,40,46,.55)` com blur 36 px: tab bar, botão de voltar, diálogos |
+| Texto secundário | `rgba(235,235,245,.7)`; separador branco a 12% |
+| Botões | cápsulas de 44 px: azul `#0071E3` ou vidro com texto branco |
+| Partido | etiqueta na cor do partido (fundo 38%, borda 75%, texto branco) |
+| Marca | 12 pontos em arco num selo de vidro + "Fiscaliza" em Inter Tight 700 (next/font, servida pelo site) |
+| Navegação | celular: tab bar de vidro (Início, Mapa, Congresso, Votações, Monitorando) só nas telas N1; computador: menu lateral |
+
+Tela a tela (revisão de 2026-11-20): Início `/`, Mapa e Estado `/mapa`, Político `/p/[slug]`, Congresso, Votações,
+Votação `/votacoes/[id]`, Monitorando e Como funciona seguem a ordem, os textos e os componentes do protótipo. Diferenças
+de propósito: "Participação" no lugar de "Presença" (CLAUDE.md); fotos oficiais no lugar das iniciais; presidente e
+governador eleitos na tela do estado; "O caminho da proposta" na votação; aba Notícias na linha do tempo do Monitorando;
+o protótipo usa números fictícios de exemplo em alguns campos, o site mostra só o dado da fonte.
+
+Funções futuras aparecem como "Em breve" (Entrar, cadastro, Comparar, STF, Impostômetro): exceção ao princípio 5
+aceita pelo usuário (CLAUDE.md). O que ainda não está 1:1 fica na E23s do `PLANO.md`.
+
+Histórico: tema de 2026-11-14 a 2026-11-20, abaixo.
+
+**De 2026-11-14 a 2026-11-20 o site usou o design system do iOS adaptado para site** (pedido do usuário), não mais o
 tema abaixo. Tokens em `app/globals.css`, padrões em `lib/estilo.ts`:
 
 **Sempre escuro** (decisão do mesmo dia): o site não segue o tema do aparelho (`color-scheme: dark`).

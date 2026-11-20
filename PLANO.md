@@ -4,7 +4,7 @@ Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
 **Etapa atual: E23n** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
-terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p, E23q e E23r foram feitas adiantadas a pedido do usuário.
+terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p, E23q, E23r e E23s foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -569,6 +569,31 @@ menção "Nome (PARTIDO-UF)" que as duas agências usam.
 - [x] No ar: migração 0012 rodada pelo usuário, push e cron manual (2026-11-20).
 - Pronto quando: notícias das duas agências citando quem a pessoa votou aparecem no "Quem votei".
 
+### E23s · Visual iOS Liquid Glass (pedido de 2026-11-20)
+O usuário desenhou o protótipo "Fiscaliza — iOS Liquid Glass" (canvas Design, `docs/PROTOTIPO.md`) e pediu para
+aplicá-lo: muda o visual, pouco as regras. Decisões do usuário no mesmo dia: tab bar de vidro só no celular
+(no computador, menu lateral); "/" vira o Início e o mapa vai para /mapa; Entrar, cadastro, STF, Impostômetro
+e Avisar aparecem como "Em breve" (exceção ao princípio 5, no CLAUDE.md); Comparar some por enquanto ("Em breve"),
+mas /comparar continua no ar.
+- [x] Tokens: fundo #17181D com manchas de luz, cartões de vidro (`vidro`), vidro forte (`vidro-forte`) na tab bar,
+      no botão de voltar e nos diálogos, segmentos e botões em cápsula, Inter Tight na marca e no título do Início.
+- [x] Moldura: marca nova (12 pontos em arco), Entrar e Dúvidas no topo do celular, TabBar nas telas N1, menu lateral
+      com Início e Mapa.
+- [x] Início (`/`): título, busca de político ou projeto, resumo do "Quem votei?", a votação mais recente com o
+      placar em meia-lua e "Mais informações" (Em breve). Redireciona `/?uf=` e `/?cidade=` para /mapa.
+- [x] Crachá centrado, etiqueta do partido na cor dele (`ChipPartido`), Comparar como "Em breve"; cartão "Crie seu
+      cadastro" no Monitorando.
+- [x] Revisão tela a tela pedida pelo usuário (mesmo dia): busca na largura dos cartões; Mapa e Estado (lista em linhas
+      com a participação de cada um, `Repo.listarNumeros`); Congresso (sem busca, pílulas e bancada em grade); Votações
+      (ordem e textos do protótipo, cartões de vidro, "Avisar"); Votação (placar em barra, partidos com etiqueta);
+      crachá (participação em barras, parecidos em lista, Efetividade, Votos em lista, Como cobrar, salário na nota;
+      saem o "Votou com o partido?" e o Compartilhar); Monitorando (santinho em ingresso com o número de urna; linha
+      do tempo Votos/Projetos/Leis/Notícias); Como funciona (números da cobertura e índice em lista).
+- [x] Áreas de atuação no crachá: temas oficiais das propostas (Câmara `proposicoesTemas`, Senado `classificacoes`),
+      migração 0013, `areasDeAtuacao` com teste.
+- [ ] No ar: migração 0013 rodada pelo usuário antes do cron que publica; push aprovado pelo usuário.
+- Pronto quando: as telas do protótipo têm o mesmo visual no site, no celular e no computador.
+
 ### E23g · Propostas
 `/propostas`: lista geral com filtros (Casa, tipo, situação, busca na ementa) e link oficial. A
 linha do tempo da tramitação fica oculta (só a situação atual é coletada).
@@ -695,7 +720,9 @@ por dia (22 etapas depois da divisão da E21).
 Emendas parlamentares (Portal da Transparência, chave única no cron; aba do crachá no protótipo,
 decisão 3 em `docs/PROTOTIPO.md`) · "votação da semana" como
 destaque em `/votacoes` · efetividade · suplentes · RSS/ICS · seguir tema (sem conta: no
-localStorage) · dados abertos para download.
+localStorage) · dados abertos para download · **conta e resumo semanal por e-mail** (decisão de 2026-11-20:
+escopo futuro; cadastro com login, escolhas salvas em qualquer aparelho, resumo do que fizeram os monitorados;
+hoje só o convite "Em breve" do Monitorando; antes de codar, rever o princípio 3 do `CLAUDE.md`).
 
 Já viraram etapas: fidelidade partidária (E26), patrimônio (E24), comparador (Passo 7).
 Saíram com a mudança de escopo: alerta pré-votação (aviso real) e "quem vota como eu" (dependia

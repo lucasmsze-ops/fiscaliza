@@ -16,9 +16,9 @@ continua sendo o recorte de SP da sonda (testes e modo JSON); o estado do cron e
 
 1. **Custo zero.** Vercel Hobby, Supabase free, GitHub Actions. Nenhuma assinatura, nenhum serviço pago. Se uma solução exige plano pago, ela está errada. Cada fase de expansão mede o volume contra os limites free antes de coletar.
 2. **Nenhuma requisição de usuário chama LLM ou API externa.** Toda página lê do Supabase (ou de JSON estático na fase de protótipo). APIs oficiais são tocadas apenas pelo cron.
-3. **Sem conta, sem e-mail, sem dado pessoal.** Quem a pessoa monitora e o santinho do "Quem votei" (a colinha voltou como aba do Monitorando em 2026-11-19) ficam só no navegador (localStorage), sem Entrar (decisão de 2026-11-04). Não existe tabela de usuários nem login. Analytics só cookieless. Avisos são só *fake door* (ver abaixo): nenhum campo de contato.
+3. **Sem conta, sem e-mail, sem dado pessoal (por enquanto).** Quem a pessoa monitora e o santinho do "Quem votei" (a colinha voltou como aba do Monitorando em 2026-11-19) ficam só no navegador (localStorage), sem Entrar (decisão de 2026-11-04). Não existe tabela de usuários nem login. Desde 2026-11-20 (protótipo Liquid Glass) os botões "Entrar", "Criar cadastro" e "Já tenho conta" aparecem, mas só abrem o aviso "Em breve" (ver princípio 5): nada é pedido nem guardado. **Escopo futuro (decisão do usuário de 2026-11-20):** cadastro com login, escolhas salvas em qualquer aparelho e resumo semanal por e-mail do que fizeram os políticos monitorados (o convite do Monitorando). Até a etapa que os implementar, valem as regras acima; quando chegar, rever este princípio (dado pessoal mínimo, custo zero, descadastro) antes de codar. Analytics só cookieless. Avisos são só *fake door* (ver abaixo): nenhum campo de contato.
 4. **Dado oficial, zero adjetivo.** O site mostra número e fonte; nunca qualifica um político nem um partido (sem nota, ranking, "melhores e piores" ou régua ideológica). Toda métrica tem link para a metodologia em `/como-funciona` e para a página oficial de origem.
-5. **Nenhum dado inventado, nem em protótipo.** Se o campo não veio da fonte, não entra na interface. Placeholders são proibidos. Dado não publicado aparece como "—" com o porquê, nunca zero.
+5. **Nenhum dado inventado, nem em protótipo.** Se o campo não veio da fonte, não entra na interface. Placeholders são proibidos. Dado não publicado aparece como "—" com o porquê, nunca zero. Exceção aceita pelo usuário em 2026-11-20: funções futuras anunciadas como "Em breve" (Entrar, cadastro, Comparar, STF, Impostômetro), sem número nem dado, com o componente `EmBreve`; o anúncio sai quando a função entrar ou for descartada.
 6. **Completo, mas legível.** Cada página abre com um resumo de poucos números com fonte; o detalhe vem abaixo, em seções que a pessoa abre. Antes de adicionar algo, perguntar: a pessoa entende em 10 segundos o que é?
 
 **Fake door de avisos:** botão "Receber avisos" nos lugares onde um aviso faria sentido (página do
@@ -56,31 +56,32 @@ comparar, mais vistos, impostômetro, STF (só se houver fonte aberta).
 
 ## Fora de escopo (não implementar, não sugerir)
 
-Presença literal em sessões · discursos · conta, login, "monitorar" com cadastro · e-mail, WhatsApp, newsletter ou qualquer aviso real (só a fake door) · tabela de usuários ou assinantes · régua ideológica (esquerda/direita) de partidos ou pessoas · nota, ranking ou "melhores e piores" · recomendação de voto · votações de comissões · feed por janela fixa de dias · qualquer scraping de HTML (fonte sem dado aberto fica de fora, com o porquê) · resumo de ementa por LLM em tempo de requisição · geolocalização (exige serviço externo) · quiz de concordância · botão Cobrar com e-mail pronto · "seu voto contou para" (removidos em 2026-11-01).
+Presença literal em sessões · discursos · WhatsApp ou aviso real por votação (só a fake door) · régua ideológica (esquerda/direita) de partidos ou pessoas · nota, ranking ou "melhores e piores" · recomendação de voto · votações de comissões · feed por janela fixa de dias · qualquer scraping de HTML (fonte sem dado aberto fica de fora, com o porquê) · resumo de ementa por LLM em tempo de requisição · geolocalização (exige serviço externo) · quiz de concordância · botão Cobrar com e-mail pronto · "seu voto contou para" (removidos em 2026-11-01). Conta, login, cadastro e resumo semanal por e-mail saíram desta lista em 2026-11-20: são escopo futuro (princípio 3).
 
 ## Rotas
 
 Hoje (protótipo, SP):
 ```
-/                   Visão geral: mapa; com estado (?uf=; ?cidade= dos links antigos), quem representa (presidente, governador eleitos em 2026, senadores, em cartões por nível) e os deputados federais do estado
+/                   Início (E23s): título, busca de político ou projeto, resumo do "Quem votei?", a votação mais recente e o "Em breve"
+/mapa               mapa; com estado (?uf=; ?cidade= dos links antigos; `/?uf=` redireciona), senadores e deputados em exercício com a participação de cada um, e presidente e governador eleitos em 2026
 /congresso          quem ocupa cada cadeira hoje (Câmara e Senado) e a Câmara de fev/2027 (E23b)
 /votacoes           próximas votações (pauta, coleta diária), últimas votações e calendário como filtro
 /c/[ids]            links antigos da colinha: redireciona para o crachá (a colinha saiu em 2026-11-04)
 /p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
 /executivos/[id]    crachá do presidente (presidente) ou governador (UF minúscula) eleito em 2026, só com dado do TSE, e o checklist do plano onde há lista aprovada (data/promessas/; status só por ato oficial com link) (E23n)
-/monitorando        abas "Quem votei" (santinho de 2026 na ordem da urna, votos e projetos pautados de quem a pessoa votou; E23p) e "Monitorando" (quem a pessoa monitora neste navegador e o que apareceu desde a última visita; E23e)
+/monitorando        convite ao cadastro ("Em breve") e abas "Quem votei" (santinho de 2026 em ingresso, do cargo mais alto ao mais baixo, com o número de urna; E23p/E23s) e "Monitorando" (quem a pessoa monitora neste navegador e a linha do tempo de votos, projetos, leis e notícias, com o que é novo desde a última visita; E23e/E23s)
 /comparar           de 2 a 5 políticos lado a lado, sem nota nem ranking (E23f; `?ids=a,b`)
-/me-representa      redireciona para a Visão geral (a página saiu em 2026-11-13; `?uf=` e `?cidade=` seguem)
+/me-representa      redireciona para o Mapa (a página saiu em 2026-11-13; `?uf=` e `?cidade=` seguem)
 /votacoes/[id]      uma votação do Plenário (E23k): placar, regra, ementa, caminho, como votou cada partido (id = casa-idExterno)
 /como-funciona      metodologia, fontes, licença, código
 ```
-**Navegação (2026-11-14):** N1 são as telas do menu (`/`, `/congresso`, `/votacoes`, `/monitorando`; lista em
-`lib/navegacao.ts`): menu no topo no celular e `BarraTopo` (só a busca; sem o caminho "Páginas / ..."). Busca
-só onde tem escopo: Visão geral e Congresso buscam políticos; Votações busca projetos e votações; Monitorando
-não tem busca. O Sobre (`/como-funciona`) saiu do menu: abre pelo ícone de Dúvidas ao lado da marca.
-Toda outra tela é N2 (crachá, executivo, votação, Comparar, Sobre): no celular o menu do topo some e a
-`BarraVoltar` traz "‹ tela anterior" (volta no histórico se a pessoa veio do site; senão, vai para a N1
-de origem). Visual: design system do iOS adaptado para site, sempre escuro (`docs/PROTOTIPO.md`).
+**Navegação (2026-11-20, protótipo Liquid Glass):** N1 são as telas do menu (`/`, `/mapa`, `/congresso`, `/votacoes`,
+`/monitorando`; lista em `lib/navegacao.ts`): no celular, marca com Entrar e Dúvidas no topo e a tab bar de vidro no
+rodapé (escolha do usuário); no computador, menu lateral. Busca no corpo da página, como no protótipo: Início busca
+político ou projeto, Mapa busca políticos, Votações busca projetos e votações; Congresso e Monitorando não têm busca.
+O Sobre (`/como-funciona`) abre pelo ícone de Dúvidas. Toda outra tela é N2 (crachá, executivo, votação, Comparar,
+Sobre): sem tab bar e com o botão de voltar em círculo de vidro (`BarraVoltar`; volta no histórico se a pessoa veio
+do site; senão, vai para a N1 de origem). Visual: protótipo Liquid Glass, sempre escuro (`docs/PROTOTIPO.md`).
 
 Planejadas (detalhar no PLANO ao chegar): lista completa com filtros em `/votacoes` (E30),
 `/uf/[uf]`, `/cidade/[ibge]` ("quem me representa"), `/eleicoes`, `/governos`,
@@ -100,7 +101,7 @@ Metodologia detalhada (o que conta como voto, licença, secretas, mês da CEAP):
 
 Abaixo: cota do mês (CEAP na Câmara, CEAPS no Senado) vs média da bancada **da mesma UF e da mesma Casa** (cotas variam por estado; nunca comparar com média nacional). A UF é a da bancada na Casa, não a da candidatura de 2026. Abaixo: **Como cobrar**, com os canais oficiais (contato do gabinete, ouvidoria da Casa, Fala.BR, MPF/TCU), sem texto pronto; e **Receber avisos** (fake door).
 
-**Na interface (decisão do usuário de 2026-11-04):** a página do político segue o crachá do protótipo (`docs/PROTOTIPO.md`, E23i): cabeçalho (cargo pelo estado, sigla e nome do partido, em exercício desde · mandato até), salário, participação, participação ao lado da média da Casa, "quem vota mais parecido" e as abas Propostas e Votos. Governismo, cota, mandatos, contatos, "Como cobrar" e "Receber avisos" saíram da página; seguem calculados em `CardDados` e no resumo da página e documentados em `/como-funciona`, para voltarem em outra tela se for decidido.
+**Na interface (protótipo Liquid Glass, 2026-11-20; antes, decisão de 2026-11-04):** a página do político segue o "Político" do protótipo (`docs/PROTOTIPO.md`, E23s): cabeçalho centrado (cargo pelo estado, partido na cor dele, em exercício desde · mandato até, Monitorar e Comparar "Em breve"), participação nas votações ao lado da média da Casa (barras; o protótipo diz "Presença", o site mantém "Participação"), "com quem vota mais parecido", as abas Propostas e Votos, "Áreas de atuação" (temas oficiais das propostas), "Como cobrar" (e-mail, telefone, perfil oficial e os demais canais em `/como-funciona`) e o salário numa nota. Governismo, "Votou com o partido?", cota, mandatos e "Receber avisos" não aparecem; seguem calculados em `CardDados` e no resumo da página e documentados em `/como-funciona`.
 
 ## Fontes de dados e armadilhas conhecidas
 
@@ -138,7 +139,7 @@ fica com a UF errada para "quem representa o estado". Listas por estado usam `ma
 - `orientacaoVoto` ∈ {`Sim`, `Não`, `Obstrução`, `Liberado`, `""`}. Vazio e `Liberado` ficam fora do denominador do governismo. `aprovacao` vem `null` em ~17% das nominais.
 - **Pauta do Plenário:** `/eventos?idOrgao=180&dataInicio&dataFim` lista sessões (inclusive solenes e não deliberativas: filtrar `descricaoTipo` começando por "Sessão Deliberativa"); a deliberativa aparece só poucos dias antes. `/eventos/{id}/pauta` traz os itens com `proposicao_` e, em pedidos (urgência, recurso), `proposicaoRelacionada_`. Temas: `/proposicoes/{id}/temas`.
 - `/proposicoes?idDeputadoAutor` retorna **coautorias**. Filtrar por `/proposicoes/{id}/autores` com `proponente = true`. Em PEC, as ~170 assinaturas de apoio vêm com `proponente = 0` (conferido: os 2 casos a mais da API para uma deputada em 2025 eram apoio).
-- **Arquivos anuais** `dadosabertos.camara.leg.br/arquivos/{nome}/csv/{nome}-{ano}.csv` (`proposicoes`, `proposicoesAutores`; CSV `;`, UTF-8 com BOM, CRLF): o servidor **corta a transferência a cada ~17 s** (43 de 90 MB) e aceita `Range` (206): `lib/http.ts#baixarArquivo` retoma até o tamanho bater. Regenerados todo dia (~04h). O arquivo do ano traz também proposições sem número (`ano` 0: pareceres, relatórios). Em `proposicoesAutores`, `ordemAssinatura = 1` marca exatamente um primeiro autor por proposição; "virou lei" = `ultimoStatus_descricaoSituacao` "Transformado em Norma Jurídica".
+- **Arquivos anuais** `dadosabertos.camara.leg.br/arquivos/{nome}/csv/{nome}-{ano}.csv` (`proposicoes`, `proposicoesAutores`, `proposicoesTemas` (colunas `uriProposicao`, `codTema`, `tema`; o id é o fim da URI); CSV `;`, UTF-8 com BOM, CRLF): o servidor **corta a transferência a cada ~17 s** (43 de 90 MB) e aceita `Range` (206): `lib/http.ts#baixarArquivo` retoma até o tamanho bater. Regenerados todo dia (~04h). O arquivo do ano traz também proposições sem número (`ano` 0: pareceres, relatórios). Em `proposicoesAutores`, `ordemAssinatura = 1` marca exatamente um primeiro autor por proposição; "virou lei" = `ultimoStatus_descricaoSituacao` "Transformado em Norma Jurídica".
 - `tipoVoto` tem 5 valores: `Sim`, `Não`, `Abstenção`, `Obstrução`, `Artigo 17`, e vem **`null`** em votações de pessoa (→ `nao_informado`: conta na participação, não no governismo). Quem não aparece no array = `ausente`. Tratar todos explicitamente.
 - `/votacoes/{id}/votos` responde **404** em ~1% das votações listadas: tratar como "sem votos". Com 6 chamadas em voo apareceram 429 (3 em 6,5k): o retry resolve.
 - Votação simbólica = array de votos vazio. Ignorar. Medido 2023→out/2026: 6.537 votações do plenário, 1.107 nominais.
@@ -182,7 +183,7 @@ eleitos_mun       municipio_ibge, cargo, politico_id, votos, posicao   (top-20 +
 despesas_mes      politico_id, casa, uf (da bancada na Casa), ano, mes, total, por_categoria jsonb
 despesas_media_uf casa, uf, ano, mes, media, parlamentares, total, fechado
 proposicoes       id (= casa:id_externo), id_externo, casa, tipo, numero, ano, ementa, apresentacao,
-                  situacao, virou_norma bool, url_oficial   (só PL/PLP/PEC/PDL/PRC|PRS com autor no site)
+                  situacao, virou_norma bool, url_oficial, temas text[] (oficiais; E23s)   (só PL/PLP/PEC/PDL/PRC|PRS com autor no site)
 proposicoes_autores  proposicao_id, politico_id, ordem (1 = primeiro autor; só proponentes)
 proposicoes_contagem politico_id, casa, ano, tipo, autorias   (os demais tipos: REQ, RIC, emendas...)
 votacoes          id (= casa:id_externo), id_externo, casa, data, proposicao, ementa, objeto,
