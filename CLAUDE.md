@@ -191,6 +191,8 @@ executivos        id (= ano:sq), ano, cargo (presidente|governador), uf, nome, n
                   numero_urna, tse_sq_candidato, foto_url, posse (5/1 e 6/1/2027, EC 111/2021), vice_nome_urna,
                   vice_partido, coligacao, composicao, ocupacao, instrucao, idade_na_posse, votos jsonb,
                   bens_total, bens_n, historico jsonb   (eleitos em 2026, do TSE; data de nascimento não é gravada)
+candidatos_executivo id (= ano:sq), ano, cargo, uf, nome, nome_urna, genero, partido, numero_urna, tse_sq_candidato,
+                  foto_url, situacao (eleito|nao_eleito|null = #NULO)   (todos os candidatos de 2026, para o santinho; E23q)
 pauta             id, casa, data, hora, sessao, ordem, materia, tipo, ementa, relacionada, ementa_relacionada,
                   apreciacao, url_oficial, coletado_em, temas   (Plenário de hoje em diante; o site lê a última coleta)
 ```

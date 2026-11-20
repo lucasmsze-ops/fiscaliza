@@ -34,7 +34,7 @@ async function candidatos(cargo: CargoSantinho, uf: string | null): Promise<(Esc
   if (cargo === "governador" || cargo === "presidente") {
     return (await indiceExecutivos()).filter((e) => e.cargo === cargo && (cargo === "presidente" || !uf || e.uf === uf)).map((e) => ({
       id: e.id, nome: e.nomeUrna, tipo: "executivo", eleito: e.eleito, fotoUrl: e.fotoUrl, partido: e.uf ? `${e.partido}-${e.uf}` : e.partido,
-      situacao: e.eleito ? "Eleito em 2026" : "Não eleito em 2026", href: e.href, busca: e.busca,
+      situacao: e.situacao, href: e.href, busca: e.busca,
     }));
   }
   // Políticos: só quem disputou o cargo em 2026 (quem está "em exercício" sem candidatura não estava na urna).
@@ -78,6 +78,8 @@ function Escolher({ ano, cargo, uf, ja, fechar }: { ano: AnoEleicao; cargo: Carg
     return lista.filter((x) => !ja.has(x.id) && termos.every((w) => x.busca.split(" ").some((p) => p.startsWith(w)))).slice(0, termos.length ? 8 : 6);
   }, [lista, t, ja]);
   const executivo = cargo === "governador" || cargo === "presidente";
+  // Antes da coleta de todos os candidatos (E23q) o índice só tem os eleitos: aí o aviso explica.
+  const soEleitos = executivo && !!lista && lista.every((x) => x.eleito);
   return (
     <div className="grid gap-2 rounded-xl bg-preench p-2.5">
       <div className="flex items-center gap-2">
@@ -97,9 +99,11 @@ function Escolher({ ano, cargo, uf, ja, fechar }: { ano: AnoEleicao; cargo: Carg
           ))}
           {achados.length === 0 && <p className="px-1 text-[13px] text-suave">Ninguém com esse nome{uf && !executivo ? ` em ${NOME_UF[uf]}` : ""}.</p>}
           <p className="px-1 text-xs text-suave">
-            {executivo
+            {soEleitos
               ? "Por enquanto só os eleitos: os candidatos a presidente e governador que não foram eleitos ainda não estão no site."
-              : "O Fiscaliza tem os eleitos e os 20 mais votados de cada cidade; quem teve menos votos ainda não está no site."}
+              : executivo
+                ? "Todos os candidatos a presidente e governador de 2026, do TSE."
+                : "O Fiscaliza tem os eleitos e os 20 mais votados de cada cidade; quem teve menos votos ainda não está no site."}
           </p>
         </>
       )}

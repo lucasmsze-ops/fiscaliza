@@ -1,5 +1,6 @@
 /**
- * Job `executivos` (2026-11-13; crachá em 2026-11-14): presidente e governadores eleitos em 2026, do TSE.
+ * Job `executivos` (2026-11-13; crachá em 2026-11-14; todos os candidatos em 2026-11-19, E23q): presidente e
+ * governadores eleitos em 2026, do TSE, com o crachá completo; e, em `candidatos_executivo`, todos os candidatos.
  * Não há fonte aberta de quem está no cargo hoje (governadores que renunciaram em abril de 2026 para
  * disputar a eleição), então só o eleito, com a data da posse (EC 111/2021: 5/1 e 6/1/2027).
  *
@@ -72,6 +73,22 @@ export async function jobExecutivos(): Promise<{ tabelas: Record<string, LinhaBr
       DS_SITUACAO_CANDIDATURA situacao
     FROM ${ler(csv("historico_candidatura", "historico_candidatura_2026", ["BR"]))} WHERE SQ_CANDIDATO_ATUAL IN (${sqs}) AND ANO_ELEICAO <> '2026'`);
 
+  // Todos os candidatos (E23q): situação final pelo turno mais alto; `#NULO` fica null (desconhecida, nunca inventada).
+  const todos = await q<{ sq: string; uf: string; cargo: string; nomeUrna: string; nome: string; genero: string; partido: string; numero: string; sit: string }>(
+    `SELECT SQ_CANDIDATO sq, any_value(SG_UF) uf, any_value(DS_CARGO) cargo, any_value(NM_URNA_CANDIDATO) "nomeUrna", any_value(NM_CANDIDATO) nome,
+      any_value(DS_GENERO) genero, any_value(SG_PARTIDO) partido, any_value(NR_CANDIDATO) numero, arg_max(DS_SIT_TOT_TURNO, NR_TURNO::INT) sit
+    FROM ${cand} WHERE DS_CARGO IN ('PRESIDENTE', 'GOVERNADOR') GROUP BY SQ_CANDIDATO`);
+  const candidatos: LinhaBruta[] = todos.map((r) => {
+    const cargo = r.cargo === "PRESIDENTE" ? "presidente" : "governador";
+    return {
+      id: `2026:${r.sq}`, ano: 2026, cargo, uf: cargo === "presidente" ? null : r.uf, nome: r.nome, nome_urna: r.nomeUrna,
+      genero: r.genero === "FEMININO" ? "feminino" : r.genero === "MASCULINO" ? "masculino" : null,
+      partido: siglaPartido(r.partido), numero_urna: Number(r.numero), tse_sq_candidato: r.sq,
+      foto_url: fotoUrlTse("ele2026", cargo === "presidente" ? "6257" : "6259", r.uf, r.sq),
+      situacao: r.sit === "ELEITO" ? "eleito" : r.sit === "NÃO ELEITO" ? "nao_eleito" : null,
+    };
+  }).sort((a, b) => String(a.id).localeCompare(String(b.id)));
+
   const linhas: LinhaBruta[] = [];
   for (const r of rows) {
     const cargo = r.cargo === "PRESIDENTE" ? "presidente" : "governador";
@@ -120,9 +137,18 @@ export async function jobExecutivos(): Promise<{ tabelas: Record<string, LinhaBr
     return { tabelas: {}, relatorio: [`eleitos inesperados no arquivo do TSE (presidente: ${pres}, governadores: ${gov.size} UFs em ${linhas.length - pres} linhas): nada gravado`], falhas: 1, atualizadas: [] };
   }
   const semVotos = linhas.filter((l) => !(l.votos as { t1: Turno | null }).t1).length;
+  // Os eleitos de `executivos` têm de estar entre os candidatos como eleitos; senão o arquivo veio torto.
+  const eleitosCand = new Set(candidatos.filter((x) => x.situacao === "eleito").map((x) => x.id));
+  const faltam = linhas.filter((l) => !eleitosCand.has(String(l.id))).length;
+  const semSituacao = candidatos.filter((x) => x.situacao === null).length;
   return {
-    tabelas: { executivos: linhas },
-    relatorio: [`1 presidente e 27 governadores eleitos em 2026 (posse em 5 e 6/1/2027); ${linhas.filter((l) => l.vice_nome_urna).length} com vice, ${linhas.filter((l) => l.bens_total !== null).length} com bens declarados, ${semVotos} sem votos no resultado`],
-    falhas: semVotos ? 1 : 0, atualizadas: ["tse_executivos"],
+    tabelas: faltam ? { executivos: linhas } : { executivos: linhas, candidatos_executivo: candidatos },
+    relatorio: [
+      `1 presidente e 27 governadores eleitos em 2026 (posse em 5 e 6/1/2027); ${linhas.filter((l) => l.vice_nome_urna).length} com vice, ${linhas.filter((l) => l.bens_total !== null).length} com bens declarados, ${semVotos} sem votos no resultado`,
+      faltam
+        ? `candidatos: ${faltam} eleitos não aparecem como eleitos entre os candidatos; candidatos_executivo não gravado`
+        : `candidatos: ${candidatos.filter((x) => x.cargo === "presidente").length} a presidente e ${candidatos.filter((x) => x.cargo === "governador").length} a governador (${semSituacao} sem situação no TSE)`,
+    ],
+    falhas: semVotos || faltam ? 1 : 0, atualizadas: ["tse_executivos"],
   };
 }

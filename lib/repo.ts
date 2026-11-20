@@ -15,7 +15,7 @@ import { deLinha } from "./linhas";
 import { montarPagina, type PaginaDados } from "./pagina";
 import type { VotacaoPagina } from "./votacao";
 import type {
-  Afastamento, Atualizacao, Cargo, Casa, DespesaMediaUf, DespesaMes, EleitoMunicipio, Linha, ListaEleitoral, Mandato, Municipio,
+  Afastamento, Atualizacao, CandidatoExecutivo, Cargo, Casa, DespesaMediaUf, DespesaMes, EleitoMunicipio, Linha, ListaEleitoral, Mandato, Municipio,
   ExecutivoEleito, FidelidadePolitico, ItemPauta, Orientacao, Politico, Proposicao, ProposicaoAutor, ProposicaoContagem, Votacao, Voto,
 } from "./types";
 
@@ -71,6 +71,8 @@ export interface Repo {
   getVotacaoPagina(id: string): Promise<VotacaoPagina | null>;
   /** Presidente e governadores eleitos (tabela `executivos`). */
   listarExecutivos(): Promise<ExecutivoEleito[]>;
+  /** Todos os candidatos a presidente e governador de 2026 (tabela `candidatos_executivo`, E23q). */
+  listarCandidatosExecutivo(): Promise<CandidatoExecutivo[]>;
   /** Pauta do Plenário de `desde` (AAAA-MM-DD) em diante, só a coleta mais recente. */
   listarPauta(desde: string): Promise<ItemPauta[]>;
   /** Autores do site (ids de políticos) de cada matéria, pela chave "casa:TIPO número/ano" (lib/pauta.ts). */
@@ -92,7 +94,7 @@ type Tabelas = {
   politicos: Politico; mandatos: Mandato; afastamentos: Afastamento; listas: ListaEleitoral; municipios: Municipio;
   eleitos_mun: EleitoMunicipio; despesas_mes: DespesaMes; despesas_media_uf: DespesaMediaUf; votacoes: Votacao;
   votos: Voto; orientacoes: Orientacao; proposicoes: Proposicao; proposicoes_autores: ProposicaoAutor;
-  proposicoes_contagem: ProposicaoContagem; atualizacoes: Atualizacao; fidelidade: FidelidadePolitico; executivos: ExecutivoEleito; pauta: ItemPauta;
+  proposicoes_contagem: ProposicaoContagem; atualizacoes: Atualizacao; fidelidade: FidelidadePolitico; executivos: ExecutivoEleito; candidatos_executivo: CandidatoExecutivo; pauta: ItemPauta;
 };
 
 /** Lê data/*.json uma vez por processo (cada tabela só quando pedida). */
@@ -235,6 +237,10 @@ export class JsonRepo implements Repo {
       if (quer.has(k)) r.set(k, (autores.get(p.id) ?? []).map((a) => a.politicoId));
     }
     return r;
+  }
+  async listarCandidatosExecutivo() {
+    // Estado de antes da E23q: sem o arquivo, a busca do santinho fica só com os eleitos.
+    try { return await this.tabela("candidatos_executivo"); } catch { return []; }
   }
   async listarPauta(desde: string) {
     let ls: ItemPauta[];

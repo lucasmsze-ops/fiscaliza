@@ -10,6 +10,7 @@ export const TABELAS: readonly { nome: string; pk: readonly string[] }[] = [
   { nome: "afastamentos", pk: ["politico_id", "inicio", "motivo"] },
   { nome: "municipios", pk: ["ibge"] },
   { nome: "executivos", pk: ["id"] },
+  { nome: "candidatos_executivo", pk: ["id"] },
   { nome: "eleitos_mun", pk: ["municipio_ibge", "cargo", "politico_id"] },
   { nome: "despesas_mes", pk: ["politico_id", "casa", "ano", "mes"] },
   { nome: "despesas_media_uf", pk: ["casa", "uf", "ano", "mes"] },

@@ -114,6 +114,27 @@ export interface ExecutivoEleito {
   historico?: { ano: number; cargo: string; lugar: string; partido: string; resultado: string | null; situacao: string | null }[] | null;
 }
 
+/**
+ * Tabela `candidatos_executivo` (E23q, 2026-11-19): todos os candidatos a presidente e governador de 2026 (TSE),
+ * para o santinho do "Quem votei" achar também quem não foi eleito. Linha leve; o crachá completo dos eleitos
+ * continua em `executivos`.
+ */
+export interface CandidatoExecutivo {
+  id: string;
+  ano: number;
+  cargo: "presidente" | "governador";
+  uf: string | null;
+  nome: string;
+  nomeUrna: string;
+  genero: "feminino" | "masculino" | null;
+  partido: string;
+  numeroUrna: number | null;
+  tseSqCandidato: string;
+  fotoUrl: string | null;
+  /** Situação final (turno mais alto): eleito ou não eleito; null quando o TSE publica `#NULO`. */
+  situacao: "eleito" | "nao_eleito" | null;
+}
+
 /** Tabela `mandatos`: períodos em exercício do cargo (posse → saída), da Câmara ou do Senado. */
 export interface Mandato {
   politicoId: string;

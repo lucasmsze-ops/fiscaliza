@@ -17,7 +17,7 @@ import { cliente, selecionar, type Cliente } from "./supabase";
 import { normalizar } from "./texto";
 import type { VotacaoPagina } from "./votacao";
 import type {
-  Afastamento, Atualizacao, Cargo, ExecutivoEleito, ItemPauta, Casa, DespesaMediaUf, DespesaMes, Linha, ListaEleitoral, Mandato, Municipio, Orientacao, Politico,
+  Afastamento, Atualizacao, CandidatoExecutivo, Cargo, ExecutivoEleito, ItemPauta, Casa, DespesaMediaUf, DespesaMes, Linha, ListaEleitoral, Mandato, Municipio, Orientacao, Politico,
   Proposicao, ProposicaoContagem, Votacao, Voto,
 } from "./types";
 
@@ -95,6 +95,9 @@ export class SupabaseRepo implements Repo {
       for (const l of ls) r.set(chaveMateria(l), l.autores.map((a) => a.politico_id));
     }
     return r;
+  }
+  listarCandidatosExecutivo() {
+    return this.lembrar("candidatos_executivo", () => this.linhas<CandidatoExecutivo>("candidatos_executivo", "select=*&order=id"));
   }
   async listarPauta(desde: string) {
     return ultimaColeta(await this.linhas<ItemPauta>("pauta", `select=*&data=gte.${v(desde)}&order=data,id`));

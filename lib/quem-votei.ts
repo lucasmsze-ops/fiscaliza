@@ -44,9 +44,9 @@ export interface Santinho {
 
 export const eleitoNoStatus = (st: Status) => st === "eleito" || st === "reeleito";
 
-/** Item do índice de executivos: presidente e governadores de 2026 (hoje, só os eleitos). */
+/** Item do índice de executivos: todos os candidatos a presidente e governador de 2026 (E23q). */
 export interface ItemExecutivo {
-  /** Id do Monitorando e da escolha: "executivo-presidente" ou "executivo-sp". */
+  /** Eleito: "executivo-presidente" ou "executivo-sp" (o id do Monitorando); os demais: "candidato-<sq do TSE>". */
   id: string;
   cargo: "presidente" | "governador";
   uf: string | null;
@@ -54,6 +54,8 @@ export interface ItemExecutivo {
   partido: string;
   fotoUrl: string | null;
   eleito: boolean;
+  /** "Eleita em 2026", "Não eleito em 2026" ou "Situação não informada pelo TSE" (`#NULO`). */
+  situacao: string;
   /** Crachá do executivo, quando existe (só para os eleitos). */
   href: string | null;
   busca: string;

@@ -15,6 +15,17 @@ Modelo:
 
 ---
 
+## 2026-11-19 · E23q · todos os candidatos a presidente e governador
+**Feito:** o job `executivos` passou a gravar, além dos 28 eleitos com o crachá, todos os candidatos de 2026 em
+`candidatos_executivo` (migração 0011): 14 a presidente e 201 a governador, situação final pelo turno mais alto.
+`/dados/executivos` junta os dois (eleitos com o crachá e o id do Monitorando; os demais com id `candidato-<sq>`,
+sem crachá) e, enquanto a tabela nova estiver vazia, cai para só os eleitos, com o aviso no santinho.
+**Decidido:** tabela própria em vez da coluna `eleito` em `executivos`, para a Visão geral e o crachá não mudarem.
+**Lacunas:** 11 candidatos com situação `#NULO` no TSE (entre eles Pablo Marçal, a presidente) aparecem como
+"situação não informada pelo TSE".
+**Conferido (sem publicar):** 215 candidatos; os 28 eleitos casam com o crachá.
+**Próximo passo:** o usuário roda a 0011; push; cron manual; conferir a busca do santinho em produção.
+
 ## 2026-11-19 · E23p · Quem votei
 **Feito:** a tela Monitorando ganhou duas abas (controle segmentado, `components/Segmentado.tsx`): "Quem votei"
 e "Monitorando". Em "Quem votei", filtro de eleição (só 2026) e de estado, e o santinho na ordem da urna, só no

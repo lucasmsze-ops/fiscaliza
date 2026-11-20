@@ -39,6 +39,7 @@ const ESQUEMA: Record<string, { pk: string[]; obrig: string[]; opc: string[] }> 
   atualizacoes: { pk: ["fonte"], obrig: ["fonte", "coletado_em"], opc: [] },
   pauta: { pk: ["id"], obrig: ["id", "casa", "data", "sessao", "ordem", "materia", "tipo", "url_oficial", "coletado_em"], opc: ["hora", "ementa", "relacionada", "ementa_relacionada", "apreciacao", "temas"] },
   executivos: { pk: ["id"], obrig: ["id", "ano", "cargo", "nome", "nome_urna", "partido", "tse_sq_candidato", "posse"], opc: ["uf", "genero", "numero_urna", "foto_url", "vice_nome_urna", "vice_partido", "coligacao", "composicao", "ocupacao", "instrucao", "idade_na_posse", "votos", "bens_total", "bens_n", "historico"] },
+  candidatos_executivo: { pk: ["id"], obrig: ["id", "ano", "cargo", "nome", "nome_urna", "partido", "tse_sq_candidato"], opc: ["uf", "genero", "numero_urna", "foto_url", "situacao"] },
 };
 const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   politicos: { genero: ["feminino", "masculino", null], cargo: ["deputado_federal", "senador"], status: ["eleito", "reeleito", "nao_eleito", "suplente", "em_exercicio"] },
@@ -51,6 +52,7 @@ const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   proposicoes_contagem: { casa: ["camara", "senado"] },
   pauta: { casa: ["camara", "senado"] },
   executivos: { cargo: ["presidente", "governador"], genero: ["feminino", "masculino", null] },
+  candidatos_executivo: { cargo: ["presidente", "governador"], genero: ["feminino", "masculino", null], situacao: ["eleito", "nao_eleito", null] },
 };
 
 const dados: Record<string, L[]> = {};

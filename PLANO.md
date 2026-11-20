@@ -548,9 +548,13 @@ patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a s
 
 ### E23q · Todos os candidatos a presidente e governador (pedido de 2026-11-19)
 Hoje a tabela `executivos` só tem os 28 eleitos: quem votou em quem perdeu não acha o nome no santinho.
-- [ ] Job `executivos` grava todos os candidatos de 2026 (presidente e governador), com situação e votos.
-- [ ] Migração com a coluna `eleito`; a Visão geral e o crachá continuam só com os eleitos.
-- [ ] `/dados/executivos` com todos; o aviso "só os eleitos" sai do santinho.
+- [x] Job `executivos` grava também todos os candidatos de 2026 (14 a presidente, 201 a governador) em
+      `candidatos_executivo`, com a situação final (11 com `#NULO` ficam sem situação).
+- [x] Migração 0011 (tabela própria, leve; em vez da coluna `eleito`: `executivos` continua só com os eleitos e
+      o crachá completo, e a Visão geral e o crachá não mudam).
+- [x] `/dados/executivos` com todos (eleitos ligados ao crachá); o aviso "só os eleitos" só aparece enquanto a
+      tabela estiver vazia.
+- [ ] No ar: migração rodada pelo usuário, push e cron manual.
 - Pronto quando: qualquer candidato a presidente e governador de 2026 aparece na busca do santinho.
 
 ### E23r · Notícias das agências oficiais (pedido de 2026-11-19)
