@@ -15,6 +15,25 @@ Modelo:
 
 ---
 
+## 2026-11-19 · E23p · Quem votei
+**Feito:** a tela Monitorando ganhou duas abas (controle segmentado, `components/Segmentado.tsx`): "Quem votei"
+e "Monitorando". Em "Quem votei", filtro de eleição (só 2026) e de estado, e o santinho na ordem da urna, só no
+navegador (`lib/quem-votei.ts`, `lib/quem-votei-estado.ts`, `components/QuemVotei.tsx`). A busca de cada cargo usa
+`/dados/politicos` (ganhou a chave `st` da situação) e o novo `/dados/executivos`. Quem foi eleito entra no
+Monitorando sozinho (`garantir` em `lib/monitorando.ts`); não eleito fica com o "Monitorar" desligado; deputado
+estadual mostra que o cargo ainda não é acompanhado. Presidente e governador entram no Monitorando com ids
+`executivo-*` e cartão próprio (posse, link para o crachá). Embaixo do santinho, "O que aconteceu": votos no
+Plenário de quem a pessoa votou e projetos de autoria deles na pauta (`/dados/pauta`, `lib/pauta.ts`,
+`repo.autoresDasMaterias`; na última pauta, 6 de 15 matérias tinham autor no site).
+**Decidido (perguntas ao usuário):** tirar alguém do santinho não tira do Monitorando; notícias só da Agência
+Câmara e da Agência Senado (RSS, cron), E23r; coletar todos os candidatos a presidente e governador, E23q.
+**Conferido:** os RSS das duas agências (`camara.leg.br/noticias/rss/ultimas-noticias`,
+`senado.leg.br/noticias/feed/todasnoticias/RSS`) trazem o texto inteiro, com "Nome (PARTIDO-UF)" (41 e 23 menções
+nos feeds de hoje), mas só as 20 e 15 últimas matérias: a coleta precisa rodar várias vezes por dia.
+**Achado:** o `next build` passou a parar na 1ª vez com um aviso de segurança do Next 16.4.3 (7 avisos moderados,
+corrigidos na 16.4.6); na 2ª vez segue. O build da Vercel pode parar igual.
+**Próximo passo:** decidir a atualização do Next; push da E23p; depois E23q e E23r (migrações rodadas pelo usuário).
+
 ## 2026-11-14 · E23o · design system do iOS
 **Feito:** visual trocado pelo do iOS, adaptado para site. `app/globals.css` com as cores do sistema da
 Apple no claro e no escuro, fonte do sistema (sai a Roboto: nenhum download de fonte) e a escala do Dynamic

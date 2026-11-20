@@ -54,6 +54,12 @@ export function useMonitorando(): EstadoMonitorando {
 
 export const monitora = (e: EstadoMonitorando, id: string) => e.pessoas.some((p) => p.id === id);
 
+/** Põe na lista se ainda não estiver (o "Quem votei" faz isso com quem foi eleito); nunca tira. */
+export function garantir(id: string, nome: string) {
+  if (monitora(ler(), id)) return;
+  gravar((e) => monitora(e, id) ? e : { ...e, pessoas: [...e.pessoas, { id, nome, desde: new Date().toISOString().slice(0, 10), base: false }] });
+}
+
 export function alternar(id: string, nome: string) {
   gravar((e) => monitora(e, id)
     ? { ...e, pessoas: e.pessoas.filter((p) => p.id !== id) }

@@ -4,7 +4,7 @@ Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
 **Etapa atual: E23n** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
-terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l e E23o foram feitas adiantadas a pedido do usuário.
+terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o e E23p foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -531,6 +531,37 @@ patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a s
 - [x] Sem o caminho "Páginas / ..." e sem reticências nas buscas; Sobre fora do menu, aberto pelo ícone de
       Dúvidas no cabeçalho (vira N2).
 - Pronto quando: todas as telas no visual novo, claro e escuro, celular e computador, no ar.
+
+### E23p · Quem votei (pedido de 2026-11-19)
+- [x] Tela Monitorando com duas abas (controle segmentado, `#monitorando` no endereço): "Quem votei" e
+      "Monitorando" (a lista de hoje).
+- [x] "Quem votei": filtro de eleição (só 2026 por enquanto) e de estado; santinho na ordem da urna
+      (deputado federal, estadual, 2 senadores, governador, presidente), só no navegador
+      (`lib/quem-votei.ts`, `lib/quem-votei-estado.ts`). Eleito entra no Monitorando automaticamente; não
+      eleito fica com o "Monitorar" desligado; tirar do santinho não tira do Monitorando (decisão do usuário).
+- [x] Deputado estadual/distrital: aviso de que o cargo ainda não é acompanhado.
+- [x] Presidente e governador no Monitorando (ids `executivo-*`, `lib/acompanhar.ts#resumoExecutivo`).
+- [x] "O que aconteceu" embaixo do santinho: votos no Plenário de quem a pessoa votou e projetos de autoria
+      deles na pauta (`/dados/pauta`, autores pela tabela `proposicoes`; `lib/pauta.ts`).
+- [ ] Notícias: na E23r.
+- Pronto quando: santinho completo de 2026 funcionando no celular e no computador, no ar.
+
+### E23q · Todos os candidatos a presidente e governador (pedido de 2026-11-19)
+Hoje a tabela `executivos` só tem os 28 eleitos: quem votou em quem perdeu não acha o nome no santinho.
+- [ ] Job `executivos` grava todos os candidatos de 2026 (presidente e governador), com situação e votos.
+- [ ] Migração com a coluna `eleito`; a Visão geral e o crachá continuam só com os eleitos.
+- [ ] `/dados/executivos` com todos; o aviso "só os eleitos" sai do santinho.
+- Pronto quando: qualquer candidato a presidente e governador de 2026 aparece na busca do santinho.
+
+### E23r · Notícias das agências oficiais (pedido de 2026-11-19)
+Decisão do usuário: só Agência Câmara e Agência Senado, pelo RSS público (texto inteiro no feed), coletado
+pelo cron, nunca na visita; sem jornais privados nem resumo por IA. O político é ligado à notícia pela
+menção "Nome (PARTIDO-UF)" que as duas agências usam.
+- [ ] Job `noticias` (RSS → matérias com os políticos citados), rodando várias vezes por dia: cada feed só
+      traz as 15–20 últimas matérias.
+- [ ] Migração da tabela `noticias` (título, link, data, fonte, políticos citados); guardar 90 dias.
+- [ ] Seção "Notícias" no "O que aconteceu" do "Quem votei": título, agência, data e link.
+- Pronto quando: notícias das duas agências citando quem a pessoa votou aparecem no "Quem votei".
 
 ### E23g · Propostas
 `/propostas`: lista geral com filtros (Casa, tipo, situação, busca na ementa) e link oficial. A

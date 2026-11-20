@@ -5,7 +5,8 @@
  * navegador dela (lib/monitorando.ts).
  */
 import type { PaginaDados, VotoListado } from "./pagina";
-import type { TipoVoto } from "./types";
+import { hrefExecutivo, idExecutivo } from "./quem-votei";
+import type { ExecutivoEleito, TipoVoto } from "./types";
 
 /** Mínimo de votações com a orientação identificada para mostrar "votou com o partido" (o mesmo do crachá). */
 export const MINIMO_FIDELIDADE = 20;
@@ -36,6 +37,22 @@ export interface ResumoAcompanhar {
   participacao: { percentual: number | null; de: number; total: number; mediaCasa: number | null } | null;
   comPartido: { percentual: number; total: number } | null;
   eventos: EventoAcompanhar[];
+  /** Crachá; sem o campo, o do político (/p/[id]). Presidente e governador vão para /executivos/[id]. */
+  href?: string;
+  /** Executivos: no lugar dos números de votação, que eles não têm ("Posse em 5/1/2027"). */
+  nota?: string;
+}
+
+/** Presidente ou governador eleito no Monitorando: sem votos nem propostas no Congresso, só o crachá e a posse. */
+export function resumoExecutivo(e: ExecutivoEleito): ResumoAcompanhar {
+  const fem = e.genero === "feminino";
+  const cargo = e.cargo === "presidente" ? `Presidente eleit${fem ? "a" : "o"}` : `Governador${fem ? "a" : ""} eleit${fem ? "a" : "o"}`;
+  const [a, m, d] = e.posse.split("-");
+  return {
+    id: idExecutivo(e), nomeUrna: e.nomeUrna, cargo, partidoUf: e.uf ? `${e.partido}-${e.uf}` : e.partido, fotoUrl: e.fotoUrl,
+    participacao: null, comPartido: null, eventos: [], href: hrefExecutivo(e),
+    nota: `Posse em ${Number(d)}/${Number(m)}/${a}. Sem votações no Congresso: o crachá mostra o que o TSE publica e o plano de governo.`,
+  };
 }
 
 const sem = (s: string) => s.replace(/\s*Sim:\s*\d.*$/s, "");

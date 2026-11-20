@@ -16,7 +16,7 @@ continua sendo o recorte de SP da sonda (testes e modo JSON); o estado do cron e
 
 1. **Custo zero.** Vercel Hobby, Supabase free, GitHub Actions. Nenhuma assinatura, nenhum serviço pago. Se uma solução exige plano pago, ela está errada. Cada fase de expansão mede o volume contra os limites free antes de coletar.
 2. **Nenhuma requisição de usuário chama LLM ou API externa.** Toda página lê do Supabase (ou de JSON estático na fase de protótipo). APIs oficiais são tocadas apenas pelo cron.
-3. **Sem conta, sem e-mail, sem dado pessoal.** Quem a pessoa monitora fica só no navegador (localStorage), sem Entrar (decisão de 2026-11-04; a colinha saiu da interface). Não existe tabela de usuários nem login. Analytics só cookieless. Avisos são só *fake door* (ver abaixo): nenhum campo de contato.
+3. **Sem conta, sem e-mail, sem dado pessoal.** Quem a pessoa monitora e o santinho do "Quem votei" (a colinha voltou como aba do Monitorando em 2026-11-19) ficam só no navegador (localStorage), sem Entrar (decisão de 2026-11-04). Não existe tabela de usuários nem login. Analytics só cookieless. Avisos são só *fake door* (ver abaixo): nenhum campo de contato.
 4. **Dado oficial, zero adjetivo.** O site mostra número e fonte; nunca qualifica um político nem um partido (sem nota, ranking, "melhores e piores" ou régua ideológica). Toda métrica tem link para a metodologia em `/como-funciona` e para a página oficial de origem.
 5. **Nenhum dado inventado, nem em protótipo.** Se o campo não veio da fonte, não entra na interface. Placeholders são proibidos. Dado não publicado aparece como "—" com o porquê, nunca zero.
 6. **Completo, mas legível.** Cada página abre com um resumo de poucos números com fonte; o detalhe vem abaixo, em seções que a pessoa abre. Antes de adicionar algo, perguntar: a pessoa entende em 10 segundos o que é?
@@ -68,7 +68,7 @@ Hoje (protótipo, SP):
 /c/[ids]            links antigos da colinha: redireciona para o crachá (a colinha saiu em 2026-11-04)
 /p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
 /executivos/[id]    crachá do presidente (presidente) ou governador (UF minúscula) eleito em 2026, só com dado do TSE, e o checklist do plano onde há lista aprovada (data/promessas/; status só por ato oficial com link) (E23n)
-/monitorando        quem a pessoa monitora neste navegador e o que apareceu desde a última visita (E23e)
+/monitorando        abas "Quem votei" (santinho de 2026 na ordem da urna, votos e projetos pautados de quem a pessoa votou; E23p) e "Monitorando" (quem a pessoa monitora neste navegador e o que apareceu desde a última visita; E23e)
 /comparar           de 2 a 5 políticos lado a lado, sem nota nem ranking (E23f; `?ids=a,b`)
 /me-representa      redireciona para a Visão geral (a página saiu em 2026-11-13; `?uf=` e `?cidade=` seguem)
 /votacoes/[id]      uma votação do Plenário (E23k): placar, regra, ementa, caminho, como votou cada partido (id = casa-idExterno)
@@ -88,7 +88,7 @@ Planejadas (detalhar no PLANO ao chegar): lista completa com filtros em `/votaco
 
 A colinha tinha `opengraph-image.tsx` (preview com foto, cargo, status e números; saiu com a colinha na E23c); o card de compartilhamento do crachá entra na E33, com Casa e período sempre explícitos, porque um senador eleito pode ter números da Câmara. `metadataBase` vem de `VERCEL_PROJECT_PRODUCTION_URL` (ou `NEXT_PUBLIC_SITE_URL`). A fonte padrão do `next/og` só tem peso regular; buscar fonte externa na hora não é permitido.
 
-Apoio (não são páginas): `/dados/municipios` (as 5.571 cidades, baixada quando a pessoa toca na busca), `/dados/politicos` (índice de busca por nome, mais votados primeiro, com nome de urna, nome civil e número de urna; ~190 KB comprimido), `/dados/busca-votacoes` (índice da busca de Votações: pauta e votações nominais desde 2023, com matéria, tipo, ementa e temas; ~120 KB comprimido) servidos pela CDN; `/dados/acompanhar/[id]` e `/dados/comparar/[id]` (resumo do político para as telas Monitorando e Comparar, ISR) (`/dados/cidade/[ibge]`, o top-20 da cidade, saiu com a colinha). No build, só as páginas de quem tem mandato (659); as demais, na primeira visita. `/amostra` é a vitrine dos 20 da sonda (noindex). Links antigos da colinha (`/c/a+b`, ids separados por `+`) redirecionam para o crachá do primeiro.
+Apoio (não são páginas): `/dados/municipios` (as 5.571 cidades, baixada quando a pessoa toca na busca), `/dados/politicos` (índice de busca por nome, mais votados primeiro, com nome de urna, nome civil e número de urna; ~190 KB comprimido), `/dados/busca-votacoes` (índice da busca de Votações: pauta e votações nominais desde 2023, com matéria, tipo, ementa e temas; ~120 KB comprimido), `/dados/executivos` (presidente e governadores de 2026 para o santinho) e `/dados/pauta` (pauta do Plenário com os autores do site de cada matéria) servidos pela CDN; `/dados/acompanhar/[id]` e `/dados/comparar/[id]` (resumo do político para as telas Monitorando e Comparar, ISR) (`/dados/cidade/[ibge]`, o top-20 da cidade, saiu com a colinha). No build, só as páginas de quem tem mandato (659); as demais, na primeira visita. `/amostra` é a vitrine dos 20 da sonda (noindex). Links antigos da colinha (`/c/a+b`, ids separados por `+`) redirecionam para o crachá do primeiro.
 
 ## O card do político (objeto central)
 

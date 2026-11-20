@@ -10,6 +10,7 @@
 import type { CardDados } from "./card";
 import { ordemNaCidade } from "./cidade";
 import { deLinha } from "./linhas";
+import { chaveMateria, type MateriaRef } from "./pauta";
 import type { PaginaDados } from "./pagina";
 import { ultimaColeta, type EleitoNaCidade, type Repo } from "./repo";
 import { cliente, selecionar, type Cliente } from "./supabase";
@@ -82,6 +83,18 @@ export class SupabaseRepo implements Repo {
     const ls = await selecionar<Linha<Proposicao> & { autores: { politico_id: string; ordem: number }[] }>(this.cli, "proposicoes",
       `select=*,autores:proposicoes_autores(politico_id,ordem)&virou_norma=is.true&order=apresentacao.desc,id.desc&limit=${limite}`);
     return ls.map(({ autores, ...p }) => ({ proposicao: deLinha<Proposicao>(p as Linha<Proposicao>), autores: autores.map((a) => ({ politicoId: a.politico_id, ordem: a.ordem })) }));
+  }
+  async autoresDasMaterias(materias: MateriaRef[]) {
+    const r = new Map<string, string[]>();
+    for (const casa of ["camara", "senado"] as const) {
+      const ms = materias.filter((m) => m.casa === casa);
+      if (!ms.length) continue;
+      const ou = ms.map((m) => `and(tipo.eq.${v(m.tipo)},numero.eq.${m.numero},ano.eq.${m.ano})`).join(",");
+      const ls = await selecionar<{ casa: Casa; tipo: string; numero: number; ano: number; autores: { politico_id: string }[] }>(this.cli, "proposicoes",
+        `select=casa,tipo,numero,ano,autores:proposicoes_autores(politico_id)&casa=eq.${casa}&or=(${ou})&order=id`);
+      for (const l of ls) r.set(chaveMateria(l), l.autores.map((a) => a.politico_id));
+    }
+    return r;
   }
   async listarPauta(desde: string) {
     return ultimaColeta(await this.linhas<ItemPauta>("pauta", `select=*&data=gte.${v(desde)}&order=data,id`));

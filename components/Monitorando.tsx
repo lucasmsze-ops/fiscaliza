@@ -8,6 +8,8 @@ import { alternar, limpar, marcarVistos, podarVistos, useMonitorando } from "@/l
 import { corPartido } from "@/lib/partidos";
 import { normalizar } from "@/lib/texto";
 import type { TipoVoto } from "@/lib/types";
+import { QuemVotei } from "./QuemVotei";
+import { Segmentado } from "./Segmentado";
 import { SelectChip } from "./SelectChip";
 import { BOTAO, CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO, CHIP, CHIP_ON } from "@/lib/estilo";
 
@@ -22,6 +24,8 @@ const VOTO: Record<TipoVoto, string> = {
 const ddmm = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
 const pct = (v: number) => `${v.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%`;
 const plural = (n: number, um: string, varios: string) => `${n} ${n === 1 ? um : varios}`;
+/** Crachá de quem está na lista: executivos ("executivo-sp") têm página própria. */
+const hrefDe = (id: string) => id.startsWith("executivo-") ? `/executivos/${id.slice("executivo-".length)}` : `/p/${id}`;
 
 type Carga = Record<string, ResumoAcompanhar | "erro">;
 
@@ -31,6 +35,28 @@ type Carga = Record<string, ResumoAcompanhar | "erro">;
  * Entrar, conta, e-mail, alertas ou resumo por e-mail (CLAUDE.md, princípio 3).
  */
 export function Monitorando() {
+  // Aba no endereço (#monitorando), para o link e o "voltar" do navegador abrirem a mesma aba.
+  const [aba, setAba] = useState<"quem-votei" | "monitorando">("quem-votei");
+  useEffect(() => {
+    const ler = () => setAba(window.location.hash === "#monitorando" ? "monitorando" : "quem-votei");
+    ler(); window.addEventListener("hashchange", ler);
+    return () => window.removeEventListener("hashchange", ler);
+  }, []);
+  const trocar = (v: "quem-votei" | "monitorando") => { setAba(v); history.replaceState(null, "", v === "monitorando" ? "#monitorando" : window.location.pathname); };
+  return (
+    <main className="grid gap-5 pb-8">
+      <div className="grid gap-3">
+        <h1 className={TITULO_PAGINA}>Monitorando</h1>
+        <Segmentado rotulo="Abas" controla="mo-painel" valor={aba} onChange={trocar}
+          itens={[{ valor: "quem-votei", texto: "Quem votei" }, { valor: "monitorando", texto: "Monitorando" }]} />
+      </div>
+      <div id={`mo-painel-${aba}`} role="tabpanel">{aba === "quem-votei" ? <QuemVotei /> : <AbaMonitorando />}</div>
+    </main>
+  );
+}
+
+/** Aba "Monitorando": quem a pessoa monitora e o que apareceu desde a última visita. */
+function AbaMonitorando() {
   const e = useMonitorando();
   const [carga, setCarga] = useState<Carga>({});
   const [tipo, setTipo] = useState<"todos" | "voto" | "proposta">("todos");
@@ -73,14 +99,7 @@ export function Monitorando() {
   const carregando = e.pessoas.some((p) => !carga[p.id]);
 
   return (
-    <main className="grid gap-6 pb-8">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <p className="text-[13px] text-suave">Neste aparelho</p>
-          <h1 className={`mt-1 ${TITULO_PAGINA}`}>Monitorando</h1>
-        </div>
-        {e.pessoas.length > 0 && <button type="button" onClick={() => { if (window.confirm("Parar de monitorar todo mundo neste aparelho?")) limpar(); }} className={chip}>Limpar a lista</button>}
-      </div>
+    <div className="grid gap-6">
       <p className="rounded-xl bg-preench p-3.5 text-sm leading-relaxed text-suave">
         A lista fica só neste navegador: sem conta, sem e-mail e sem nada guardado no nosso servidor. Se você limpar os dados do
         navegador ou usar uma aba anônima, ela some. O Fiscaliza não manda avisos.
@@ -115,6 +134,7 @@ export function Monitorando() {
       <section className="grid gap-3" aria-labelledby="mo-quem">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 id="mo-quem" className={TITULO_SECAO}>Quem você monitora ({e.pessoas.length})</h2>
+          {e.pessoas.length > 0 && <button type="button" onClick={() => { if (window.confirm("Parar de monitorar todo mundo neste aparelho?")) limpar(); }} className={`${chip} sm:order-last`}>Limpar a lista</button>}
           <Adicionar ja={new Set(e.pessoas.map((p) => p.id))} />
         </div>
         {e.pessoas.length === 0 && (
@@ -127,7 +147,7 @@ export function Monitorando() {
             return (
               <article key={p.id} className={`${card} grid content-start gap-3`}>
                 {r === "erro" ? (
-                  <p className="text-sm text-suave">Não deu para carregar {p.nome} agora. <Link href={`/p/${p.id}`} className="underline underline-offset-2">Abrir o crachá ›</Link></p>
+                  <p className="text-sm text-suave">Não deu para carregar {p.nome} agora. <Link href={hrefDe(p.id)} className="underline underline-offset-2">Abrir o crachá ›</Link></p>
                 ) : !r ? (
                   <p className="text-sm text-suave">Carregando {p.nome}…</p>
                 ) : (
@@ -137,14 +157,15 @@ export function Monitorando() {
                         // <img> de propósito: a foto vem direto da URL oficial, sem passar pela Vercel (CLAUDE.md).
                         ? <img src={r.fotoUrl} alt="" width={48} height={48} loading="lazy" className="size-12 shrink-0 rounded-full bg-preench object-cover object-top" />
                         : <span aria-hidden="true" className="size-12 shrink-0 rounded-full bg-preench" />}
-                      <Link href={`/p/${r.id}`} className="grid min-w-0 flex-1 text-texto no-underline">
+                      <Link href={r.href ?? `/p/${r.id}`} className="grid min-w-0 flex-1 text-texto no-underline">
                         <strong className="truncate text-base">{r.nomeUrna}</strong>
                         <span className="inline-flex items-center gap-1 text-xs text-suave">
-                          {r.cargo} · <span aria-hidden="true" className="size-2 rounded-full" style={{ background: corPartido(r.partidoUf.slice(0, -3)) }} />{r.partidoUf}
+                          {r.cargo} · <span aria-hidden="true" className="size-2 rounded-full" style={{ background: corPartido(r.partidoUf.replace(/-[A-Z]{2}$/, "")) }} />{r.partidoUf}
                         </span>
                       </Link>
                       {n > 0 && <span className="shrink-0 rounded-full bg-destaque px-2.5 py-1 text-xs font-semibold whitespace-nowrap text-destaque-texto">{plural(n, "novidade", "novidades")}</span>}
                     </div>
+                    {r.nota ? <p className="border-t border-borda pt-2.5 text-[13px] text-suave">{r.nota}</p> : (
                     <dl className="grid text-[13px]">
                       <div className="flex justify-between gap-2.5 border-t border-borda py-2">
                         <dt className="text-suave">Participou das votações</dt>
@@ -156,9 +177,9 @@ export function Monitorando() {
                         <dt className="text-suave">Votou com o partido</dt>
                         <dd className="text-right">{r.comPartido ? <><strong>{pct(r.comPartido.percentual)}</strong><span className="text-suave"> · em {r.comPartido.total} votações</span></> : <span className="text-suave">— poucas votações para um percentual</span>}</dd>
                       </div>
-                    </dl>
+                    </dl>)}
                     <div className="flex flex-wrap justify-between gap-2.5 border-t border-borda pt-2.5">
-                      <Link href={`/p/${r.id}`} className="text-sm font-semibold">Abrir crachá ›</Link>
+                      <Link href={r.href ?? `/p/${r.id}`} className="text-sm font-semibold no-underline">Abrir crachá ›</Link>
                       <button type="button" onClick={() => alternar(p.id, p.nome)} className="text-[13px] text-suave hover:text-texto">Parar de monitorar</button>
                     </div>
                   </>
@@ -204,7 +225,7 @@ export function Monitorando() {
           {feed.length > lim && <button type="button" onClick={() => setLim(lim + 20)} className={`${BOTAO} justify-self-center`}>Ver mais ({feed.length - lim})</button>}
         </section>
       )}
-    </main>
+    </div>
   );
 }
 

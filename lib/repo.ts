@@ -6,6 +6,7 @@
  *
  * Só roda no servidor. Nenhuma requisição de usuário chama API externa (o Supabase é o banco do site).
  */
+import { chaveMateria, type MateriaRef } from "./pauta";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { montarCard, type CardDados } from "./card";
@@ -72,6 +73,8 @@ export interface Repo {
   listarExecutivos(): Promise<ExecutivoEleito[]>;
   /** Pauta do Plenário de `desde` (AAAA-MM-DD) em diante, só a coleta mais recente. */
   listarPauta(desde: string): Promise<ItemPauta[]>;
+  /** Autores do site (ids de políticos) de cada matéria, pela chave "casa:TIPO número/ano" (lib/pauta.ts). */
+  autoresDasMaterias(materias: MateriaRef[]): Promise<Map<string, string[]>>;
 }
 
 export { normalizar } from "./texto";
@@ -222,6 +225,16 @@ export class JsonRepo implements Repo {
   async listarExecutivos() {
     // Pasta sem o arquivo (estado antigo do cron): nenhum executivo, a Visão geral só não os mostra.
     try { return await this.tabela("executivos"); } catch { return []; }
+  }
+  async autoresDasMaterias(materias: MateriaRef[]) {
+    const [ps, autores] = await Promise.all([this.tabela("proposicoes"), this.por("proposicoes_autores", "proposicaoId")]);
+    const quer = new Set(materias.map(chaveMateria));
+    const r = new Map<string, string[]>();
+    for (const p of ps) {
+      const k = chaveMateria(p);
+      if (quer.has(k)) r.set(k, (autores.get(p.id) ?? []).map((a) => a.politicoId));
+    }
+    return r;
   }
   async listarPauta(desde: string) {
     let ls: ItemPauta[];

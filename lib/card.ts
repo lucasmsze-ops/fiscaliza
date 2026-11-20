@@ -60,8 +60,10 @@ export function resumoCard(p: Politico): CardResumo {
 export interface ItemBusca extends CardResumo {
   /** Nome de urna + nome civil + número de urna, normalizados (sem acento, minúsculas). */
   busca: string;
+  /** Situação na eleição de 2026 (a chave, não o rótulo): "Quem votei" usa para liberar o "Monitorar". */
+  st: Politico["status"];
 }
-export const itemBusca = (p: Politico): ItemBusca => ({ ...resumoCard(p), busca: normalizar(`${p.nomeUrna} ${p.nome} ${p.numeroUrna ?? ""}`) });
+export const itemBusca = (p: Politico): ItemBusca => ({ ...resumoCard(p), busca: normalizar(`${p.nomeUrna} ${p.nome} ${p.numeroUrna ?? ""}`), st: p.status });
 
 export interface CardDados extends CardResumo {
   numeros: NumerosCard;
