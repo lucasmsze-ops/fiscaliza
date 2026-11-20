@@ -23,7 +23,7 @@ export async function GET() {
     return {
       id: e ? idExecutivo(e) : `candidato-${c.tseSqCandidato}`, cargo: c.cargo, uf: c.uf, nomeUrna: c.nomeUrna, partido: c.partido,
       fotoUrl: c.fotoUrl, eleito: !!e, situacao: situacao(c), href: e ? hrefExecutivo(e) : null,
-      busca: normalizar(`${c.nomeUrna} ${c.nome} ${c.numeroUrna ?? ""}`),
+      busca: normalizar(`${c.nomeUrna} ${c.nome} ${c.numeroUrna ?? ""}`), num: c.numeroUrna != null ? String(c.numeroUrna) : null,
     };
   });
   // Eleitos primeiro em cada cargo e UF; depois os demais por nome.

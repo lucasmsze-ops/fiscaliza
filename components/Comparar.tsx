@@ -83,7 +83,7 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
           placeholder={ids.length >= MAX_COMPARAR ? "Limite de 5 pessoas" : "Digite um nome para comparar"}
           className="h-11 w-full rounded-xl bg-card pr-4 pl-11 text-base text-texto outline-none placeholder:text-suave focus:ring-2 focus:ring-destaque/40 disabled:opacity-60" />
         {sugestoes.length > 0 && (
-          <div className="absolute inset-x-0 top-14 z-10 overflow-hidden rounded-[14px] bg-card shadow-xl">
+          <div className="absolute inset-x-0 top-14 z-10 overflow-hidden rounded-[22px] vidro-forte bg-[rgba(44,45,52,0.94)]">
             {sugestoes.map((p) => (
               <button key={p.id} type="button" onClick={() => adicionar(p.id)} className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-sm hover:bg-preench-forte">
                 <Foto url={p.fotoUrl} tamanho={34} />
@@ -100,7 +100,7 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
           <div className="grid gap-2.5 [grid-template-columns:repeat(auto-fill,minmax(230px,1fr))]">
             {atalhos.map((a) => (
               <button key={a.titulo} type="button" onClick={() => trocar(a.pessoas.map((p) => p.id))}
-                className="grid gap-2 rounded-card bg-card p-4 text-left hover:bg-preench">
+                className="grid gap-2 rounded-card vidro p-4 text-left hover:bg-preench-forte">
                 <span className="flex items-center">
                   {a.pessoas.map((p, i) => <span key={p.id} className={`rounded-full ring-2 ring-card ${i ? "-ml-2.5" : ""}`}><Foto url={p.fotoUrl} tamanho={40} /></span>)}
                   <span className="ml-2.5 text-xs font-semibold text-suave">Lado a lado</span>
@@ -111,7 +111,7 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
               </button>
             ))}
           </div>
-          <p className="text-[13px] text-suave">Não sabe o nome? <Link href="/" className="underline underline-offset-2">Veja quem representa o seu estado</Link>.</p>
+          <p className="text-[13px] text-suave">Não sabe o nome? <Link href="/mapa" className="underline underline-offset-2">Veja quem representa o seu estado</Link>.</p>
         </div>
       )}
 
@@ -136,7 +136,7 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
             <strong>{ids.length} de {MAX_COMPARAR} pessoas</strong>
             <button type="button" onClick={() => trocar([])} className={chip}>Limpar comparação</button>
           </div>
-          <div className="overflow-x-auto rounded-card bg-card">
+          <div className="overflow-x-auto rounded-card vidro">
             <table className="w-full border-collapse" style={{ minWidth: 170 + ids.length * 170 }}>
               <thead>
                 <tr>

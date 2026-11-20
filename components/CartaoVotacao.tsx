@@ -1,57 +1,47 @@
 import Link from "next/link";
 import { inteiro } from "@/lib/card";
 import type { VotacaoResumo } from "@/lib/congresso";
-import { CADEIRAS, hrefVotacao, rotuloVotado, tipoPorExtenso } from "@/lib/votacao";
+import { hrefVotacao, rotuloVotado, tipoPorExtenso } from "@/lib/votacao";
 
 const RESULTADO = { aprovada: "Aprovada", rejeitada: "Rejeitada" } as const;
-
-/**
- * Barra do placar sobre as cadeiras da Casa: Sim, Não e Abstenção (com Obstrução junto da
- * abstenção na cor); o resto é quem não votou. Cores neutras: Sim e Não não são "bom" e "ruim".
- * Decorativa: o placar em texto vem sempre ao lado.
- */
-export function BarraPlacar({ sim, nao, abst, cadeiras, necessarios, alto = false }: { sim: number; nao: number; abst: number; cadeiras: number; necessarios?: number | null; alto?: boolean }) {
-  const pc = (n: number) => `${(n / cadeiras) * 100}%`;
-  return (
-    <span className="relative block" aria-hidden="true">
-      <span className={`flex w-full gap-[2px] overflow-hidden rounded-md bg-preench ${alto ? "h-4" : "h-2.5"}`}>
-        {sim > 0 && <span className="bg-texto" style={{ width: pc(sim) }} />}
-        {nao > 0 && <span className="bg-suave" style={{ width: pc(nao) }} />}
-        {abst > 0 && <span className="bg-borda-forte" style={{ width: pc(abst) }} />}
-      </span>
-      {necessarios != null && (
-        <span className="absolute -top-1 -bottom-1 w-0.5 bg-destaque" style={{ left: pc(necessarios) }} />
-      )}
-    </span>
-  );
-}
 
 /** "PEC 18/2025 · proposta de emenda à Constituição · texto principal, 1º turno" */
 export function linhaMateria(v: Pick<VotacaoResumo, "proposicao" | "descricao">) {
   return [tipoPorExtenso(v.proposicao), rotuloVotado(v)].filter(Boolean).join(" · ");
 }
 
-/** Cartão de votação (tela Congresso): Casa, matéria, ementa em 2 linhas, barra e placar. Abre /votacoes/[id]. */
+/** Etiqueta do resultado (verde aprovada, vermelha rejeitada), a do protótipo Liquid Glass. */
+export function SeloResultado({ r, grande = false }: { r: "aprovada" | "rejeitada"; grande?: boolean }) {
+  return (
+    <span className={`inline-flex items-center rounded-full border font-bold ${grande ? "h-8 px-3.5 text-[15px]" : "h-7 px-3 text-[13px]"} ${r === "aprovada" ? "border-verde/45 bg-verde/20 text-[#5EE37E]" : "border-vermelho/45 bg-vermelho/20 text-[#FF7A70]"}`}>
+      {RESULTADO[r]}
+    </span>
+  );
+}
+
+/** Etiqueta de tema oficial (cinza translúcido). */
+export const Tema = ({ t }: { t: string }) => <span className="inline-flex h-6 items-center rounded-full bg-white/10 px-2.5 text-xs font-semibold text-texto/85">{t}</span>;
+
+/**
+ * Cartão de votação do protótipo Liquid Glass: temas, a ementa inteira, matéria e o que foi votado, o
+ * resultado e o placar em texto. Abre /votacoes/[id].
+ */
 export function CartaoVotacao({ v }: { v: VotacaoResumo }) {
   const p = v.placar;
   const total = p ? p.sim + p.nao + p.abstencao + p.obstrucao : 0;
   const resto = linhaMateria(v);
   return (
-    <Link href={hrefVotacao(v.id)} className="grid gap-2 rounded-xl bg-preench p-3.5 text-texto no-underline hover:bg-preench-forte">
-      <span className="flex flex-wrap items-center gap-1.5 text-xs text-suave">
-        {v.casa === "senado" ? "Senado" : "Câmara"}
-        {v.temas?.slice(0, 2).map((t) => <span key={t} className="rounded-md bg-destaque/20 px-1.5 py-0.5 font-semibold text-texto">{t}</span>)}
-      </span>
-      {/* O assunto (ementa oficial) é o título; número e tipo ficam pequenos (pedido de 2026-11-13). */}
-      <strong className="line-clamp-2 text-[15px] leading-snug">{v.ementa ?? v.descricao}</strong>
-      <span className="text-xs text-suave">{v.proposicao ?? "Sem matéria principal informada"}{resto && ` · ${resto}`}</span>
-      {p && !v.secreta && total > 0 && <BarraPlacar sim={p.sim} nao={p.nao} abst={p.abstencao + p.obstrucao} cadeiras={CADEIRAS[v.casa]} />}
-      <span className="text-xs tabular-nums">
-        {v.resultado && <strong>{RESULTADO[v.resultado]}</strong>}
-        {v.resultado && " · "}
-        {v.secreta || !p ? "votação secreta: o Senado publica só quem votou"
-          : total === 0 ? "a Câmara não divulga a direção dos votos nesta votação"
-          : <>Sim {inteiro(p.sim)} · Não {inteiro(p.nao)} · Abst. {inteiro(p.abstencao)}{p.obstrucao > 0 && <> · Obstr. {inteiro(p.obstrucao)}</>}</>}
+    <Link href={hrefVotacao(v.id)} className="vidro grid content-start gap-2.5 rounded-card p-[18px] text-texto no-underline hover:bg-white/10 hover:text-texto">
+      {v.temas && v.temas.length > 0 && <span className="flex flex-wrap gap-1.5">{v.temas.slice(0, 2).map((t) => <Tema key={t} t={t} />)}</span>}
+      <span className="text-[15px] leading-5">{v.ementa ?? v.descricao}</span>
+      <span className="text-[13px] text-suave">{v.proposicao ?? "Sem matéria principal informada"}{resto && ` · ${resto}`}</span>
+      <span className="flex flex-wrap items-center gap-2.5">
+        {v.resultado && <SeloResultado r={v.resultado} />}
+        <span className="text-[13px] text-texto/85 tabular-nums">
+          {v.secreta || !p ? "votação secreta: o Senado publica só quem votou"
+            : total === 0 ? "a Câmara não divulga a direção dos votos"
+            : <>Sim {inteiro(p.sim)} · Não {inteiro(p.nao)} · Abst. {inteiro(p.abstencao)}{p.obstrucao > 0 && <> · Obstr. {inteiro(p.obstrucao)}</>}</>}
+        </span>
       </span>
     </Link>
   );

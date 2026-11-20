@@ -45,7 +45,7 @@ export function PoliticoCard({ d, linkPagina = false }: { d: CardDados; linkPagi
   // Avisos (fake door) só fazem sentido para quem tem ou terá mandato.
   const temAvisos = n.tipo !== "sem_mandato";
   return (
-    <article className="w-full max-w-sm rounded-card bg-card p-4" aria-labelledby={`nome-${d.id}`}>
+    <article className="w-full max-w-sm rounded-card vidro p-4" aria-labelledby={`nome-${d.id}`}>
       <Cabecalho r={d} />
 
       <section className="mt-4 border-t border-borda pt-4" aria-label="Números do mandato">

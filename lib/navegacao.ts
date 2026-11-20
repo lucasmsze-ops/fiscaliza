@@ -1,15 +1,18 @@
 /**
  * Níveis de navegação (pedido de 2026-11-14). N1 são as telas do menu (Sobre saiu do menu no mesmo dia: abre
- * pelo ícone de Dúvidas do cabeçalho e é N2): têm o menu no topo (celular) e,
- * conforme a tela, a busca. Todo o resto é N2 (crachá, executivo, votação, Comparar...): sem o menu do
- * topo no celular e com o botão de voltar.
+ * pelo ícone de Dúvidas do cabeçalho e é N2): têm a tab bar no rodapé (celular, desde 2026-11-20) e,
+ * conforme a tela, a busca. Todo o resto é N2 (crachá, executivo, votação, Comparar...): sem a tab bar
+ * no celular e com o botão de voltar.
  */
 export const N1 = [
-  { href: "/", rotulo: "Visão geral", icone: "M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" },
-  { href: "/congresso", rotulo: "Congresso", icone: "M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6M9 11h.01M15 11h.01" },
-  { href: "/votacoes", rotulo: "Votações", icone: "M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" },
-  // Neste aparelho (no protótipo, a seção "Conta"; aqui sem Entrar nem conta).
-  { href: "/monitorando", rotulo: "Monitorando", icone: "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" },
+  // Desde 2026-11-20 (protótipo Liquid Glass): Início em "/" e o mapa, que era a Visão geral, em /mapa.
+  // Ícones do protótipo, cada um num só `d` (vários subcaminhos).
+  { href: "/", rotulo: "Início", icone: "M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6.5H9V21H4.5a1 1 0 0 1-1-1z" },
+  { href: "/mapa", rotulo: "Mapa", icone: "m3 7 6-3 6 3 6-3v13l-6 3-6-3-6 3V7Z M9 4v13M15 7v13" },
+  { href: "/congresso", rotulo: "Congresso", icone: "M3 21h18M5 21V10M19 21V10M9 21V10M15 21V10M2 10l10-6 10 6" },
+  { href: "/votacoes", rotulo: "Votações", icone: "M7 3h10a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3z m1 6 1.5 1.5L12 8M8 15l1.5 1.5L12 14M14.5 9.5H17M14.5 15.5H17" },
+  // Neste aparelho (sem conta: Entrar e cadastro ainda são "Em breve").
+  { href: "/monitorando", rotulo: "Monitorando", icone: "M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" },
 ] as const;
 
 /** A tela é N1 (uma das do menu, exatamente: /votacoes/[id] é N2). */

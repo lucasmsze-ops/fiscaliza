@@ -7,7 +7,10 @@ import { Cracha } from "@/components/Cracha";
 import { resumoNumeros } from "@/lib/card";
 import { hrefSecao } from "@/lib/glossario";
 import { repo } from "@/lib/repo";
-import { subsidioEm } from "@/lib/salario";
+import { SUBSIDIO_CONGRESSO, subsidioEm } from "@/lib/salario";
+import { AreasAtuacao } from "@/components/AreasAtuacao";
+
+const dataBr = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
 
 export const revalidate = 86400;
 // No build, só quem tem mandato (Câmara ou Senado); os demais (~3 mil suplentes e não eleitos) são
@@ -36,9 +39,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 /**
- * Página do político no layout do crachá do protótipo (E23i). Cota mês a mês, mandatos, contatos,
- * "Como cobrar" e governismo saíram daqui por decisão do usuário (2026-11-04): o protótipo não os
- * tem. Seguem calculados no resumo (`resumos.pagina`) e documentados em /como-funciona.
+ * Página do político no layout do protótipo Liquid Glass (E23s, 2026-11-20): cabeçalho, presença, parecidos,
+ * o que fez no mandato, áreas de atuação, como cobrar e a nota do salário. Cota mês a mês, mandatos,
+ * governismo e "Votou com o partido?" não aparecem (seguem calculados no resumo e em /como-funciona).
  */
 export default async function PaginaPolitico({ params }: Props) {
   const pg = await repo.getPagina((await params).slug);
@@ -53,11 +56,27 @@ export default async function PaginaPolitico({ params }: Props) {
 
   return (
     <>
-    <BarraVoltar volta={`/?uf=${uf}`} rotulo="Visão geral" />
-    <main className="grid gap-6 pb-8">
-      <Cracha d={c} mandato={mandato} salario={salario} comparacao={pg.comparacao ?? null} fidelidade={pg.fidelidade ?? null} cores={pg.coresPartido ?? []} />
+    <BarraVoltar volta={`/mapa?uf=${uf}`} rotulo="Mapa" />
+    <main className="grid gap-4 pb-8">
+      <Cracha d={c} mandato={mandato} comparacao={pg.comparacao ?? null} />
       <AbasMandato id={c.id} propostas={pg.propostas ?? null} votacoes={pg.votacoes} />
-      <p className="text-xs text-suave">
+      {pg.propostas?.areas && pg.propostas.areas.length > 0 && <AreasAtuacao p={pg.propostas} />}
+      {c.comoCobrar && (
+        <section aria-labelledby="cr-cobrar" className="vidro grid gap-2 rounded-card p-[18px]">
+          <h2 id="cr-cobrar" className="text-[17px] font-semibold">Como cobrar</h2>
+          {c.comoCobrar.email && <a href={`mailto:${c.comoCobrar.email}`} className="flex min-h-11 items-center text-[15px] break-all no-underline">{c.comoCobrar.email}</a>}
+          {c.comoCobrar.telefone && <a href={`tel:${c.comoCobrar.telefone.replace(/\D/g, "")}`} className="flex min-h-11 items-center border-t border-borda text-[15px] no-underline">{c.comoCobrar.telefone}</a>}
+          {c.urlPerfil && <a href={c.urlPerfil} target="_blank" rel="noreferrer noopener" className="flex min-h-11 items-center border-t border-borda text-[15px] font-semibold no-underline">Perfil oficial {c.comoCobrar.casa === "senado" ? "no Senado" : "na Câmara"} ›</a>}
+          <Link href={hrefSecao("cobrar")} className="flex min-h-11 items-center border-t border-borda text-[15px] no-underline">Ouvidoria e outros canais oficiais ›</Link>
+        </section>
+      )}
+      {salario && (
+        <p className="px-2 text-xs text-suave">
+          Salário: {salario.valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} por mês, subsídio bruto desde {dataBr(salario.desde)},{" "}
+          <a href={SUBSIDIO_CONGRESSO.url} target="_blank" rel="noreferrer noopener" className="underline underline-offset-2">{SUBSIDIO_CONGRESSO.ato}</a>.
+        </p>
+      )}
+      <p className="px-2 text-xs text-suave">
         Fonte: {c.numeros.tipo === "mandato" ? (c.numeros.casa === "senado" ? "Senado Federal" : "Câmara dos Deputados") + " e " : ""}TSE
         {coleta && <> · dados coletados em {new Date(coleta).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })}</>}
         {" · "}<Link href={hrefSecao("fontes")} className="underline underline-offset-2">metodologia</Link>

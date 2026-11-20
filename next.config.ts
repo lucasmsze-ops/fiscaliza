@@ -5,9 +5,14 @@ const config: NextConfig = {
   // com as funções na Vercel. data/raw e data/sonda ficam de fora (não são lidos pelo site).
   outputFileTracingIncludes: { "/**": ["./data/*.json"] },
   outputFileTracingExcludes: { "/**": ["./data/raw/**", "./data/sonda/**", "./scripts/**", "./tests/**"] },
-  // A Me representa virou parte da Visão geral (2026-11-13): ?uf= e ?cidade= seguem no redirecionamento.
+  // A Me representa virou parte da Visão geral (2026-11-13), que virou o Mapa em /mapa (2026-11-20, quando "/"
+  // passou a ser o Início). ?uf= e ?cidade= seguem no redirecionamento; links antigos "/?uf=SP" também.
   async redirects() {
-    return [{ source: "/me-representa", destination: "/", permanent: true }];
+    return [
+      { source: "/me-representa", destination: "/mapa", permanent: true },
+      { source: "/", has: [{ type: "query", key: "uf" }], destination: "/mapa", permanent: true },
+      { source: "/", has: [{ type: "query", key: "cidade" }], destination: "/mapa", permanent: true },
+    ];
   },
   async headers() {
     return [{ source: "/:path*", headers: [{ key: "Referrer-Policy", value: "same-origin" }] }];

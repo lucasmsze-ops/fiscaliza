@@ -62,8 +62,10 @@ export interface ItemBusca extends CardResumo {
   busca: string;
   /** Situação na eleição de 2026 (a chave, não o rótulo): "Quem votei" usa para liberar o "Monitorar". */
   st: Politico["status"];
+  /** Número de urna de 2026 (casinhas do santinho, E23s). */
+  num?: string | null;
 }
-export const itemBusca = (p: Politico): ItemBusca => ({ ...resumoCard(p), busca: normalizar(`${p.nomeUrna} ${p.nome} ${p.numeroUrna ?? ""}`), st: p.status });
+export const itemBusca = (p: Politico): ItemBusca => ({ ...resumoCard(p), busca: normalizar(`${p.nomeUrna} ${p.nome} ${p.numeroUrna ?? ""}`), st: p.status, num: p.numeroUrna != null ? String(p.numeroUrna) : null });
 
 export interface CardDados extends CardResumo {
   numeros: NumerosCard;

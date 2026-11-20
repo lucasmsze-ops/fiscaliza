@@ -3,69 +3,85 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { MunicipioJson } from "@/app/dados/municipios/route";
-import { corPartido } from "@/lib/congresso";
+import { hrefSecao } from "@/lib/glossario";
 import { APAGADO } from "@/lib/mapa-brasil";
-import { NOME_UF, REGIOES, rotuloRegiao, regiaoDe, ufComArtigo } from "@/lib/regioes";
+import { NOME_UF, REGIOES, regiaoDe } from "@/lib/regioes";
 import type { Executivo, PessoaNoCargo, VisaoDados } from "@/lib/visao";
-import { BotaoMonitorar, classeMonitorar } from "./BotaoMonitorar";
+import { BuscaTopo } from "./BuscaTopo";
+import { ChipPartido } from "./ChipPartido";
 import { MapaBrasil } from "./MapaBrasil";
-import { BOTAO, CARD, ROTULO, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO, CHIP, CHIP_ON } from "@/lib/estilo";
+import { Info } from "./Termo";
+import { SEGMENTO, SEGMENTO_ON, SEGMENTOS, TITULO_PAGINA } from "@/lib/estilo";
 
 const POR_PAGINA = 24;
-
 const iniciais = (n: string) => n.split(" ").filter(Boolean).map((w) => w[0]).slice(0, 2).join("");
-const fundoPartido = (partido: string, cores: string[]) => `color-mix(in srgb, ${corPartido(partido)} 22%, transparent)`;
+const pct = (v: number) => `${v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+const inteiro = (v: number) => v.toLocaleString("pt-BR");
+/** "AC, AM, AP, PA, RO, RR e TO". */
+const listaUfs = (ufs: readonly string[]) => `${ufs.slice(0, -1).join(", ")} e ${ufs.at(-1)}`;
+const SETA = <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(235,235,245,0.55)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>;
+const LINHA = "flex min-h-16 items-center gap-3 px-4 py-2.5 text-texto no-underline hover:bg-white/5 hover:text-texto";
 
-function Foto({ p, tamanho, classe }: { p: PessoaNoCargo; tamanho: number; classe?: string }) {
-  const dim = classe ? undefined : { width: tamanho, height: tamanho };
-  return p.fotoUrl
+/** Foto oficial redonda (ou as iniciais no círculo azul do protótipo). */
+function Rosto({ nome, foto, tamanho = 48 }: { nome: string; foto: string | null; tamanho?: number }) {
+  return foto
     // <img> de propósito: a foto vem direto da URL oficial, sem passar pela Vercel (CLAUDE.md).
-    ? <img src={p.fotoUrl} alt="" width={tamanho} height={tamanho} loading="lazy" decoding="async" className={`shrink-0 rounded-full bg-preench object-cover object-top ${classe ?? ""}`} style={dim} />
-    : <span aria-hidden="true" className={`inline-flex shrink-0 items-center justify-center rounded-full bg-preench text-sm font-semibold ${classe ?? ""}`} style={dim}>{iniciais(p.nomeUrna)}</span>;
+    ? <img src={foto} alt="" width={tamanho} height={tamanho} loading="lazy" decoding="async" className="shrink-0 rounded-full border border-[rgba(64,156,255,0.45)] bg-[rgba(64,156,255,0.2)] object-cover object-top" style={{ width: tamanho, height: tamanho }} />
+    : <span aria-hidden="true" className="inline-flex shrink-0 items-center justify-center rounded-full border border-[rgba(64,156,255,0.45)] bg-[rgba(64,156,255,0.2)] text-[15px] font-semibold text-[#CFE6FF]" style={{ width: tamanho, height: tamanho }}>{iniciais(nome)}</span>;
 }
 
-function SelecaoPartido({ partido, cores }: { partido: string; cores: string[] }) {
-  return <span className="inline-block rounded-lg px-2.5 py-0.5 text-[11px] font-semibold" style={{ background: fundoPartido(partido, cores) }}>{partido}</span>;
-}
-
-/** Botão do estilo do protótipo (borda, raio 12). */
-const btn = CHIP;
-const btnOn = CHIP_ON;
-
-/** Um nível de representação (Presidente, Governador, Senadores): subtítulo e os cartões. */
-function Nivel({ titulo, children }: { titulo: string; children: React.ReactNode }) {
+/** Linha da lista do estado (protótipo Liquid Glass): rosto, nome, partido e afastamento, participação à direita. */
+function LinhaPessoa({ p, primeira }: { p: PessoaNoCargo; primeira: boolean }) {
+  const fem = /^(Senadora|Deputada)/.test(p.cargo);
   return (
-    <div className="grid gap-1.5">
-      <h3 className={ROTULO}>{titulo}</h3>
-      {children}
-    </div>
-  );
-}
-
-/** Presidente ou governador eleito em 2026 (TSE): o cartão abre o crachá do executivo. */
-function CartaoExecutivo({ e }: { e: Executivo }) {
-  return (
-    <Link href={`/executivos/${e.cargoChave === "presidente" ? "presidente" : (e.uf ?? "").toLowerCase()}`} className="flex items-center gap-3 rounded-xl bg-preench p-2.5 text-texto no-underline hover:bg-preench-forte">
-      {e.fotoUrl
-        // <img> de propósito: a foto vem direto da URL oficial do TSE, sem passar pela Vercel (CLAUDE.md).
-        ? <img src={e.fotoUrl} alt="" width={40} height={40} loading="lazy" className="size-10 shrink-0 rounded-full bg-preench object-cover object-top" />
-        : <span aria-hidden="true" className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-preench text-sm font-semibold">{iniciais(e.nomeUrna)}</span>}
-      <span className="grid flex-1">
-        <strong className="text-[13px]">{e.nomeUrna}</strong>
-        <span className="text-xs text-suave">Eleit{e.feminino ? "a" : "o"} em 2026 · posse em {Number(e.posse.slice(8, 10))}/{Number(e.posse.slice(5, 7))}/{e.posse.slice(0, 4)}</span>
+    <Link href={`/p/${p.id}`} className={`${LINHA} ${primeira ? "" : "border-t border-borda"}`}>
+      <Rosto nome={p.nomeUrna} foto={p.fotoUrl} />
+      <span className="grid min-w-0 flex-1 gap-[3px]">
+        <span className="text-base font-semibold tracking-[0.1px]">{p.nomeUrna}</span>
+        <span className="flex flex-wrap items-center gap-1.5">
+          <ChipPartido sigla={p.partido} />
+          {p.diasAfastado > 0 && <span className="text-[13px] text-suave">afastad{fem ? "a" : "o"} {inteiro(p.diasAfastado)} {p.diasAfastado === 1 ? "dia" : "dias"}</span>}
+        </span>
       </span>
-      <SelecaoPartido partido={e.partido} cores={[]} />
+      {p.participacao && (
+        <span className="grid shrink-0 justify-items-end gap-0.5">
+          <span className="text-[17px] font-semibold tabular-nums">{pct(p.participacao.pct)}</span>
+          <span className="text-[11px] text-suave tabular-nums">{inteiro(p.participacao.num)} de {inteiro(p.participacao.den)}</span>
+        </span>
+      )}
     </Link>
   );
 }
 
+/** Presidente ou governador eleito em 2026 (TSE): a linha abre o crachá do executivo. */
+function LinhaExecutivo({ e, primeira }: { e: Executivo; primeira: boolean }) {
+  return (
+    <Link href={`/executivos/${e.cargoChave === "presidente" ? "presidente" : (e.uf ?? "").toLowerCase()}`} className={`${LINHA} ${primeira ? "" : "border-t border-borda"}`}>
+      <Rosto nome={e.nomeUrna} foto={e.fotoUrl} />
+      <span className="grid min-w-0 flex-1 gap-[3px]">
+        <span className="text-base font-semibold">{e.nomeUrna}</span>
+        <span className="flex flex-wrap items-center gap-1.5">
+          <ChipPartido sigla={e.partido} />
+          <span className="text-[13px] text-suave">{e.cargoChave === "presidente" ? (e.feminino ? "Presidenta" : "Presidente") : (e.feminino ? "Governadora" : "Governador")} · posse em {Number(e.posse.slice(8, 10))}/{Number(e.posse.slice(5, 7))}/{e.posse.slice(0, 4)}</span>
+        </span>
+      </span>
+      {SETA}
+    </Link>
+  );
+}
+
+/**
+ * Mapa (/mapa; era a Visão geral) no layout do protótipo Liquid Glass (2026-11-20): título, busca, o mapa num
+ * cartão, a lista de regiões e, ao escolher um estado, a tela do estado (senadores e deputados em exercício
+ * hoje, com a participação em votações de cada um).
+ */
 export function VisaoGeral({ d }: { d: VisaoDados }) {
   const [reg, setReg] = useState("");
   const [uf, setUf] = useState("");
+  const [casa, setCasa] = useState<"senado" | "camara">("senado");
   const [cidade, setCidade] = useState<{ nome: string; uf: string; ibge: number } | null>(null);
   const pedido = useRef<Promise<MunicipioJson[]> | null>(null);
   const [lim, setLim] = useState(POR_PAGINA);
-  const listaRef = useRef<HTMLElement>(null);
 
   /** Lista das 5.571 cidades (~45 KB comprimida): só para links antigos com ?cidade= (a busca saiu em 2026-11-14). */
   const carregarMunicipios = () => (pedido.current ??= fetch("/dados/municipios")
@@ -94,126 +110,136 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
   const regiao = REGIOES.find((r) => r.k === reg);
   const cores = Object.fromEntries(Object.keys(NOME_UF).map((u) => {
     const r = regiaoDe(u)!;
-    return [u, regiao && !uf && r.k !== regiao.k ? APAGADO : r.cor];
+    return [u, regiao && r.k !== regiao.k ? APAGADO : r.cor];
   }));
 
-  function escolherUf(u: string) { setUf(u); setReg(regiaoDe(u)!.k); setCidade(null); setLim(POR_PAGINA); marcarUrl(u); }
+  const topo = () => window.scrollTo({ top: 0 });
+  function escolherUf(u: string) { setUf(u); setReg(regiaoDe(u)!.k); setCidade(null); setLim(POR_PAGINA); setCasa("senado"); marcarUrl(u); topo(); }
+  function voltarRegiao() { setUf(""); setCidade(null); marcarUrl(""); topo(); }
   function voltarBrasil() { setUf(""); setReg(""); setCidade(null); marcarUrl(""); }
-  const irParaLista = () => requestAnimationFrame(() => listaRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
 
-  const doEstado = uf ? d.pessoas.filter((p) => p.uf === uf) : [];
-  const senadores = doEstado.filter((p) => p.casa === "senado");
-  const deputados = doEstado.filter((p) => p.casa === "camara");
-  const presidente = d.executivos?.find((e) => e.cargoChave === "presidente") ?? null;
-  const governador = uf ? d.executivos?.find((e) => e.cargoChave === "governador" && e.uf === uf) ?? null : null;
-
-  return (
-    <main className="grid gap-6 pb-8">
-      <section aria-labelledby="titulo-mapa" className={`grid gap-4 ${CARD}`}>
-        <div className="flex flex-wrap items-end justify-between gap-3.5">
-          <div>
-            <h1 id="titulo-mapa" className={TITULO_CARTAO}>Quem representa cada estado</h1>
-            <p className="mt-1 text-[13px] text-suave">Toque no seu estado para ver quem te representa.</p>
-          </div>
+  if (uf) {
+    const doEstado = d.pessoas.filter((p) => p.uf === uf);
+    const senadores = doEstado.filter((p) => p.casa === "senado");
+    const deputados = doEstado.filter((p) => p.casa === "camara");
+    const lista = casa === "senado" ? senadores : deputados.slice(0, lim);
+    const presidente = d.executivos?.find((e) => e.cargoChave === "presidente") ?? null;
+    const governador = d.executivos?.find((e) => e.cargoChave === "governador" && e.uf === uf) ?? null;
+    const executivos = [governador, presidente].filter((e): e is Executivo => !!e);
+    return (
+      <main className="grid gap-[18px] pb-8 pt-3 lg:pt-6">
+        <div className="flex flex-wrap items-center gap-2">
+          <button type="button" onClick={voltarRegiao} className="vidro inline-flex h-9 items-center gap-1 rounded-full pr-3.5 pl-2.5 text-sm font-semibold text-texto">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7" /></svg>
+            {regiao?.nome}
+          </button>
+          <span className="text-[13px] text-suave">Brasil › {regiao?.nome} › {NOME_UF[uf]}</span>
         </div>
 
-        <div className="flex flex-wrap items-start gap-7">
-          <div className="grid min-w-0 flex-[1_1_420px] gap-2.5">
-            <p className="text-xs text-suave">{uf ? `Brasil › ${regiao?.nome} › ${NOME_UF[uf]}` : regiao ? `Brasil › ${regiao.nome}` : "Brasil · toque numa região ou num estado"}</p>
-            <MapaBrasil cores={cores} sel={uf} nomes={NOME_UF} onPick={escolherUf} />
+        <div className="grid gap-1.5 px-1">
+          <h1 className={TITULO_PAGINA}>{cidade ? cidade.nome : NOME_UF[uf]}</h1>
+          <p className="text-[15px] text-suave">Quem está no cargo hoje em Brasília pelo estado</p>
+          {cidade && <p className="text-[13px] text-suave">Senadores e deputados federais são eleitos pelo estado inteiro: quem mora em {cidade.nome} é representado pelos de {NOME_UF[uf]}.</p>}
+        </div>
+
+        <div role="group" aria-label="Casa legislativa" className={`${SEGMENTOS} grid-cols-2`}>
+          <button type="button" aria-pressed={casa === "senado"} onClick={() => setCasa("senado")} className={casa === "senado" ? SEGMENTO_ON : SEGMENTO}>Senadores · {senadores.length}</button>
+          <button type="button" aria-pressed={casa === "camara"} onClick={() => setCasa("camara")} className={casa === "camara" ? SEGMENTO_ON : SEGMENTO}>Deputados · {deputados.length}</button>
+        </div>
+
+        <div className="vidro overflow-hidden rounded-card">
+          {lista.map((p, i) => <LinhaPessoa key={p.id} p={p} primeira={i === 0} />)}
+          {lista.length === 0 && <p className="p-4 text-[15px] text-suave">Ninguém em exercício hoje.</p>}
+        </div>
+
+        {casa === "camara" && deputados.length > lim && (
+          <button type="button" onClick={() => setLim(deputados.length)} className="vidro flex min-h-[52px] items-center justify-center rounded-card text-base font-semibold text-link">
+            Ver os {deputados.length} deputados ›
+          </button>
+        )}
+
+        <div className="vidro grid gap-2.5 rounded-[22px] px-[18px] py-4">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-[15px] font-semibold">Participação em votações</h2>
+            <Info id="uf-part" termo="participacao" rotulo="Como calculamos a participação em votações" />
           </div>
+          <p className="text-[13px] leading-[18px] text-texto/75">
+            Votações nominais do plenário {casa === "senado" ? "do Senado" : "da Câmara"} em 2023–2026, só as feitas durante o mandato de cada um. Licença não é descontada: o afastamento aparece ao lado do nome.
+          </p>
+        </div>
 
-          <div className="grid min-w-0 flex-[1_1_300px] content-start gap-2.5">
-            {!uf && !regiao && (
-              <div>
-                <p className={`${ROTULO} mb-1`}>Regiões</p>
-                {REGIOES.map((r) => (
-                  <button key={r.k} type="button" onClick={() => setReg(r.k)} className="flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-left hover:bg-preench-forte">
-                    <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl text-xs font-semibold" style={{ background: r.cor, color: rotuloRegiao(r.cor) }}>{r.k}</span>
-                    <span className="grid flex-1"><strong className="text-sm">{r.nome}</strong><span className="text-xs text-suave">{r.ufs.join(" · ")}</span></span>
-                    <span aria-hidden="true" className="text-suave">›</span>
-                  </button>
-                ))}
-              </div>
-            )}
+        {executivos.length > 0 && (
+          <section aria-labelledby="uf-exec" className="grid gap-2">
+            <h2 id="uf-exec" className="px-5 text-[13px] font-semibold tracking-[0.4px] text-suave uppercase">Eleitos em 2026 para o Executivo</h2>
+            <div className="vidro overflow-hidden rounded-card">{executivos.map((e, i) => <LinhaExecutivo key={e.cargoChave} e={e} primeira={i === 0} />)}</div>
+          </section>
+        )}
 
-            {!uf && regiao && (
-              <div className="grid gap-2.5">
-                <button type="button" onClick={voltarBrasil} className={`${btn} justify-self-start`}>← Brasil</button>
-                <h2 className="text-base font-semibold">{regiao.nome}</h2>
-                <div className="grid grid-cols-2 gap-2">
-                  {regiao.ufs.map((u) => <button key={u} type="button" onClick={() => escolherUf(u)} className={`${btn} h-10 text-left`}>{u} · {NOME_UF[u]}</button>)}
-                </div>
-              </div>
-            )}
+        <p className="px-2 text-[13px] leading-[18px] text-suave">Fontes: TSE, Câmara e Senado. Cada número leva à página oficial.</p>
+      </main>
+    );
+  }
 
-            {uf && (
-              <div className="grid gap-2.5">
-                <div className="flex flex-wrap gap-2">
-                  <button type="button" onClick={voltarBrasil} className={btn}>← Brasil</button>
-                  <button type="button" onClick={() => { setUf(""); setCidade(null); marcarUrl(""); }} className={btn}>← {regiao?.nome}</button>
-                </div>
-                <div className="mt-1">
-                  <p className="text-xs text-suave">{cidade ? `${cidade.nome} · ${uf}` : "Estado inteiro"}</p>
-                  <h2 className={TITULO_SECAO}>Quem representa {cidade ? cidade.nome : ufComArtigo(uf)}</h2>
-                </div>
-                {cidade && <p className="text-xs text-suave">Senadores e deputados federais são eleitos pelo estado inteiro: quem mora em {cidade.nome} é representado pelos de {NOME_UF[uf]}. Prefeito e vereadores entram depois.</p>}
-                {presidente && <Nivel titulo="Presidente"><CartaoExecutivo e={presidente} /></Nivel>}
-                {governador && <Nivel titulo="Governador"><CartaoExecutivo e={governador} /></Nivel>}
-                {senadores.length > 0 && (
-                  <Nivel titulo="Senadores">
-                    {senadores.map((p) => (
-                      <div key={p.id} className="relative flex items-center gap-3 rounded-xl bg-preench p-2.5 hover:bg-preench-forte">
-                        <Foto p={p} tamanho={40} />
-                        <span className="grid min-w-0 flex-1">
-                          <Link href={`/p/${p.id}`} className="line-clamp-2 text-[13px] leading-snug font-semibold text-texto no-underline after:absolute after:inset-0">{p.nomeUrna}</Link>
-                          <span className="text-xs text-suave">Em exercício</span>
-                        </span>
-                        <SelecaoPartido partido={p.partido} cores={d.cores} />
-                      </div>
-                    ))}
-                  </Nivel>
-                )}
-                <div className="grid grid-cols-2 gap-2.5">
-                  <button type="button" onClick={irParaLista} className="rounded-xl bg-preench p-3 text-left hover:bg-preench-forte">
-                    <span className="block text-lg font-semibold tabular-nums">{deputados.length}</span><span className="text-xs text-suave">deputados federais ↓</span>
-                  </button>
-                  <div className="rounded-xl bg-preench p-3">
-                    <span className="block text-lg font-semibold tabular-nums">{(d.municipiosPorUf[uf] ?? 0).toLocaleString("pt-BR")}</span><span className="text-xs text-suave">municípios</span>
-                  </div>
-                </div>
-              </div>
-            )}
+  return (
+    <main className="grid gap-5 pb-8 pt-3 lg:pt-6">
+      <div className="grid gap-2 px-1 pt-1">
+        <h1 className={TITULO_PAGINA}>Quem representa cada estado</h1>
+        <p className="text-[17px] leading-[22px] text-suave">Toque no seu estado para ver quem te representa.</p>
+      </div>
+
+      <BuscaTopo tipo="politicos" />
+
+      <section aria-labelledby="mapa-titulo" className="vidro grid gap-4 rounded-[32px] px-4 py-5">
+        <div className="flex items-baseline justify-between gap-3 px-1">
+          {regiao ? (
+            <span className="flex items-baseline gap-2">
+              <button type="button" onClick={voltarBrasil} className="text-[15px] font-semibold text-link">Brasil ›</button>
+              <h2 id="mapa-titulo" className="text-xl font-semibold tracking-[-0.3px]">{regiao.nome}</h2>
+            </span>
+          ) : <h2 id="mapa-titulo" className="text-xl font-semibold tracking-[-0.3px]">Brasil</h2>}
+          <span className="text-[13px] text-suave">toque num estado</span>
+        </div>
+        <div className="px-0.5 pt-1"><MapaBrasil cores={cores} sel="" nomes={NOME_UF} onPick={escolherUf} /></div>
+        {regiao ? (
+          <div className="flex flex-wrap justify-center gap-2">
+            {regiao.ufs.map((u) => (
+              <button key={u} type="button" onClick={() => escolherUf(u)} aria-label={NOME_UF[u]}
+                className="flex size-12 items-center justify-center rounded-[14px] border text-sm font-semibold tracking-[0.2px] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] hover:brightness-125"
+                style={{ background: `color-mix(in srgb, ${regiao.cor} 24%, transparent)`, borderColor: `color-mix(in srgb, ${regiao.cor} 55%, transparent)` }}>{u}</button>
+            ))}
           </div>
+        ) : (
+          <div className="flex flex-wrap justify-center gap-x-3.5 gap-y-2 text-xs text-texto/80">
+            {REGIOES.map((r) => <span key={r.k} className="flex items-center gap-1.5"><span aria-hidden="true" className="size-2.5 rounded-full" style={{ background: r.cor }} />{r.nome}</span>)}
+          </div>
+        )}
+      </section>
+
+      <section aria-labelledby="mapa-regioes" className="grid gap-2">
+        <h2 id="mapa-regioes" className="px-5 text-[13px] font-semibold tracking-[0.4px] text-suave uppercase">Regiões</h2>
+        <div className="vidro overflow-hidden rounded-card">
+          {REGIOES.map((r, i) => (
+            <button key={r.k} type="button" onClick={() => { setReg(r.k); window.scrollTo({ top: 0, behavior: "smooth" }); }} aria-pressed={reg === r.k}
+              className={`flex min-h-[60px] w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-white/5 ${i ? "border-t border-borda" : ""}`}>
+              <span aria-hidden="true" className="size-8 shrink-0 rounded-[10px] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]" style={{ background: r.cor }} />
+              <span className="grid min-w-0 flex-1 gap-0.5"><span className="text-[17px] font-medium">{r.nome}</span><span className="text-[13px] text-suave">{listaUfs(r.ufs)}</span></span>
+              {SETA}
+            </button>
+          ))}
         </div>
       </section>
 
-      {uf && (
-        <section ref={listaRef} aria-labelledby="titulo-lista" className={`grid scroll-mt-4 gap-3.5 ${CARD}`}>
-          <div>
-            <h2 id="titulo-lista" className={TITULO_SECAO}>Deputados federais</h2>
-            <p className="mt-1 text-[13px] text-suave">{NOME_UF[uf]} · <strong className="text-texto">{deputados.length}</strong> em exercício hoje, em ordem alfabética</p>
-          </div>
-          {/* Cartões em grade também no celular: 2 por fileira, 3 a partir de 480 px (pedido de 2026-11-14). */}
-          <div className="grid grid-cols-2 gap-2 min-[480px]:grid-cols-3 sm:gap-4 sm:[grid-template-columns:repeat(auto-fill,minmax(180px,1fr))]">
-            {deputados.slice(0, lim).map((p) => (
-              <div key={p.id} className="relative flex flex-col items-center gap-1 rounded-card bg-preench p-2.5 text-center text-texto hover:bg-preench-forte sm:p-4">
-                <Foto p={p} tamanho={64} classe="size-14 sm:size-16" />
-                <span className="grid w-full min-w-0 justify-items-center gap-0.5">
-                  {/* Link esticado: o cartão inteiro abre o crachá, e o "Monitorar" fica por cima. */}
-                  <Link href={`/p/${p.id}`} className="mt-1 line-clamp-2 text-[13px] leading-tight font-semibold text-texto no-underline after:absolute after:inset-0 after:rounded-card">{p.nomeUrna}</Link>
-                  <span className="mt-0.5"><SelecaoPartido partido={p.partido} cores={d.cores} /></span>
-                </span>
-                {/* mt-auto: o botão fica no pé do cartão, alinhado entre vizinhos mesmo quando o nome quebra em duas linhas. */}
-                <span className="relative z-10 mt-auto pt-1"><BotaoMonitorar id={p.id} nome={p.nomeUrna} classe={classeMonitorar} /></span>
-              </div>
-            ))}
-          </div>
-          {deputados.length > lim && (
-            <button type="button" onClick={() => setLim((l) => l + POR_PAGINA)} className={`${BOTAO} justify-self-center`}>Ver mais ({deputados.length - lim})</button>
-          )}
-        </section>
-      )}
+      {/* No computador o mesmo cartão fica no menu lateral. */}
+      <section className="vidro flex gap-3.5 rounded-card p-[18px] lg:hidden">
+        <span aria-hidden="true" className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[rgba(100,181,255,0.22)] text-[#64B5FF]">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+        </span>
+        <div className="grid gap-1.5">
+          <h2 className="text-[17px] font-semibold">De onde vêm os dados?</h2>
+          <p className="text-[15px] leading-5 text-texto/75">Só fontes oficiais: TSE, Câmara e Senado, com o link de cada número.</p>
+          <Link href={hrefSecao("fontes")} className="inline-flex min-h-11 items-center text-[15px] font-semibold no-underline">Ver metodologia ›</Link>
+        </div>
+      </section>
     </main>
   );
 }

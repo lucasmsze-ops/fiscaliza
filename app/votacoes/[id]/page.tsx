@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BarraVoltar } from "@/components/BarraVoltar";
-import { BarraPlacar } from "@/components/CartaoVotacao";
+import { ChipPartido } from "@/components/ChipPartido";
+import { SeloResultado, Tema } from "@/components/CartaoVotacao";
 import { TextoLongo } from "@/components/TextoLongo";
 import { inteiro } from "@/lib/card";
 import { hrefSecao } from "@/lib/glossario";
-import { corPartido } from "@/lib/partidos";
 import { repo } from "@/lib/repo";
-import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
 import {
   CADEIRAS, EXPLICA_OBJETO, hrefVotacao, idDoSlug, objetoVotado, regraDoTipo, rotuloVotado, tipoPorExtenso, turnoDe,
   votosNecessarios, type PartidoNaVotacao, type VotacaoPagina,
@@ -22,7 +21,6 @@ export async function generateStaticParams() { return []; }
 type Props = { params: Promise<{ id: string }> };
 
 const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
-const card = CARD;
 const nomeCasa = (v: VotacaoPagina) => (v.casa === "senado" ? "Senado" : "Câmara");
 const naCasa = (v: VotacaoPagina) => (v.casa === "senado" ? "no Senado" : "na Câmara");
 const dataLonga = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString("pt-BR", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).replace(/\./g, "");
@@ -46,48 +44,48 @@ const VOTO_PESSOA: Record<string, string> = {
   nao_informado: "Votou (não divulgado)", secreto: "Votou (secreta)", ausente: "Não votou",
 };
 
-/** Um partido: a linha resume; tocando nela, abre a lista de quem votou como (pedido de 2026-11-13). */
-function LinhaPartido({ p, v }: { p: PartidoNaVotacao; v: VotacaoPagina }) {
+const COR_VOTO_PESSOA: Record<string, string> = { sim: "text-[#5EE37E]", nao: "text-[#FF7A70]" };
+
+/** Um partido (protótipo Liquid Glass): etiqueta, bancada, barra e contagem; tocando, abre quem votou como. */
+function LinhaPartido({ p, v, primeiro }: { p: PartidoNaVotacao; v: VotacaoPagina; primeiro: boolean }) {
   const sem = v.secreta || v.semDirecao;
   const pessoas = v.casa === "senado" ? (p.total === 1 ? "senador" : "senadores") : p.total === 1 ? "deputado" : "deputados";
+  const ori = v.secreta ? null : p.orientacao ? `${(ORIENTOU[p.orientacao] ?? `orientou ${p.orientacao}`).replace(/^./, (c) => c.toUpperCase())}${p.via ? VIA[p.via] : ""}` : "Sem orientação registrada";
+  const linha = sem
+    ? `${p.total - p.naoVotou} ${p.total - p.naoVotou === 1 ? "votou" : "votaram"} · ${p.naoVotou} não ${p.naoVotou === 1 ? "votou" : "votaram"}`
+    : `${p.sim} Sim · ${p.nao} Não${p.abstencao ? ` · ${p.abstencao} Abst.` : ""}${p.obstrucao ? ` · ${p.obstrucao} Obstr.` : ""}${p.outros ? ` · ${p.outros} outro${p.outros > 1 ? "s" : ""}` : ""} · ${p.naoVotou} não ${p.naoVotou === 1 ? "votou" : "votaram"}`;
   const resumo = (
-    <span className="grid w-full gap-1.5">
-      <span className="flex items-center justify-between gap-2">
-        <span className="flex min-w-0 items-center gap-2">
-          <span className="size-2.5 shrink-0 rounded-full" style={{ background: corPartido(p.partido) }} aria-hidden="true" />
-          <strong className="text-[15px]">{p.partido}</strong>
-          <span className="truncate text-[13px] text-suave">· {p.total} {pessoas}</span>
-        </span>
-        {p.membros && <span aria-hidden="true" className="shrink-0 text-xs font-semibold text-link group-open:hidden">ver quem ▾</span>}
+    <span className="grid w-full gap-2 px-4 py-3.5 text-left">
+      <span className="flex w-full items-center gap-2">
+        <ChipPartido sigla={p.partido} grande />
+        <span className="truncate text-[13px] text-suave">· {p.total} {pessoas}</span>
+        {p.membros && <span aria-hidden="true" className="ml-auto shrink-0 text-[13px] font-semibold text-link"><span className="group-open:hidden">ver quem ▾</span><span className="hidden group-open:inline">fechar ▴</span></span>}
       </span>
-      {!v.secreta && (
-        <span className="text-xs text-suave">
-          {p.orientacao ? `${(ORIENTOU[p.orientacao] ?? `orientou ${p.orientacao}`).replace(/^./, (c) => c.toUpperCase())}${p.via ? VIA[p.via] : ""}` : "Sem orientação registrada"}
+      {!sem && (
+        <span aria-hidden="true" className="flex h-2 w-full overflow-hidden rounded bg-white/8">
+          <span className="bg-verde" style={{ flex: `${p.sim} 1 0` }} />
+          <span className="bg-vermelho" style={{ flex: `${p.nao} 1 0` }} />
+          <span className="bg-[rgba(235,235,245,0.5)]" style={{ flex: `${p.abstencao + p.obstrucao} 1 0` }} />
+          <span style={{ flex: `${p.naoVotou + p.outros} 1 0` }} />
         </span>
       )}
-      {!sem && <BarraPlacar sim={p.sim} nao={p.nao} abst={p.abstencao + p.obstrucao} cadeiras={p.total} />}
-      <span className="text-[13px] text-suave tabular-nums">
-        <span>
-          {sem
-            ? <>{p.total - p.naoVotou} {p.total - p.naoVotou === 1 ? "votou" : "votaram"} · {p.naoVotou} não {p.naoVotou === 1 ? "votou" : "votaram"}</>
-            : <>{p.sim} Sim · {p.nao} Não · {p.abstencao} Abst.{p.obstrucao > 0 && <> · {p.obstrucao} Obstr.</>}{p.outros > 0 && <> · {p.outros} outro{p.outros > 1 ? "s" : ""}</>} · {p.naoVotou} não {p.naoVotou === 1 ? "votou" : "votaram"}</>}
-        </span>
-      </span>
+      <span className="text-[13px] text-suave tabular-nums">{ori ? `${ori} · ` : ""}{linha}</span>
     </span>
   );
-  if (!p.membros) return <li className="border-b border-borda py-3 last:border-b-0">{resumo}</li>;
+  const borda = primeiro ? "" : "border-t border-borda";
+  if (!p.membros) return <li className={borda}>{resumo}</li>;
   return (
-    <li className="border-b border-borda last:border-b-0">
+    <li className={borda}>
       <details className="group">
-        <summary className="cursor-pointer list-none py-3 [&::-webkit-details-marker]:hidden">{resumo}</summary>
-        <ul className="mb-3 grid gap-x-4 rounded-xl bg-preench px-3 py-1 sm:grid-cols-2">
+        <summary className="cursor-pointer list-none hover:bg-white/5 [&::-webkit-details-marker]:hidden">{resumo}</summary>
+        <ul className="grid gap-x-4 px-4 pb-3 sm:grid-cols-2">
           {p.membros.map((m) => (
-            <li key={`${m.n}|${m.u}`} className="flex items-center justify-between gap-2 border-b border-borda py-2 text-[13px] last:border-b-0">
+            <li key={`${m.n}|${m.u}`} className="flex min-h-10 items-center justify-between gap-2 border-t border-white/8 text-sm">
               <span className="min-w-0 truncate">
-                {m.i ? <Link href={`/p/${m.i}`} className="font-semibold text-texto">{m.n}</Link> : <strong>{m.n}</strong>}
+                {m.i ? <Link href={`/p/${m.i}`} className="text-texto no-underline hover:underline">{m.n}</Link> : m.n}
                 <span className="text-suave"> · {m.u}</span>
               </span>
-              <span className={`shrink-0 rounded-md px-2 py-0.5 text-xs font-semibold ${m.v === "sim" ? "bg-texto text-card" : m.v === "nao" ? "bg-suave text-card" : "border border-borda text-suave"}`}>{VOTO_PESSOA[m.v] ?? m.v}</span>
+              <span className={`shrink-0 font-semibold ${COR_VOTO_PESSOA[m.v] ?? "text-suave"}`}>{VOTO_PESSOA[m.v] ?? m.v}</span>
             </li>
           ))}
         </ul>
@@ -108,115 +106,102 @@ export default async function PaginaVotacao({ params }: Props) {
   const votaram = cadeiras - c.naoVotou;
   const PRIMEIROS = 8;
   const pessoas = v.casa === "senado" ? "senadores" : "deputados";
+  const sem = v.secreta || v.semDirecao;
+  const extras = [
+    c.obstrucao > 0 && `${inteiro(c.obstrucao)} obstrução`,
+    c.outros > 0 && `${inteiro(c.outros)} ${v.casa === "senado" ? "presidente da sessão" : "sem direção divulgada"}`,
+    `${inteiro(c.naoVotou)} não votaram`,
+    `de ${cadeiras} cadeiras`,
+  ].filter(Boolean).join(" · ");
 
   return (
     <>
-    <BarraVoltar volta="/votacoes" rotulo="Votações" />
-    <main className="grid gap-6 pb-8">
-      <section className={`${card} grid gap-3.5`}>
-        <p className="text-xs text-suave">
-          <Link href="/votacoes" className="underline underline-offset-2">{nomeCasa(v)}</Link> · Plenário · {dataLonga(v.data)}
-        </p>
-        <div>
-          <h1 className="text-[28px] leading-tight font-semibold sm:text-[34px]">{titulo(v)}</h1>
-          {tipoPorExtenso(v.proposicao) && <p className="mt-1 text-sm text-suave">{tipoPorExtenso(v.proposicao)}</p>}
-          {v.temas && (
-            <p className="mt-2 flex flex-wrap gap-1.5" aria-label="Temas oficiais">
-              {v.temas.map((t) => <span key={t} className="rounded-md bg-destaque/20 px-2 py-0.5 text-xs font-semibold">{t}</span>)}
-            </p>
-          )}
-        </div>
-        {v.ementa && (
-          <div className="grid gap-2 border-t border-borda pt-3.5" aria-labelledby="vt-oque">
-            <div>
-              <h2 id="vt-oque" className={TITULO_SECAO}>O que é</h2>
-              <p className="text-xs text-suave">Ementa oficial, sem resumo nosso</p>
-            </div>
-            <TextoLongo texto={v.ementa} rotulo="Ler a ementa inteira" />
-            {v.proposta && (
-              <p className="text-[13px] text-suave">
-                {v.proposta.apresentacao && <>Apresentada em {ddmmaaaa(v.proposta.apresentacao)}</>}
-                {v.proposta.apresentacao && v.proposta.situacao && " · "}
-                {v.proposta.situacao && <>situação: {v.proposta.situacao}</>}
-              </p>
-            )}
-          </div>
+    <BarraVoltar volta="/votacoes" rotulo="Votações" titulo={`${nomeCasa(v)} · Plenário`} />
+    <main className="grid gap-4 pb-8">
+      <header className="grid gap-1.5 px-1">
+        <span className="text-[13px] text-suave">{dataLonga(v.data)}</span>
+        <h1 className="text-[34px] leading-10 font-bold tracking-[-0.6px]">{titulo(v)}</h1>
+        {tipoPorExtenso(v.proposicao) && <span className="text-[15px] text-texto/80">{tipoPorExtenso(v.proposicao)}</span>}
+        {v.temas && v.temas.length > 0 && (
+          <div className="mt-1 flex flex-wrap gap-1.5" aria-label="Temas oficiais">{v.temas.map((t) => <Tema key={t} t={t} />)}</div>
         )}
-        <a href={v.urlOficial} {...externo} className="inline-flex h-11 w-fit items-center rounded-full bg-preench px-4 text-[13px] font-semibold text-texto no-underline hover:bg-preench-forte">
-          Texto completo {v.casa === "senado" ? "no Senado" : "na Câmara"} ›
-        </a>
+      </header>
+
+      <section className="vidro grid gap-2 rounded-card p-[18px]" aria-labelledby="vt-oque">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-3">
+          <h2 id="vt-oque" className="text-[17px] font-semibold">O que é</h2>
+          <span className="text-[13px] text-suave">Ementa oficial, sem resumo nosso</span>
+        </div>
+        {v.ementa ? <TextoLongo texto={v.ementa} rotulo="Ler a ementa inteira" /> : <p className="text-[15px] text-suave">— A fonte não traz a ementa desta matéria.</p>}
+        {v.proposta && (v.proposta.apresentacao || v.proposta.situacao) && (
+          <p className="text-[13px] text-suave">
+            {v.proposta.apresentacao && <>Apresentada em {ddmmaaaa(v.proposta.apresentacao)}</>}
+            {v.proposta.apresentacao && v.proposta.situacao && " · "}
+            {v.proposta.situacao && <>situação: {v.proposta.situacao}</>}
+          </p>
+        )}
+        <a href={v.urlOficial} {...externo} className="inline-flex min-h-11 items-center text-[15px] font-semibold no-underline">Texto completo {naCasa(v)} ›</a>
       </section>
 
-      <section className={`${card} grid gap-3`} aria-labelledby="vt-resultado">
-        <div className="flex items-start justify-between gap-3">
-          <h2 id="vt-resultado" className={TITULO_SECAO}>Resultado</h2>
-          {/* A regra de aprovação do tipo fica num "i" no canto (pedido de 2026-11-14); popover nativo, sem JavaScript. */}
-          {regra && <>
-            <button type="button" popoverTarget="vt-regra" aria-label="Como este tipo de proposta é aprovado"
-              className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-preench text-sm font-semibold text-link hover:bg-preench-forte">i</button>
-            <div id="vt-regra" popover="auto" className="m-auto max-w-[min(24rem,calc(100vw-2rem))] rounded-card bg-card p-4 text-left text-sm leading-relaxed text-texto shadow-xl backdrop:bg-black/40">
-              <p>{regra}</p>
-              <button type="button" popoverTarget="vt-regra" popoverTargetAction="hide" className="mt-3 text-[13px] font-semibold text-link">Fechar</button>
-            </div>
-          </>}
+      <section className="vidro grid gap-3.5 rounded-[30px] px-[18px] py-5" aria-label="Resultado">
+        <div className="flex items-center justify-between gap-3">
+          {v.resultado ? <SeloResultado r={v.resultado} grande /> : <span className="text-[15px] font-semibold">Resultado não informado pela fonte</span>}
+          {necessarios != null && !sem && <span className="text-[13px] text-suave">{inteiro(necessarios)} necessários</span>}
         </div>
-        <p className="text-[15px] leading-relaxed">
-          <strong>Votado nesse dia:</strong> {objeto ? EXPLICA_OBJETO[objeto] : "a descrição está na página oficial"}{turno ? `, ${turno}` : ""}.
-        </p>
-        <p className="text-[32px] leading-none font-semibold">
-          {v.resultado === "aprovada" ? "Aprovada" : v.resultado === "rejeitada" ? "Rejeitada" : "Resultado não informado pela fonte"}
-        </p>
-        {v.secreta || v.semDirecao ? (
-          <p className="text-sm leading-relaxed text-suave">
+        {sem ? (
+          <p className="text-sm leading-relaxed text-texto/75">
             {v.secreta ? "Votação secreta: o Senado publica só quem votou, não como." : "Escolha de pessoa: a Câmara registra quem votou, mas não divulga a direção dos votos."}
             {" "}<strong className="text-texto">{inteiro(votaram)}</strong> {pessoas} votaram e {inteiro(c.naoVotou)} não votaram.
           </p>
         ) : (
           <>
-            <div className="grid gap-1 pt-3">
-              <BarraPlacar sim={c.sim} nao={c.nao} abst={c.abstencao + c.obstrucao} cadeiras={cadeiras} necessarios={necessarios} alto />
-              {necessarios != null && (
-                <span className="relative block h-4 text-[11px] text-suave">
-                  <span className="absolute -translate-x-1/2 whitespace-nowrap" style={{ left: `${(necessarios / cadeiras) * 100}%` }}>{necessarios} necessários</span>
-                </span>
-              )}
+            <div className="relative pt-1">
+              <div role="img" aria-label={`Placar: ${c.sim} Sim, ${c.nao} Não, ${c.abstencao} abstenções, ${c.naoVotou} não votaram, de ${cadeiras} cadeiras`}
+                className="flex h-[22px] overflow-hidden rounded-[11px] bg-white/8">
+                <span className="bg-verde" style={{ flex: `${c.sim} 1 0` }} />
+                <span className="bg-vermelho" style={{ flex: `${c.nao} 1 0` }} />
+                <span className="bg-[rgba(235,235,245,0.5)]" style={{ flex: `${c.abstencao + c.obstrucao + c.outros} 1 0` }} />
+                <span style={{ flex: `${c.naoVotou} 1 0` }} />
+              </div>
+              {necessarios != null && <span aria-hidden="true" className="absolute top-0 h-[30px] w-0.5 rounded-[1px] bg-white" style={{ left: `${(necessarios / cadeiras) * 100}%` }} />}
             </div>
-            <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm tabular-nums">
-              <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-texto" aria-hidden="true" /><strong>{inteiro(c.sim)}</strong> Sim</li>
-              <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-suave" aria-hidden="true" /><strong>{inteiro(c.nao)}</strong> Não</li>
-              <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-borda-forte" aria-hidden="true" /><strong>{inteiro(c.abstencao)}</strong> Abst.</li>
-              {c.obstrucao > 0 && <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm bg-borda-forte" aria-hidden="true" /><strong>{inteiro(c.obstrucao)}</strong> Obstrução</li>}
-              {c.outros > 0 && <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm border border-borda" aria-hidden="true" /><strong>{inteiro(c.outros)}</strong> {v.casa === "senado" ? "presidente da sessão" : "sem direção divulgada"}</li>}
-              <li className="flex items-center gap-1.5"><span className="size-2.5 rounded-sm border border-borda bg-preench" aria-hidden="true" /><strong>{inteiro(c.naoVotou)}</strong> Não votou</li>
-            </ul>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="grid"><span className="text-[28px] font-bold text-[#5EE37E] tabular-nums">{inteiro(c.sim)}</span><span className="text-[13px] text-suave">Sim</span></div>
+              <div className="grid"><span className="text-[28px] font-bold text-[#FF7A70] tabular-nums">{inteiro(c.nao)}</span><span className="text-[13px] text-suave">Não</span></div>
+              <div className="grid"><span className="text-[28px] font-bold tabular-nums">{inteiro(c.abstencao)}</span><span className="text-[13px] text-suave">Abst.</span></div>
+            </div>
           </>
         )}
-        <p className="text-xs text-suave">
-          De {cadeiras} cadeiras. Fonte: <a href={v.urlOficial} {...externo} className="underline underline-offset-2">votação {v.casa === "senado" ? "no Senado" : "na Câmara"} ›</a>
+        <p className="text-[13px] leading-[18px] text-texto/75">
+          {sem ? `De ${cadeiras} cadeiras.` : `${extras}.`} <a href={v.urlOficial} {...externo} className="no-underline">Votação {naCasa(v)} ›</a>
+        </p>
+        <p className="border-t border-borda pt-3 text-[13px] leading-[18px] text-texto/75">
+          Votado nesse dia: {objeto ? EXPLICA_OBJETO[objeto] : "a descrição está na página oficial"}{turno ? `, ${turno}` : ""}.{regra ? ` ${regra}` : ""}
         </p>
       </section>
 
-      <section className={`${card} grid gap-1`} aria-labelledby="vt-partidos">
-        <div className="mb-1">
-          <h2 id="vt-partidos" className={TITULO_SECAO}>Como votou cada partido</h2>
-          <p className="text-xs text-suave">Pelo partido de cada parlamentar no dia da votação, em ordem de tamanho da bancada. A orientação é a do líder do partido (ou da federação ou do bloco que o inclui). Toque num partido para ver como votou cada um.</p>
+      <section className="grid gap-2" aria-labelledby="vt-partidos">
+        <h2 id="vt-partidos" className="px-1 text-[22px] font-bold tracking-[-0.3px]">Como votou cada partido</h2>
+        <p className="px-1 pb-1 text-[13px] leading-[18px] text-suave">Pelo partido de cada parlamentar no dia, em ordem de tamanho da bancada. A orientação é a do líder do partido, da federação ou do bloco.</p>
+        <div className="vidro overflow-hidden rounded-card">
+          <ul>{v.partidos.slice(0, PRIMEIROS).map((p, i) => <LinhaPartido key={p.partido} p={p} v={v} primeiro={i === 0} />)}</ul>
+          {v.partidos.length > PRIMEIROS && (
+            <details className="group/mais border-t border-borda">
+              <summary className="flex min-h-12 cursor-pointer list-none items-center px-4 text-[15px] font-semibold text-link group-open/mais:hidden [&::-webkit-details-marker]:hidden">Ver os {v.partidos.length} partidos</summary>
+              <ul>{v.partidos.slice(PRIMEIROS).map((p, i) => <LinhaPartido key={p.partido} p={p} v={v} primeiro={i === 0} />)}</ul>
+            </details>
+          )}
         </div>
-        <ul>{v.partidos.slice(0, PRIMEIROS).map((p) => <LinhaPartido key={p.partido} p={p} v={v} />)}</ul>
-        {v.partidos.length > PRIMEIROS && (
-          <details className="group">
-            <summary className="flex h-11 cursor-pointer list-none items-center text-[13px] font-semibold text-link group-open:hidden">Ver os {v.partidos.length} partidos</summary>
-            <ul>{v.partidos.slice(PRIMEIROS).map((p) => <LinhaPartido key={p.partido} p={p} v={v} />)}</ul>
-          </details>
-        )}
         {v.naoVotouSemPartido > 0 && (
-          <p className="pt-2 text-xs text-suave">Mais {v.naoVotouSemPartido} deputados não votaram e não têm o partido identificado aqui: não estão no nosso registro de mandatos (como quem saiu da Câmara e não disputou 2026).</p>
+          <p className="px-1 text-xs text-suave">Mais {v.naoVotouSemPartido} deputados não votaram e não têm o partido identificado aqui: não estão no nosso registro de mandatos (como quem saiu da Câmara e não disputou 2026).</p>
         )}
-        <p className="pt-2"><Link href={hrefSecao("congresso")} className="text-[13px] no-underline">Como contamos</Link></p>
+        <p className="px-1"><Link href={hrefSecao("congresso")} className="text-[13px] no-underline">Como contamos</Link></p>
       </section>
+
       {v.caminho.length > 1 && (
-        <section className={`${card} grid gap-3`} aria-labelledby="vt-caminho">
+        <section className="vidro grid gap-3 rounded-card p-[18px]" aria-labelledby="vt-caminho">
           <div>
-            <h2 id="vt-caminho" className={TITULO_SECAO}>O caminho da proposta</h2>
+            <h2 id="vt-caminho" className="text-[17px] font-semibold">O caminho da proposta</h2>
             <p className="text-xs text-suave">As votações nominais desta matéria no Plenário {v.casa === "senado" ? "do Senado" : "da Câmara"}. Votações simbólicas e de comissão não entram.</p>
           </div>
           <ol className="grid">
@@ -239,7 +224,6 @@ export default async function PaginaVotacao({ params }: Props) {
           </ol>
         </section>
       )}
-
     </main>
     </>
   );

@@ -34,6 +34,8 @@ export interface Escolha {
   situacao: string;
   /** Crachá, quando existe. */
   href: string | null;
+  /** Número de urna, para as casinhas do santinho (E23s); escolhas antigas não têm. */
+  numero?: string | null;
 }
 
 export interface Santinho {
@@ -59,6 +61,8 @@ export interface ItemExecutivo {
   /** Crachá do executivo, quando existe (só para os eleitos). */
   href: string | null;
   busca: string;
+  /** Número de urna (casinhas do santinho, E23s); opcional em índices antigos. */
+  num?: string | null;
 }
 
 export const idExecutivo = (e: Pick<ExecutivoEleito, "cargo" | "uf">) => `executivo-${e.cargo === "presidente" ? "presidente" : (e.uf ?? "").toLowerCase()}`;

@@ -6,7 +6,7 @@ import { GLOSSARIO, SECOES, type Secao } from "@/lib/glossario";
 import { CANAIS_CONFERIDOS_EM, CANAIS_EXTERNOS, OUVIDORIA } from "@/lib/cobrar";
 import { repo } from "@/lib/repo";
 import { SUBSIDIO_CONGRESSO, subsidioEm } from "@/lib/salario";
-import { CARD, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
+import { TITULO_PAGINA } from "@/lib/estilo";
 
 // Metodologia de cada número, fontes, privacidade e licenças (E15). Toda métrica da interface
 // linka para uma seção daqui (via components/Termo.tsx). Os números desta página saem do mesmo
@@ -30,9 +30,9 @@ const REPO_URL = "https://github.com/lucasmsze-ops/fiscaliza";
 function Secao({ id, children }: { id: Secao; children: React.ReactNode }) {
   const titulo = SECOES.find((s) => s.id === id)!.titulo;
   return (
-    <section id={id} className="mt-10 scroll-mt-4" aria-labelledby={`h-${id}`}>
-      <h2 id={`h-${id}`} className={TITULO_SECAO}><a href={`#${id}`} className="no-underline hover:underline">{titulo}</a></h2>
-      <div className="mt-3 grid gap-3 text-sm leading-relaxed">{children}</div>
+    <section id={id} className="vidro scroll-mt-16 rounded-card p-[18px]" aria-labelledby={`h-${id}`}>
+      <h2 id={`h-${id}`} className="text-[17px] font-semibold"><a href={`#${id}`} className="text-texto no-underline hover:underline">{titulo}</a></h2>
+      <div className="mt-3 grid gap-3 text-[15px] leading-relaxed text-texto/85">{children}</div>
     </section>
   );
 }
@@ -71,20 +71,38 @@ export default async function ComoFunciona() {
 
   return (
     <>
-    <BarraVoltar volta="/" rotulo="Visão geral" />
-    <main className="mx-auto max-w-xl pb-8">
-      <h1 className={TITULO_PAGINA}>Como funciona</h1>
-      <p className="mt-3 text-sm leading-relaxed">
-        O Fiscaliza mostra o que os dados abertos do TSE, da Câmara dos Deputados e do Senado Federal registram sobre quem recebeu seu voto.
-        Cada número tem uma regra de cálculo, descrita nesta página, e um link para a página oficial de origem.
-        O site não qualifica ninguém: mostra o número e a fonte. Nenhum dado é inventado: o que a fonte não traz aparece como lacuna, nunca como zero.
-      </p>
+    <BarraVoltar volta="/" rotulo="Início" />
+    <main className="mx-auto grid max-w-xl gap-4 pb-8">
+      <div className="grid gap-2.5 px-1">
+        <h1 className={TITULO_PAGINA}>Como funciona</h1>
+        <p className="text-[17px] leading-[23px] text-texto/85">O Fiscaliza mostra o que os dados abertos do TSE, da Câmara dos Deputados e do Senado Federal registram sobre quem recebeu seu voto.</p>
+        <p className="text-[15px] leading-[21px] text-suave">O site não qualifica ninguém: mostra o número e a fonte. Cada número tem uma regra de cálculo, descrita nesta página, e um link para a página oficial. O que a fonte não traz aparece como lacuna, nunca como zero.</p>
+      </div>
 
-      <nav aria-label="Seções" className="mt-6 rounded-card bg-card p-4 text-sm">
-        <ol className="grid gap-1 sm:grid-cols-2">
-          {SECOES.map((s) => <li key={s.id}><a href={`#${s.id}`} className="no-underline hover:underline">{s.titulo}</a></li>)}
-        </ol>
-      </nav>
+      <section aria-label="Cobertura" className="grid grid-cols-2 gap-2.5">
+        {([
+          [n(politicos.length), "pessoas acompanhadas"],
+          [n(municipios.length), "municípios com lista de mais votados"],
+          [n(camara.length), `votações nominais na Câmara (${faixa(camara)})`],
+          [n(senado.length), `no Senado (${faixa(senado)}), ${n(secretas)} secretas`],
+        ] as const).map(([v, t]) => (
+          <div key={t} className="vidro grid content-start gap-1 rounded-[24px] p-4">
+            <span className="text-[28px] font-bold tabular-nums">{v}</span><span className="text-[13px] text-suave">{t}</span>
+          </div>
+        ))}
+      </section>
+
+      <section aria-labelledby="cf-nesta" className="grid gap-2">
+        <h2 id="cf-nesta" className="px-5 text-[13px] font-semibold tracking-[0.4px] text-suave uppercase">Nesta página</h2>
+        <nav aria-label="Seções" className="vidro overflow-hidden rounded-card">
+          {SECOES.map((x, i) => (
+            <a key={x.id} href={`#${x.id}`} className={`flex min-h-12 items-center gap-3 px-4 py-1 text-base text-texto no-underline hover:bg-white/5 hover:text-texto ${i ? "border-t border-borda" : ""}`}>
+              <span className="flex-1">{x.titulo}</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(235,235,245,0.55)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+            </a>
+          ))}
+        </nav>
+      </section>
 
       <Secao id="cobertura">
         <p>
@@ -107,7 +125,7 @@ export default async function ComoFunciona() {
 
       <Secao id="cidade">
         <p>
-          <strong>Mapa e cidade:</strong> na Visão geral, ao tocar num estado ou escolher a cidade, o site mostra quem está no
+          <strong>Mapa e cidade:</strong> no Mapa, ao tocar num estado ou escolher a cidade, o site mostra quem está no
           cargo hoje em Brasília por aquele estado: os 3 senadores e a contagem de deputados federais (todos eleitos pelo estado
           inteiro). Governador, prefeito, deputados estaduais e vereadores entram depois. Contornos dos estados:{" "}
           <Ext href="https://github.com/giuliano-macedo/geodata-br-states">geodata-br-states</Ext> (licença MIT), a partir das
@@ -247,7 +265,7 @@ export default async function ComoFunciona() {
           &quot;Saúde&quot; ou &quot;Segurança Pública&quot;). Não é classificação nossa; matéria sem classificação fica sem tema.
         </p>
         <p>
-          <strong>Presidente e governador:</strong> na Visão geral, os eleitos em 2026 segundo o TSE, com a data da posse: 5 de janeiro de 2027
+          <strong>Presidente e governador:</strong> no Mapa, os eleitos em 2026 segundo o TSE, com a data da posse: 5 de janeiro de 2027
           para o presidente e 6 de janeiro para os governadores (Emenda Constitucional 111/2021).
           Não há fonte aberta de quem está no cargo hoje (governadores que renunciaram em abril de 2026 para disputar a eleição foram
           substituídos pelos vices), por isso o site mostra só o eleito e a data da posse.

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { BarraTopo } from "@/components/BarraTopo";
 import { PainelVotacoes } from "@/components/PainelVotacoes";
 import { montarVotacoes } from "@/lib/congresso";
 import { repo } from "@/lib/repo";
@@ -17,7 +16,7 @@ export default async function Votacoes() {
   const coleta = atualizacoes.map((a) => a.coletadoEm).sort().at(-1) ?? null;
   return (
     <>
-      <BarraTopo busca="votacoes" />
+      <div aria-hidden="true" className="h-3 lg:h-6" />
       <PainelVotacoes pauta={pauta} porDia={d.porDia} mesInicial={d.mesInicial} votacoesMes={d.votacoesMes} ultimaSessao={d.ultimaSessao} coleta={coleta} />
     </>
   );

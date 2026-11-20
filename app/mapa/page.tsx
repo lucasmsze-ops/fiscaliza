@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { BarraTopo } from "@/components/BarraTopo";
 import { VisaoGeral } from "@/components/VisaoGeral";
 import { repo } from "@/lib/repo";
 import { montarVisao } from "@/lib/visao";
@@ -14,7 +13,6 @@ export default async function Mapa() {
   const d = await montarVisao(repo);
   return (
     <>
-      <BarraTopo busca="politicos" />
       <VisaoGeral d={d} />
     </>
   );

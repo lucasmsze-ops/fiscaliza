@@ -12,7 +12,7 @@ export default async function Amostra() {
   const cards = (await Promise.all(AMOSTRA.map((id) => repo.getCard(id)))).filter((c) => c !== null);
   return (
     <>
-    <BarraVoltar volta="/" rotulo="Visão geral" />
+    <BarraVoltar volta="/" rotulo="Início" />
     <main className="mx-auto max-w-5xl pb-8">
       <h1 className="text-2xl font-semibold">Amostra da sonda</h1>
       <p className="mt-1 text-sm text-suave">{cards.length} políticos de SP, dados oficiais (TSE, Câmara, Senado).</p>

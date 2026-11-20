@@ -5,10 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { hrefVotacao } from "@/lib/votacao";
 import { inteiro } from "@/lib/card";
 import type { PaginaDados, PropostaListada, VotoListado } from "@/lib/pagina";
-import { BOTAO, NUMERO, ROTULO as ROTULO_NUMERO } from "@/lib/estilo";
-import { hrefSecao } from "@/lib/glossario";
-import { SelectChip } from "./SelectChip";
-import { normalizar } from "@/lib/texto";
+import { Info } from "./Termo";
 import type { TipoVoto } from "@/lib/types";
 
 const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
@@ -17,18 +14,11 @@ const ROTULO: Record<TipoVoto, string> = {
   sim: "Sim", nao: "Não", abstencao: "Abstenção", obstrucao: "Obstrução", art17: "Presidia a sessão",
   nao_informado: "Voto não divulgado", secreto: "Votou (secreta)", ausente: "Não registrou voto",
 };
-const COR_VOTO: Partial<Record<TipoVoto, string>> = {
-  sim: "bg-verde/20 text-verde",
-  nao: "bg-vermelho/20 text-vermelho",
-};
 /** Sigla por extenso: a pessoa entende "Projeto de lei" sem saber o que é PL. */
 const TIPO: Record<string, string> = {
   PL: "Projeto de lei", PLP: "Projeto de lei complementar", PEC: "Proposta de emenda à Constituição",
   PDL: "Projeto de decreto legislativo", PRC: "Projeto de resolução", PRS: "Projeto de resolução",
 };
-const sel = "h-10 rounded-[10px] bg-preench px-3 text-base text-texto placeholder:text-suave sm:text-[15px]";
-const th = "border-b border-borda px-2 pb-3 text-left text-xs font-semibold text-suave";
-const td = "border-b border-borda px-2 py-3 align-middle text-[13px]";
 
 function Selo({ x }: { x: PropostaListada }) {
   return (
@@ -39,75 +29,46 @@ function Selo({ x }: { x: PropostaListada }) {
 }
 
 /** Cores da pizza (skill dataviz, forma "ênfase": um destaque e o resto em cinza; validado contra #1C1C1E). */
-const COR_NORMA = "var(--serie-1)";
+const COR_NORMA = "#0A84FF"; // systemBlue escuro, como no protótipo
 const COR_RESTO = "#8e8e93"; // systemGray
 
 /**
- * Números e pizza da aba Propostas (pedido de 2026-11-14): apresentadas e quantas viraram norma, no período
- * do filtro de ano (todos os anos = o total). Só contagem da fonte, sem nota nem comparação com outros
- * políticos (CLAUDE.md, princípio 4). A explicação fica atrás do botão "i", em popover nativo.
+ * "Efetividade das propostas" do protótipo Liquid Glass: a pizza e, ao lado, quantas viraram norma e quantas
+ * foram apresentadas, no período do filtro de ano. Só contagem da fonte, sem nota (CLAUDE.md, princípio 4).
  */
-function NumerosPropostas({ leis, primeiro, norma, periodo }: { leis: number; primeiro: number; norma: number; periodo: string }) {
+function Efetividade({ leis, norma, periodo }: { leis: number; norma: number; periodo: string }) {
   const pct = leis > 0 ? (norma / leis) * 100 : 0;
   const pctTexto = (v: number) => `${v > 0 && v < 1 ? "<1" : Math.round(v)}%`;
   const r = 52, c = 2 * Math.PI * r;
   return (
-    <div className="grid gap-2.5">
-      <div className="grid grid-cols-2 gap-2.5">
-        <div className="grid content-start gap-1 rounded-xl bg-preench p-3.5">
-          <span className={ROTULO_NUMERO}>Apresentadas</span>
-          <strong className={NUMERO}>{inteiro(leis)}</strong>
-          <span className="text-xs text-suave">{periodo}, {inteiro(primeiro)} como primeiro autor</span>
-        </div>
-        <div className="grid content-start gap-1 rounded-xl bg-preench p-3.5">
-          <span className={ROTULO_NUMERO}>Viraram norma</span>
-          <strong className={NUMERO}>{inteiro(norma)}</strong>
-          <span className="text-xs text-suave">{pctTexto(pct)} das apresentadas</span>
-        </div>
+    <figure className="grid gap-3.5 rounded-[18px] border border-white/8 bg-white/6 p-4">
+      <figcaption className="flex items-center justify-between gap-3">
+        <span className="text-[15px] font-semibold">Efetividade das propostas</span>
+        <Info id="pr-efetividade" termo="propostasLei" rotulo="Como estes números são contados"
+          explicacao="Conta as propostas que podem virar lei em que a pessoa está entre os autores, como primeiro autor ou coautor. Virou norma: aprovada e transformada em lei, emenda constitucional, decreto legislativo ou resolução. As recentes ainda podem estar em tramitação." />
+      </figcaption>
+      <div className="flex items-center gap-4">
+        <svg viewBox="0 0 140 140" className="size-28 shrink-0" role="img" aria-label={`${pctTexto(pct)} das propostas viraram norma: ${norma} de ${leis}`}>
+          <circle cx="70" cy="70" r={r} fill="none" stroke={COR_RESTO} strokeWidth="22" />
+          {norma > 0 && <circle cx="70" cy="70" r={r} fill="none" stroke={COR_NORMA} strokeWidth="22" strokeDasharray={`${(pct / 100) * c} ${c}`} transform="rotate(-90 70 70)" />}
+        </svg>
+        <dl className="grid flex-1 gap-3">
+          <div className="grid gap-0.5"><dt className="text-xs text-suave">Viraram norma</dt><dd className="flex items-baseline gap-1.5"><span className="text-2xl leading-7 font-semibold tabular-nums">{inteiro(norma)}</span><span className="text-[13px] font-semibold text-texto/60 tabular-nums">{pctTexto(pct)}</span></dd></div>
+          <div className="grid gap-0.5 border-t border-borda pt-3"><dt className="text-xs text-suave">Apresentadas</dt><dd className="flex items-baseline gap-1.5"><span className="text-2xl leading-7 font-semibold tabular-nums">{inteiro(leis)}</span><span className="text-[13px] font-semibold text-texto/60 tabular-nums">100%</span></dd></div>
+        </dl>
       </div>
-
-      <figure className="grid gap-3 rounded-xl bg-preench p-3.5">
-        <figcaption className="flex items-start justify-between gap-3">
-          <span className="text-[15px] font-semibold">Quantas viraram norma</span>
-          <button type="button" popoverTarget="pr-info" aria-label="Como estes números são contados"
-            className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-preench text-sm font-semibold text-link hover:bg-preench-forte">i</button>
-          <div id="pr-info" popover="auto" className="m-auto max-w-[min(24rem,calc(100vw-2rem))] rounded-card bg-card p-4 text-left text-sm leading-relaxed text-texto shadow-xl backdrop:bg-black/40">
-            <p>
-              Conta as propostas que podem virar lei (PL, PLP, PEC, PDL e projeto de resolução) em que a pessoa está entre os autores,
-              como primeiro autor ou coautor. &quot;Virou norma&quot; é a situação oficial &quot;transformada em norma jurídica&quot;: a
-              proposta foi aprovada e virou lei, emenda constitucional, decreto legislativo ou resolução. Uma proposta pode levar
-              anos para isso: as recentes ainda podem estar em tramitação.
-            </p>
-            <p className="mt-3 flex items-center justify-between gap-3 text-xs">
-              <a href={hrefSecao("propostas")} className="font-semibold no-underline">Como calculamos</a>
-              <button type="button" popoverTarget="pr-info" popoverTargetAction="hide" className="font-semibold text-link">Fechar</button>
-            </p>
-          </div>
-        </figcaption>
-        <div className="flex items-center gap-4 sm:gap-[18px]">
-          <svg viewBox="0 0 140 140" className="size-[110px] shrink-0 sm:size-[130px]" role="img"
-            aria-label={`${pctTexto(pct)} viraram norma (${norma} de ${leis}), ${pctTexto(100 - pct)} não viraram`}>
-            <circle cx="70" cy="70" r={r} fill="none" stroke={COR_RESTO} strokeWidth="22" />
-            {norma > 0 && <circle cx="70" cy="70" r={r} fill="none" stroke={COR_NORMA} strokeWidth="22" strokeDasharray={`${(pct / 100) * c} ${c}`} transform="rotate(-90 70 70)" />}
-          </svg>
-          <div className="grid gap-3">
-            {([[COR_NORMA, pct, `viraram norma (${inteiro(norma)})`], [COR_RESTO, 100 - pct, `não viraram ou seguem em tramitação (${inteiro(leis - norma)})`]] as const).map(([cor, v, t]) => (
-              <div key={t} className="flex items-start gap-2.5">
-                <span className="mt-1.5 size-3 shrink-0 rounded-full" style={{ background: cor }} />
-                <span><span className="text-xl font-semibold tabular-nums">{pctTexto(v)}</span><br /><span className="text-xs text-suave">{t}</span></span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </figure>
-    </div>
+      <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-texto/75">
+        <span className="flex items-center gap-1.5"><span aria-hidden="true" className="size-2.5 rounded-full" style={{ background: COR_NORMA }} />Viraram norma ({inteiro(norma)})</span>
+        <span className="flex items-center gap-1.5"><span aria-hidden="true" className="size-2.5 rounded-full" style={{ background: COR_RESTO }} />Não viraram ou seguem em tramitação ({inteiro(leis - norma)})</span>
+      </div>
+      <span className="text-[11px] text-texto/60">Propostas {periodo} · PL, PLP, PEC, PDL e projeto de resolução</span>
+    </figure>
   );
 }
 
 function Propostas({ id, p }: { id: string; p: NonNullable<PaginaDados["propostas"]> }) {
   const [todas, setTodas] = useState<PropostaListada[] | null>(p.leis <= p.ultimas.length ? p.ultimas : null);
   const [ano, setAno] = useState("todos");
-  const [q, setQ] = useState("");
   const [lim, setLim] = useState(6);
   // A lista completa (até centenas de propostas) só vem quando a pessoa abre a página: fica na CDN.
   useEffect(() => {
@@ -116,66 +77,50 @@ function Propostas({ id, p }: { id: string; p: NonNullable<PaginaDados["proposta
   }, [id, todas]);
   const lista = todas ?? p.ultimas;
   const anos = useMemo(() => [...new Set(lista.map((x) => x.ano))].sort((a, b) => b - a), [lista]);
-  const qn = normalizar(q);
-  const filtradas = lista.filter((x) => (ano === "todos" || String(x.ano) === ano) && (!qn || normalizar(x.ementa ?? "").includes(qn)));
+  const filtradas = lista.filter((x) => ano === "todos" || String(x.ano) === ano);
   const doAno = ano === "todos" || !todas ? null : todas.filter((x) => String(x.ano) === ano);
   const numeros = doAno
-    ? { leis: doAno.length, primeiro: doAno.filter((x) => x.primeiroAutor).length, norma: doAno.filter((x) => x.virouNorma).length, periodo: `em ${ano}` }
-    : { leis: p.leis, primeiro: p.primeiroAutor, norma: p.viraramNorma, periodo: `desde ${p.desde}` };
-  const meta = (x: PropostaListada) => `${TIPO[x.tipo] ?? x.tipo} · ${x.casa === "senado" ? "Senado" : "Câmara"} · ${x.primeiroAutor ? "primeiro autor" : "coautor"}${x.virouNorma ? " · virou norma" : ""}`;
+    ? { leis: doAno.length, norma: doAno.filter((x) => x.virouNorma).length, periodo: `de ${ano}` }
+    : { leis: p.leis, norma: p.viraramNorma, periodo: `desde ${p.desde}` };
+  const meta = (x: PropostaListada) => `${TIPO[x.tipo] ?? x.tipo} · ${x.casa === "senado" ? "Senado" : "Câmara"} · ${x.primeiroAutor ? "primeiro autor" : "coautor"}`;
 
-  if (p.leis === 0) return <p className="text-sm text-suave">Nenhuma proposta que pode virar lei com autoria desde {p.desde}. {p.outras > 0 && `${inteiro(p.outras)} requerimentos, emendas e outros pedidos.`}</p>;
+  if (p.leis === 0) return <p className="rounded-[18px] bg-white/6 p-4 text-sm leading-5 text-texto/80">Nenhuma proposta que pode virar lei com autoria desde {p.desde}. {p.outras > 0 && `${inteiro(p.outras)} requerimentos, emendas e outros pedidos.`}</p>;
   return (
     <div className="grid gap-3">
-      {/* Filtro de ano acima dos números e da pizza: eles seguem o ano escolhido (todos os anos = o total).
-          A busca no resumo fica acima da lista e vale só para ela. Até a lista completa chegar, o ano fica travado. */}
-      <div className="flex flex-wrap items-center gap-2">
-        <SelectChip valor={ano} padrao="todos" rotulo="Ano" desligado={!todas} onChange={(v) => { setAno(v); setLim(6); }}
-          opcoes={[{ valor: "todos", texto: "Todos os anos" }, ...anos.map((a) => ({ valor: String(a), texto: String(a) }))]} />
-      </div>
-      <NumerosPropostas {...numeros} />
-      <input value={q} onChange={(e) => { setQ(e.target.value); setLim(6); }} placeholder="Procurar no resumo" aria-label="Procurar no resumo" className={`${sel} mt-2 w-full outline-none focus:ring-2 focus:ring-destaque/40`} />
+      {/* Filtro de ano acima da pizza: ela segue o ano escolhido (todos os anos = o total). Até a lista completa chegar, fica travado. */}
+      <label className="relative inline-flex justify-self-start">
+        <span className="sr-only">Ano</span>
+        <select value={ano} disabled={!todas} onChange={(e) => { setAno(e.target.value); setLim(6); }}
+          className="h-[34px] appearance-none rounded-full border border-white/16 bg-white/8 pr-8 pl-3.5 text-[13px] font-semibold text-texto disabled:opacity-60">
+          <option value="todos">Todos os anos</option>
+          {anos.map((a) => <option key={a} value={String(a)}>{a}</option>)}
+        </select>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="pointer-events-none absolute top-[11px] right-3"><path d="m6 9 6 6 6-6" /></svg>
+      </label>
+      <Efetividade leis={numeros.leis} norma={numeros.norma} periodo={numeros.periodo} />
 
-      {/* Celular: lista, sem rolagem para o lado. */}
-      <ul className="grid sm:hidden">
+      <ul className="grid">
         {filtradas.slice(0, lim).map((x) => (
           <li key={`${x.casa}-${x.tipo}-${x.numero}-${x.ano}`} className="flex gap-3 border-b border-borda py-3">
             <Selo x={x} />
-            <span className="grid min-w-0 gap-1">
-              <span className="line-clamp-4 text-[15px] leading-snug" title={x.ementa ?? undefined}>{x.ementa ?? "— (a fonte não traz a ementa)"}</span>
+            <span className="grid min-w-0 flex-1 gap-1.5">
+              <span className="line-clamp-4 text-[15px] leading-5" title={x.ementa ?? undefined}>{x.ementa ?? "— (a fonte não traz a ementa)"}</span>
               <span className="text-xs text-suave">{meta(x)} · {x.ano}</span>
-              <a href={x.urlOficial} {...externo} className="text-xs font-semibold">Página oficial ›</a>
+              <span className="flex items-center justify-between gap-2">
+                <span className={`inline-flex h-[22px] items-center rounded-full border px-[9px] text-[11px] font-bold ${x.virouNorma ? "border-[#0A84FF]/50 bg-[#0A84FF]/22 text-[#8CC4FF]" : "border-white/20 bg-white/10 text-texto/85"}`}>
+                  {x.virouNorma ? "Virou norma" : "Não virou norma"}
+                </span>
+                <a href={x.urlOficial} {...externo} className="inline-flex min-h-8 items-center text-[13px] font-semibold no-underline">Ver projeto ›</a>
+              </span>
             </span>
           </li>
         ))}
       </ul>
-      {/* Tablet e computador: tabela, como no protótipo. */}
-      <table className="hidden w-full border-collapse sm:table">
-        <thead><tr><th className={th}>Proposta</th><th className={th}>Ano</th><th className={th} /></tr></thead>
-        <tbody>
-          {filtradas.slice(0, lim).map((x) => (
-            <tr key={`${x.casa}-${x.tipo}-${x.numero}-${x.ano}`}>
-              <td className={td}>
-                <span className="flex items-center gap-3">
-                  <Selo x={x} />
-                  <span className="grid gap-0.5">
-                    <span className="line-clamp-3 text-[15px] leading-snug" title={x.ementa ?? undefined}>{x.ementa ?? "— (a fonte não traz a ementa)"}</span>
-                    <span className="text-xs text-suave">{meta(x)}</span>
-                  </span>
-                </span>
-              </td>
-              <td className={`${td} font-semibold tabular-nums`}>{x.ano}</td>
-              <td className={`${td} text-right`}><a href={x.urlOficial} {...externo} className="text-xs font-semibold whitespace-nowrap text-suave no-underline hover:text-link">Detalhes ›</a></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
 
-      {filtradas.length === 0 && <p className="text-sm text-suave">Nenhuma proposta com esses filtros.</p>}
-      {/* Os totais estão nos números do topo da aba; aqui só o que não entra na lista. */}
+      {filtradas.length === 0 && <p className="text-sm text-suave">Nenhuma proposta neste ano.</p>}
       {p.outras > 0 && <p className="text-xs text-suave">Além destas, {inteiro(p.outras)} requerimentos, emendas e outros pedidos desde {p.desde}, só contados.</p>}
       {filtradas.length > lim && (
-        <button type="button" onClick={() => setLim((l) => l + 10)} className={`${BOTAO} justify-self-center`}>
+        <button type="button" onClick={() => setLim((l) => l + 10)} className="h-9 justify-self-center rounded-full border border-white/16 bg-white/10 px-4 text-[15px] font-semibold text-link">
           Ver mais propostas ({filtradas.length - lim})
         </button>
       )}
@@ -184,58 +129,36 @@ function Propostas({ id, p }: { id: string; p: NonNullable<PaginaDados["proposta
   );
 }
 
-/** Do que trata a votação (ementa da matéria) e, menor, o que exatamente foi votado. */
-function TituloVoto({ u }: { u: VotoListado }) {
-  const votado = u.descricao.replace(/\s*Sim:\s*\d.*$/s, "");
-  return (
-    <span className="grid min-w-0 gap-0.5">
-      {u.votacaoId
-        ? <Link href={hrefVotacao(u.votacaoId)} className="line-clamp-3 leading-snug font-semibold text-texto underline decoration-borda-forte underline-offset-2 hover:decoration-link">{u.ementa ?? votado}</Link>
-        : <strong className="line-clamp-3 leading-snug">{u.ementa ?? votado}</strong>}
-      {u.ementa && <span className="line-clamp-2 text-xs text-suave">Votado: {votado}</span>}
-      <span className="text-xs text-suave">{[u.proposicao, dataBr(u.data), u.resultado].filter(Boolean).join(" · ")}</span>
-    </span>
-  );
-}
-
-const Voto = ({ u }: { u: VotoListado }) => <span className={`inline-block rounded-lg px-2.5 py-1 text-xs font-semibold whitespace-nowrap ${COR_VOTO[u.voto] ?? "bg-preench"}`}>{ROTULO[u.voto]}</span>;
+const COR_VOTO: Partial<Record<TipoVoto, string>> = { sim: "bg-verde/20 text-[#5EE37E]", nao: "bg-vermelho/20 text-[#FF7A70]" };
 const orientacao = (u: VotoListado) => u.partidoNoDia && u.orientacaoPartido ? `${u.partidoNoDia}: ${u.orientacaoPartido === "Liberado" ? "liberou" : u.orientacaoPartido}` : "—";
 
+/** Aba Votos no formato do protótipo: do que trata, o que foi votado, como votou e a orientação do partido. */
 function Votos({ v }: { v: NonNullable<PaginaDados["votacoes"]> }) {
   const casa = v.casa === "senado" ? "no Senado" : "na Câmara";
-  // A coluna só aparece quando o resumo já traz a orientação (gravado a partir da E23i).
   const comOrientacao = v.ultimas.some((u) => u.partidoNoDia !== undefined);
   return (
-    <div className="grid gap-3">
-      <p className="text-sm text-suave">{inteiro(v.total)} votações nominais do plenário {v.casa === "senado" ? "do Senado" : "da Câmara"} durante o mandato, 2023–2026. As 10 mais recentes:</p>
-
-      <ul className="grid sm:hidden">
-        {v.ultimas.map((u, i) => (
-          <li key={i} className="grid gap-2 border-b border-borda py-3 text-[13px]">
-            <TituloVoto u={u} />
-            <span className="flex flex-wrap items-center justify-between gap-2">
+    <div className="grid gap-1">
+      <p className="mb-1 text-sm leading-[19px] text-suave">{inteiro(v.total)} votações nominais do plenário {v.casa === "senado" ? "do Senado" : "da Câmara"} durante o mandato, 2023–2026. As mais recentes:</p>
+      <ul className="grid">
+        {v.ultimas.map((u, i) => {
+          const votado = u.descricao.replace(/\s*Sim:\s*\d.*$/s, "");
+          return (
+            <li key={i} className="grid gap-2 border-b border-borda py-3">
+              <span className="line-clamp-3 text-sm leading-[19px] font-semibold">{u.ementa ?? votado}</span>
+              {u.ementa && <span className="line-clamp-2 text-xs leading-4 text-suave">Votado: {votado}</span>}
+              <span className="text-xs text-suave">{[u.proposicao, dataBr(u.data), u.resultado].filter(Boolean).join(" · ")}</span>
               <span className="flex flex-wrap items-center gap-2">
-                <Voto u={u} />
-                {comOrientacao && <span className="text-xs text-suave">orientação do partido: {orientacao(u)}</span>}
+                <span className="text-xs text-texto/75">Como votou:</span>
+                <span className={`inline-flex h-6 items-center rounded-lg px-2.5 text-xs font-bold whitespace-nowrap ${COR_VOTO[u.voto] ?? "bg-white/10 text-texto"}`}>{ROTULO[u.voto]}</span>
+                {comOrientacao && <span className="text-xs text-suave">partido: {orientacao(u)}</span>}
               </span>
-              <a href={u.urlOficial} {...externo} className="text-xs font-semibold">Ver {casa} ↗</a>
-            </span>
-          </li>
-        ))}
+              {u.votacaoId
+                ? <Link href={hrefVotacao(u.votacaoId)} className="inline-flex min-h-8 items-center justify-self-start text-[13px] font-semibold no-underline">Ver votação ›</Link>
+                : <a href={u.urlOficial} {...externo} className="inline-flex min-h-8 items-center justify-self-start text-[13px] font-semibold no-underline">Ver {casa} ↗</a>}
+            </li>
+          );
+        })}
       </ul>
-      <table className="hidden w-full border-collapse sm:table">
-        <thead><tr><th className={th}>Votação</th>{comOrientacao && <th className={th}>Orientação do partido</th>}<th className={th}>Voto</th><th className={th}>Página oficial</th></tr></thead>
-        <tbody>
-          {v.ultimas.map((u, i) => (
-            <tr key={i}>
-              <td className={td}><TituloVoto u={u} /></td>
-              {comOrientacao && <td className={`${td} text-suave`}>{orientacao(u)}</td>}
-              <td className={td}><Voto u={u} /></td>
-              <td className={td}><a href={u.urlOficial} {...externo} className="text-xs font-semibold whitespace-nowrap">Ver {casa} ↗</a></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 }
@@ -249,13 +172,13 @@ export function AbasMandato({ id, propostas, votacoes }: { id: string; propostas
   const [ativa, setAtiva] = useState(abas[0]?.k);
   if (!abas.length) return null;
   return (
-    <section className="grid gap-3.5 rounded-card bg-card p-4 sm:p-5" aria-labelledby="cr-mandato">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <section className="vidro grid gap-3.5 rounded-card px-4 py-[18px]" aria-labelledby="cr-mandato">
+      <div className="grid gap-3">
         <h2 id="cr-mandato" className="text-lg font-semibold">O que fez no mandato</h2>
-        <div role="tablist" aria-label="O que fez no mandato" className="flex gap-1 rounded-card bg-preench p-1">
+        <div role="tablist" aria-label="O que fez no mandato" className="flex w-full gap-1 rounded-[21px] border border-white/10 bg-white/8 p-1">
           {abas.map((a) => (
             <button key={a.k} type="button" role="tab" aria-selected={ativa === a.k} id={`aba-${a.k}`} aria-controls={`painel-${a.k}`} onClick={() => setAtiva(a.k)}
-              className={`h-9 rounded-full px-[18px] text-xs font-semibold ${ativa === a.k ? "bg-card shadow-[0_2px_5.5px_rgba(0,0,0,.06)]" : "hover:bg-card/60"}`}>{a.l}</button>
+              className={`h-[34px] flex-1 rounded-[17px] px-[18px] text-xs font-semibold ${ativa === a.k ? "bg-white/20" : "hover:bg-white/8"}`}>{a.l}</button>
           ))}
         </div>
       </div>

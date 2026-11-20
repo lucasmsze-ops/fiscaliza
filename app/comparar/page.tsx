@@ -22,7 +22,7 @@ export default async function PaginaComparar() {
   })).filter((a) => a.pessoas.length >= 2);
   return (
     <>
-      <BarraVoltar volta="/" rotulo="Visão geral" />
+      <BarraVoltar volta="/mapa" rotulo="Mapa" />
       <Comparar atalhos={atalhos} pessoas={pessoas} />
     </>
   );

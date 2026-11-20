@@ -30,7 +30,7 @@ export function Termo({ id, termo, explicacao, children }: {
       <span
         id={alvo}
         popover="auto"
-        className="m-auto max-w-[min(22rem,calc(100vw-2rem))] rounded-card bg-card p-4 text-left text-sm leading-relaxed text-texto shadow-xl backdrop:bg-black/40"
+        className="m-auto max-w-[min(22rem,calc(100vw-2rem))] rounded-[22px] vidro-forte bg-[rgba(44,45,52,0.94)] p-4 text-left text-sm leading-relaxed text-texto backdrop:bg-black/40"
       >
         <span className="block font-semibold">{g.titulo}</span>
         {explicacao && <span className="mt-1 block">{explicacao}</span>}
@@ -43,5 +43,32 @@ export function Termo({ id, termo, explicacao, children }: {
         </span>
       </span>
     </span>
+  );
+}
+
+/**
+ * Botão "i" de vidro do protótipo Liquid Glass (30 px, no canto do cartão), com a mesma explicação do Termo.
+ * Popover nativo: abre com toque ou teclado e fecha ao tocar fora.
+ */
+export function Info({ id, termo, explicacao, rotulo }: { id: string; termo: TermoGlossario; explicacao?: string; rotulo: string }) {
+  const g = GLOSSARIO[termo];
+  const alvo = `info-${id}`;
+  return (
+    <>
+      <button type="button" popoverTarget={alvo} aria-label={rotulo}
+        className="inline-flex size-[30px] shrink-0 items-center justify-center rounded-full border border-white/18 bg-white/8 text-link shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] hover:bg-white/16">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" /><path d="M12 11v6M12 7.4h.01" /></svg>
+      </button>
+      <span id={alvo} popover="auto"
+        className="m-auto max-w-[min(22rem,calc(100vw-2rem))] rounded-[22px] vidro-forte bg-[rgba(44,45,52,0.94)] p-4 text-left text-[13px] leading-[18px] text-texto/90 backdrop:bg-black/40">
+        <span className="block font-semibold text-texto">{g.titulo}</span>
+        {explicacao && <span className="mt-1 block">{explicacao}</span>}
+        <span className="mt-1 block text-suave">{g.texto}</span>
+        <span className="mt-3 flex items-center justify-between gap-3 text-xs">
+          <a href={hrefSecao(g.secao)} className="font-semibold no-underline">{g.secao === "glossario" ? "Outros termos" : "Como calculamos"}</a>
+          <button type="button" popoverTarget={alvo} popoverTargetAction="hide" className="font-semibold text-link">Fechar</button>
+        </span>
+      </span>
+    </>
   );
 }

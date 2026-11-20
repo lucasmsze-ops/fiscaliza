@@ -85,10 +85,10 @@ export default async function PaginaExecutivo({ params }: Props) {
 
   return (
     <>
-    <BarraVoltar volta={e.uf ? `/?uf=${e.uf}` : "/"} rotulo="Visão geral" />
+    <BarraVoltar volta={e.uf ? `/mapa?uf=${e.uf}` : "/mapa"} rotulo="Mapa" />
     <main className="grid gap-6 pb-8">
       <section aria-labelledby="nome-executivo">
-        <div className="flex items-center gap-3 rounded-card bg-card p-4 sm:gap-5 sm:p-5">
+        <div className="flex items-center gap-3 rounded-card vidro p-4 sm:gap-5 sm:p-5">
           {e.fotoUrl
             // <img> de propósito: a foto vem direto da URL oficial do TSE, sem passar pela Vercel (CLAUDE.md).
             ? <img src={e.fotoUrl} alt={`Foto oficial de ${e.nomeUrna}`} width={90} height={90} decoding="async" className="size-16 shrink-0 rounded-full bg-preench object-cover object-top sm:size-[90px]" />

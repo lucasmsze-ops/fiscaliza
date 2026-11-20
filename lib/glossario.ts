@@ -32,6 +32,11 @@ type Entrada = { titulo: string; texto: string; secao: Secao };
 const definir = <T extends Record<string, Entrada>>(g: T) => g;
 
 export const GLOSSARIO = definir({
+  cadeiras: {
+    titulo: "Como contamos as cadeiras",
+    texto: "Cada bolinha é uma cadeira, na cor do partido de quem a ocupa hoje (licenciado dá lugar ao suplente em exercício). A partir de fev/2027: os eleitos em 2026, com o partido registrado hoje.",
+    secao: "congresso",
+  },
   participacao: {
     titulo: "Participação em votações",
     texto: "Percentual das votações nominais do plenário, durante o mandato, em que registrou voto (Sim, Não, Abstenção ou Obstrução). Licença não é descontada. No Senado, inclui as votações secretas.",

@@ -25,6 +25,15 @@ export interface EventoAcompanhar {
   orientacao?: string | null;
   /** "PL 123/2025". */
   materia?: string | null;
+  /** Linha do tempo do Monitorando (protótipo Liquid Glass, E23s); opcionais, calculados na hora pelo resumo. */
+  casa?: "camara" | "senado";
+  /** Voto: resultado da votação e o que foi votado (descrição oficial, sem o placar). */
+  resultado?: "aprovada" | "rejeitada" | null;
+  votado?: string;
+  /** Proposta: situação oficial e autoria. */
+  virouNorma?: boolean;
+  situacao?: string | null;
+  primeiroAutor?: boolean;
 }
 
 export interface ResumoAcompanhar {
@@ -57,11 +66,11 @@ export function resumoExecutivo(e: ExecutivoEleito): ResumoAcompanhar {
 
 const sem = (s: string) => s.replace(/\s*Sim:\s*\d.*$/s, "");
 
-function deVoto(u: VotoListado): EventoAcompanhar | null {
+function deVoto(u: VotoListado, casa: "camara" | "senado"): EventoAcompanhar | null {
   if (!u.votacaoId) return null;
   return {
     chave: `v:${u.votacaoId}`, tipo: "voto", data: u.data, titulo: u.ementa ?? sem(u.descricao), href: `/votacoes/${u.votacaoId.replace(":", "-")}`, externo: false,
-    voto: u.voto, materia: u.proposicao,
+    voto: u.voto, materia: u.proposicao, casa, resultado: u.resultado ?? null, votado: sem(u.descricao),
     orientacao: u.partidoNoDia && u.orientacaoPartido ? `${u.partidoNoDia} ${u.orientacaoPartido === "Liberado" ? "liberou a bancada" : `orientou ${u.orientacaoPartido}`}` : null,
   };
 }
@@ -69,10 +78,11 @@ function deVoto(u: VotoListado): EventoAcompanhar | null {
 export function resumoParaAcompanhar(pg: PaginaDados): ResumoAcompanhar {
   const c = pg.card, n = c.numeros;
   const f = pg.fidelidade, totalF = f ? f.com + f.contra : 0;
-  const votos = (pg.votacoes?.ultimas ?? []).map(deVoto).filter((x): x is EventoAcompanhar => x !== null);
+  const votos = (pg.votacoes?.ultimas ?? []).map((u) => deVoto(u, pg.votacoes!.casa)).filter((x): x is EventoAcompanhar => x !== null);
   const propostas = (pg.propostas?.ultimas ?? []).map((p): EventoAcompanhar => ({
     chave: `p:${p.casa}:${p.tipo} ${p.numero}/${p.ano}`, tipo: "proposta", data: p.apresentacao, titulo: p.ementa ?? `${p.tipo} ${p.numero}/${p.ano}`,
     href: p.urlOficial, externo: true, materia: `${p.tipo} ${p.numero}/${p.ano}`,
+    casa: p.casa, virouNorma: p.virouNorma, situacao: p.situacao, primeiroAutor: p.primeiroAutor,
   }));
   return {
     id: c.id, nomeUrna: c.nomeUrna, cargo: c.cargo, partidoUf: c.partidoUf, fotoUrl: c.fotoUrl,

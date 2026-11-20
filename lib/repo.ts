@@ -32,6 +32,8 @@ export interface Repo {
   getCard(id: string): Promise<CardDados | null>;
   /** A página do político pronta (lib/pagina.ts#montarPagina), com o card dentro. */
   getPagina(id: string): Promise<PaginaDados | null>;
+  /** Os números do card (participação, afastamento) de vários políticos de uma vez (lista do estado no Mapa, E23s). */
+  listarNumeros(ids: string[]): Promise<Map<string, CardDados["numeros"]>>;
   getPolitico(id: string): Promise<Politico | null>;
   listarPoliticos(): Promise<Politico[]>;
   /** Busca por nome de urna ou nome civil, sem acento nem caixa. */
@@ -137,6 +139,10 @@ export class JsonRepo implements Repo {
   }
   getPagina(id: string) {
     return montarPagina(this, id);
+  }
+  async listarNumeros(ids: string[]) {
+    const cards = await Promise.all(ids.map(async (id) => [id, (await montarCard(this, id))?.numeros] as const));
+    return new Map(cards.filter((c): c is readonly [string, CardDados["numeros"]] => !!c[1]));
   }
   async getPolitico(id: string) {
     return (await this.por("politicos", "id")).get(id)?.[0] ?? null;

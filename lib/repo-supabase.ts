@@ -51,6 +51,15 @@ export class SupabaseRepo implements Repo {
     const [r] = await selecionar<{ card: CardDados }>(this.cli, "resumos", `select=card&politico_id=eq.${v(id)}&order=politico_id`);
     return r?.card ?? null;
   }
+  /** Todos os resumos de uma vez (só o `numeros` do card, ~3,7 mil linhas), guardados por TTL_MS. */
+  async listarNumeros(ids: string[]) {
+    const todos = await this.lembrar("numeros", async () => {
+      const ls = await selecionar<{ politico_id: string; numeros: CardDados["numeros"] | null }>(this.cli, "resumos", "select=politico_id,numeros:card->numeros&order=politico_id");
+      return new Map(ls.filter((l) => l.numeros).map((l) => [l.politico_id, l.numeros!]));
+    });
+    const quer = new Set(ids);
+    return new Map([...todos].filter(([id]) => quer.has(id)));
+  }
   async getAutorias(id: string) {
     const ls = await selecionar<{ ordem: number; proposicao: Linha<Proposicao> }>(this.cli, "proposicoes_autores",
       `select=ordem,proposicao:proposicoes(*)&politico_id=eq.${v(id)}&order=proposicao_id`);

@@ -2,28 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { ResumoAcompanhar } from "@/lib/acompanhar";
 import type { ItemBusca } from "@/lib/card";
-import { BOTAO, CARD, ROTULO, TITULO_SECAO } from "@/lib/estilo";
-import { alternar, monitora, useMonitorando } from "@/lib/monitorando";
-import { NOME_FONTE, type Noticia } from "@/lib/noticias";
-import type { ItemPautaAutores } from "@/lib/pauta";
 import { CARGOS, ELEICOES, eleitoNoStatus, type AnoEleicao, type CargoSantinho, type Escolha, type ItemExecutivo } from "@/lib/quem-votei";
 import { definirUf, escolher, tirar, useSantinho } from "@/lib/quem-votei-estado";
 import { NOME_UF } from "@/lib/regioes";
 import { normalizar } from "@/lib/texto";
-import type { TipoVoto } from "@/lib/types";
-import { tipoPorExtenso } from "@/lib/votacao";
-import { SelectChip } from "./SelectChip";
+import { ChipPartido } from "./ChipPartido";
+import { EmBreve } from "./EmBreve";
 
-const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
-const VOTO: Record<TipoVoto, string> = {
-  sim: "Votou Sim", nao: "Votou Não", abstencao: "Absteve-se", obstrucao: "Votou obstrução", art17: "Presidia a sessão",
-  nao_informado: "Votou (direção não divulgada)", secreto: "Votou (votação secreta)", ausente: "Não registrou voto",
-};
-const ddmm = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
-/** Data de publicação no fuso de Brasília (a matéria das 23h não vira o dia seguinte). */
-const diaBr = (iso: string) => new Date(iso).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" });
 const ufsOrdenadas = Object.keys(NOME_UF).sort((x, y) => NOME_UF[x]!.localeCompare(NOME_UF[y]!, "pt-BR"));
 
 /** Índices de busca (CDN), baixados uma vez, só quando a pessoa abre a busca de um cargo. */
@@ -37,13 +23,13 @@ async function candidatos(cargo: CargoSantinho, uf: string | null): Promise<(Esc
   if (cargo === "governador" || cargo === "presidente") {
     return (await indiceExecutivos()).filter((e) => e.cargo === cargo && (cargo === "presidente" || !uf || e.uf === uf)).map((e) => ({
       id: e.id, nome: e.nomeUrna, tipo: "executivo", eleito: e.eleito, fotoUrl: e.fotoUrl, partido: e.uf ? `${e.partido}-${e.uf}` : e.partido,
-      situacao: e.situacao, href: e.href, busca: e.busca,
+      situacao: e.situacao, href: e.href, busca: e.busca, numero: e.num ?? null,
     }));
   }
   // Políticos: só quem disputou o cargo em 2026 (quem está "em exercício" sem candidatura não estava na urna).
   return (await indicePoliticos()).filter((p) => p.cargoChave === cargo && p.st !== "em_exercicio" && (!uf || p.partidoUf.endsWith(`-${uf}`))).map((p) => ({
     id: p.id, nome: p.nomeUrna, tipo: "politico", eleito: eleitoNoStatus(p.st), fotoUrl: p.fotoUrl, partido: p.partidoUf,
-    situacao: p.status, href: `/p/${p.id}`, busca: p.busca,
+    situacao: p.status, href: `/p/${p.id}`, busca: p.busca, numero: p.num ?? null,
   }));
 }
 
@@ -52,20 +38,6 @@ function Foto({ url, tamanho = 40 }: { url: string | null; tamanho?: number }) {
     // <img> de propósito: a foto vem direto da URL oficial, sem passar pela Vercel (CLAUDE.md).
     ? <img src={url} alt="" width={tamanho} height={tamanho} loading="lazy" className="shrink-0 rounded-full bg-preench object-cover object-top" style={{ width: tamanho, height: tamanho }} />
     : <span aria-hidden="true" className="shrink-0 rounded-full bg-preench" style={{ width: tamanho, height: tamanho }} />;
-}
-
-/** "+ Monitorar" do santinho: ligado só para quem foi eleito (quem não foi não tem mandato para acompanhar). */
-function MonitorarEscolha({ x }: { x: Escolha }) {
-  const on = monitora(useMonitorando(), x.id);
-  if (!x.eleito) {
-    return <button type="button" disabled title="Não eleito em 2026: não há mandato para acompanhar" className="inline-flex h-8 shrink-0 cursor-not-allowed items-center rounded-full bg-preench px-3 text-[13px] font-semibold text-suave opacity-50">Monitorar</button>;
-  }
-  return (
-    <button type="button" aria-pressed={on} onClick={() => alternar(x.id, x.nome)}
-      className={`inline-flex h-8 shrink-0 items-center rounded-full px-3 text-[13px] font-semibold whitespace-nowrap ${on ? "bg-destaque text-destaque-texto" : "bg-preench text-link hover:bg-preench-forte"}`}>
-      {on ? "✓ Monitorando" : "+ Monitorar"}
-    </button>
-  );
 }
 
 /** Busca dentro de um cargo do santinho: nome de urna, nome civil ou número de urna. */
@@ -84,11 +56,11 @@ function Escolher({ ano, cargo, uf, ja, fechar }: { ano: AnoEleicao; cargo: Carg
   // Antes da coleta de todos os candidatos (E23q) o índice só tem os eleitos: aí o aviso explica.
   const soEleitos = executivo && !!lista && lista.every((x) => x.eleito);
   return (
-    <div className="grid gap-2 rounded-xl bg-preench p-2.5">
+    <div className="grid gap-2 rounded-2xl border border-white/14 bg-white/6 p-2.5">
       <div className="flex items-center gap-2">
         <input ref={campo} type="search" value={q} onChange={(e) => setQ(e.target.value)} autoComplete="off"
           placeholder={executivo ? "Nome do candidato" : "Nome ou número de urna"} aria-label="Buscar candidato"
-          className="h-9 min-w-0 flex-1 rounded-[10px] bg-card px-3 text-base text-texto outline-none placeholder:text-suave focus:ring-2 focus:ring-destaque/40 sm:text-[15px]" />
+          className="h-10 min-w-0 flex-1 rounded-full border border-white/14 bg-white/8 px-4 text-base text-texto outline-none placeholder:text-suave focus:ring-2 focus:ring-destaque/40" />
         <button type="button" onClick={fechar} className="shrink-0 text-[13px] font-semibold text-link">Cancelar</button>
       </div>
       {!lista ? <p className="px-1 text-[13px] text-suave">Carregando…</p> : (
@@ -114,176 +86,112 @@ function Escolher({ ano, cargo, uf, ja, fechar }: { ano: AnoEleicao; cargo: Carg
   );
 }
 
-/** Uma linha do santinho: o cargo, quem a pessoa escolheu e o botão para escolher. */
-function Cargo({ ano, c, s }: { ano: AnoEleicao; c: (typeof CARGOS)[number]; s: ReturnType<typeof useSantinho> }) {
+/** Casinhas do número de urna (protótipo Liquid Glass): azuis com o número quando há escolha, vazias senão. */
+function Casinhas({ n, numero }: { n: number; numero: string | null }) {
+  const dig = numero && numero.length === n ? numero.split("") : null;
+  return (
+    <div aria-label={dig ? `Número ${numero}` : `Número de ${n} dígitos${numero === null ? ", vazio" : ""}`} className="flex shrink-0 gap-[5px]">
+      {Array.from({ length: n }, (_, j) => (
+        <span key={j} className={`flex h-[46px] w-[34px] items-center justify-center rounded-[11px] border text-[26px] font-bold text-white tabular-nums shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] ${dig ? "border-[rgba(140,196,255,0.6)] bg-[rgba(64,156,255,0.22)]" : "border-white/18 bg-white/6"}`}>{dig?.[j] ?? ""}</span>
+      ))}
+    </div>
+  );
+}
+
+/** Dígitos do número de urna de cada cargo. */
+const DIGITOS: Record<CargoSantinho, number> = { presidente: 2, governador: 2, senador: 3, deputado_federal: 4, deputado_estadual: 5 };
+/** Do cargo mais alto ao mais baixo, como no protótipo; o senador ocupa duas linhas (1º e 2º voto). */
+const ORDEM: CargoSantinho[] = ["presidente", "governador", "senador", "deputado_federal", "deputado_estadual"];
+
+/** Uma linha do santinho: o cargo, as casinhas, quem a pessoa escolheu (com "Trocar") ou o botão para escolher. */
+function Vaga({ ano, c, i, s, primeira }: { ano: AnoEleicao; c: (typeof CARGOS)[number]; i: number; s: ReturnType<typeof useSantinho>; primeira: boolean }) {
   const [buscando, setBuscando] = useState(false);
   const escolhas = s.escolhas[c.chave] ?? [];
-  const ja = new Set(escolhas.map((x) => x.id));
+  const x = escolhas[i] ?? null;
+  const ja = new Set(escolhas.map((e) => e.id));
+  const rotulo = c.chave === "senador" ? `Senador · ${i + 1}º voto` : c.chave === "deputado_estadual" ? "Deputado estadual" : c.rotulo;
+  const partido = x?.partido.replace(/-[A-Z]{2}$/, "");
   return (
-    <div className="grid gap-2 border-t border-borda pt-3 first:border-t-0 first:pt-0">
-      <p className={ROTULO}>{c.rotulo}{c.vagas > 1 ? ` · ${c.vagas} votos` : ""}</p>
+    <div className={`relative grid gap-2.5 px-5 pt-3.5 pb-4 ${primeira ? "" : "border-t border-borda"} ${c.acompanha ? "" : "opacity-60"}`}>
+      <div className="flex items-start justify-between gap-3">
+        <h3 className="pt-0.5 text-[17px] leading-[21px] font-bold">{rotulo}</h3>
+        <Casinhas n={DIGITOS[c.chave]} numero={x ? x.numero ?? "" : null} />
+      </div>
       {!c.acompanha ? (
-        <p className="rounded-xl bg-preench p-3 text-[13px] text-suave">
-          Ainda não acompanhamos deputados estaduais e distritais. O Fiscaliza começa pelo Congresso, pelo presidente e pelos governadores; as assembleias vêm depois.
-        </p>
+        <p className="text-[13px] leading-[18px] text-texto/75">Ainda não acompanhamos deputados estaduais e distritais. O Fiscaliza começa pelo Congresso, pelo presidente e pelos governadores.</p>
+      ) : x ? (
+        <div className="flex items-center justify-between gap-2.5">
+          <div className="grid min-w-0 gap-0.5">
+            {x.href ? <Link href={x.href} className="text-xl leading-6 font-extrabold tracking-[-0.2px] text-texto no-underline hover:text-texto">{x.nome}</Link> : <span className="text-xl leading-6 font-extrabold tracking-[-0.2px]">{x.nome}</span>}
+            <span className="flex flex-wrap items-center gap-1.5">{partido && <ChipPartido sigla={partido} />}<span className="text-[13px] text-texto/75">{x.situacao}</span></span>
+          </div>
+          <button type="button" onClick={() => { tirar(ano, c.chave, x.id); setBuscando(true); }}
+            className="h-9 shrink-0 rounded-full border border-white/18 bg-white/8 px-3.5 text-[13px] font-semibold text-texto">Trocar</button>
+        </div>
+      ) : buscando ? (
+        <Escolher ano={ano} cargo={c.chave} uf={s.uf} ja={ja} fechar={() => setBuscando(false)} />
       ) : (
-        <>
-          {escolhas.map((x) => (
-            // Nome inteiro na primeira linha; no celular o "Monitorar" desce para baixo do nome, no tablet fica ao lado.
-            <div key={x.id} className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 rounded-xl bg-preench p-2.5 sm:grid-cols-[auto_minmax(0,1fr)_auto_auto]">
-              <Foto url={x.fotoUrl} />
-              <span className="grid min-w-0">
-                {x.href ? <Link href={x.href} className="text-[15px] leading-snug font-semibold text-texto no-underline">{x.nome}</Link> : <strong className="text-[15px] leading-snug font-semibold">{x.nome}</strong>}
-                <span className="text-xs text-suave">{x.partido} · {x.situacao}</span>
-              </span>
-              <span className="col-start-2 row-start-2 justify-self-start sm:col-start-3 sm:row-start-1"><MonitorarEscolha x={x} /></span>
-              <button type="button" onClick={() => tirar(ano, c.chave, x.id)} aria-label={`Tirar ${x.nome} do santinho`}
-                className="col-start-3 row-start-1 inline-flex size-8 shrink-0 items-center justify-center rounded-full text-suave hover:bg-preench-forte hover:text-texto sm:col-start-4">×</button>
-            </div>
-          ))}
-          {buscando
-            ? <Escolher ano={ano} cargo={c.chave} uf={s.uf} ja={ja} fechar={() => setBuscando(false)} />
-            : escolhas.length < c.vagas && (
-              <button type="button" onClick={() => setBuscando(true)} className={`${BOTAO} justify-self-start`}>
-                + {escolhas.length ? "Escolher o segundo voto" : "Escolher em quem votei"}
-              </button>
-            )}
-        </>
+        <button type="button" onClick={() => setBuscando(true)}
+          className="flex min-h-12 items-center justify-center gap-1.5 rounded-2xl border-[1.5px] border-dashed border-[rgba(64,156,255,0.6)] bg-[rgba(64,156,255,0.08)] text-[15px] font-semibold text-[#8CC4FF] hover:bg-[rgba(64,156,255,0.16)]">
+          + {c.chave === "senador" && i === 1 ? "Escolher o 2º voto" : "Escolher em quem votei"}
+        </button>
       )}
     </div>
   );
 }
 
-/** O que aconteceu com quem a pessoa votou: votos recentes no Plenário, projetos deles na pauta e notícias das agências oficiais. */
-function OQueAconteceu({ escolhas }: { escolhas: Escolha[] }) {
-  const politicos = escolhas.filter((x) => x.tipo === "politico");
-  const ids = politicos.map((x) => x.id).join(",");
-  const [resumos, setResumos] = useState<Record<string, ResumoAcompanhar | "erro">>({});
-  const [pauta, setPauta] = useState<ItemPautaAutores[] | null>(null);
-  const [noticias, setNoticias] = useState<Record<string, Noticia[]>>({});
-  const [limVotos, setLimVotos] = useState(6);
-  const [limNoticias, setLimNoticias] = useState(6);
-  useEffect(() => {
-    for (const x of politicos) {
-      if (resumos[x.id]) continue;
-      fetch(`/dados/acompanhar/${x.id}`).then(async (r) => {
-        const v = r.ok ? await r.json() as ResumoAcompanhar : "erro" as const;
-        setResumos((a) => ({ ...a, [x.id]: v }));
-      }).catch(() => setResumos((a) => ({ ...a, [x.id]: "erro" })));
-    }
-    for (const x of politicos) {
-      if (noticias[x.id]) continue;
-      fetch(`/dados/noticias/${x.id}`).then(async (r) => {
-        const v = r.ok ? await r.json() as Noticia[] : [];
-        setNoticias((a) => ({ ...a, [x.id]: v }));
-      }).catch(() => setNoticias((a) => ({ ...a, [x.id]: [] })));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ids]);
-  useEffect(() => { fetch("/dados/pauta").then(async (r) => setPauta(r.ok ? await r.json() as ItemPautaAutores[] : [])).catch(() => setPauta([])); }, []);
-
-  const nomes = new Map(politicos.map((x) => [x.id, x.nome]));
-  const votos = politicos.flatMap((x) => { const r = resumos[x.id]; return r && r !== "erro" ? r.eventos.filter((e) => e.tipo === "voto").map((e) => ({ ...e, quem: x.nome })) : []; })
-    .sort((a, b) => b.data.localeCompare(a.data) || a.quem.localeCompare(b.quem, "pt-BR"));
-  const pautados = (pauta ?? []).flatMap((x) => { const deles = x.autores.filter((a) => nomes.has(a)); return deles.length ? [{ ...x, deles }] : []; });
-  const carregandoVotos = politicos.some((x) => !resumos[x.id]);
-  // A mesma matéria pode citar duas pessoas do santinho: uma linha só, com os dois nomes.
-  const materias = [...new Map(politicos.flatMap((x) => noticias[x.id] ?? []).map((n) => [n.id, n])).values()]
-    .sort((a, b) => b.data.localeCompare(a.data));
-  const carregandoNoticias = politicos.some((x) => !noticias[x.id]);
-
-  if (!politicos.length) return null;
-  return (
-    <section className={`${CARD} grid gap-5`} aria-labelledby="qv-novo">
-      <h2 id="qv-novo" className={TITULO_SECAO}>O que aconteceu</h2>
-
-      <div className="grid gap-2.5">
-        <h3 className="text-[15px] font-semibold">Votos no Plenário</h3>
-        {carregandoVotos ? <p className="text-sm text-suave">Carregando…</p> : votos.length === 0 ? (
-          <p className="text-[15px] text-suave">Nenhum voto de quem você votou nas votações nominais recentes. Quem foi eleito pela primeira vez em 2026 começa a votar em fevereiro de 2027.</p>
-        ) : (
-          <>
-            <ul className="grid">
-              {votos.slice(0, limVotos).map((v) => (
-                <li key={`${v.quem}-${v.chave}`} className="grid gap-1 border-t border-borda py-2.5 first:border-t-0 first:pt-0">
-                  <span className="text-xs text-suave">{ddmm(v.data)} · {v.quem} · {v.voto ? VOTO[v.voto] : "Votou"}{v.orientacao ? ` · ${v.orientacao}` : ""}</span>
-                  <Link href={v.href} className="line-clamp-2 text-[15px] leading-snug text-texto no-underline hover:underline">{v.titulo}</Link>
-                  {v.materia && <span className="text-xs text-suave">{v.materia}</span>}
-                </li>
-              ))}
-            </ul>
-            {votos.length > limVotos && <button type="button" onClick={() => setLimVotos((l) => l + 10)} className={`${BOTAO} justify-self-center`}>Ver mais ({votos.length - limVotos})</button>}
-          </>
-        )}
-      </div>
-
-      <div className="grid gap-2.5">
-        <h3 className="text-[15px] font-semibold">Projetos na pauta do Plenário</h3>
-        {!pauta ? <p className="text-sm text-suave">Carregando…</p> : pautados.length === 0 ? (
-          <p className="text-[15px] text-suave">Nenhum projeto de autoria de quem você votou está na pauta marcada agora. A pauta sai poucos dias antes de cada sessão.</p>
-        ) : (
-          <ul className="grid">
-            {pautados.map((x) => (
-              <li key={x.id} className="grid gap-1 border-t border-borda py-2.5 first:border-t-0 first:pt-0">
-                <span className="text-xs text-suave">{x.casa === "senado" ? "Senado" : "Câmara"} · {ddmm(x.data)}{x.hora ? ` · ${x.hora.replace(":00", "h").replace(":", "h")}` : ""} · autoria de {x.deles.map((a) => nomes.get(a)).join(", ")}</span>
-                <a href={x.urlOficial} {...externo} className="line-clamp-2 text-[15px] leading-snug text-texto no-underline hover:underline">{(x.relacionada ? x.ementaRelacionada ?? x.ementa : x.ementa) ?? x.materia}</a>
-                <span className="text-xs text-suave">{x.materia}{tipoPorExtenso(x.materia) ? ` · ${tipoPorExtenso(x.materia)}` : ""}{x.apreciacao ? ` · ${x.apreciacao}` : ""}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      <div className="grid gap-2.5">
-        <h3 className="text-[15px] font-semibold">Notícias das agências da Câmara e do Senado</h3>
-        {carregandoNoticias ? <p className="text-sm text-suave">Carregando…</p> : materias.length === 0 ? (
-          <p className="text-[15px] text-suave">Nenhuma matéria recente da Agência Câmara ou da Agência Senado cita quem você votou.</p>
-        ) : (
-          <>
-            <ul className="grid">
-              {materias.slice(0, limNoticias).map((n) => (
-                <li key={n.id} className="grid gap-1 border-t border-borda py-2.5 first:border-t-0 first:pt-0">
-                  <span className="text-xs text-suave">{NOME_FONTE[n.fonte]} · {diaBr(n.data)} · cita {n.politicos.filter((p) => nomes.has(p)).map((p) => nomes.get(p)).join(", ")}</span>
-                  <a href={n.url} {...externo} className="line-clamp-2 text-[15px] leading-snug text-texto no-underline hover:underline">{n.titulo} <span className="text-suave">↗</span></a>
-                </li>
-              ))}
-            </ul>
-            {materias.length > limNoticias && <button type="button" onClick={() => setLimNoticias((l) => l + 10)} className={`${BOTAO} justify-self-center`}>Ver mais ({materias.length - limNoticias})</button>}
-          </>
-        )}
-      </div>
-
-      <p className="text-xs text-suave">Votos e pauta das fontes oficiais da Câmara e do Senado; notícias só das agências oficiais das duas Casas (sem jornais nem resumos). Tudo na coleta diária.</p>
-    </section>
-  );
-}
+const SELECT = "vidro h-11 w-full appearance-none rounded-full px-3.5 text-[15px] font-semibold text-texto";
 
 /**
- * Aba "Quem votei" (pedido de 2026-11-19): o santinho de quem a pessoa votou, por eleição (por enquanto
- * só a de 2026) e na ordem da urna; quem foi eleito entra no Monitorando. Embaixo, o que aconteceu com
- * eles: votos no Plenário e projetos na pauta. Tudo só neste navegador.
+ * Aba "Quem votei" (pedido de 2026-11-19; santinho em ingresso do protótipo Liquid Glass, E23s): por eleição (por
+ * enquanto só a de 2026), do cargo mais alto ao mais baixo; quem foi eleito entra no Monitorando, onde fica o que
+ * aconteceu com eles. Tudo só neste navegador.
  */
 export function QuemVotei() {
   const [ano, setAno] = useState<AnoEleicao>(ELEICOES[0].ano);
   const s = useSantinho(ano);
-  const todas = CARGOS.flatMap((c) => s.escolhas[c.chave] ?? []);
+  const vagas = ORDEM.flatMap((k) => { const c = CARGOS.find((x) => x.chave === k)!; return Array.from({ length: c.vagas }, (_, i) => ({ c, i })); });
+  const feitas = vagas.filter(({ c, i }) => c.acompanha && (s.escolhas[c.chave]?.length ?? 0) > i).length;
+  const total = vagas.filter(({ c }) => c.acompanha).length;
   return (
-    <div className="grid gap-6">
-      <div className="flex flex-wrap items-center gap-2">
-        <SelectChip valor={String(ano)} padrao={String(ELEICOES[0].ano)} rotulo="Eleição" onChange={(v) => setAno(Number(v) as AnoEleicao)}
-          opcoes={ELEICOES.map((e) => ({ valor: String(e.ano), texto: e.rotulo }))} />
-        <SelectChip valor={s.uf ?? "todos"} padrao="todos" rotulo="Onde você votou" onChange={(v) => definirUf(ano, v === "todos" ? null : v)}
-          opcoes={[{ valor: "todos", texto: "Onde você votou?" }, ...ufsOrdenadas.map((u) => ({ valor: u, texto: NOME_UF[u]! }))]} />
+    <div className="grid gap-[18px]">
+      <div className="grid grid-cols-2 gap-2.5">
+        <label className="grid gap-1.5">
+          <span className="px-1.5 text-[13px] text-suave">Eleição</span>
+          <select value={String(ano)} onChange={(e) => setAno(Number(e.target.value) as AnoEleicao)} className={SELECT}>
+            {ELEICOES.map((e) => <option key={e.ano} value={e.ano}>{e.rotulo}</option>)}
+          </select>
+        </label>
+        <label className="grid gap-1.5">
+          <span className="px-1.5 text-[13px] text-suave">Onde você votou</span>
+          <select value={s.uf ?? "todos"} onChange={(e) => definirUf(ano, e.target.value === "todos" ? null : e.target.value)} className={SELECT}>
+            <option value="todos">Escolha o estado</option>
+            {ufsOrdenadas.map((u) => <option key={u} value={u}>{NOME_UF[u]}</option>)}
+          </select>
+        </label>
       </div>
 
-      <section className={`${CARD} grid gap-3`} aria-labelledby="qv-santinho">
-        <div>
-          <h2 id="qv-santinho" className={TITULO_SECAO}>Meu santinho</h2>
-          <p className="mt-1 text-[13px] text-suave">Na ordem da urna de 2026. Quem foi eleito entra no Monitorando automaticamente. Fica só neste aparelho.</p>
+      <section aria-labelledby="santinho-titulo" className="vidro-forte relative grid overflow-hidden rounded-[30px]">
+        <header className="grid gap-1.5 px-5 pt-[22px] pb-[18px]">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold tracking-[2px] text-texto/75 uppercase">Eleição {ano}{s.uf ? ` · ${NOME_UF[s.uf]}` : ""}</span>
+            <span className="inline-flex h-6 items-center rounded-full border border-white/22 bg-white/14 px-2.5 text-xs font-bold tabular-nums">{feitas}/{total}</span>
+          </div>
+          <h2 id="santinho-titulo" className="text-[40px] leading-[42px] font-extrabold tracking-[-1.2px]">Quem votei?</h2>
+          <p className="text-[13px] leading-[18px] text-texto/75">Do cargo mais alto ao mais baixo. Quem foi eleito entra no Monitorando automaticamente.</p>
+        </header>
+        {/* Picote do ingresso: dois recortes na cor do fundo e a linha tracejada. */}
+        <div aria-hidden="true" className="relative h-6">
+          <span className="absolute top-0 -left-3 size-6 rounded-full bg-fundo" />
+          <span className="absolute top-0 -right-3 size-6 rounded-full bg-fundo" />
+          <span className="absolute inset-x-5 top-[11px] border-t-2 border-dashed border-white/22" />
         </div>
-        {CARGOS.map((c) => <Cargo key={c.chave} ano={ano} c={c} s={s} />)}
+        {vagas.map(({ c, i }, n) => <Vaga key={`${c.chave}-${i}`} ano={ano} c={c} i={i} s={s} primeira={n === 0} />)}
+        <footer className="flex items-center gap-1.5 border-t border-borda px-5 pt-4 pb-5 text-[13px] text-texto/75">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+          <span>Fica só neste aparelho. <EmBreve oQue="O login" className="font-semibold text-link">Faça login</EmBreve> para salvar suas informações.</span>
+        </footer>
       </section>
-
-      <OQueAconteceu escolhas={todas} />
     </div>
   );
 }
