@@ -4,7 +4,7 @@ Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
 **Etapa atual: E23n** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
-terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o e E23p foram feitas adiantadas a pedido do usuário.
+terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p e E23q foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -554,7 +554,7 @@ Hoje a tabela `executivos` só tem os 28 eleitos: quem votou em quem perdeu não
       o crachá completo, e a Visão geral e o crachá não mudam).
 - [x] `/dados/executivos` com todos (eleitos ligados ao crachá); o aviso "só os eleitos" só aparece enquanto a
       tabela estiver vazia.
-- [ ] No ar: migração rodada pelo usuário, push e cron manual.
+- [x] No ar: migração 0011 rodada pelo usuário, push e cron manual (2026-11-20).
 - Pronto quando: qualquer candidato a presidente e governador de 2026 aparece na busca do santinho.
 
 ### E23r · Notícias das agências oficiais (pedido de 2026-11-19)

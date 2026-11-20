@@ -29,7 +29,11 @@ não publicou nada: a validação barrou `politicos[1947]` sem UF. O cron já fa
 o perfil da senadora Jussara Lima (suplente em exercício, PI) passou a vir sem `UfParlamentar` e virou o id
 `jussara-lima-`. Corrigido: a UF vem da lista de em exercício quando o perfil não traz, e político sem UF sai do
 estado (com as linhas ligadas a ele) antes da validação; nunca foi publicado.
-**Próximo passo:** push da correção; cron manual; conferir a busca do santinho em produção.
+**No ar:** correção 5eff847; cron manual 44665014385 verde: saneamento tirou `jussara-lima-` (com 4 mandatos e 19
+afastamentos do estado), Senado com 82 de 82 ligados ao TSE, `jussara-lima-pi` publicada, 215 candidatos em
+`candidatos_executivo`, e os dados parados desde 18/11 publicados (998 votos, 4 votações, 659 resumos). Este commit é
+o redeploy (o índice `/dados/executivos` do deploy anterior foi gerado com a tabela vazia).
+**Próximo passo:** E23r (notícias das agências da Câmara e do Senado).
 
 ## 2026-11-19 · E23p · Quem votei
 **Feito:** a tela Monitorando ganhou duas abas (controle segmentado, `components/Segmentado.tsx`): "Quem votei"
