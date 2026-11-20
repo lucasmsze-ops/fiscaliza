@@ -13,7 +13,6 @@ import { CARD, TITULO_PAGINA, CHIP, SEGMENTO, SEGMENTO_ON, SEGMENTOS } from "@/l
 const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 const SEMANA = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
 const DIA_SEMANA = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
-const externo = { target: "_blank", rel: "noreferrer noopener" } as const;
 const chipOff = CHIP;
 const card = CARD;
 type Casa = "camara" | "senado";
@@ -27,19 +26,28 @@ const diaCurto = (iso: string) => `${SEMANA[new Date(`${iso}T12:00:00Z`).getUTCD
 const inicial = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 const ddmm = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}`;
 
-/** Item da pauta (protótipo Liquid Glass): Casa e hora em azul, temas, o assunto, a matéria e o "Avisar" (fake door, CLAUDE.md). */
-function CartaoPauta({ x }: { x: ItemPauta }) {
+/**
+ * Item da pauta (protótipo Liquid Glass): Casa e hora em azul, temas, o assunto, a matéria, o "Avisar" (fake door,
+ * CLAUDE.md) e o link para a página oficial do projeto, sempre em nova guia (pedido de 2026-11-20: o cartão não é clicável).
+ */
+export function CartaoPauta({ x }: { x: ItemPauta }) {
   const assunto = manchete(x.relacionada ? (x.ementaRelacionada ?? x.ementa) : x.ementa);
   return (
     <div className="vidro grid content-start gap-2.5 rounded-card p-[18px]">
       <span className="text-[13px] font-semibold text-link">{NOME[x.casa]} · {diaCurto(x.data)}{x.hora ? ` · ${x.hora.replace(":00", "h").replace(":", "h")}` : ""}</span>
       {x.temas && x.temas.length > 0 && <span className="flex flex-wrap gap-1.5">{x.temas.slice(0, 2).map((t) => <Tema key={t} t={t} />)}</span>}
-      <a href={x.urlOficial} {...externo} className="text-[15px] leading-5 font-semibold text-texto no-underline hover:text-texto hover:underline">{assunto || x.materia}</a>
+      <span className="text-[15px] leading-5 font-semibold">{assunto || x.materia}</span>
       <span className="text-[13px] text-suave">
         {x.relacionada ? <>Pedido ({x.materia}) sobre {x.relacionada}{tipoPorExtenso(x.relacionada) ? ` · ${tipoPorExtenso(x.relacionada)}` : ""}</> : <>{x.materia}{tipoPorExtenso(x.materia) ? ` · ${tipoPorExtenso(x.materia)}` : ""}</>}
         {x.apreciacao ? ` · ${x.apreciacao}` : ""}
       </span>
-      <ReceberAvisos id={`pauta-${x.id.replaceAll(":", "-")}`} sobre="desta votação" pequeno />
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-borda pt-2.5">
+        <ReceberAvisos id={`pauta-${x.id.replaceAll(":", "-")}`} sobre="desta votação" pequeno />
+        <a href={x.urlOficial} target="_blank" rel="noreferrer noopener" className="inline-flex min-h-11 items-center gap-1 text-[15px] font-semibold no-underline">
+          Ver o projeto {x.casa === "senado" ? "no Senado" : "na Câmara"}
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-label="abre em nova guia" role="img"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></svg>
+        </a>
+      </div>
     </div>
   );
 }

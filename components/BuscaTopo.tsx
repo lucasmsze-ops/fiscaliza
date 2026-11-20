@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ItemBusca } from "@/lib/card";
 import { CAMPO_BUSCA, FLUTUANTE } from "@/lib/estilo";
 import { normalizar } from "@/lib/texto";
+import type { ItemExecutivo } from "@/lib/quem-votei";
 import type { ItemBuscaVotacao } from "@/lib/votacao";
 
 /**
@@ -13,7 +14,7 @@ import type { ItemBuscaVotacao } from "@/lib/votacao";
  */
 export type TipoBusca = "politicos" | "votacoes" | "tudo";
 
-const INDICE = { politicos: "/dados/politicos", votacoes: "/dados/busca-votacoes" } as const;
+const INDICE = { politicos: "/dados/politicos", votacoes: "/dados/busca-votacoes", executivos: "/dados/executivos" } as const;
 const CONFIG = {
   politicos: { rotulo: "Buscar político", vazio: "Nenhum político com esse nome." },
   votacoes: { rotulo: "Buscar projeto ou votação", vazio: "Nada encontrado. Tente o número (PL 1234) ou uma palavra da ementa." },
@@ -33,13 +34,26 @@ export function BuscaTopo({ tipo, grande = false }: { tipo: TipoBusca; grande?: 
   const cfg = CONFIG[tipo];
   const quer = (k: keyof typeof INDICE) => tipo === k || tipo === "tudo";
   const [q, setQ] = useState("");
+  // A lista fecha ao tocar fora ou com Esc, sem apagar o que foi digitado; volta ao tocar no campo.
+  const [aberta, setAberta] = useState(false);
+  const caixa = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!aberta) return;
+    const fora = (e: PointerEvent) => { if (!caixa.current?.contains(e.target as Node)) setAberta(false); };
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") setAberta(false); };
+    document.addEventListener("pointerdown", fora); document.addEventListener("keydown", esc);
+    return () => { document.removeEventListener("pointerdown", fora); document.removeEventListener("keydown", esc); };
+  }, [aberta]);
   const [pessoas, setPessoas] = useState<ItemBusca[] | null>(null);
   const [votacoes, setVotacoes] = useState<ItemBuscaVotacao[] | null>(null);
+  // Presidente e governadores eleitos (E23t): quem procura "Lula" acha o crachá do executivo.
+  const [executivos, setExecutivos] = useState<ItemExecutivo[] | null>(null);
   const pedido = useRef<Promise<unknown> | null>(null);
   function carregar() {
     const baixar = <T,>(url: string, pronto: (x: T) => void) => fetch(url).then(async (r) => { if (r.ok) pronto(await r.json() as T); });
     pedido.current ??= Promise.all([
       quer("politicos") ? baixar<ItemBusca[]>(INDICE.politicos, setPessoas) : null,
+      quer("politicos") ? baixar<ItemExecutivo[]>(INDICE.executivos, (xs) => setExecutivos(xs.filter((x) => x.href))) : null,
       quer("votacoes") ? baixar<ItemBuscaVotacao[]>(INDICE.votacoes, setVotacoes) : null,
     ]).catch(() => { pedido.current = null; });
   }
@@ -51,23 +65,28 @@ export function BuscaTopo({ tipo, grande = false }: { tipo: TipoBusca; grande?: 
     // Cada palavra digitada começa alguma palavra do texto, em qualquer ordem; o índice já vem na ordem
     // em que os resultados aparecem (políticos: mais votados; votações: pauta e depois as mais recentes).
     const casa = (texto: string) => { const ps = texto.split(" "); return termos.every((x) => ps.some((w) => w.startsWith(x))); };
+    const ex: Resultado[] = t.length >= 3 && executivos ? executivos.filter((x) => casa(x.busca)).slice(0, 3)
+      .map((x) => ({ href: x.href!, externo: false, t: x.nomeUrna, d: `${x.cargo === "presidente" ? "Presidência" : `Governo ${x.uf}`} · ${x.partido} · ${x.situacao}`, foto: x.fotoUrl, pessoa: true })) : [];
     const ps: Resultado[] = t.length >= 3 && pessoas ? pessoas.filter((p) => casa(p.busca)).slice(0, tipo === "tudo" ? 4 : 7)
       .map((p) => ({ href: `/p/${p.id}`, externo: false, t: p.nomeUrna, d: `${p.cargo} · ${p.partidoUf} · ${p.status}`, foto: p.fotoUrl, pessoa: true })) : [];
     const vs: Resultado[] = votacoes ? votacoes.filter((v) => casa(v.busca)).slice(0, tipo === "tudo" ? 4 : 8).map((v) => ({ ...v, foto: null, pessoa: false })) : [];
-    return [...ps, ...vs];
-  }, [t, pessoas, votacoes, tipo]);
+    // Nome de urna igual ao digitado primeiro ("lula" → LULA antes de CADU DE LULA); a ordem dos índices desempata.
+    const exato = (r: Resultado) => (r.pessoa && normalizar(r.t) === t ? 0 : r.pessoa && normalizar(r.t).startsWith(t) ? 1 : 2);
+    const gente = [...ex, ...ps].map((r, i) => ({ r, i })).sort((a, b) => exato(a.r) - exato(b.r) || a.i - b.i).map((x) => x.r);
+    return [...gente.slice(0, tipo === "tudo" ? 5 : 8), ...vs];
+  }, [t, pessoas, votacoes, executivos, tipo]);
 
-  const carregando = t.length >= 2 && ((quer("politicos") && !pessoas) || (quer("votacoes") && !votacoes));
+  const carregando = t.length >= 2 && ((quer("politicos") && (!pessoas || !executivos)) || (quer("votacoes") && !votacoes));
   const id = `busca-${tipo}`;
   return (
-    <div className="relative w-full">
+    <div ref={caixa} className="relative w-full">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true" className={`absolute left-[18px] text-suave ${grande ? "top-[17px]" : "top-[15px]"}`}>
         <circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" />
       </svg>
       <label htmlFor={id} className="sr-only">{cfg.rotulo}</label>
       <input id={id} type="search" autoComplete="off" value={q} placeholder={cfg.rotulo}
-        onFocus={carregar} onChange={(e) => { setQ(e.target.value); carregar(); }} className={`${CAMPO_BUSCA} ${grande ? "h-[52px]" : ""}`} />
-      {t.length >= 2 && (
+        onFocus={() => { carregar(); setAberta(true); }} onChange={(e) => { setQ(e.target.value); setAberta(true); carregar(); }} className={`${CAMPO_BUSCA} ${grande ? "h-[52px]" : ""}`} />
+      {aberta && t.length >= 2 && (
         <div className={`${FLUTUANTE} absolute top-[calc(100%+8px)] right-0 z-40 w-full overflow-hidden`}>
           {resultados.map((r, i) => {
             const conteudo = <>
@@ -89,7 +108,7 @@ export function BuscaTopo({ tipo, grande = false }: { tipo: TipoBusca; grande?: 
               {carregando ? "Carregando…" : tipo === "politicos" && t.length < 3 ? "Digite pelo menos 3 letras." : cfg.vazio}
             </p>
           )}
-          <button type="button" onClick={() => setQ("")} className="min-h-11 w-full border-t border-borda p-2.5 text-[15px] font-semibold text-link">Fechar</button>
+          <button type="button" onClick={() => setAberta(false)} className="min-h-11 w-full border-t border-borda p-2.5 text-[15px] font-semibold text-link">Fechar</button>
         </div>
       )}
     </div>

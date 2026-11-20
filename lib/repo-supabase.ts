@@ -115,6 +115,9 @@ export class SupabaseRepo implements Repo {
     const lista = [...new Set(materias)].map((m) => `"${m.replace(/"/g, "")}"`).join(",");
     return this.linhas<Noticia>("noticias", `select=*&materias=ov.{${encodeURIComponent(lista)}}&data=gte.${v(desde)}&order=data,id`).catch(() => []);
   }
+  noticiasComMaterias(desde: string) {
+    return this.linhas<Noticia>("noticias", `select=*&materias=not.is.null&data=gte.${v(desde)}&order=data,id`).catch(() => []);
+  }
   listarProposicoesExecutivo() {
     // Antes da migração 0014 a tabela não existe: o crachá do presidente fica sem a seção.
     return this.lembrar("proposicoes_executivo", () => this.linhas<ProposicaoExecutivo>("proposicoes_executivo", "select=*&order=apresentacao.desc,id.desc")).catch(() => []);

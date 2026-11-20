@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { BarraVoltar } from "@/components/BarraVoltar";
 import { Termo } from "@/components/Termo";
+import { AbrirPelaAncora } from "@/components/AbrirPelaAncora";
 import { PERIODO_GOVERNO, reais } from "@/lib/card";
 import { GLOSSARIO, SECOES, type Secao } from "@/lib/glossario";
 import { CANAIS_CONFERIDOS_EM, CANAIS_EXTERNOS, OUVIDORIA } from "@/lib/cobrar";
@@ -27,13 +28,20 @@ const diaBr = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.sli
 
 const REPO_URL = "https://github.com/lucasmsze-ops/fiscaliza";
 
+/**
+ * Um assunto da página como linha que abre (pedido de 2026-11-20: o índice levava a cartões mais abaixo, o que não fazia
+ * sentido numa lista). `<details>` nativo, sem JavaScript; `AbrirPelaAncora` abre o que vier no endereço (#participacao).
+ */
 function Secao({ id, children }: { id: Secao; children: React.ReactNode }) {
   const titulo = SECOES.find((s) => s.id === id)!.titulo;
   return (
-    <section id={id} className="vidro scroll-mt-16 rounded-card p-[18px]" aria-labelledby={`h-${id}`}>
-      <h2 id={`h-${id}`} className="text-[17px] font-semibold"><a href={`#${id}`} className="text-texto no-underline hover:underline">{titulo}</a></h2>
-      <div className="mt-3 grid gap-3 text-[15px] leading-relaxed text-texto/85">{children}</div>
-    </section>
+    <details id={id} className="group scroll-mt-16 border-t border-borda first:border-t-0">
+      <summary className="flex min-h-12 cursor-pointer list-none items-center gap-3 px-4 py-2.5 text-base text-texto hover:bg-white/5 [&::-webkit-details-marker]:hidden">
+        <h2 id={`h-${id}`} className="flex-1 text-base font-normal group-open:font-semibold">{titulo}</h2>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(235,235,245,0.55)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 transition-transform group-open:rotate-90"><path d="m9 5 7 7-7 7" /></svg>
+      </summary>
+      <div className="grid gap-3 px-4 pb-4 text-[15px] leading-relaxed text-texto/85">{children}</div>
+    </details>
   );
 }
 
@@ -94,15 +102,8 @@ export default async function ComoFunciona() {
 
       <section aria-labelledby="cf-nesta" className="grid gap-2">
         <h2 id="cf-nesta" className="px-5 text-[13px] font-semibold tracking-[0.4px] text-suave uppercase">Nesta página</h2>
-        <nav aria-label="Seções" className="vidro overflow-hidden rounded-card">
-          {SECOES.map((x, i) => (
-            <a key={x.id} href={`#${x.id}`} className={`flex min-h-12 items-center gap-3 px-4 py-1 text-base text-texto no-underline hover:bg-white/5 hover:text-texto ${i ? "border-t border-borda" : ""}`}>
-              <span className="flex-1">{x.titulo}</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(235,235,245,0.55)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
-            </a>
-          ))}
-        </nav>
-      </section>
+        <AbrirPelaAncora />
+        <div className="vidro overflow-hidden rounded-card">
 
       <Secao id="cobertura">
         <p>
@@ -414,6 +415,9 @@ export default async function ComoFunciona() {
           ))}
         </dl>
       </Secao>
+        </div>
+        <p className="px-5 text-[13px] text-suave">Toque num assunto para abrir.</p>
+      </section>
     </main>
     </>
   );

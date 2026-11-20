@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plenario } from "@/components/Plenario";
-import { montarCongresso } from "@/lib/congresso";
+import { montarCongresso, montarVotacoes } from "@/lib/congresso";
+import { BuscaTopo } from "@/components/BuscaTopo";
 import { repo } from "@/lib/repo";
 import { TITULO_PAGINA } from "@/lib/estilo";
 
@@ -11,7 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default async function Congresso() {
-  const [d, atualizacoes] = await Promise.all([montarCongresso(repo), repo.getAtualizacoes()]);
+  const hoje = new Date().toISOString().slice(0, 10);
+  const [d, atualizacoes, v, pauta] = await Promise.all([montarCongresso(repo), repo.getAtualizacoes(), montarVotacoes(repo), repo.listarPauta(hoje)]);
   const coleta = atualizacoes.map((a) => a.coletadoEm).sort().at(-1);
 
   return (
@@ -20,7 +22,8 @@ export default async function Congresso() {
         <h1 className={TITULO_PAGINA}>Congresso Federal</h1>
         {coleta && <p className="text-[13px] text-suave">Atualizado em {new Date(coleta).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })}</p>}
       </header>
-      <Plenario casas={d.casas} camara2027={d.camara2027} />
+      <BuscaTopo tipo="politicos" />
+      <Plenario casas={d.casas} camara2027={d.camara2027} agenda={{ porDia: v.porDia, pauta, mesInicial: v.mesInicial, votacoesMes: v.votacoesMes }} />
     </main>
   );
 }

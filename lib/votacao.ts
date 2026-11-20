@@ -217,13 +217,14 @@ const dataBr = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.sl
 /** Ementa encurtada para a lista de resultados (o índice inteiro vai para o navegador). */
 const curta = (s: string) => (s.length > 150 ? `${s.slice(0, 149).trimEnd()}…` : s);
 
-export function itemBuscaVotacao(v: Votacao): ItemBuscaVotacao {
+/** `agencia`: título da notícia da agência sobre a votação (E23u): vira o título do resultado e entra na busca ("ajuste fiscal"). */
+export function itemBuscaVotacao(v: Votacao, agencia?: string | null): ItemBuscaVotacao {
   const texto = semCpf(v.ementa ?? v.descricao.replace(/\s*Sim:\s*\d.*$/s, ""));
   const resultado = v.resultado ? ` · ${v.resultado}` : "";
   return {
-    href: hrefVotacao(v.id), externo: false, t: curta(manchete(texto) || texto),
-    d: `${v.proposicao ?? "Votação"} · ${CASA_NOME[v.casa]} · ${dataBr(v.data)}${resultado}`,
-    busca: normalizar(`${v.proposicao ?? ""} ${tipoPorExtenso(v.proposicao) ?? ""} ${texto} ${(v.temas ?? []).join(" ")}`),
+    href: hrefVotacao(v.id), externo: false, t: curta(agencia ?? (manchete(texto) || texto)),
+    d: `${v.proposicao ?? "Votação"}${rotuloVotado(v) ? ` · ${rotuloVotado(v)}` : ""} · ${CASA_NOME[v.casa]} · ${dataBr(v.data)}${resultado}`,
+    busca: normalizar(`${v.proposicao ?? ""} ${tipoPorExtenso(v.proposicao) ?? ""} ${agencia ?? ""} ${manchete(texto)} ${texto} ${(v.temas ?? []).join(" ")}`),
   };
 }
 

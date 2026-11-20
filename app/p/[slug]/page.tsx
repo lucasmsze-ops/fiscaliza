@@ -6,6 +6,7 @@ import { BarraVoltar } from "@/components/BarraVoltar";
 import { Cracha } from "@/components/Cracha";
 import { resumoNumeros } from "@/lib/card";
 import { hrefSecao } from "@/lib/glossario";
+import { telefoneGabinete } from "@/lib/texto";
 import { repo } from "@/lib/repo";
 import { SUBSIDIO_CONGRESSO, subsidioEm } from "@/lib/salario";
 import { AreasAtuacao } from "@/components/AreasAtuacao";
@@ -53,6 +54,7 @@ export default async function PaginaPolitico({ params }: Props) {
   const coleta = (await repo.getAtualizacoes()).map((a) => a.coletadoEm).sort().at(-1);
   // A UF da cadeira, quando há mandato em curso (a de `partidoUf` é a da candidatura de 2026).
   const uf = mandato?.uf ?? c.partidoUf.slice(-2);
+  const fone = telefoneGabinete(c.comoCobrar?.telefone);
 
   return (
     <>
@@ -65,7 +67,7 @@ export default async function PaginaPolitico({ params }: Props) {
         <section aria-labelledby="cr-cobrar" className="vidro grid gap-2 rounded-card p-[18px]">
           <h2 id="cr-cobrar" className="text-[17px] font-semibold">Como cobrar</h2>
           {c.comoCobrar.email && <a href={`mailto:${c.comoCobrar.email}`} className="flex min-h-11 items-center text-[15px] break-all no-underline">{c.comoCobrar.email}</a>}
-          {c.comoCobrar.telefone && <a href={`tel:${c.comoCobrar.telefone.replace(/\D/g, "")}`} className="flex min-h-11 items-center border-t border-borda text-[15px] no-underline">{c.comoCobrar.telefone}</a>}
+          {fone && <a href={`tel:${fone.tel}`} className="flex min-h-11 items-center border-t border-borda text-[15px] no-underline">{fone.texto}</a>}
           {c.urlPerfil && <a href={c.urlPerfil} target="_blank" rel="noreferrer noopener" className="flex min-h-11 items-center border-t border-borda text-[15px] font-semibold no-underline">Perfil oficial {c.comoCobrar.casa === "senado" ? "no Senado" : "na Câmara"} ›</a>}
           <Link href={hrefSecao("cobrar")} className="flex min-h-11 items-center border-t border-borda text-[15px] no-underline">Ouvidoria e outros canais oficiais ›</Link>
         </section>

@@ -92,7 +92,7 @@ function Propostas({ id, p }: { id: string; p: NonNullable<PaginaDados["proposta
       <label className="relative inline-flex justify-self-start">
         <span className="sr-only">Ano</span>
         <select value={ano} disabled={!todas} onChange={(e) => { setAno(e.target.value); setLim(6); }}
-          className="h-[34px] appearance-none rounded-full border border-white/16 bg-white/8 pr-8 pl-3.5 text-[13px] font-semibold text-texto disabled:opacity-60">
+          className="h-[34px] appearance-none rounded-full border border-white/16 bg-white/8 pr-8 pl-3.5 text-base font-semibold text-texto disabled:opacity-60">
           <option value="todos">Todos os anos</option>
           {anos.map((a) => <option key={a} value={String(a)}>{a}</option>)}
         </select>

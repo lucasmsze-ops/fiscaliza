@@ -4,16 +4,17 @@ import { notFound } from "next/navigation";
 import { BarraVoltar } from "@/components/BarraVoltar";
 import { ChecklistPlano } from "@/components/ChecklistPlano";
 import { inteiro } from "@/lib/card";
-import { corPartido, nomePartido } from "@/lib/partidos";
+import { nomePartido } from "@/lib/partidos";
 import { arquivosDoPlano, tamanho, zipDoTse } from "@/lib/planos";
 import { planoDe } from "@/lib/promessas";
 import { parlamentarDoGovernador, presidenteEmExercicio } from "@/lib/executivo-atuacao";
 import { AtuacaoCongresso } from "@/components/AtuacaoCongresso";
+import { ChipPartido } from "@/components/ChipPartido";
 import { EnviadosExecutivo } from "@/components/EnviadosExecutivo";
 import { pelaUf } from "@/lib/regioes";
 import { repo } from "@/lib/repo";
 import type { ExecutivoEleito } from "@/lib/types";
-import { CARD, NUMERO, ROTULO, TITULO_CARTAO, TITULO_PAGINA, TITULO_SECAO } from "@/lib/estilo";
+import { CARD, NUMERO, ROTULO } from "@/lib/estilo";
 
 export const revalidate = 86400;
 export const dynamicParams = true;
@@ -98,27 +99,20 @@ export default async function PaginaExecutivo({ params }: Props) {
   return (
     <>
     <BarraVoltar volta={e.uf ? `/mapa?uf=${e.uf}` : "/mapa"} rotulo="Mapa" />
-    <main className="grid gap-6 pb-8">
-      <section aria-labelledby="nome-executivo">
-        <div className="flex items-center gap-3 rounded-card vidro p-4 sm:gap-5 sm:p-5">
-          {e.fotoUrl
-            // <img> de propósito: a foto vem direto da URL oficial do TSE, sem passar pela Vercel (CLAUDE.md).
-            ? <img src={e.fotoUrl} alt={`Foto oficial de ${e.nomeUrna}`} width={90} height={90} decoding="async" className="size-16 shrink-0 rounded-full bg-preench object-cover object-top sm:size-[90px]" />
-            : <span aria-hidden="true" className="size-16 shrink-0 rounded-full bg-preench sm:size-[90px]" />}
-          <div className="grid min-w-0 flex-1 gap-1.5">
-            <h1 id="nome-executivo" className="text-2xl font-bold break-words sm:text-3xl">{e.nomeUrna}</h1>
-            <div className="flex flex-wrap items-center gap-2.5">
-              <span className="text-sm font-semibold text-suave sm:text-base">{cargoEleito(e)}</span>
-              <span className="inline-flex h-[26px] items-center rounded-lg px-3 text-xs font-semibold" style={{ background: `color-mix(in srgb, ${corPartido(e.partido)} 24%, transparent)` }}>
-                {e.partido}{nome && nome.toLowerCase() !== e.partido.toLowerCase() ? ` · ${nome}` : ""}
-              </span>
-            </div>
-            <span className="text-xs text-suave">
-              Eleit{fem(e) ? "a" : "o"} em 2026 · posse em {dataBr(e.posse)}
-              {e.viceNomeUrna && <> · vice: <strong className="text-texto">{e.viceNomeUrna}</strong>{e.vicePartido ? ` (${e.vicePartido})` : ""}</>}
-            </span>
-          </div>
-        </div>
+    <main className="grid gap-6 pb-8 [&>*]:min-w-0">
+      {/* Cabeçalho centrado, como o crachá do parlamentar (protótipo Liquid Glass). */}
+      <section aria-labelledby="nome-executivo" className="flex flex-col items-center gap-2.5 pt-1 pb-2 text-center">
+        {e.fotoUrl
+          // <img> de propósito: a foto vem direto da URL oficial do TSE, sem passar pela Vercel (CLAUDE.md).
+          ? <img src={e.fotoUrl} alt={`Foto oficial de ${e.nomeUrna}`} width={104} height={104} decoding="async" className="vidro size-[104px] shrink-0 rounded-full object-cover object-top" />
+          : <span aria-hidden="true" className="vidro size-[104px] shrink-0 rounded-full" />}
+        <h1 id="nome-executivo" className="mt-1 text-[28px] leading-[34px] font-bold tracking-[-0.4px] break-words">{e.nomeUrna}</h1>
+        <p className="text-[15px] text-suave">{cargoEleito(e)}</p>
+        <ChipPartido sigla={e.partido} grande>{e.partido}{nome && nome.toLowerCase() !== e.partido.toLowerCase() ? ` · ${nome}` : ""}</ChipPartido>
+        <p className="max-w-[34ch] text-[13px] text-suave">
+          Eleit{fem(e) ? "a" : "o"} em 2026 · posse em {dataBr(e.posse)}
+          {e.viceNomeUrna && <> · vice: <strong className="text-texto">{e.viceNomeUrna}</strong>{e.vicePartido ? ` (${e.vicePartido})` : ""}</>}
+        </p>
       </section>
 
       <section aria-label="Números principais" className="grid grid-cols-2 gap-3 sm:gap-[18px]">

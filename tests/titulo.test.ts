@@ -39,3 +39,13 @@ describe("materiasCitadas (notícias das agências)", () => {
   });
   it("sem matéria, vazio", () => { expect(materiasCitadas("O Senado homenageou a Embratur.")).toEqual([]); });
 });
+
+import { telefoneGabinete } from "../lib/texto";
+describe("telefoneGabinete", () => {
+  it("põe o DDD de Brasília quando a fonte não traz", () => {
+    expect(telefoneGabinete("33032191")).toEqual({ texto: "(61) 3303-2191", tel: "+556133032191" });
+    expect(telefoneGabinete("3215-5966")).toEqual({ texto: "(61) 3215-5966", tel: "+556132155966" });
+    expect(telefoneGabinete("(61) 3303-6000")).toEqual({ texto: "(61) 3303-6000", tel: "+556133036000" });
+    expect(telefoneGabinete("123")).toBeNull();
+  });
+});

@@ -78,6 +78,8 @@ export interface Repo {
   noticiasDe(politicoId: string, limite: number): Promise<Noticia[]>;
   /** Notícias das agências que citam alguma das matérias ("PLP 186/2026"), publicadas desde a data (E23u). */
   noticiasDeMaterias(materias: string[], desde: string): Promise<Noticia[]>;
+  /** Notícias das agências que citam alguma matéria, desde a data (índice da busca, E23u). */
+  noticiasComMaterias(desde: string): Promise<Noticia[]>;
   /** O que o Executivo federal enviou ao Congresso desde 2023 (tabela `proposicoes_executivo`, E23t), mais recentes primeiro. */
   listarProposicoesExecutivo(): Promise<ProposicaoExecutivo[]>;
   /** Todos os candidatos a presidente e governador de 2026 (tabela `candidatos_executivo`, E23q). */
@@ -262,6 +264,11 @@ export class JsonRepo implements Repo {
     try { ls = await this.tabela("noticias"); } catch { return []; }
     const quer = new Set(materias);
     return ls.filter((n) => n.data.slice(0, 10) >= desde && (n.materias ?? []).some((m) => quer.has(m)));
+  }
+  async noticiasComMaterias(desde: string) {
+    let ls: Noticia[];
+    try { ls = await this.tabela("noticias"); } catch { return []; }
+    return ls.filter((n) => n.data.slice(0, 10) >= desde && n.materias?.length);
   }
   async listarProposicoesExecutivo() {
     // Estado de antes da E23t: sem o arquivo, o crachá do presidente não mostra a seção.

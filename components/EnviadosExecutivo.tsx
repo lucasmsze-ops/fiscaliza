@@ -33,7 +33,7 @@ export function EnviadosExecutivo({ itens, desde }: { itens: EnviadoExecutivo[];
   const chip = (on: boolean) => `inline-flex h-8 items-center gap-1 rounded-full border px-3 text-[13px] font-semibold whitespace-nowrap ${on ? "border-[rgba(64,156,255,0.6)] bg-[rgba(64,156,255,0.28)] text-texto" : "border-white/14 bg-white/6 text-texto/85 hover:bg-white/10"}`;
 
   return (
-    <div className="grid gap-3.5">
+    <div className="grid min-w-0 gap-3.5 [&>*]:min-w-0">
       <div className="flex flex-wrap gap-1.5" role="group" aria-label="Tipo">
         <button type="button" aria-pressed={tipo === "todos"} onClick={() => { setTipo("todos"); setLim(8); }} className={chip(tipo === "todos")}>Tudo <span className="font-normal text-suave">{inteiro(itens.length)}</span></button>
         {tipos.map((t) => (
@@ -58,17 +58,17 @@ export function EnviadosExecutivo({ itens, desde }: { itens: EnviadoExecutivo[];
         <span className="text-[11px] text-texto/60">Desde {desde} · {tipo === "MPV" ? "medida provisória perde a eficácia se o Congresso não a votar em até 120 dias" : "as recentes ainda podem estar em tramitação"}</span>
       </figure>
 
-      <ul className="grid">
+      <ul className="grid min-w-0">
         {doTipo.slice(0, lim).map((x) => (
-          <li key={x.id} className="flex gap-3 border-b border-borda py-3">
+          <li key={x.id} className="flex min-w-0 gap-3 border-b border-borda py-3">
             <span className="inline-flex h-10 min-w-[58px] shrink-0 flex-col items-center justify-center rounded-full border border-[rgba(64,156,255,0.35)] bg-[rgba(0,113,227,0.22)] text-[11px] leading-[13px] font-semibold text-link" title={TIPO[x.tipo]?.[0]}>
               {x.tipo}<span className="text-[13px] tabular-nums">{x.numero}</span>
             </span>
             <span className="grid min-w-0 flex-1 gap-1.5">
-              <span className="line-clamp-4 text-[15px] leading-5" title={x.ementa ?? undefined}>{manchete(x.ementa) || "— (a fonte não traz a ementa)"}</span>
+              <span className="line-clamp-4 text-[15px] leading-5 [overflow-wrap:anywhere]" title={x.ementa ?? undefined}>{manchete(x.ementa) || "— (a fonte não traz a ementa)"}</span>
               <span className="text-xs text-suave">{TIPO[x.tipo]?.[0] ?? x.tipo} · enviada em {dataBr(x.data)}</span>
-              <span className="flex items-center justify-between gap-2">
-                <span className={`inline-flex h-[22px] max-w-[70%] items-center truncate rounded-full border px-[9px] text-[11px] font-bold ${x.norma ? "border-[#0A84FF]/50 bg-[#0A84FF]/22 text-[#8CC4FF]" : "border-white/20 bg-white/10 text-texto/85"}`}>
+              <span className="flex min-w-0 items-center justify-between gap-2">
+                <span title={x.situacao ?? undefined} className={`inline-block h-[22px] min-w-0 truncate rounded-full border px-[9px] text-[11px] leading-[20px] font-bold ${x.norma ? "border-[#0A84FF]/50 bg-[#0A84FF]/22 text-[#8CC4FF]" : "border-white/20 bg-white/10 text-texto/85"}`}>
                   {x.norma ? "Virou norma" : x.situacao ?? "Situação não informada"}
                 </span>
                 <a href={x.url} target="_blank" rel="noreferrer noopener" className="inline-flex min-h-8 shrink-0 items-center text-[13px] font-semibold no-underline">Ver na Câmara ›</a>

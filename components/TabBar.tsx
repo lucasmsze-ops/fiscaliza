@@ -25,7 +25,7 @@ export function TabBar() {
           const on = ativo(i.href, caminho);
           return (
             <Link key={i.href} href={i.href} aria-current={on ? "page" : undefined}
-              className={`relative flex h-14 min-w-0 flex-1 flex-col items-center justify-center gap-[3px] rounded-[28px] text-[10px] font-semibold tracking-[0.1px] whitespace-nowrap no-underline ${on ? "bg-white/14 text-link hover:text-link" : "text-[rgba(235,235,245,0.72)] hover:text-texto"}`}>
+              className={`relative flex h-14 min-w-0 flex-1 flex-col items-center justify-center gap-[3px] rounded-[28px] text-[10px] font-semibold tracking-[0.1px] whitespace-nowrap no-underline max-[350px]:text-[9px] max-[350px]:tracking-[-0.2px] ${on ? "bg-white/14 text-link hover:text-link" : "text-[rgba(235,235,245,0.72)] hover:text-texto"}`}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={i.icone} /></svg>
               {i.rotulo}
               {i.href === "/monitorando" && n > 0 && (

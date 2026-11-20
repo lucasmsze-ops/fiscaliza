@@ -140,7 +140,8 @@ function Vaga({ ano, c, i, s, primeira }: { ano: AnoEleicao; c: (typeof CARGOS)[
   );
 }
 
-const SELECT = "vidro h-11 w-full appearance-none rounded-full px-3.5 text-[15px] font-semibold text-texto";
+// 16 px: com menos, o Safari do iPhone dá zoom na página ao tocar no campo.
+const SELECT = "vidro h-11 w-full appearance-none rounded-full px-3.5 text-base font-semibold text-texto";
 
 /**
  * Aba "Quem votei" (pedido de 2026-11-19; santinho em ingresso do protótipo Liquid Glass, E23s): por eleição (por

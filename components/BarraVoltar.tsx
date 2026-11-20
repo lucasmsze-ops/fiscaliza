@@ -46,11 +46,12 @@ export function BarraVoltar({ volta, rotulo, titulo }: { volta: string; rotulo: 
   }, [caminho]);
 
   return (
-    // Botão de voltar: círculo de vidro forte só com a seta (protótipo Liquid Glass; o destino vai no aria-label): no celular fica preso ao topo e o
+    // Barra de vidro do iOS presa ao topo no celular (pedido de 2026-11-20: sem ela o botão sumia sobre o conteúdo),
+    // com o botão de voltar em círculo e, quando há, o título no meio.: no celular fica preso ao topo e o
     // conteúdo passa por baixo dele, desfocado.
-    <div className="pointer-events-none sticky top-0 z-30 flex items-center justify-between gap-3 pt-3 pb-2 lg:static lg:pt-6 lg:pb-3">
+    <div className="sticky top-0 z-30 -mx-4 flex items-center justify-between gap-3 border-b border-white/10 bg-[rgba(23,24,29,0.72)] px-4 pt-[max(8px,env(safe-area-inset-top))] pb-2 backdrop-blur-xl backdrop-saturate-150 lg:static lg:mx-0 lg:border-0 lg:bg-transparent lg:px-0 lg:pt-6 lg:pb-3 lg:backdrop-blur-none">
       <Link href={volta} onClick={(e) => { if (anterior) { e.preventDefault(); router.back(); } }} aria-label={`Voltar para ${anterior?.rotulo ?? rotulo}`} title={anterior?.rotulo ?? rotulo}
-        className="vidro-forte pointer-events-auto inline-flex size-11 items-center justify-center rounded-full text-texto no-underline hover:text-texto">
+        className="vidro inline-flex size-11 items-center justify-center rounded-full text-texto no-underline hover:text-texto">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7" /></svg>
       </Link>
       {titulo && <><span className="text-[15px] font-semibold text-texto/85">{titulo}</span><span aria-hidden="true" className="w-11" /></>}

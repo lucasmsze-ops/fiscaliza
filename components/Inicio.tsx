@@ -18,7 +18,7 @@ const dataCurta = (iso: string) => new Date(iso).toLocaleDateString("pt-BR", { t
 function MapaFundo() {
   return (
     <svg aria-hidden="true" viewBox={`0 0 ${MAPA_W} ${MAPA_H}`} width="430" height="416"
-      className="pointer-events-none absolute top-[70px] -right-[150px] overflow-visible [mask-image:radial-gradient(circle_at_55%_45%,#000_30%,transparent_72%)] sm:right-0">
+      className="absolute top-[70px] -right-[150px] [-webkit-mask-image:radial-gradient(closest-side,#000_45%,transparent)] [mask-image:radial-gradient(closest-side,#000_45%,transparent)] sm:right-0">
       <g fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.22)" strokeWidth="1.1" strokeLinejoin="round">
         {Object.entries(ESTADOS_MAPA).map(([uf, e]) => <path key={uf} d={e.d} />)}
       </g>
@@ -90,13 +90,17 @@ const EM_BREVE = [
  */
 export function Inicio({ ultima, coleta }: { ultima: VotacaoResumo | null; coleta: string | null }) {
   return (
-    <div className="grid gap-5 pb-2">
-      <section aria-labelledby="ini-titulo" className="relative -mx-4 overflow-x-clip px-5 pt-10 pb-2 lg:mx-0 lg:px-1 lg:pt-12">
-        <div aria-hidden="true" className="pointer-events-none absolute top-[60px] -right-[170px] size-[460px] rounded-full bg-[radial-gradient(circle,rgba(120,150,200,0.30)_0%,rgba(120,150,200,0.08)_45%,transparent_70%)] sm:right-0" />
-        <MapaFundo />
+    <div className="grid gap-5 pb-2 [&>*]:min-w-0">
+      <section aria-labelledby="ini-titulo" className="relative -mx-4 px-5 pt-10 pb-6 lg:mx-0 lg:px-1 lg:pt-12">
+        {/* Fundo decorativo num recipiente que esmaece até sumir antes do fim do topo: sem corte seco no Safari nem no
+            Chrome (o mapa passava da altura da seção e era cortado reto acima da busca). */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden [-webkit-mask-image:linear-gradient(to_bottom,#000_55%,transparent_96%)] [mask-image:linear-gradient(to_bottom,#000_55%,transparent_96%)]">
+          <div className="absolute top-[60px] -right-[170px] size-[460px] rounded-full bg-[radial-gradient(circle,rgba(120,150,200,0.30)_0%,rgba(120,150,200,0.08)_45%,transparent_70%)] sm:right-0" />
+          <MapaFundo />
+        </div>
         {coleta && (
-          <span className="vidro relative inline-flex h-7 items-center gap-2 rounded-full px-3 text-xs font-semibold text-texto/85">
-            <span aria-hidden="true" className="size-[7px] rounded-full bg-verde shadow-[0_0_0_3px_rgba(48,209,88,0.22),0_0_10px_rgba(48,209,88,0.8)]" />
+          <span className="vidro relative inline-flex min-h-7 max-w-full items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold text-texto/85">
+            <span aria-hidden="true" className="size-[7px] shrink-0 rounded-full bg-verde shadow-[0_0_0_3px_rgba(48,209,88,0.22),0_0_10px_rgba(48,209,88,0.8)]" />
             Dados oficiais · atualizado em {dataCurta(coleta)}
           </span>
         )}
@@ -108,11 +112,19 @@ export function Inicio({ ultima, coleta }: { ultima: VotacaoResumo | null; colet
         </p>
       </section>
 
-      <div className="relative z-10 w-full"><BuscaTopo tipo="tudo" grande /></div>
+      <div className="relative z-10 grid w-full gap-2">
+        <BuscaTopo tipo="tudo" grande />
+        <p className="px-4 text-[13px] leading-[18px] text-suave">Por enquanto, o Fiscaliza traz o presidente, os governadores, os senadores e os deputados federais.</p>
+      </div>
 
-      <div className="grid gap-5 lg:grid-cols-2 lg:items-start">
+      <div className="grid gap-5 lg:grid-cols-2 lg:items-end">
         <QuemVoteiResumo />
-        {ultima && <UltimaVotacao v={ultima} />}
+        {ultima && (
+          <section aria-labelledby="ini-destaque" className="grid gap-2.5">
+            <h2 id="ini-destaque" className="px-1 text-[22px] font-bold tracking-[-0.3px]">Em destaque no Congresso</h2>
+            <UltimaVotacao v={ultima} />
+          </section>
+        )}
       </div>
 
       <section aria-labelledby="ini-embreve" className="grid gap-2.5">

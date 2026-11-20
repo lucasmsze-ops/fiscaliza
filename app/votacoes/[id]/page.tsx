@@ -125,11 +125,12 @@ export default async function PaginaVotacao({ params }: Props) {
       <header className="grid gap-1.5 px-1">
         <span className="text-[13px] text-suave">{dataLonga(v.data)}</span>
         <h1 className="text-[34px] leading-10 font-bold tracking-[-0.6px]">{titulo(v)}</h1>
-        {tipoPorExtenso(v.proposicao) && <span className="text-[15px] text-texto/80">{tipoPorExtenso(v.proposicao)}</span>}
+        {/* O título que se lê de relance vem antes do tipo da matéria (pedido de 2026-11-20). */}
         {agencia
-          ? <p className="mt-1 grid gap-0.5"><span className="text-[17px] leading-[22px] font-semibold">{agencia.titulo}</span>
+          ? <p className="grid gap-0.5"><span className="text-xl leading-[25px] font-semibold">{agencia.titulo}</span>
               <a href={agencia.url} {...externo} className="text-[13px] no-underline">Notícia da {NOME_FONTE[agencia.fonte]} ↗</a></p>
-          : v.ementa && <p className="mt-1 text-[17px] leading-[22px] font-semibold">{manchete(v.ementa)}</p>}
+          : v.ementa && <p className="text-xl leading-[25px] font-semibold">{manchete(v.ementa)}</p>}
+        {tipoPorExtenso(v.proposicao) && <span className="text-[15px] text-suave">{tipoPorExtenso(v.proposicao)}</span>}
         {v.temas && v.temas.length > 0 && (
           <div className="mt-1 flex flex-wrap gap-1.5" aria-label="Temas oficiais">{v.temas.map((t) => <Tema key={t} t={t} />)}</div>
         )}
@@ -207,28 +208,43 @@ export default async function PaginaVotacao({ params }: Props) {
       </section>
 
       {v.caminho.length > 1 && (
-        <section className="vidro grid gap-3 rounded-card p-[18px]" aria-labelledby="vt-caminho">
-          <div>
+        <section className="vidro grid gap-3.5 rounded-card p-[18px]" aria-labelledby="vt-caminho">
+          <div className="grid gap-1">
             <h2 id="vt-caminho" className="text-[17px] font-semibold">O caminho da proposta</h2>
-            <p className="text-xs text-suave">As votações nominais desta matéria no Plenário {v.casa === "senado" ? "do Senado" : "da Câmara"}. Votações simbólicas e de comissão não entram.</p>
+            <p className="text-[13px] leading-[18px] text-suave">
+              As {v.caminho.length} votações nominais de {titulo(v)} no Plenário {v.casa === "senado" ? "do Senado" : "da Câmara"}, da primeira à mais recente. Votações simbólicas e de comissão não entram.
+            </p>
           </div>
           <ol className="grid">
             {v.caminho.map((x, i) => {
-              const rotulo = `${rotuloVotado({ descricao: x.descricao, proposicao: v.proposicao }) || "votação"}${x.resultado ? ` · ${x.resultado}` : ""}`;
+              const rotulo = `${rotuloVotado({ descricao: x.descricao, proposicao: v.proposicao }) || "votação"}`;
               return (
-                <li key={x.id} className="relative grid grid-cols-[20px_1fr] gap-x-3 pb-3.5 last:pb-0">
-                  {i < v.caminho.length - 1 && <span className="absolute top-4 bottom-0 left-[9px] w-0.5 bg-borda" aria-hidden="true" />}
-                  <span className={`relative mt-1 size-5 rounded-full border-2 ${x.atual ? "border-destaque bg-destaque" : "border-borda-forte bg-card"}`} aria-hidden="true" />
-                  <span className="grid gap-0.5">
-                    <span className="text-xs text-suave">{ddmmaaaa(x.data)}{x.atual && <strong className="text-texto"> · esta votação</strong>}</span>
-                    {x.atual
-                      ? <strong className="text-sm">{rotulo}</strong>
-                      : <Link href={hrefVotacao(x.id)} className="text-sm font-semibold no-underline">{rotulo}</Link>}
+                <li key={x.id} className="relative grid grid-cols-[32px_1fr] gap-x-3 pb-4">
+                  <span className="absolute top-8 bottom-0 left-[15px] w-0.5 bg-white/14" aria-hidden="true" />
+                  <span aria-hidden="true" className={`relative z-[1] flex size-8 items-center justify-center rounded-full text-[13px] font-bold tabular-nums ${x.atual ? "bg-destaque text-white" : "border border-white/20 bg-[#2a2b31] text-texto"}`}>{i + 1}</span>
+                  <div className={`grid gap-1 rounded-2xl p-3 ${x.atual ? "border border-[rgba(64,156,255,0.5)] bg-[rgba(64,156,255,0.12)]" : "bg-white/5"}`}>
+                    <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-suave">
+                      <span className="font-semibold text-texto">{i === 0 ? "1ª votação" : `${i + 1}ª votação`}</span>· {ddmmaaaa(x.data)}
+                      {x.atual && <span className="rounded-full bg-destaque px-2 py-0.5 text-[11px] font-bold text-white">esta votação</span>}
+                    </span>
+                    <span className="text-[15px] font-semibold">{rotulo.charAt(0).toUpperCase() + rotulo.slice(1)}</span>
+                    {x.resultado && <span className={`justify-self-start rounded-full border px-2 py-0.5 text-[11px] font-bold ${x.resultado === "aprovada" ? "border-verde/45 bg-verde/20 text-[#5EE37E]" : "border-vermelho/45 bg-vermelho/20 text-[#FF7A70]"}`}>{x.resultado === "aprovada" ? "Aprovada" : "Rejeitada"}</span>}
                     <span className="line-clamp-2 text-xs leading-relaxed text-suave">{x.descricao}</span>
-                  </span>
+                    {!x.atual && <Link href={hrefVotacao(x.id)} className="inline-flex min-h-9 items-center text-[13px] font-semibold no-underline">Ver esta votação ›</Link>}
+                  </div>
                 </li>
               );
             })}
+            <li className="grid grid-cols-[32px_1fr] gap-x-3">
+              <span aria-hidden="true" className="relative z-[1] flex size-8 items-center justify-center rounded-full border border-dashed border-white/30 text-texto/70">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </span>
+              <div className="grid gap-1 p-3 pt-1.5">
+                <span className="text-xs font-semibold text-texto">Onde está agora</span>
+                <span className="text-[15px]">{v.proposta?.situacao ?? "A situação atual está na página oficial."}</span>
+                <a href={v.urlOficial} {...externo} className="inline-flex min-h-9 items-center text-[13px] font-semibold no-underline">Tramitação completa {naCasa(v)} ↗</a>
+              </div>
+            </li>
           </ol>
         </section>
       )}
