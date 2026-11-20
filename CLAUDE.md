@@ -63,8 +63,8 @@ Presença literal em sessões · discursos · WhatsApp ou aviso real por votaç�
 Hoje (protótipo, SP):
 ```
 /                   Início (E23s): título, busca de político ou projeto, resumo do "Quem votei?", a votação mais recente e o "Em breve"
-/mapa               mapa; com estado (?uf=; ?cidade= dos links antigos; `/?uf=` redireciona), senadores e deputados em exercício com a participação de cada um, e presidente e governador eleitos em 2026
-/congresso          quem ocupa cada cadeira hoje (Câmara e Senado) e a Câmara de fev/2027 (E23b)
+/mapa               busca e mapa; tocando num estado (?uf=; ?cidade= dos links antigos; `/?uf=` redireciona), "Quem representa" abre embaixo em três abas (Executivo, Senadores, Deputados), cada uma com "A partir de jan|fev/2027" (eleitos de 2026; escolhido de início) e "Hoje" (E23v, E23w)
+/congresso          quem ocupa cada cadeira (a Câmara abre na de fev/2027; Senado, hoje) (E23b), a busca de políticos e o calendário de votações e pauta de cada Casa (E23v)
 /votacoes           próximas votações (pauta, coleta diária), últimas votações e calendário como filtro
 /c/[ids]            links antigos da colinha: redireciona para o crachá (a colinha saiu em 2026-11-04)
 /p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
@@ -78,7 +78,8 @@ Hoje (protótipo, SP):
 **Navegação (2026-11-20, protótipo Liquid Glass):** N1 são as telas do menu (`/`, `/mapa`, `/congresso`, `/votacoes`,
 `/monitorando`; lista em `lib/navegacao.ts`): no celular, marca com Entrar e Dúvidas no topo e a tab bar de vidro no
 rodapé (escolha do usuário); no computador, menu lateral. Busca no corpo da página, como no protótipo: Início busca
-político ou projeto, Mapa busca políticos, Votações busca projetos e votações; Congresso e Monitorando não têm busca.
+político ou projeto (inclui presidente e governadores eleitos), Mapa e Congresso buscam políticos, Votações busca
+projetos e votações (com o título da agência quando há); Monitorando não tem busca.
 O Sobre (`/como-funciona`) abre pelo ícone de Dúvidas. Toda outra tela é N2 (crachá, executivo, votação, Comparar,
 Sobre): sem tab bar e com o botão de voltar em círculo de vidro (`BarraVoltar`; volta no histórico se a pessoa veio
 do site; senão, vai para a N1 de origem). Visual: protótipo Liquid Glass, sempre escuro (`docs/PROTOTIPO.md`).

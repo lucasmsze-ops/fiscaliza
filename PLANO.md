@@ -4,7 +4,7 @@ Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
 **Etapa atual: E23g** (atualizar esta linha ao avançar). E23n fechada em 2026-11-20 (PDFs dos planos na release `planos-2026`). E22 fechada: o run agendado de 04/11 às 17h15 UTC
-terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p, E23q, E23r, E23s, E23t e E23u foram feitas adiantadas a pedido do usuário.
+terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p, E23q, E23r, E23s, E23t, E23u, E23v e E23w foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -627,6 +627,43 @@ O usuário achou os títulos (as ementas) difíceis e compridos. Sem LLM e sem e
       agência da mesma Casa publicada até 3 dias depois, que não seja de comissão (`tituloDaAgencia`), com o crédito.
       Hoje o RSS cobre só ~48 h: o acervo cresce a partir de agora.
 - Pronto quando: os cartões de votação e de proposta se leem de relance, com o texto oficial a um toque.
+
+### E23v · Ajustes de navegação e pente fino no celular (pedido de 2026-11-20)
+- [x] Estado (/mapa?uf=): abas Executivo (presidente e governador em cartões), Senadores (cartões com participação) e
+      Deputados (a lista); sai o cartão "Participação em votações" do protótipo.
+- [x] Congresso: tocar no PL (escolhido de início) desligava a bancada; agora o toque sempre escolhe e só o mouse destaca
+      ao passar. Câmara abre em "A partir de fev/2027". Calendário de votações e pauta de cada Casa embaixo do plenário
+      (`AgendaPlenario`), com os cartões do dia. Busca de políticos.
+- [x] Página da votação: o título de relance (agência ou manchete) antes do tipo da matéria; "O caminho da proposta"
+      com passos numerados, a votação atual marcada e "Onde está agora" (situação oficial).
+- [x] Próximas votações: o cartão não é link; "Ver o projeto na Câmara/no Senado" abre em nova guia.
+- [x] Busca: presidente e governadores eleitos (acha "Lula"); título da agência no índice de votações (acha "ajuste
+      fiscal"); nome igual ao digitado primeiro; a lista fecha ao tocar fora ou com Esc.
+- [x] Celular: mapa do Início esmaece em vez de ser cortado; barra de vidro no topo das telas de segundo nível; nada rola
+      de lado em 320 e 390 px (cabeçalho do executivo centrado; etiquetas longas com reticências); `select` com 16 px
+      (o Safari dava zoom).
+- [ ] Safari de verdade: o Simulador do iOS precisa do Xcode completo (não instalado); revisão feita no motor do
+      Chrome e no código (prefixos -webkit-, popover, color-mix, zoom em campos).
+
+### E23w · Estado no Mapa, períodos e Como funciona em lista (pedido de 2026-11-20)
+- [x] Mapa só com a busca e o mapa (saem Regiões e "De onde vêm os dados?"); tocando num estado, ele fica marcado e
+      "Quem representa" abre embaixo, na mesma tela (abas Executivo, Senadores, Deputados).
+- [x] Filtro "A partir de jan/2027" (Executivo) ou "fev/2027" (Senado e Câmara), escolhido de início, e "Hoje" em cada
+      aba. A partir de: eleitos de 2026; no Senado, mais o titular empossado em 1º/2/2023 (mandato até 2031). Hoje:
+      em exercício; no Executivo, o presidente eleito em 2022 e o governador reeleito (sem fonte aberta de quem governa
+      nos demais estados: renúncias e substituições não estão no TSE; a tela explica).
+- [x] Senadores sem participação nem afastamento no cartão.
+- [x] Como funciona: "Nesta página" é a própria lista; cada linha abre o texto (`<details>`), e o endereço com #
+      abre a linha certa (`AbrirPelaAncora`).
+- [x] Congresso: nenhum partido escolhido de início; a lista do partido vem antes do calendário.
+- [x] Congresso: o partido escolhido fica destacado no gráfico; tocar nele de novo (pílula ou cadeira), tocar fora, trocar
+      de Casa ou mexer num filtro tira a escolha (tocar na lista do partido, não).
+- [x] Início: "Em destaque no Congresso" sobre a votação e o aviso de que a busca traz presidente, governadores,
+      senadores e deputados federais.
+- [x] Revisão do site todo (mesmo dia): 120 páginas e 658 links internos sem erro; nenhum erro de console; abas, filtros,
+      avisos, santinho, calendário e linha do tempo testados. Corrigidos: página 404 do Next (inglês, sem saída) virou
+      `app/not-found.tsx` com busca e caminhos; resumo do "Quem votei?" no Início igual ao santinho (ordem, Senado em 2
+      votos, sem o cargo que o site não acompanha); telefone do gabinete com o DDD 61 (`telefoneGabinete`).
 
 ### E23g · Propostas
 `/propostas`: lista geral com filtros (Casa, tipo, situação, busca na ementa) e link oficial. A

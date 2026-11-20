@@ -15,6 +15,35 @@ Modelo:
 
 ---
 
+## 2026-11-20 · E23w · estado no Mapa e períodos
+**Feito:** o estado abre embaixo do mapa (sem outra tela); filtro "A partir de"/"Hoje" nas três abas (`VisaoDados.futuro` e
+`executivosHoje` em `lib/visao.ts`); Como funciona em lista que abre; Congresso sem partido de início e lista antes do
+calendário; Início com "Em destaque no Congresso" e o aviso da busca.
+**Decidido:** "Hoje" no Executivo só com quem o TSE permite afirmar (presidente eleito em 2022; governador reeleito em 2026,
+8 estados). No Senado de 2027, a cadeira de 2022 entra quando o titular empossado em 2023 segue no cargo (18 estados);
+nos demais, a tela aponta para "Hoje".
+**Lacunas:** governador em exercício hoje nos 19 estados sem reeleição; ocupante da cadeira de 2022 do Senado em 9 estados.
+**Revisão do site todo:** crawl de 120 páginas e 658 links (nenhum quebrado), console limpo em 12 telas, interações
+testadas no celular e no computador. Corrigidos: 404 sem saída e em inglês; resumo do "Quem votei?" diferente do santinho;
+telefone do Senado e da Câmara sem DDD (o link de ligar não funcionava fora de Brasília). Achado de processo: aba do preview
+aberta antes de reiniciar o servidor fica com o código velho (recarregar).
+**Próximo passo:** commit e publicação das E23v e E23w; emendas quando houver a chave do Portal da Transparência; Safari
+real quando houver Xcode (ou no iPhone do usuário).
+
+---
+
+## 2026-11-20 · E23v · ajustes e pente fino no celular
+**Feito:** estado em três abas (Executivo, Senadores, Deputados); Congresso com o PL clicável, "A partir de fev/2027" de
+início, calendário por Casa (`AgendaPlenario`) e busca; página da votação com o título antes do tipo e o caminho em passos
+numerados; pauta com CTA em nova guia; busca acha executivos e títulos de agência; mapa do Início esmaecendo; barra de
+vidro nas telas de segundo nível; sem rolagem lateral em 320 e 390 px; `select` com 16 px.
+**Achado:** "quase nunca dá para clicar no PL" era o PL já escolhido: o toque desligava a bancada (e o `mouseenter` do
+toque prendia o destaque). A página do presidente vazava 35 px por uma etiqueta de situação sem quebra.
+**Lacunas:** Safari real não testado (o Simulador do iOS pede o Xcode completo).
+**Próximo passo:** o usuário confere no iPhone; emendas quando houver a chave do Portal da Transparência.
+
+---
+
 ## 2026-11-20 · E23u · títulos curtos
 **Feito:** `lib/titulo.ts` (manchete por regras sobre a ementa oficial) em todas as listas e cartões; `materiasCitadas`
 e `tituloDaAgencia` em `lib/noticias.ts`; o job `noticias` grava as matérias citadas (coluna na migração 0014) e completa

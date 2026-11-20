@@ -71,3 +71,5 @@ Nunca preencher com dado sintético.
 | 2026-11-20 | Câmara / Senado | Proposta sem tema (classificação) na fonte | Fora das "Áreas de atuação" do crachá; a nota diz quantas das propostas ainda não têm tema |
 | 2026-11-20 | Assembleias / TSE | Atos de governador (projetos enviados às Assembleias, leis estaduais) não têm dado aberto unificado | Crachá do governador mostra só a atuação no Congresso, quando há, e explica que a fonte estadual não está no site (Passo 6) |
 | 2026-11-20 | CGU | Emendas ao Orçamento pedem a chave da API do Portal da Transparência, ainda não cadastrada | Fora do crachá até a chave existir |
+| 2026-11-20 | TSE | Quem governa hoje (renúncias e substituições de 2026 não estão no TSE) | "Hoje" do Executivo só mostra o presidente eleito em 2022 e o governador reeleito; nos demais estados, a explicação |
+| 2026-11-20 | Senado | Ocupante da cadeira eleita em 2022 quando não é o titular empossado em 2023 (9 estados) | "A partir de fev/2027" mostra só os eleitos de 2026 e aponta para "Hoje" |
