@@ -591,7 +591,8 @@ mas /comparar continua no ar.
       do tempo Votos/Projetos/Leis/Notícias); Como funciona (números da cobertura e índice em lista).
 - [x] Áreas de atuação no crachá: temas oficiais das propostas (Câmara `proposicoesTemas`, Senado `classificacoes`),
       migração 0013, `areasDeAtuacao` com teste.
-- [ ] No ar: migração 0013 rodada pelo usuário antes do cron que publica; push aprovado pelo usuário.
+- [x] No ar (2026-11-20): migração 0013 rodada pelo usuário; push 7b19c16; cron manual 44778219919 verde (25.892
+      proposições com temas publicadas, 655 resumos regravados); commit de registro como redeploy dos crachás estáticos.
 - Pronto quando: as telas do protótipo têm o mesmo visual no site, no celular e no computador.
 
 ### E23g · Propostas

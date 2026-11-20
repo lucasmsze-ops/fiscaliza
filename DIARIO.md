@@ -40,7 +40,10 @@ Ficaram, além do protótipo: presidente e governador no estado, "O caminho da p
 `proposicoesTemas`, Senado pelas `classificacoes` de `/processo/{id}` (mesma chamada da autoria, cache em
 `senado-processos/temas`, ~2,9 mil processos na primeira vez).
 **Lacunas:** proposta sem classificação na fonte fica fora das áreas (a nota diz quantas).
-**Próximo passo:** o usuário roda a 0013 no SQL Editor; push; cron manual para gravar os temas e os resumos.
+**No ar:** 0013 rodada pelo usuário; push 7b19c16; cron manual 44778219919 verde: 25.892 proposições com temas
+(22.874 da Câmara e 2.952 do Senado com tema) e 655 resumos regravados. Os crachás estáticos foram gerados antes do
+cron: o commit de registro faz o redeploy.
+**Próximo passo:** E23n (PDFs dos planos) ou ajustes finos que o usuário pedir no visual.
 ---
 
 ## 2026-11-20 · E23r · notícias das agências oficiais
