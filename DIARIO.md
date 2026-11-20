@@ -15,6 +15,49 @@ Modelo:
 
 ---
 
+## 2026-11-20 · E23u · títulos curtos
+**Feito:** `lib/titulo.ts` (manchete por regras sobre a ementa oficial) em todas as listas e cartões; `materiasCitadas`
+e `tituloDaAgencia` em `lib/noticias.ts`; o job `noticias` grava as matérias citadas (coluna na migração 0014) e completa
+as notícias antigas com `materias: null`; `Repo.noticiasDeMaterias`; votações com o título da agência quando há.
+**Decidido (usuário):** regras + agências (entre "só regras" e "resumo por IA no cron", que fere o custo zero e a
+decisão de não escrever títulos).
+**Medido:** 28 mil ementas, mediana de 200 → 160 caracteres; 40 de 60 notícias da Câmara e 10 de 17 do Senado citam
+matéria; a votação do Senado de 18/11 (PLP 299/2026) ganha "Senado Aprova: Ajuste fiscal para 2027".
+**Lacunas:** ementa de assunto longo continua longa (as regras não resumem); notícias anteriores a hoje não têm matéria.
+**Próximo passo:** o usuário roda a 0014; push e cron.
+
+---
+
+## 2026-11-20 · E23t · executivo: atuação
+**Feito:** proposta de governo no fim do crachá do executivo. Presidente: tabela `proposicoes_executivo` (migração
+0014), coletada no job `proposicoes` dos mesmos arquivos anuais da Câmara (autor "Órgão do Poder Executivo"), e a
+seção "O que o governo enviou ao Congresso" (`EnviadosExecutivo`: filtro por tipo, pizza de quantas viraram norma,
+lista com a situação oficial). Governador: "Atuação no Congresso" (`AtuacaoCongresso`, `lib/executivo-atuacao.ts`)
+para quem é parlamentar do site, pelo nome civil e pela UF (só as letras: o TSE escreve "ABDELAZIZ", o Senado
+"Abdel Aziz").
+**Decidido (usuário):** presidente com projetos, PECs e MPs; governador com o mandato no Congresso; emendas ao
+Orçamento do Portal da Transparência.
+**Medido:** desde 2023, 247 MPV (32 viraram norma, 158 perderam a eficácia), 90 PL (35), 12 PLP (9), 4 PEC (0) e
+147 PLN da Presidência da República. 6 dos 27 governadores eleitos são parlamentares do site.
+**Lacunas:** atos de governador nas Assembleias (sem dado aberto unificado); emendas esperam a chave da API.
+**Próximo passo:** o usuário roda a 0014 e cadastra a chave do Portal da Transparência; push e cron; depois, o job
+de emendas.
+
+---
+
+## 2026-11-20 · E23n · PDFs dos planos de governo
+**Feito:** `scripts/tse/planos.py` abre os zips `proposta_governo_2026_{UF|BR}.zip` por HTTP Range (o TSE aceita) e
+extrai só os PDFs dos 28 eleitos: 36 arquivos, 122 MB, publicados na release `planos-2026`; índice em
+`data/planos/2026.json` (`lib/planos.ts`). O crachá do executivo mostra um botão por arquivo ("Plano de governo" ou
+"Parte N", com o tamanho) e o zip oficial como fonte, no lugar do link para o zip inteiro.
+**Decidido (usuário):** release do GitHub (entre Vercel, Supabase Storage e manter o zip): custo zero, sem limite
+de tráfego e fora do repositório. Consequência: o PDF baixa em vez de abrir, sem pular para a página da promessa.
+**Achados:** os planos somam 128 MB no TSE; Omar Aziz (AM) registrou 8 partes (81 MB) e Sergio Moro (PR), 2.
+**Lacunas:** nenhuma; todos os 28 têm PDF no zip.
+**Próximo passo:** E23g (`/propostas`), ou o filtro por tema na aba Propostas (resto da E23j).
+
+---
+
 ## 2026-11-20 · E23s · visual iOS Liquid Glass
 **Feito:** o protótipo do usuário "Fiscaliza — iOS Liquid Glass" (canvas Design de hoje, 9 telas) aplicado no site.
 Tokens em `app/globals.css` (fundo #17181D com manchas fixas, utilitários `vidro` e `vidro-forte`, raio 26 px) e

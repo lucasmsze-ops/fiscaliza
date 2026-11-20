@@ -68,7 +68,7 @@ Hoje (protótipo, SP):
 /votacoes           próximas votações (pauta, coleta diária), últimas votações e calendário como filtro
 /c/[ids]            links antigos da colinha: redireciona para o crachá (a colinha saiu em 2026-11-04)
 /p/[slug]           página do político (ISR) (slug = nome de urna + UF, ex.: kiko-celeguim-sp)
-/executivos/[id]    crachá do presidente (presidente) ou governador (UF minúscula) eleito em 2026, só com dado do TSE, e o checklist do plano onde há lista aprovada (data/promessas/; status só por ato oficial com link) (E23n)
+/executivos/[id]    crachá do presidente (presidente) ou governador (UF minúscula) eleito em 2026: dado do TSE; atuação (E23t: o que o Executivo federal enviou ao Congresso, para o presidente que governava; o mandato no Congresso, para o governador que é parlamentar); no fim, a proposta de governo, com o PDF (release `planos-2026`) e o checklist onde há lista aprovada (data/promessas/; status só por ato oficial com link) (E23n)
 /monitorando        convite ao cadastro ("Em breve") e abas "Quem votei" (santinho de 2026 em ingresso, do cargo mais alto ao mais baixo, com o número de urna; E23p/E23s) e "Monitorando" (quem a pessoa monitora neste navegador e a linha do tempo de votos, projetos, leis e notícias, com o que é novo desde a última visita; E23e/E23s)
 /comparar           de 2 a 5 políticos lado a lado, sem nota nem ranking (E23f; `?ids=a,b`)
 /me-representa      redireciona para o Mapa (a página saiu em 2026-11-13; `?uf=` e `?cidade=` seguem)
@@ -118,7 +118,7 @@ Abaixo: cota do mês (CEAP na Câmara, CEAPS no Senado) vs média da bancada **d
 - Relatório de Resultado da Totalização (`relatorio_resultado_totalizacao`, PDF por UF): Anexos VI (QE/QP), VII (sobras, média a média) e VIII (resumo) são o gabarito do quociente.
 - `CD_MUNICIPIO` é código do TSE, não do IBGE. Código IBGE pela API de localidades do IBGE por nome normalizado (a API do IBGE **não responde a runners do GitHub Actions**: testado 2× em 2026-11-02, timeout de conexão; a tabela é gerada localmente por `scripts/tse/municipios.ts` e versionada em `data/municipios-ibge.json`, 5.571 cidades); No país, 13 grafias divergem (ex.: TSE "Munhoz de Mello", IBGE "Munhoz de Melo"; TSE "Boa Saúde", IBGE "Januário Cicco", nome atual), todas em de-para explícito revisado à mão.
 - `bem_candidato`: bens declarados (só o total entra no site, sem descrever os bens). `historico_candidatura`: candidaturas anteriores por `SQ_CANDIDATO_ATUAL`, uma linha por turno; `DS_SIT_TOT_TURNO` vem `#NE` em eleições antigas (ex.: 2006). Sem CPF nos dois.
-- `proposta_governo_2026_{UF|BR}.zip`: PDFs dos planos de governo, `2026{UF}{SQ}_01.pdf` (presidente: 15 arquivos, 18 MB no BR).
+- `proposta_governo_2026_{UF|BR}.zip`: PDFs dos planos de governo, `2026{UF}{SQ}_{n}.pdf` (presidente: 15 arquivos, 18 MB no BR; há plano em várias partes: Omar Aziz, 8). O servidor aceita `Range`: `scripts/tse/planos.py` lê só os arquivos dos eleitos. Os 36 PDFs dos 28 eleitos estão na release `planos-2026` do GitHub (índice em `data/planos/2026.json`), não no repositório.
 - Resultado por cargo e UF: `{eleição}/dados/{uf}/{uf}-c{cargo:4}-e00{eleição}-u.json` (presidente: `br`, 6257/6258; governador: 6259/6260, 404 onde não houve 2º turno). `vap` = votos, `pvap` = % de válidos com vírgula, `sqcand` = SQ.
 - Quociente eleitoral (`lib/quociente.ts`): QE com fração ≤ 0,5 desprezada; QP desprezando a fração; vaga de QP só para quem tem ≥ 10% do QE (a sobra vai para as médias); sobras primeiro entre listas com ≥ 80% do QE e candidato com ≥ 20%, depois entre todas (STF, ADIs 7228/7263/7325); divisor da média = vagas **obtidas** por QP + médias + 1. Tratar **federação** como lista única. A frase "seu voto contou para" saiu da interface (2026-11-01); o cálculo fica para mostrar como cada um foi eleito (QP ou média) na linha do tempo de candidaturas. Senador é eleição majoritária.
 
@@ -138,6 +138,7 @@ fica com a UF errada para "quem representa o estado". Listas por estado usam `ma
 - Nominal tem placar na `descricao` (`Sim: N; Não: M`): precisão 100%, recall 99% (medido). O cron confirma por `/votos` mesmo assim.
 - `orientacaoVoto` ∈ {`Sim`, `Não`, `Obstrução`, `Liberado`, `""`}. Vazio e `Liberado` ficam fora do denominador do governismo. `aprovacao` vem `null` em ~17% das nominais.
 - **Pauta do Plenário:** `/eventos?idOrgao=180&dataInicio&dataFim` lista sessões (inclusive solenes e não deliberativas: filtrar `descricaoTipo` começando por "Sessão Deliberativa"); a deliberativa aparece só poucos dias antes. `/eventos/{id}/pauta` traz os itens com `proposicao_` e, em pedidos (urgência, recurso), `proposicaoRelacionada_`. Temas: `/proposicoes/{id}/temas`.
+- **Autor do Executivo:** em `proposicoesAutores`, `codTipoAutor = 30000` ("Órgão do Poder Executivo") com `nomeAutor` "Poder Executivo" (MPV, PL, PLP, PEC; também MSC, mensagens, e TVR, concessões de rádio e TV, que ficam de fora) ou "Presidência da República" (PLN, orçamento). Desde 2023: 247 MPV (158 perderam a eficácia), 90 PL, 12 PLP, 4 PEC, 147 PLN.
 - `/proposicoes?idDeputadoAutor` retorna **coautorias**. Filtrar por `/proposicoes/{id}/autores` com `proponente = true`. Em PEC, as ~170 assinaturas de apoio vêm com `proponente = 0` (conferido: os 2 casos a mais da API para uma deputada em 2025 eram apoio).
 - **Arquivos anuais** `dadosabertos.camara.leg.br/arquivos/{nome}/csv/{nome}-{ano}.csv` (`proposicoes`, `proposicoesAutores`, `proposicoesTemas` (colunas `uriProposicao`, `codTema`, `tema`; o id é o fim da URI); CSV `;`, UTF-8 com BOM, CRLF): o servidor **corta a transferência a cada ~17 s** (43 de 90 MB) e aceita `Range` (206): `lib/http.ts#baixarArquivo` retoma até o tamanho bater. Regenerados todo dia (~04h). O arquivo do ano traz também proposições sem número (`ano` 0: pareceres, relatórios). Em `proposicoesAutores`, `ordemAssinatura = 1` marca exatamente um primeiro autor por proposição; "virou lei" = `ultimoStatus_descricaoSituacao` "Transformado em Norma Jurídica".
 - `tipoVoto` tem 5 valores: `Sim`, `Não`, `Abstenção`, `Obstrução`, `Artigo 17`, e vem **`null`** em votações de pessoa (→ `nao_informado`: conta na participação, não no governismo). Quem não aparece no array = `ausente`. Tratar todos explicitamente.
@@ -185,6 +186,9 @@ despesas_media_uf casa, uf, ano, mes, media, parlamentares, total, fechado
 proposicoes       id (= casa:id_externo), id_externo, casa, tipo, numero, ano, ementa, apresentacao,
                   situacao, virou_norma bool, url_oficial, temas text[] (oficiais; E23s)   (só PL/PLP/PEC/PDL/PRC|PRS com autor no site)
 proposicoes_autores  proposicao_id, politico_id, ordem (1 = primeiro autor; só proponentes)
+proposicoes_executivo id (= camara:id_externo), id_externo, autor, tipo (MPV|PL|PLP|PEC|PLN), numero, ano, ementa,
+                  apresentacao, situacao, virou_norma, url_oficial, temas   (o que o Poder Executivo federal enviou desde
+                  2023, autor "Órgão do Poder Executivo" nos arquivos da Câmara; crachá do presidente; E23t)
 proposicoes_contagem politico_id, casa, ano, tipo, autorias   (os demais tipos: REQ, RIC, emendas...)
 votacoes          id (= casa:id_externo), id_externo, casa, data, proposicao, ementa, objeto,
                   descricao, resultado, placar jsonb, secreta bool, url_oficial, temas text[] (oficiais)
@@ -198,8 +202,9 @@ executivos        id (= ano:sq), ano, cargo (presidente|governador), uf, nome, n
                   numero_urna, tse_sq_candidato, foto_url, posse (5/1 e 6/1/2027, EC 111/2021), vice_nome_urna,
                   vice_partido, coligacao, composicao, ocupacao, instrucao, idade_na_posse, votos jsonb,
                   bens_total, bens_n, historico jsonb   (eleitos em 2026, do TSE; data de nascimento não é gravada)
-noticias          id (= link), fonte (camara|senado), titulo, url, data, politicos text[]   (Agência Câmara e Agência
-                  Senado pelo RSS, só as que citam alguém do site como "Nome (PARTIDO-UF)"; sem o texto; E23r)
+noticias          id (= link), fonte (camara|senado), titulo, url, data, politicos text[], materias text[]   (Agência
+                  Câmara e Agência Senado pelo RSS, as que citam alguém do site como "Nome (PARTIDO-UF)" ou uma matéria
+                  ("PLP 299/2026", E23u: título da votação); sem o texto; E23r)
 candidatos_executivo id (= ano:sq), ano, cargo, uf, nome, nome_urna, genero, partido, numero_urna, tse_sq_candidato,
                   foto_url, situacao (eleito|nao_eleito|null = #NULO)   (todos os candidatos de 2026, para o santinho; E23q)
 pauta             id, casa, data, hora, sessao, ordem, materia, tipo, ementa, relacionada, ementa_relacionada,
@@ -217,6 +222,7 @@ Desenho em `docs/CRON.md`. Desde a E22 só o Actions publica; localmente, apenas
 - Um adapter por fonte em `lib/{tse,camara,senado}.ts`, retornando tipos internos (`Politico`, `Votacao`, `Voto`). Nenhum componente conhece o shape das APIs.
 - Componentes em `components/`. `PoliticoCard` é o único card; reutilizado em busca, colinha e OG. Na página do político, o topo é o crachá (`components/Cracha.tsx`, layout do protótipo, E23), que exibe os mesmos `CardDados`. Os dois só exibem `CardDados` de `lib/card.ts#montarCard`. Fotos com `<img>` direto da URL oficial (nunca `next/image`, que passaria pela Vercel). Explicação de termos com `components/Termo.tsx` (popover nativo do HTML, sem biblioteca).
 - Textos de interface em português do Brasil, sem jargão legislativo sem tooltip (PEC, PL, MP, obstrução, quociente).
+- Ementa como título passa por `lib/titulo.ts#manchete` (regras fixas sobre o texto oficial, sem LLM; E23u); a ementa inteira fica no detalhe e no link oficial. Votação com notícia da agência da Casa usa o título dela, com o crédito.
 - Links externos com `rel="noreferrer noopener"`. Header `Referrer-Policy: same-origin`.
 - Mobile-first. A colinha e a página do político têm que carregar em < 1s em 4G.
 - Testes só onde há aritmética: cálculo de participação, governismo, quociente, somas de cota, salário e patrimônio. Fixtures com dado real da sonda.

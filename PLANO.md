@@ -3,8 +3,8 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E23n** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
-terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p, E23q, E23r e E23s foram feitas adiantadas a pedido do usuário.
+**Etapa atual: E23g** (atualizar esta linha ao avançar). E23n fechada em 2026-11-20 (PDFs dos planos na release `planos-2026`). E22 fechada: o run agendado de 04/11 às 17h15 UTC
+terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p, E23q, E23r, E23s, E23t e E23u foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -514,7 +514,10 @@ patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a s
       oficial do TSE, selecionadas por mim e revisadas pelo usuário (começa por Lula e Tarcísio, como o
       painel pessoal dele); status só por ato oficial (projeto enviado, aprovado, lei sancionada, decreto),
       com link; sem ato, "sem ato oficial ainda". Sem %, sem "em risco"/"descumprida", sem notícias.
-- [ ] Onde hospedar os PDFs dos planos (hoje o link é o zip do TSE com o nome do arquivo).
+- [x] PDFs dos planos (decisão do usuário de 2026-11-20: release `planos-2026` do GitHub, custo zero e fora do
+      repositório): `scripts/tse/planos.py` lê só os arquivos dos 28 eleitos nos zips do TSE (HTTP Range), 36 PDFs,
+      122 MB (Omar Aziz em 8 partes); índice `data/planos/2026.json`; o crachá mostra um botão por arquivo, com o
+      tamanho, e o zip oficial como fonte. O PDF baixa (a release não abre no navegador nem pula para a página).
 - Pronto quando: crachá no ar; checklist dos dois com a lista aprovada pelo usuário.
 
 ### E23o · Design system do iOS (pedido de 2026-11-14)
@@ -595,6 +598,35 @@ mas /comparar continua no ar.
       proposições com temas publicadas, 655 resumos regravados); commit de registro como redeploy dos crachás estáticos.
 - Pronto quando: as telas do protótipo têm o mesmo visual no site, no celular e no computador.
 
+### E23t · Executivo: atuação (pedido de 2026-11-20)
+Na página do executivo, a proposta de governo vai para o fim e entram leis, projetos e emendas. Decisões do usuário
+no mesmo dia: presidente com o que o Poder Executivo federal enviou ao Congresso desde 2023; governador com a atuação
+no Congresso (as Assembleias não têm dado aberto unificado, Passo 6); emendas ao Orçamento do Portal da Transparência.
+- [x] Proposta de governo (PDF e checklist) no fim da página.
+- [x] `proposicoes_executivo` (migração 0014): MPV, PL, PLP, PEC e PLN de autor "Órgão do Poder Executivo" nos
+      arquivos anuais da Câmara, coletados no job `proposicoes`; seção "O que o governo enviou ao Congresso" no crachá
+      do presidente que governava (eleito em 2022 pelo histórico do TSE), com filtro por tipo e quantos viraram norma.
+- [x] Governador: "Atuação no Congresso" quando é parlamentar do site (nome civil e UF; 6 de 27: Omar Aziz, Sergio
+      Moro, Cleitinho, Marcos Rogério, Zucco, Vicentinho Júnior), com participação, propostas, áreas e o crachá.
+- [ ] Emendas ao Orçamento (Portal da Transparência): esperando a chave da API, que o usuário cadastra no portal; vai
+      para `.env.local` e para o secret do Actions. Só existem para quem foi parlamentar.
+- [ ] No ar: migração 0014 rodada pelo usuário antes do cron que publica (traz também a coluna da E23u); push.
+- Pronto quando: o crachá do presidente lista o que o governo enviou; o dos governadores-parlamentares, o mandato; e
+  as emendas, quando houver a chave.
+
+### E23u · Títulos que se leem de relance (pedido de 2026-11-20)
+O usuário achou os títulos (as ementas) difíceis e compridos. Sem LLM e sem escrever nada (decisões de 2026-11-01 e
+2026-11-13), a decisão do mesmo dia foi "regras + agências":
+- [x] `lib/titulo.ts#manchete`: o texto oficial sem datas, sem "e dá outras providências", com o nome das 46 leis mais
+      citadas ("Código de Trânsito") e "Altera [lei] para [objetivo]" como "[lei]: [objetivo]"; testes com ementas
+      reais. Nos cartões de votação, Início, pauta, abas do crachá, Monitorando, Executivo, busca e topo da votação. A
+      ementa inteira segue no "O que é" da votação e no link oficial. Mediana de 200 para 160 caracteres.
+- [x] Título de agência nas votações: o job `noticias` grava as matérias citadas (`noticias.materias`, na migração 0014;
+      "Projeto de Lei 928/26", "PLP 299/2026") e guarda também a notícia que só cita matéria; a votação usa a notícia da
+      agência da mesma Casa publicada até 3 dias depois, que não seja de comissão (`tituloDaAgencia`), com o crédito.
+      Hoje o RSS cobre só ~48 h: o acervo cresce a partir de agora.
+- Pronto quando: os cartões de votação e de proposta se leem de relance, com o texto oficial a um toque.
+
 ### E23g · Propostas
 `/propostas`: lista geral com filtros (Casa, tipo, situação, busca na ementa) e link oficial. A
 linha do tempo da tramitação fica oculta (só a situação atual é coletada).
@@ -629,6 +661,9 @@ Classificação oficial de tema, nas duas Casas: Câmara, arquivo anual `proposi
 (ex.: "Segurança Pública"). Coluna de temas em `proposicoes` (migração), coleta no job
 `proposicoes` (Senado: reabrir os ~2.900 processos já em cache, 2 em voo), filtro "tema" na aba
 Propostas do crachá (o do protótipo) e etiqueta de tema nas votações (pela matéria principal).
+- [x] Temas das propostas nas duas Casas, coletados no job `proposicoes` (migração 0013): feito na E23s, para as
+      "Áreas de atuação" do crachá. Votações já tinham tema desde a E23m.
+- [ ] Filtro por tema na aba Propostas do crachá (falta levar `temas` para `PropostaListada` e `/dados/propostas/[id]`).
 - Pronto quando: cada proposta e votação mostra o tema oficial, e a aba Propostas filtra por ele.
 
 ### E23k · Ajustes de layout e página da votação (pedido de 2026-11-04)
