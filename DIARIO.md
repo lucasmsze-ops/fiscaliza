@@ -26,7 +26,9 @@ fica de fora. Rota `/dados/noticias/[id]` (ISR) e seção "Notícias das agênci
 **Medido (sem publicar):** 100 matérias da Câmara (5 páginas) e 17 do Senado; 98 citam políticos do site. Com só o
 nome de urna, 58 de 64 menções ligavam; o nome parlamentar resolve "Randolfe Rodrigues", "David Soares" e afins.
 **Lacunas:** Senado sem paginação (só o fim de cada dia); menção por apelido não liga (docs/LACUNAS.md).
-**Próximo passo:** o usuário roda a 0012; push; cron manual; conferir a seção em produção.
+**No ar:** 0012 rodada pelo usuário; push 94f1a4c; cron manual 44666975935 verde: 98 matérias publicadas (90 da
+Câmara, 8 do Senado). Em produção, `/dados/noticias/laura-carneiro-rj` com 8 e `tarcisio-motta-rj` com 3.
+**Próximo passo:** hospedar os PDFs dos planos de governo (fecha a E23n); aplicar o kit do iOS 27 (cartão de tarefa).
 
 ## 2026-11-19 · E23q · todos os candidatos a presidente e governador
 **Feito:** o job `executivos` passou a gravar, além dos 28 eleitos com o crachá, todos os candidatos de 2026 em

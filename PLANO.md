@@ -4,7 +4,7 @@ Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
 **Etapa atual: E23n** (atualizar esta linha ao avançar). E22 fechada: o run agendado de 04/11 às 17h15 UTC
-terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p e E23q foram feitas adiantadas a pedido do usuário.
+terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p, E23q e E23r foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
 - Tem um *entregável* verificável (arquivo, rota, teste) e um *critério de pronto*.
@@ -543,7 +543,7 @@ patrimônio entra com a E24, idade só se a data de nascimento do TSE passar a s
 - [x] Presidente e governador no Monitorando (ids `executivo-*`, `lib/acompanhar.ts#resumoExecutivo`).
 - [x] "O que aconteceu" embaixo do santinho: votos no Plenário de quem a pessoa votou e projetos de autoria
       deles na pauta (`/dados/pauta`, autores pela tabela `proposicoes`; `lib/pauta.ts`).
-- [ ] Notícias: na E23r.
+- [x] Notícias: na E23r.
 - Pronto quando: santinho completo de 2026 funcionando no celular e no computador, no ar.
 
 ### E23q · Todos os candidatos a presidente e governador (pedido de 2026-11-19)
@@ -566,7 +566,7 @@ menção "Nome (PARTIDO-UF)" que as duas agências usam.
 - [x] Migração 0012 da tabela `noticias` (título, link, data, agência, políticos citados); só entram matérias que
       citam alguém do site; o texto não é guardado.
 - [x] Seção "Notícias das agências da Câmara e do Senado" no "O que aconteceu" do "Quem votei" (`/dados/noticias/[id]`).
-- [ ] No ar: migração rodada pelo usuário, push e cron manual.
+- [x] No ar: migração 0012 rodada pelo usuário, push e cron manual (2026-11-20).
 - Pronto quando: notícias das duas agências citando quem a pessoa votou aparecem no "Quem votei".
 
 ### E23g · Propostas
