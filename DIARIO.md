@@ -24,7 +24,12 @@ sem crachá) e, enquanto a tabela nova estiver vazia, cai para só os eleitos, c
 **Lacunas:** 11 candidatos com situação `#NULO` no TSE (entre eles Pablo Marçal, a presidente) aparecem como
 "situação não informada pelo TSE".
 **Conferido (sem publicar):** 215 candidatos; os 28 eleitos casam com o crachá.
-**Próximo passo:** o usuário roda a 0011; push; cron manual; conferir a busca do santinho em produção.
+**Publicação:** 0011 rodada pelo usuário; push (d9458f9); cron manual 44663905018 coletou os 215 candidatos mas
+não publicou nada: a validação barrou `politicos[1947]` sem UF. O cron já falhava assim desde o run agendado de 19/11:
+o perfil da senadora Jussara Lima (suplente em exercício, PI) passou a vir sem `UfParlamentar` e virou o id
+`jussara-lima-`. Corrigido: a UF vem da lista de em exercício quando o perfil não traz, e político sem UF sai do
+estado (com as linhas ligadas a ele) antes da validação; nunca foi publicado.
+**Próximo passo:** push da correção; cron manual; conferir a busca do santinho em produção.
 
 ## 2026-11-19 · E23p · Quem votei
 **Feito:** a tela Monitorando ganhou duas abas (controle segmentado, `components/Segmentado.tsx`): "Quem votei"

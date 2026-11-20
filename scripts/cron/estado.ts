@@ -61,3 +61,22 @@ export function canonico(v: unknown): string {
   if (v && typeof v === "object") return `{${Object.keys(v).sort().map((k) => `${JSON.stringify(k)}:${canonico((v as LinhaBruta)[k])}`).join(",")}}`;
   return JSON.stringify(v);
 }
+
+/**
+ * Tira do estado políticos com id inválido (hoje: sem UF, o que dá um slug como "jussara-lima-") e todas as linhas
+ * que apontam para eles (`politico_id`). Só para o caso de uma fonte ter mudado de formato e gerado um id errado,
+ * que nunca foi publicado (a validação barra antes). Devolve o que foi tirado, para o log.
+ */
+export function removerPoliticosInvalidos(): string[] {
+  const politicos = lerTabela("politicos");
+  const ruins = new Set(politicos.filter((p) => !/^[A-Z]{2}$/.test(String(p.uf ?? ""))).map((p) => String(p.id)));
+  if (!ruins.size) return [];
+  const log: string[] = [];
+  for (const t of [...TABELAS.map((x) => x.nome), "fidelidade"]) {
+    let linhas: LinhaBruta[];
+    try { linhas = lerTabela(t); } catch { continue; }
+    const fica = t === "politicos" ? linhas.filter((l) => !ruins.has(String(l.id))) : linhas.filter((l) => !ruins.has(String(l.politico_id)));
+    if (fica.length !== linhas.length) { gravarTabela(t, fica); log.push(`${t}: ${linhas.length - fica.length}`); }
+  }
+  return [`sem UF, tirados do estado: ${[...ruins].join(", ")} (${log.join("; ")})`];
+}

@@ -7,6 +7,7 @@
 import { spawnSync } from "node:child_process";
 import { jobCota } from "./cota";
 import { jobExecutivos } from "./executivos";
+import { removerPoliticosInvalidos } from "./estado";
 import { jobPauta } from "./pauta";
 import { calcularFidelidade } from "./fidelidade";
 import { calcularPaginasVotacao } from "./votacoes-paginas";
@@ -60,6 +61,9 @@ for (const job of jobs) {
     console.error(`[${seg()}] ${job.nome} FALHOU: ${(e as Error).stack ?? e}`);
   }
 }
+
+// Saneamento: político sem UF (fonte que mudou de formato) sai do estado antes da validação e dos derivados.
+for (const l of removerPoliticosInvalidos()) console.log(`[${seg()}] saneamento: ${l}`);
 
 // Data da última coleta bem-sucedida de cada fonte (base da página /atualizacoes). Também é a escrita
 // diária que mantém o Supabase free acordado.

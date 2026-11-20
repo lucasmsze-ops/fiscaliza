@@ -125,14 +125,17 @@ export async function jobParlamentares(hoje: string): Promise<ResultadoParlament
   const sens = await mapLimite(atuais, 3, async (s) => {
     const arq = `${dirSen}/${s.senadoCodigo}.json`;
     const anterior = existsSync(arq) ? ler<CacheSenador>(arq) : null;
-    if (anterior && anterior.buscadoEm >= hoje) return { s, c: anterior };
+    if (anterior && anterior.buscadoEm >= hoje) return { s, c: anterior.perfil.uf ? anterior : { ...anterior, perfil: { ...anterior.perfil, uf: s.uf } } };
     try {
-      const [perfil, mandatos, licencas] = await Promise.all([getSenador(s.senadoCodigo), getMandatos(s.senadoCodigo), getLicencas(s.senadoCodigo, INICIO_LICENCAS)]);
+      const [bruto, mandatos, licencas] = await Promise.all([getSenador(s.senadoCodigo), getMandatos(s.senadoCodigo), getLicencas(s.senadoCodigo, INICIO_LICENCAS)]);
+      // Desde 19/11/2026 o perfil de Jussara Lima (suplente em exercício, PI) vem sem UfParlamentar na identificação;
+      // a lista de em exercício traz a UF no mandato (lib/senado.ts#listarSenadoresAtuais): vale a da lista.
+      const perfil = bruto.uf ? bruto : { ...bruto, uf: s.uf };
       const c: CacheSenador = { buscadoEm: hoje, perfil, mandatos, licencas };
       writeFileSync(arq, JSON.stringify(c));
       return { s, c };
     } catch (e) {
-      if (anterior) { falhas++; return { s, c: anterior }; }
+      if (anterior) { falhas++; return { s, c: anterior.perfil.uf ? anterior : { ...anterior, perfil: { ...anterior.perfil, uf: s.uf } } }; }
       throw e;
     }
   });
