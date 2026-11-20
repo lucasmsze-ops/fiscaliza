@@ -5,7 +5,7 @@
 import { montarCard, PERIODO_GOVERNO, type CardDados } from "./card";
 import { compararComCasa, coresDoDia, type ComparacaoCasa } from "./comparacoes";
 import type { Repo } from "./repo";
-import type { Afastamento, Casa, Mandato, TipoVoto } from "./types";
+import type { Afastamento, Casa, Mandato, Proposicao, TipoVoto } from "./types";
 
 export type TotaisVoto = Record<TipoVoto, number>;
 
@@ -60,6 +60,27 @@ export interface PropostasPagina {
   outras: number;
   /** As mais recentes, até 10. */
   ultimas: PropostaListada[];
+  /**
+   * Áreas de atuação (protótipo Liquid Glass, E23s): temas oficiais das propostas, do mais frequente ao menos,
+   * com quantas viraram norma. Uma proposta pode ter mais de um tema. Opcional: resumos sem temas não têm.
+   */
+  areas?: { tema: string; total: number; norma: number }[];
+  /** Quantas das `leis` têm algum tema (a base das áreas). */
+  comTema?: number;
+}
+
+/** Temas oficiais das propostas, contados por tema (lib/pagina.ts#PropostasPagina.areas). */
+export function areasDeAtuacao(ps: Pick<Proposicao, "temas" | "virouNorma">[]): { areas?: PropostasPagina["areas"]; comTema?: number } {
+  const com = ps.filter((x) => x.temas?.length);
+  if (!com.length) return {};
+  const m = new Map<string, { total: number; norma: number }>();
+  for (const x of com) for (const t of new Set(x.temas)) {
+    const a = m.get(t) ?? { total: 0, norma: 0 };
+    a.total++; if (x.virouNorma) a.norma++;
+    m.set(t, a);
+  }
+  const areas = [...m].map(([tema, a]) => ({ tema, ...a })).sort((a, b) => b.total - a.total || b.norma - a.norma || a.tema.localeCompare(b.tema, "pt-BR"));
+  return { areas, comTema: com.length };
 }
 
 export interface PaginaDados {
@@ -149,6 +170,7 @@ export async function montarPagina(repo: Repo, id: string, hoje = new Date().toI
         casa: x.casa, tipo: x.tipo, numero: x.numero, ano: x.ano, ementa: x.ementa, apresentacao: x.apresentacao,
         situacao: x.situacao, virouNorma: x.virouNorma, urlOficial: x.urlOficial, primeiroAutor: ordem === 1,
       })),
+      ...areasDeAtuacao(autorias.map((a) => a.proposicao)),
     };
   }
 

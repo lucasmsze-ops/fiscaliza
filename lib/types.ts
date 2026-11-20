@@ -304,6 +304,8 @@ export interface Proposicao {
   situacao: string | null;
   /** "Transformado(a) em norma jurídica" na fonte (com ou sem veto parcial). */
   virouNorma: boolean;
+  /** Temas oficiais (Câmara: arquivo `proposicoesTemas`; Senado: classificações do processo); null sem classificação (E23s). */
+  temas?: string[] | null;
   urlOficial: string;
 }
 

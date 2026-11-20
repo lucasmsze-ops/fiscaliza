@@ -382,7 +382,7 @@ export interface AutoriaSenado {
 const RETRIES_PROCESSO = 5;
 
 interface ProcessoListaRaw { id: number; identificacao: string; ementa: string | null; dataApresentacao: string; situacaoAtual?: string; dataSituacaoAtual?: string; codigoMateria?: number }
-interface ProcessoRaw { autoriaIniciativa?: { codigoParlamentar?: number; ordem: number }[] }
+interface ProcessoRaw { autoriaIniciativa?: { codigoParlamentar?: number; ordem: number }[]; classificacoes?: { descricao: string }[] | { descricao: string } }
 
 /** "REQ 4/2023 - CDH" → REQ, 4, 2023. */
 export function identificacaoSenado(s: string): { sigla: string; numero: number; ano: number } {
@@ -403,10 +403,13 @@ export async function listarProcessosDoAutor(codigo: string, inicio: string, fim
   }));
 }
 
-/** Autores de iniciativa (com a ordem) de um processo. */
-export async function getAutoriaProcesso(id: string): Promise<AutoriaSenado[]> {
+/** Autores de iniciativa (com a ordem) e classificações oficiais (temas, E23s) de um processo, numa chamada só. */
+export async function getDetalheProcesso(id: string): Promise<{ autoria: AutoriaSenado[]; temas: string[] }> {
   const raw = await fetchJson<ProcessoRaw>(`${SENADO_API}/processo/${id}`, { label: "senado:/processo/{id}", retries: RETRIES_PROCESSO });
-  return (raw.autoriaIniciativa ?? []).map((a) => ({ senadoCodigo: a.codigoParlamentar ? String(a.codigoParlamentar) : null, ordem: a.ordem }));
+  return {
+    autoria: (raw.autoriaIniciativa ?? []).map((a) => ({ senadoCodigo: a.codigoParlamentar ? String(a.codigoParlamentar) : null, ordem: a.ordem })),
+    temas: [...new Set(arr(raw.classificacoes).map((c) => c.descricao.trim()).filter(Boolean))],
+  };
 }
 
 // ---------------------------------------------------------------- agenda (pauta) do Plenário
