@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import type { VotacaoResumo, VotacoesDados } from "@/lib/congresso";
 import type { ItemPauta } from "@/lib/types";
@@ -89,7 +90,7 @@ export function PainelVotacoes({ pauta, porDia, mesInicial, votacoesMes, ultimaS
   const nPauta = (c: Casa) => pauta.filter((x) => x.casa === c).length;
 
   return (
-    <main className="grid gap-[18px] pb-8">
+    <main className="grid gap-[18px] pb-4 lg:pb-8">
       {/* Título, a data da coleta e o filtro por dia (protótipo Liquid Glass). */}
       <header className="grid gap-1.5 px-1">
         <h1 className={TITULO_PAGINA}>Votações do Plenário</h1>
@@ -110,6 +111,14 @@ export function PainelVotacoes({ pauta, porDia, mesInicial, votacoesMes, ultimaS
       </header>
 
       <BuscaTopo tipo="votacoes" />
+      {/* A lista geral de propostas (E23g): o que foi apresentado, votado ou não. */}
+      <Link href="/propostas" className="vidro flex min-h-12 items-center gap-3 rounded-[18px] px-4 py-2.5 text-texto no-underline hover:bg-preench-forte">
+        <span className="grid flex-1 gap-0.5">
+          <span className="text-[15px] font-semibold">Todas as propostas</span>
+          <span className="text-[13px] text-suave">Projetos apresentados desde 2023, votados ou não, com busca e filtros</span>
+        </span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(235,235,245,0.55)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+      </Link>
 
       {calendario && (
         <section id="calendario" aria-label="Calendário" className={`${card} grid max-w-[460px] gap-2`}>
@@ -176,9 +185,10 @@ export function PainelVotacoes({ pauta, porDia, mesInicial, votacoesMes, ultimaS
         </section>
 
         <section className="grid gap-[18px]" aria-labelledby="vt-prox">
-          <div className="flex items-baseline justify-between gap-3 px-1 pt-3">
-            <h2 id="vt-prox" className="text-[22px] font-bold tracking-[-0.3px]">Próximas votações</h2>
-            <span className="text-[13px] text-suave">Câmara · {nPauta("camara")} · Senado · {nPauta("senado")}</span>
+          {/* Em telas estreitas a contagem desce para baixo do título, em vez de espremer os dois (2026-11-21). */}
+          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 px-1 pt-3">
+            <h2 id="vt-prox" className="text-[22px] font-bold tracking-[-0.3px] whitespace-nowrap">Próximas votações</h2>
+            <span className="text-[13px] whitespace-nowrap text-suave">Câmara {nPauta("camara")} · Senado {nPauta("senado")}</span>
           </div>
           {pauta.length === 0 ? (
             <p className="px-1 text-sm text-suave">Nenhuma sessão deliberativa com pauta marcada por enquanto. A pauta costuma sair poucos dias antes da sessão.</p>

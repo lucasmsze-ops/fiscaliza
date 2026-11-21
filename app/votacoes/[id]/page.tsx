@@ -121,7 +121,7 @@ export default async function PaginaVotacao({ params }: Props) {
   return (
     <>
     <BarraVoltar volta="/votacoes" rotulo="Votações" titulo={`${nomeCasa(v)} · Plenário`} />
-    <main className="grid gap-4 pb-8">
+    <main className="grid gap-4 pb-4 lg:pb-8">
       <header className="grid gap-1.5 px-1">
         <span className="text-[13px] text-suave">{dataLonga(v.data)}</span>
         <h1 className="text-[34px] leading-10 font-bold tracking-[-0.6px]">{titulo(v)}</h1>

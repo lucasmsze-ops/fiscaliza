@@ -40,7 +40,7 @@ export function Monitorando() {
   }, []);
   const trocar = (v: "quem-votei" | "monitorando") => { setAba(v); history.replaceState(null, "", v === "monitorando" ? "#monitorando" : window.location.pathname); };
   return (
-    <main className="grid gap-[18px] pb-8">
+    <main className="grid gap-[18px] pb-4 lg:pb-8">
       <h1 className={`${TITULO_PAGINA} px-1`}>Monitorando</h1>
       <Cadastro />
       <div role="tablist" aria-label="Abas" className={`${SEGMENTOS} grid-cols-2`}>

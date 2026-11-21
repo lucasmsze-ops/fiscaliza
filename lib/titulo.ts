@@ -7,6 +7,8 @@
  * A ementa inteira continua na página da votação e no link oficial.
  */
 
+import { consertarCaracteres } from "./texto";
+
 /** As leis mais citadas nas ementas (medido em 2026-11-20 em 28 mil ementas), com o artigo do nome. */
 const LEIS: Record<string, [artigo: "o" | "a", nome: string]> = {
   "Decreto-Lei 2.848/1940": ["o", "Código Penal"],
@@ -77,7 +79,7 @@ const ARTIGO: Record<string, Record<"o" | "a", string>> = {
 
 /** O texto oficial sem datas, sem "e dá outras providências" e com o nome das leis conhecidas. */
 export function ementaLimpa(ementa: string): string {
-  let s = ementa.trim().replace(/[.;]\s*$/, "");
+  let s = consertarCaracteres(ementa).trim().replace(/[.;]\s*$/, "");
   s = s.replace(/,?\s+e\s+dá\s+outras\s+providências\.?["”]?$/i, "").replace(/,?\s+para o fim que especifica$/i, "");
   // Lei citada: "Lei nº 9.503, de 23 de setembro de 1997" → marcador com "Lei 9.503/1997".
   s = s.replace(REF, (_, tipo: string, num: string, ano: string) => `\u0000${maiuscula(tipo.toLocaleLowerCase("pt-BR")).replace(/^Decreto-lei/, "Decreto-Lei").replace(/^Lei complementar/, "Lei Complementar")} ${num}/${ano}\u0001`);
@@ -104,6 +106,9 @@ export function ementaLimpa(ementa: string): string {
   return s.replace(/\s+,/g, ",").replace(/,\s*,/g, ",").replace(/\s{2,}/g, " ").trim().replace(/[,;:]$/, "");
 }
 
+/** Lei citada pelo número, como `ementaLimpa` a deixa ("Lei Complementar 200/2023", "Decreto-Lei 2.848/1940"). */
+const LEI_NO_ALVO = /\b(?:Lei Complementar|Decreto-Lei|Lei|Decreto Legislativo|Decreto|Medida Provisória|Emenda Constitucional)\s+[\d.]+\/\d{4}/g;
+
 /** Manchete: "Código Penal: aumento de pena para o crime de stalking". Sem padrão reconhecido, a ementa limpa. */
 export function manchete(ementa: string | null | undefined): string {
   if (!ementa) return "";
@@ -114,7 +119,12 @@ export function manchete(ementa: string | null | undefined): string {
     let alvo = m[1]!;
     const objetivo = m[2]!.split(/;\s*(?:e\s+)?(?:a|o|as|os)\s+(?:Lei|Decreto|Código|Estatuto|CLT)/)[0]!.replace(/^dispor\s+sobre\s+/, "").trim();
     const sobre = /\bpara\s+dispor\s+sobre\s+/.test(s) || /^dispor\s+sobre\s+/.test(m[2]!);
-    const conhecida = NOMES.find((n) => alvo.includes(n));
+    // Três leis distintas ou mais no alvo ("Altera a Lei Complementar 200/2023, a Lei Complementar 176/2020, ... e a Lei
+    // 9.796/1999"): a lista não cabe num título e vira "Várias leis"; a lista fica na ementa oficial. Sem o número: listas
+    // no plural ("as Leis nºs 8.072, 12.694...") não dão para contar com certeza.
+    const leis = new Set([...(alvo.match(LEI_NO_ALVO) ?? []).map((r) => LEIS[r]?.[1] ?? r), ...NOMES.filter((n) => alvo.includes(n))]);
+    if (leis.size >= 3) alvo = "Várias leis";
+    const conhecida = leis.size >= 3 ? undefined : NOMES.find((n) => alvo.includes(n));
     // Só o nome da lei (sem "o art. 323 do", "a redação do inciso I do caput do art. 4º da").
     alvo = conhecida ?? alvo.replace(/^(?:a|o|as|os)\s+/, "").replace(/^(?:redação\s+)?(?:(?:d[oa]s?\s+)?(?:inciso|alínea|parágrafo|caput|§+|arts?\.|artigos?)\s*[\w.º-]*(?:,|\s+e)?\s*)+(?:d[oa]s?\s+)?/i, "");
     const outras = (s.match(/;\s*(?:e\s+)?(?:a|o|as|os)\s+(?:Lei|Decreto|Código|Estatuto|CLT)/g) ?? []).length;

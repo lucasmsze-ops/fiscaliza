@@ -14,7 +14,8 @@ import { chaveMateria, type MateriaRef } from "./pauta";
 import type { Noticia } from "./noticias";
 import type { PaginaDados } from "./pagina";
 import { ultimaColeta, type EleitoNaCidade, type Repo } from "./repo";
-import { cliente, selecionar, type Cliente } from "./supabase";
+import { filtrosProposicoes, type FiltroPropostas, type PaginaPropostas } from "./propostas";
+import { cliente, contar, faixa, selecionar, SupabaseErro, type Cliente } from "./supabase";
 import { normalizar } from "./texto";
 import type { VotacaoPagina } from "./votacao";
 import type {
@@ -42,6 +43,8 @@ export class SupabaseRepo implements Repo {
     const m = this.memo.get(chave);
     if (m && m.ate > Date.now()) return m.valor as Promise<T>;
     const valor = f();
+    // As buscas de /propostas criam uma chave por texto digitado: sem limpar, a memória só cresceria.
+    if (this.memo.size > 300) for (const [k, x] of this.memo) if (x.ate <= Date.now()) this.memo.delete(k);
     this.memo.set(chave, { ate: Date.now() + TTL_MS, valor });
     valor.catch(() => this.memo.delete(chave)); // falha não fica guardada
     return valor;
@@ -93,6 +96,43 @@ export class SupabaseRepo implements Repo {
     const ls = await selecionar<Linha<Proposicao> & { autores: { politico_id: string; ordem: number }[] }>(this.cli, "proposicoes",
       `select=*,autores:proposicoes_autores(politico_id,ordem)&virou_norma=is.true&order=apresentacao.desc,id.desc&limit=${limite}`);
     return ls.map(({ autores, ...p }) => ({ proposicao: deLinha<Proposicao>(p as Linha<Proposicao>), autores: autores.map((a) => ({ politicoId: a.politico_id, ordem: a.ordem })) }));
+  }
+  /**
+   * Lista de `/propostas` (E23g). Cada combinação de filtro e página fica 5 minutos em memória, e uma falha do banco
+   * (500 por tempo esgotado, visto em 2026-11-21 com várias páginas abertas ao mesmo tempo) é tentada de novo uma vez.
+   */
+  buscarProposicoes(f: FiltroPropostas, pagina: number, porPagina: number): Promise<PaginaPropostas> {
+    const tentar = () => this.consultarProposicoes(f, pagina, porPagina);
+    return this.lembrar(`propostas:${JSON.stringify([f, pagina, porPagina])}`, () => tentar().catch(async (e) => {
+      if (!(e instanceof SupabaseErro && e.status >= 500)) throw e;
+      await new Promise((r) => setTimeout(r, 400));
+      return tentar();
+    }));
+  }
+  private async consultarProposicoes(f: FiltroPropostas, pagina: number, porPagina: number): Promise<PaginaPropostas> {
+    const filtros = filtrosProposicoes(f);
+    const autores = "autores:proposicoes_autores(ordem,politico:politicos(id,slug,nome_urna,partido,uf))";
+    const consulta = `select=*,${autores}&${filtros}${filtros ? "&" : ""}order=apresentacao.desc,id.desc&autores.order=ordem`;
+    const inicio = (pagina - 1) * porPagina;
+    const semNorma = f.situacao && f.situacao !== "norma";
+    const [r, viraramNorma] = await Promise.all([
+      // Página além do fim (link velho): o PostgREST responde 416; a lista vem vazia, com o total.
+      faixa<Linha<Proposicao> & { autores: { ordem: number; politico: { id: string; slug: string; nome_urna: string; partido: string; uf: string } | null }[] }>(
+        this.cli, "proposicoes", consulta, inicio, inicio + porPagina - 1,
+      ).catch(async (e) => {
+        if (e instanceof SupabaseErro && e.status === 416) return { linhas: [], total: await contar(this.cli, "proposicoes", filtros) };
+        throw e;
+      }),
+      semNorma ? Promise.resolve(0) : f.situacao === "norma" ? null : contar(this.cli, "proposicoes", `${filtros}${filtros ? "&" : ""}virou_norma=is.true`),
+    ]);
+    return {
+      total: r.total,
+      viraramNorma: viraramNorma ?? r.total,
+      itens: r.linhas.map(({ autores: as, ...p }) => ({
+        proposicao: deLinha<Proposicao>(p as Linha<Proposicao>),
+        autores: as.flatMap((a) => a.politico ? [{ id: a.politico.id, slug: a.politico.slug, nomeUrna: a.politico.nome_urna, partido: a.politico.partido, uf: a.politico.uf, ordem: a.ordem }] : []),
+      })),
+    };
   }
   async autoresDasMaterias(materias: MateriaRef[]) {
     const r = new Map<string, string[]>();

@@ -7,7 +7,7 @@
 import { manchete } from "./titulo";
 import { orientacaoDoPartido } from "./fidelidade";
 import { siglaPartido } from "./partidos";
-import { normalizar, semCpf } from "./texto";
+import { normalizar, textoOficial } from "./texto";
 import type { Casa, ItemPauta, TipoVoto, Votacao } from "./types";
 
 /** Id na URL: "camara:106701-223" → "camara-106701-223" (os dois-pontos ficam fora da URL). */
@@ -141,7 +141,7 @@ export interface VotacaoPagina {
   proposta: { apresentacao: string | null; situacao: string | null } | null;
 }
 
-const descricaoLimpa = (s: string) => semCpf(s.replace(/\s*Sim:\s*\d.*$/s, ""));
+const descricaoLimpa = (s: string) => textoOficial(s.replace(/\s*Sim:\s*\d.*$/s, ""));
 const vazia = (): Contagem => ({ sim: 0, nao: 0, abstencao: 0, obstrucao: 0, outros: 0, naoVotou: 0 });
 function somar(c: Contagem, voto: TipoVoto | "ausente") {
   if (voto === "sim") c.sim++;
@@ -193,7 +193,7 @@ export function montarPaginaVotacao(
     contagem.naoVotou = oficial;
   }
   return {
-    id: v.id, casa: v.casa, data: v.data, proposicao: v.proposicao, ementa: v.ementa ? semCpf(v.ementa) : null,
+    id: v.id, casa: v.casa, data: v.data, proposicao: v.proposicao, ementa: v.ementa ? textoOficial(v.ementa) : null,
     descricao: descricaoLimpa(v.descricao), resultado: v.resultado, secreta: v.secreta, urlOficial: v.urlOficial,
     ...(v.temas?.length ? { temas: v.temas } : {}),
     semDirecao: !v.secreta && registrados.length > 0 && registrados.every((x) => x.voto === "nao_informado"),
@@ -219,7 +219,7 @@ const curta = (s: string) => (s.length > 150 ? `${s.slice(0, 149).trimEnd()}…`
 
 /** `agencia`: título da notícia da agência sobre a votação (E23u): vira o título do resultado e entra na busca ("ajuste fiscal"). */
 export function itemBuscaVotacao(v: Votacao, agencia?: string | null): ItemBuscaVotacao {
-  const texto = semCpf(v.ementa ?? v.descricao.replace(/\s*Sim:\s*\d.*$/s, ""));
+  const texto = textoOficial(v.ementa ?? v.descricao.replace(/\s*Sim:\s*\d.*$/s, ""));
   const resultado = v.resultado ? ` · ${v.resultado}` : "";
   return {
     href: hrefVotacao(v.id), externo: false, t: curta(agencia ?? (manchete(texto) || texto)),
@@ -229,7 +229,7 @@ export function itemBuscaVotacao(v: Votacao, agencia?: string | null): ItemBusca
 }
 
 export function itemBuscaPauta(x: ItemPauta): ItemBuscaVotacao {
-  const texto = semCpf((x.relacionada ? x.ementaRelacionada ?? x.ementa : x.ementa) ?? x.materia);
+  const texto = textoOficial((x.relacionada ? x.ementaRelacionada ?? x.ementa : x.ementa) ?? x.materia);
   return {
     href: x.urlOficial, externo: true, t: curta(manchete(texto) || texto),
     d: `${x.materia} · na pauta · ${CASA_NOME[x.casa]} · ${dataBr(x.data)}`,

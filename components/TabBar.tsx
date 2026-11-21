@@ -18,7 +18,8 @@ export function TabBar() {
   if (!ehN1(caminho)) return null;
   return (
     <>
-      <div aria-hidden="true" className="h-24 lg:hidden" />
+      {/* Altura da barra (66) + distância do rodapé da tela (16) + 6 de folga. */}
+      <div aria-hidden="true" className="h-[88px] lg:hidden" />
       <nav aria-label="Principal"
         className="vidro-forte fixed inset-x-3 bottom-[max(16px,env(safe-area-inset-bottom))] z-40 mx-auto flex max-w-[480px] gap-0.5 rounded-[32px] p-1 lg:hidden">
         {N1.map((i) => {

@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { BarraVoltar } from "@/components/BarraVoltar";
 import { Termo } from "@/components/Termo";
 import { AbrirPelaAncora } from "@/components/AbrirPelaAncora";
 import { PERIODO_GOVERNO, reais } from "@/lib/card";
 import { GLOSSARIO, SECOES, type Secao } from "@/lib/glossario";
 import { CANAIS_CONFERIDOS_EM, CANAIS_EXTERNOS, OUVIDORIA } from "@/lib/cobrar";
+import { SITUACOES_ENCERRADAS } from "@/lib/propostas";
 import { repo } from "@/lib/repo";
 import { SUBSIDIO_CONGRESSO, subsidioEm } from "@/lib/salario";
 import { TITULO_PAGINA } from "@/lib/estilo";
@@ -80,7 +82,7 @@ export default async function ComoFunciona() {
   return (
     <>
     <BarraVoltar volta="/" rotulo="Início" />
-    <main className="mx-auto grid max-w-xl gap-4 pb-8">
+    <main className="mx-auto grid max-w-xl gap-4 pb-4 lg:pb-8">
       <div className="grid gap-2.5 px-1">
         <h1 className={TITULO_PAGINA}>Como funciona</h1>
         <p className="text-[17px] leading-[23px] text-texto/85">O Fiscaliza mostra o que os dados abertos do TSE, da Câmara dos Deputados e do Senado Federal registram sobre quem recebeu seu voto.</p>
@@ -234,6 +236,15 @@ export default async function ComoFunciona() {
           <strong>Fonte:</strong> arquivos anuais de proposições e autores dos dados abertos da Câmara e o serviço de processos dos
           dados abertos do Senado, com link para a página oficial de cada proposta. Só quem passou pela Câmara na legislatura atual ou
           está no Senado tem propostas coletadas.
+        </p>
+        <p>
+          <strong>Lista de propostas:</strong> a página <Link href="/propostas">Propostas</Link> reúne todas as que têm algum
+          parlamentar do site entre os autores, e só esses autores aparecem nela. A situação é a última que a Câmara ou o Senado
+          registrou, como a fonte escreve, e o filtro a agrupa em três: <strong>virou norma</strong> (a regra acima);{" "}
+          <strong>encerrada sem virar norma</strong> ({SITUACOES_ENCERRADAS.map((s) => `“${s.charAt(0) + s.slice(1).toLowerCase()}”`).join(", ")});
+          e <strong>em tramitação</strong>, todas as demais. Quando a fonte não traz a situação, a proposta aparece com “—” e só
+          sem filtro de situação. A busca procura todas as palavras na ementa oficial, sem diferença de acento ou maiúscula, ou
+          o número (“PL 1234/2025”).
         </p>
       </Secao>
 

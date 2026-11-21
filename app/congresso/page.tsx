@@ -17,7 +17,7 @@ export default async function Congresso() {
   const coleta = atualizacoes.map((a) => a.coletadoEm).sort().at(-1);
 
   return (
-    <main className="grid gap-[18px] pt-3 pb-8 lg:pt-6">
+    <main className="grid gap-[18px] pt-3 pb-4 lg:pb-8 lg:pt-6">
       <header className="grid gap-1.5 px-1">
         <h1 className={TITULO_PAGINA}>Congresso Federal</h1>
         {coleta && <p className="text-[13px] text-suave">Atualizado em {new Date(coleta).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })}</p>}

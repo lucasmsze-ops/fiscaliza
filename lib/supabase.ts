@@ -65,12 +65,20 @@ export async function selecionar<T>(c: Cliente, tabela: string, consulta: string
   }
 }
 
-/** Contagem exata de linhas da tabela. */
-export async function contar(c: Cliente, tabela: string): Promise<number> {
-  const r = await pedir(c, `${tabela}?select=*`, { method: "HEAD", headers: { Prefer: "count=exact", Range: "0-0" } }, `contar ${tabela}`);
+/** Contagem exata de linhas da tabela, ou das que atendem aos filtros (`filtros`: query string do PostgREST, sem `select`). */
+export async function contar(c: Cliente, tabela: string, filtros = ""): Promise<number> {
+  const r = await pedir(c, `${tabela}?select=*${filtros ? `&${filtros}` : ""}`, { method: "HEAD", headers: { Prefer: "count=exact", Range: "0-0" } }, `contar ${tabela}`);
   const total = r.headers.get("content-range")?.split("/")[1];
   if (!total || total === "*") throw new Error(`contar ${tabela}: sem Content-Range`);
   return Number(total);
+}
+
+/** Uma faixa de linhas (`inicio` a `fim`, inclusive) com o total que atende à consulta (lista paginada do site). */
+export async function faixa<T>(c: Cliente, tabela: string, consulta: string, inicio: number, fim: number): Promise<{ linhas: T[]; total: number }> {
+  if (!/(^|&)order=/.test(consulta)) throw new Error(`faixa ${tabela}: a consulta precisa de order= (paginação estável)`);
+  const r = await pedir(c, `${tabela}?${consulta}`, { method: "GET", headers: { Prefer: "count=exact", "Range-Unit": "items", Range: `${inicio}-${fim}` } }, `faixa ${tabela}`);
+  const total = Number(r.headers.get("content-range")?.split("/")[1]);
+  return { linhas: (await r.json()) as T[], total: Number.isFinite(total) ? total : 0 };
 }
 
 /** Chama uma função do banco (`create function ...`) e devolve o JSON. */

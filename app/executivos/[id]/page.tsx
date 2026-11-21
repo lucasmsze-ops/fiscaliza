@@ -99,7 +99,7 @@ export default async function PaginaExecutivo({ params }: Props) {
   return (
     <>
     <BarraVoltar volta={e.uf ? `/mapa?uf=${e.uf}` : "/mapa"} rotulo="Mapa" />
-    <main className="grid gap-6 pb-8 [&>*]:min-w-0">
+    <main className="grid gap-6 pb-4 lg:pb-8 [&>*]:min-w-0">
       {/* Cabeçalho centrado, como o crachá do parlamentar (protótipo Liquid Glass). */}
       <section aria-labelledby="nome-executivo" className="flex flex-col items-center gap-2.5 pt-1 pb-2 text-center">
         {e.fotoUrl

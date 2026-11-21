@@ -143,7 +143,7 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
   const aPartir = aba === "executivo" ? "A partir de jan/2027" : "A partir de fev/2027";
 
   return (
-    <main className="grid gap-5 pb-8 pt-3 lg:pt-6 [&>*]:min-w-0">
+    <main className="grid gap-5 pb-4 lg:pb-8 pt-3 lg:pt-6 [&>*]:min-w-0">
       <div className="grid gap-2 px-1 pt-1">
         <h1 className={TITULO_PAGINA}>Quem representa cada estado</h1>
         <p className="text-[17px] leading-[22px] text-suave">Toque no seu estado para ver quem te representa.</p>

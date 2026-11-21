@@ -70,7 +70,7 @@ export function Comparar({ atalhos, pessoas }: { atalhos: Atalho[]; pessoas: Pes
   const mesmas = ids.length === 1 && primeira ? pessoas.filter((p) => p.id !== primeira.id && p.casa === primeira.casa && p.uf === primeira.uf).slice(0, 8) : [];
 
   return (
-    <main className="grid gap-6 pb-8">
+    <main className="grid gap-6 pb-4 lg:pb-8">
       <div>
         <h1 className={`mb-1.5 ${TITULO_PAGINA}`}>Comparar lado a lado</h1>
         <p className="max-w-[620px] text-[15px] text-suave">De 2 a 5 pessoas, com o que as fontes oficiais publicam e os mesmos números do crachá. Sem nota nem ranking. “—” é dado que não existe para aquela pessoa, nunca zero, e vem com o porquê.</p>

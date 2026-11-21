@@ -6,7 +6,7 @@
  */
 import type { ProposicaoRef, VotacaoDetalhe, VotoCamara } from "./camara";
 import type { VotacaoSenado } from "./senado";
-import { semCpf } from "./texto";
+import { textoOficial } from "./texto";
 import type { Orientacao, Placar, TipoVoto, Votacao, Voto } from "./types";
 
 /** Votação nominal da Câmara já com o detalhe (matéria principal e objeto). */
@@ -39,7 +39,7 @@ export function linhaVotacaoCamara(v: VotacaoCamaraBase, placar: Placar): Votaca
   return {
     id: `camara:${v.idExterno}`, idExterno: v.idExterno, casa: "camara", data: v.data,
     proposicao: v.proposicao ? `${v.proposicao.tipo} ${v.proposicao.numero}/${v.proposicao.ano}` : null,
-    ementa: v.proposicao?.ementa?.trim() ? semCpf(v.proposicao.ementa.trim()) : null, objeto: v.objeto, descricao: semCpf(v.descricao.trim()), resultado: resultadoCamara(v),
+    ementa: v.proposicao?.ementa?.trim() ? textoOficial(v.proposicao.ementa.trim()) : null, objeto: v.objeto, descricao: textoOficial(v.descricao.trim()), resultado: resultadoCamara(v),
     placar, secreta: false, urlOficial: v.urlOficial,
   };
 }
@@ -50,7 +50,7 @@ export const placarSenado = (v: Pick<VotacaoSenado, "secreta" | "votos">): Placa
 export function linhaVotacaoSenado(v: Omit<VotacaoSenado, "votos">, placar: Placar | null): Votacao {
   return {
     id: `senado:${v.idExterno}`, idExterno: v.idExterno, casa: "senado", data: v.data, proposicao: v.proposicao?.identificacao ?? null,
-    ementa: v.ementa ? semCpf(v.ementa) : null, objeto: null, descricao: semCpf(v.descricao.trim()), resultado: v.resultado, placar, secreta: v.secreta,
+    ementa: v.ementa ? textoOficial(v.ementa) : null, objeto: null, descricao: textoOficial(v.descricao.trim()), resultado: v.resultado, placar, secreta: v.secreta,
     urlOficial: v.urlOficial,
   };
 }

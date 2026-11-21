@@ -59,7 +59,7 @@ export default async function PaginaPolitico({ params }: Props) {
   return (
     <>
     <BarraVoltar volta={`/mapa?uf=${uf}`} rotulo="Mapa" />
-    <main className="grid gap-4 pb-8">
+    <main className="grid gap-4 pb-4 lg:pb-8">
       <Cracha d={c} mandato={mandato} comparacao={pg.comparacao ?? null} />
       <AbasMandato id={c.id} propostas={pg.propostas ?? null} votacoes={pg.votacoes} />
       {pg.propostas?.areas && pg.propostas.areas.length > 0 && <AreasAtuacao p={pg.propostas} />}

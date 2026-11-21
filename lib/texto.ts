@@ -8,6 +8,24 @@ export const normalizar = (s: string) =>
  */
 export const semCpf = (s: string) => s.replace(/\d{3}\.\d{3}\.\d{3}-\d{2}/g, "[CPF omitido]");
 
+/**
+ * Caracteres que a Câmara grava como "?" em parte das ementas (a API devolve igual; 38 ementas em 2026-11-21):
+ * o espaço especial depois de "nº", "§" e "art." ("Lei nº?200"), o hífen ("Decreto?Lei", "boa?fé") e a ligadura "fi"
+ * de texto colado de PDF ("Grati?cações", "Con?ança"). Só troca "?" colado dos dois lados; pergunta de verdade
+ * ("...?" no fim ou antes de espaço) fica.
+ */
+export function consertarCaracteres(s: string): string {
+  if (!s.includes("?")) return s;
+  return s
+    .replace(/(\bn\.?[º°o]|§|\bart\.|\barts\.)\?(?=\d)/gi, "$1 ")
+    .replace(/\b(?!(?:anti|multi|semi|mini|maxi)\?)(\p{L}*\p{Ll}i)\?(?=c)/gu, "$1fi")
+    .replace(/\b([Cc]on|[Dd]escon)\?(?=an)/g, "$1fi")
+    .replace(/(\p{L})\?(?=\p{L})/gu, "$1-");
+}
+
+/** Texto oficial pronto para gravar e mostrar: caracteres consertados e CPF ocultado. */
+export const textoOficial = (s: string) => semCpf(consertarCaracteres(s));
+
 /** Slug do político: nome de urna + UF (decisão de 2026-11-01), ex.: "kiko-celeguim-sp". */
 export const slugPolitico = (nomeUrna: string, uf: string) =>
   `${nomeUrna.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}-${uf.toLowerCase()}`;

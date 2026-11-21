@@ -27,6 +27,13 @@ describe("manchete (títulos curtos, 2026-11-20)", () => {
     expect(ementaLimpa("Acrescenta parágrafo ao art. 5º da Lei nº 9.503, de 23 de setembro de 1997, para tratar de faixas."))
       .toBe("Acrescenta parágrafo ao art. 5º do Código de Trânsito, para tratar de faixas");
   });
+  it("três leis distintas ou mais no alvo viram \"Várias leis\"; '?' da Câmara no lugar do espaço e do hífen é consertado (2026-11-21)", () => {
+    expect(manchete("Altera a Lei Complementar nº?200, de 30 de agosto de 2023, a Lei Complementar nº?176, de 29 de dezembro de 2020, a Lei Complementar nº?235, de 27 de agosto de 2026, a Lei Complementar nº?224, de 26 de dezembro de 2025, a Lei nº?11.540, de 12 de novembro de 2007, e a Lei nº?9.796, de 5 de maio de 1999, para conferir ao Poder Executivo federal novos instrumentos de gestão, com vistas a garantir a estabilidade macroeconômica do País e criar as condições adequadas ao desenvolvimento socioeconômico."))
+      .toBe("Várias leis: conferir ao Poder Executivo federal novos instrumentos de gestão, com vistas a garantir a estabilidade macroeconômica do País e criar as condições adequadas ao desenvolvimento socioeconômico");
+    expect(manchete("Altera a Lei nº 7.210, de 11 de julho de 1984, Lei de Execução Penal – LEP e o Decreto-Lei 2.848, de 1940, Código Penal, para prever o pagamento do monitoramento eletrônico pelo condenado."))
+      .not.toMatch(/^Várias/);
+    expect(ementaLimpa("Altera o Decreto?Lei nº?2.848, de 7 de dezembro de 1940, para punir a má?fé.")).toBe("Altera o Código Penal, para punir a má-fé");
+  });
   it("vazio continua vazio", () => { expect(manchete(null)).toBe(""); });
 });
 

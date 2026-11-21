@@ -11,7 +11,7 @@ export default function NaoEncontrada() {
   return (
     <>
       <BarraVoltar volta="/" rotulo="Início" />
-      <main className="mx-auto grid max-w-xl gap-4 pt-2 pb-8">
+      <main className="mx-auto grid max-w-xl gap-4 pt-2 pb-4 lg:pb-8">
         <div className="grid gap-2 px-1">
           <h1 className="text-3xl font-bold tracking-[-0.6px]">Página não encontrada</h1>
           <p className="text-[15px] leading-[21px] text-suave">O endereço pode ter mudado ou estar incompleto. Procure pelo nome do político ou do projeto, ou volte por um dos caminhos abaixo.</p>

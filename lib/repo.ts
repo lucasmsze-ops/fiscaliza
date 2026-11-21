@@ -80,6 +80,8 @@ export interface Repo {
   noticiasDeMaterias(materias: string[], desde: string): Promise<Noticia[]>;
   /** Notícias das agências que citam alguma matéria, desde a data (índice da busca, E23u). */
   noticiasComMaterias(desde: string): Promise<Noticia[]>;
+  /** Lista geral de propostas com filtros (`/propostas`, E23g), mais recentes pela apresentação; `pagina` começa em 1. */
+  buscarProposicoes(filtro: FiltroPropostas, pagina: number, porPagina: number): Promise<PaginaPropostas>;
   /** O que o Executivo federal enviou ao Congresso desde 2023 (tabela `proposicoes_executivo`, E23t), mais recentes primeiro. */
   listarProposicoesExecutivo(): Promise<ProposicaoExecutivo[]>;
   /** Todos os candidatos a presidente e governador de 2026 (tabela `candidatos_executivo`, E23q). */
@@ -98,6 +100,7 @@ export function ultimaColeta(ls: ItemPauta[]): ItemPauta[] {
   return ls.filter((x) => x.coletadoEm === ultima)
     .sort((a, b) => a.data.localeCompare(b.data) || (a.hora ?? "").localeCompare(b.hora ?? "") || a.casa.localeCompare(b.casa) || a.ordem - b.ordem);
 }
+import { atendeBusca, grupoSituacao, interpretarBusca, siglasDoTipo, type FiltroPropostas, type PaginaPropostas } from "./propostas";
 import { SupabaseRepo } from "./repo-supabase";
 import { normalizar } from "./texto";
 
@@ -269,6 +272,22 @@ export class JsonRepo implements Repo {
     let ls: Noticia[];
     try { ls = await this.tabela("noticias"); } catch { return []; }
     return ls.filter((n) => n.data.slice(0, 10) >= desde && n.materias?.length);
+  }
+  async buscarProposicoes(f: FiltroPropostas, pagina: number, porPagina: number) {
+    const [ps, autores, politicos] = await Promise.all([this.tabela("proposicoes"), this.por("proposicoes_autores", "proposicaoId"), this.por("politicos", "id")]);
+    const busca = interpretarBusca(f.busca);
+    const siglas = f.tipo ? siglasDoTipo(f.tipo) : null;
+    const todas = ps.filter((p) => (!f.casa || p.casa === f.casa) && (!siglas || siglas.includes(p.tipo)) && (!f.ano || p.ano === f.ano)
+      && (!f.situacao || grupoSituacao(p) === f.situacao) && atendeBusca(p, busca))
+      .sort((a, b) => b.apresentacao.localeCompare(a.apresentacao) || b.id.localeCompare(a.id));
+    const itens = todas.slice((pagina - 1) * porPagina, pagina * porPagina).map((proposicao) => ({
+      proposicao,
+      autores: (autores.get(proposicao.id) ?? []).flatMap((a) => {
+        const p = politicos.get(a.politicoId)?.[0];
+        return p ? [{ id: p.id, slug: p.slug, nomeUrna: p.nomeUrna, partido: p.partido, uf: p.uf, ordem: a.ordem }] : [];
+      }).sort((a, b) => a.ordem - b.ordem),
+    }));
+    return { total: todas.length, viraramNorma: todas.filter((p) => p.virouNorma).length, itens };
   }
   async listarProposicoesExecutivo() {
     // Estado de antes da E23t: sem o arquivo, o crachá do presidente não mostra a seção.

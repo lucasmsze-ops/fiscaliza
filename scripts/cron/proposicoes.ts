@@ -27,7 +27,7 @@ import { arquivoAnualCamara } from "../../lib/camara";
 import { TIPOS_EXECUTIVO, TIPOS_LEGISLATIVOS } from "../../lib/esquema";
 import { baixarArquivo } from "../../lib/http";
 import { getDetalheProcesso, listarProcessosDoAutor, type AutoriaSenado, type ProcessoSenado } from "../../lib/senado";
-import { semCpf } from "../../lib/texto";
+import { textoOficial as limpo } from "../../lib/texto";
 import { FONTES, lerTabela, type LinhaBruta } from "./estado";
 
 const ANO_INICIAL = 2023; // decisão de 2026-11-02: dados desde 2023
@@ -55,7 +55,7 @@ interface ExtratoCamara {
 const dias = (a: string, b: string) => Math.round((Date.parse(a) - Date.parse(b)) / 86_400_000);
 /** "Transformado em Norma Jurídica" (Câmara), "TRANSFORMADA EM NORMA JURÍDICA COM VETO PARCIAL" (Senado). */
 const virouNorma = (situacao: string | null) => /transformad[oa] em norma jur/i.test(situacao ?? "");
-const textoOficial = (s: string | null | undefined) => (s && s.trim() ? semCpf(s.trim()) : null);
+const textoOficial = (s: string | null | undefined) => (s && s.trim() ? limpo(s.trim()) : null);
 
 export async function jobProposicoes(hoje: string): Promise<{ tabelas: Record<string, LinhaBruta[]>; relatorio: string[]; falhas: number; atualizadas: string[] }> {
   const relatorio: string[] = [];
