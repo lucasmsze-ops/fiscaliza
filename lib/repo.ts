@@ -16,9 +16,27 @@ import { deLinha } from "./linhas";
 import { montarPagina, type PaginaDados } from "./pagina";
 import type { VotacaoPagina } from "./votacao";
 import type {
-  Afastamento, Atualizacao, CandidatoExecutivo, Cargo, Casa, DespesaMediaUf, DespesaMes, EleitoMunicipio, Linha, ListaEleitoral, Mandato, Municipio,
-  ExecutivoEleito, FidelidadePolitico, ItemPauta, Orientacao, Politico, Proposicao, ProposicaoAutor, ProposicaoContagem, ProposicaoExecutivo, Votacao, Voto,
+  Afastamento, AtoExecutivo, Atualizacao, CandidatoExecutivo, Cargo, Casa, ContaGoverno, DespesaMediaUf, DespesaMes, EleitoMunicipio, IndicadorLocal, Linha, ListaEleitoral, Mandato, Municipio,
+  ExecutivoEleito, FidelidadePolitico, ItemPauta, Orientacao, Politico, Proposicao, ProposicaoAutor, ProposicaoContagem, ProposicaoExecutivo, Veto, Votacao, Voto,
 } from "./types";
+
+/** Filtro da lista de atos do presidente (`/executivos/presidente/atos`, E23y). */
+export interface FiltroAtos {
+  ano: number;
+  /** "LEI" inclui as leis complementares; null = todos. */
+  tipo: "LEI" | "DEC" | "MPV" | null;
+  /** true = só os de rotina; false = sem os de rotina; null = todos. */
+  rotina: boolean | null;
+}
+export interface PaginaAtos { total: number; itens: AtoExecutivo[] }
+
+/** Atos que passam no filtro, mais recentes primeiro (o mesmo critério no JSON e no Supabase). */
+export function filtrarAtos(atos: AtoExecutivo[], f: FiltroAtos): AtoExecutivo[] {
+  return atos.filter((a) => a.data.startsWith(`${f.ano}-`)
+    && (f.tipo === null || (f.tipo === "LEI" ? a.tipo === "LEI" || a.tipo === "LCP" : a.tipo === f.tipo))
+    && (f.rotina === null || (a.rotina !== null) === f.rotina))
+    .sort((a, b) => b.data.localeCompare(a.data) || b.numero - a.numero);
+}
 
 export interface EleitoNaCidade {
   cargo: Cargo;
@@ -88,6 +106,16 @@ export interface Repo {
   listarCandidatosExecutivo(): Promise<CandidatoExecutivo[]>;
   /** Pauta do Plenário de `desde` (AAAA-MM-DD) em diante, só a coleta mais recente. */
   listarPauta(desde: string): Promise<ItemPauta[]>;
+  /** Contas do governo de um ente ("BR" ou a UF), do SICONFI (tabela `contas_governo`, E23x), por ano. */
+  contasGoverno(ente: string): Promise<ContaGoverno[]>;
+  /** Indicadores do Brasil ("BR") ou de uma UF (tabela `indicadores`, E23x), por indicador e período. */
+  indicadoresDe(local: string): Promise<IndicadorLocal[]>;
+  /** Atos do presidente desde `desde` (AAAA-MM-DD), mais recentes primeiro (tabela `atos_executivo`, E23x). */
+  listarAtos(desde: string): Promise<AtoExecutivo[]>;
+  /** Uma página da lista de atos (`/executivos/presidente/atos`). */
+  buscarAtos(f: FiltroAtos, pagina: number, porPagina: number): Promise<PaginaAtos>;
+  /** Vetos do presidente em exercício (tabela `vetos`, E23x), mais recentes primeiro. */
+  listarVetos(): Promise<Veto[]>;
   /** Autores do site (ids de políticos) de cada matéria, pela chave "casa:TIPO número/ano" (lib/pauta.ts). */
   autoresDasMaterias(materias: MateriaRef[]): Promise<Map<string, string[]>>;
 }
@@ -113,6 +141,7 @@ type Tabelas = {
   eleitos_mun: EleitoMunicipio; despesas_mes: DespesaMes; despesas_media_uf: DespesaMediaUf; votacoes: Votacao;
   votos: Voto; orientacoes: Orientacao; proposicoes: Proposicao; proposicoes_autores: ProposicaoAutor;
   proposicoes_contagem: ProposicaoContagem; atualizacoes: Atualizacao; fidelidade: FidelidadePolitico; executivos: ExecutivoEleito; candidatos_executivo: CandidatoExecutivo; pauta: ItemPauta; noticias: Noticia; proposicoes_executivo: ProposicaoExecutivo;
+  contas_governo: ContaGoverno; indicadores: IndicadorLocal; atos_executivo: AtoExecutivo; vetos: Veto;
 };
 
 /**
@@ -305,6 +334,26 @@ export class JsonRepo implements Repo {
     let ls: ProposicaoExecutivo[];
     try { ls = await this.tabela("proposicoes_executivo"); } catch { return []; }
     return [...ls].sort((a, b) => b.apresentacao.localeCompare(a.apresentacao) || b.id.localeCompare(a.id));
+  }
+  /** Tabelas da E23x: sem o arquivo em data/ (o recorte da sonda não tem), a página do executivo mostra a lacuna. */
+  private async opcional<K extends keyof Tabelas>(nome: K): Promise<Tabelas[K][]> {
+    try { return await this.tabela(nome); } catch { return []; }
+  }
+  async contasGoverno(ente: string) {
+    return (await this.opcional("contas_governo")).filter((c) => c.ente === ente).sort((a, b) => a.ano - b.ano || a.indicador.localeCompare(b.indicador));
+  }
+  async indicadoresDe(local: string) {
+    return (await this.opcional("indicadores")).filter((i) => i.local === local).sort((a, b) => a.indicador.localeCompare(b.indicador) || a.periodo.localeCompare(b.periodo));
+  }
+  async listarAtos(desde: string) {
+    return (await this.opcional("atos_executivo")).filter((a) => a.data >= desde).sort((a, b) => b.data.localeCompare(a.data) || b.numero - a.numero);
+  }
+  async buscarAtos(f: FiltroAtos, pagina: number, porPagina: number) {
+    const todos = filtrarAtos(await this.opcional("atos_executivo"), f);
+    return { total: todos.length, itens: todos.slice((pagina - 1) * porPagina, pagina * porPagina) };
+  }
+  async listarVetos() {
+    return [...(await this.opcional("vetos"))].sort((a, b) => b.publicacao.localeCompare(a.publicacao) || b.id.localeCompare(a.id));
   }
   async listarCandidatosExecutivo() {
     // Estado de antes da E23q: sem o arquivo, a busca do santinho fica só com os eleitos.

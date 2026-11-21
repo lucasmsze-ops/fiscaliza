@@ -15,6 +15,24 @@ Modelo:
 
 ---
 
+## 2026-11-21 · E23y (página do executivo no protótipo)
+**Feito:** `/executivos/[id]` refeita na ordem do protótipo aprovado (canvas v112): Contas do governo (lista estilo Ajustes, régua
+com a marca do mínimo, limite ou meta), Como o país/estado está (lista estilo Ações com minigráfico e variação desde 2022), Placar
+com o Congresso (barras e vetos, a lista enviada recolhida) e O que o presidente assinou (totais, filtro, 5 recentes sem rotina,
+rotina recolhida), Plano de governo (só o PDF) e Sobre a candidatura (recolhido). Cada item abre o gráfico de linha
+(`components/GraficoLinha.tsx`, desenho montado no servidor em `lib/executivo-painel.ts`; o ano tocável é o único estado no
+client). Acordeão com `<details name>` (um aberto por vez, sem JavaScript), chevron para baixo fechado e para cima aberto,
+contexto no "i" (popover nativo). `/executivos/presidente/atos` com filtros ano, tipo e rotina. Repo com as quatro tabelas da
+E23x. Seção `#executivo` em `/como-funciona` no lugar de `#promessas`; `ChecklistPlano` e `lib/promessas.ts` saíram.
+Rotina dos atos inclui os decretos de execução de acordos da ALADI (19). 12 testes novos com dado real (139 no total); build ok.
+**Decidido:** quem governa desde 2023 (eleito em 2022 para o cargo) mostra "Presidente da República"/"Governador de SP" e o
+trecho "no mandato"; os demais, "antes da posse" com o aviso de quando o mandato começa (vice que assumiu em 2026, como no
+Acre, segue como "novo": não há fonte aberta de quem governa hoje, regra da E23w).
+**Lacunas:** títulos de leis que alteram a LOA saem longos pela regra de manchete ("Lei 15.346/2026, que estima a receita...: o
+exercício financeiro de 2026"); a ementa inteira está no link e no título do item. A rotina nova dos acordos só vale no banco
+depois do próximo cron.
+**Próximo passo:** push aprovado; cron manual (aplica a regra nova da rotina); conferir no ar. Depois, E23h.
+
 ## 2026-11-21 · E23x (coleta do executivo, pronta no ensaio)
 **Feito:** adapters `lib/siconfi.ts` (RREO Anexos 14 e 01, RGF Anexos 01 e 02, União e 27 UFs), `lib/ibge.ts` (apisidra: desemprego,
 renda, informalidade, pobreza, IPCA por área, PIB) e, em `lib/senado.ts`, legislação federal e vetos; regras em `lib/atos.ts`

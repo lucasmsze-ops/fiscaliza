@@ -14,6 +14,13 @@ import type { ExecutivoEleito, Politico } from "./types";
 export const presidenteEmExercicio = (e: ExecutivoEleito) =>
   e.cargo === "presidente" && (e.historico ?? []).some((h) => h.ano === 2022 && /^presidente$/i.test(h.cargo) && /^eleit/i.test(h.resultado ?? ""));
 
+/**
+ * Governa desde 1/1/2023: eleito em 2022 para o mesmo cargo (presidente, ou governador, que disputou a reeleição sem
+ * deixar o cargo; regra da E23w). Quem não governa vê as contas e os índices como ponto de partida, "antes da posse".
+ */
+export const governaDesde2023 = (e: ExecutivoEleito) =>
+  (e.historico ?? []).some((h) => h.ano === 2022 && (e.cargo === "presidente" ? /^presidente$/i : /^governador$/i).test(h.cargo) && /^eleit/i.test(h.resultado ?? ""));
+
 const letras = (s: string) => normalizar(s).replace(/[^a-z]/g, "");
 
 /** O parlamentar do site que é a mesma pessoa do governador eleito (nome civil e UF); null se não houver. */

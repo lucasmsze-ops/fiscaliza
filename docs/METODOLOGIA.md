@@ -102,14 +102,29 @@ o que não cabe lá (nomes de campos, decisões datadas). Toda mudança em `lib/
   Senado), não `politicos.uf` (candidatura de 2026). Conferido: as 27 bancadas batem com as cadeiras
   da Constituição (art. 45: 8 a 70 deputados; art. 46: 3 senadores).
 
-## Planos de governo (`/executivos/[id]`, E23n)
-- Promessas em `data/promessas/2026.json` (lido por `lib/promessas.ts`): texto literal e página do PDF
-  do TSE (`proposta_governo_2026_{BR|UF}.zip`), selecionadas entre todas as frases com verbo de
-  compromisso no futuro (Lula 320, Tarcísio 271) pelo critério "entrega que um ato ou dado oficial pode
-  mostrar"; lista aprovada pelo usuário em 2026-11-14 (`docs/promessas/`). Citações conferidas contra o
-  texto extraído do PDF (56 de 56).
-- `atos`: `{data, descricao, url, fonte}`, registrados à mão a partir do DOU, DOE-SP, Câmara, Senado,
-  Alesp ou dado oficial. Sem ato: "sem ato oficial ainda". Nenhum status de cumprimento nem percentual.
+## Presidente e governadores (`/executivos/[id]`, E23x e E23y)
+- **Contas do governo** (`contas_governo`, `lib/siconfi.ts`, `lib/executivo-painel.ts#linhasContas`): último ano com RREO do 6º
+  bimestre e RGF do 3º quadrimestre, de 2022 em diante. Estados: saúde e educação em % da receita de impostos contra o % mínimo
+  do relatório; folha (Executivo) e dívida consolidada líquida em % da RCL contra o limite (folha: o do relatório; dívida: 200%,
+  Resolução do Senado 40/2001); saldo = resultado primário "sem RPPS" contra a meta da LDO. União: saúde e educação em reais
+  contra o piso em reais (o % do gráfico é o "% Aplicado" do relatório); folha = bloco do Executivo federal (37,9%); sem dívida
+  (não há limite aprovado); saldo sem meta no demonstrativo. Régua: escala até 125% do maior entre valor e referência; a
+  distância é em pontos percentuais (uma casa abaixo de 50) ou, na União, em % do piso. Fração no lugar de % (Amazonas, Amapá)
+  é convertida coluna a coluna; ano sem número fica fora do gráfico.
+- **Indicadores** (`indicadores`, `lib/ibge.ts`, `lib/ipea.ts`): último dado e variação desde o fim de 2022 (2022, 2022-T4 ou
+  2022-12): em pontos (desemprego, informalidade, pobreza, inflação, PIB), em % (renda) ou absoluta com três casas (IDH). Janela
+  dos gráficos: anuais desde 2019, trimestrais e mensais desde 2022. Na UF, só números dela; inflação da área do IPCA, ou "—"
+  nas 11 UFs sem medição.
+- **Mandato**: governa desde 2023 quem foi eleito em 2022 para o mesmo cargo (histórico do TSE); para os demais, todos os pontos
+  são "antes da posse" e o texto diz quando o mandato começa.
+- **Placar** (`proposicoes_executivo`, `lib/executivo-painel.ts#placarCongresso`): MPV, PL, PLP e PEC desde 2023; virou norma;
+  MP com "Perdeu a Eficácia" ou demais com situação de encerramento (`SITUACOES_ENCERRADAS`); o resto, sem desfecho (MP) ou em
+  tramitação. PLN fica numa nota. **Vetos** (`vetos`, `lib/atos.ts#situacaoVeto`): derrubado se algum dispositivo "Rejeitado";
+  senão aguardando se algum "Não Apreciado"; senão mantido (inclui prejudicado).
+- **Atos** (`atos_executivo`, `lib/atos.ts#grupoRotina`): totais do ano (leis com as complementares), os 5 mais recentes sem
+  rotina e a rotina por grupo (créditos, acordos internacionais, desapropriações, concessões de rádio e TV), por regra sobre o
+  começo da ementa. Lista completa em `/executivos/presidente/atos`.
+- O checklist de promessas saiu da página em 2026-11-21 (decisão do usuário); a lista aprovada segue em `data/promessas/2026.json`.
 
 ## Votação (`/votacoes/[id]`, E23k)
 - Pré-calculada no cron (`scripts/cron/votacoes-paginas.ts` → `resumos_votacao`), porque o partido de

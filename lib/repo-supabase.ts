@@ -13,14 +13,14 @@ import { deLinha } from "./linhas";
 import { chaveMateria, type MateriaRef } from "./pauta";
 import type { Noticia } from "./noticias";
 import type { PaginaDados } from "./pagina";
-import { ultimaColeta, type EleitoNaCidade, type Repo } from "./repo";
+import { ultimaColeta, type EleitoNaCidade, type FiltroAtos, type PaginaAtos, type Repo } from "./repo";
 import { filtrosProposicoes, type FiltroPropostas, type PaginaPropostas } from "./propostas";
 import { cliente, contar, faixa, selecionar, SupabaseErro, type Cliente } from "./supabase";
 import { normalizar } from "./texto";
 import type { VotacaoPagina } from "./votacao";
 import type {
-  Afastamento, Atualizacao, CandidatoExecutivo, Cargo, ExecutivoEleito, ItemPauta, Casa, DespesaMediaUf, DespesaMes, Linha, ListaEleitoral, Mandato, Municipio, Orientacao, Politico,
-  Proposicao, ProposicaoContagem, ProposicaoExecutivo, Votacao, Voto,
+  Afastamento, AtoExecutivo, Atualizacao, CandidatoExecutivo, Cargo, ContaGoverno, ExecutivoEleito, IndicadorLocal, ItemPauta, Casa, DespesaMediaUf, DespesaMes, Linha, ListaEleitoral, Mandato, Municipio, Orientacao, Politico,
+  Proposicao, ProposicaoContagem, ProposicaoExecutivo, Veto, Votacao, Voto,
 } from "./types";
 
 const TTL_MS = 5 * 60_000;
@@ -161,6 +161,33 @@ export class SupabaseRepo implements Repo {
   listarProposicoesExecutivo() {
     // Antes da migração 0014 a tabela não existe: o crachá do presidente fica sem a seção.
     return this.lembrar("proposicoes_executivo", () => this.linhas<ProposicaoExecutivo>("proposicoes_executivo", "select=*&order=apresentacao.desc,id.desc")).catch(() => []);
+  }
+  // E23x: antes da migração 0015 as tabelas não existem; a página do executivo mostra a lacuna.
+  contasGoverno(ente: string) {
+    return this.lembrar(`contas:${ente}`, () => this.linhas<ContaGoverno>("contas_governo", `select=*&ente=eq.${v(ente)}&order=ano,indicador`)).catch(() => []);
+  }
+  indicadoresDe(local: string) {
+    return this.lembrar(`indicadores:${local}`, () => this.linhas<IndicadorLocal>("indicadores", `select=*&local=eq.${v(local)}&order=indicador,periodo`)).catch(() => []);
+  }
+  listarAtos(desde: string) {
+    return this.lembrar(`atos:${desde}`, () => this.linhas<AtoExecutivo>("atos_executivo", `select=*&data=gte.${v(desde)}&order=data.desc,numero.desc`)).catch(() => []);
+  }
+  buscarAtos(f: FiltroAtos, pagina: number, porPagina: number): Promise<PaginaAtos> {
+    const filtros = [`data=gte.${f.ano}-01-01`, `data=lte.${f.ano}-12-31`,
+      ...(f.tipo === null ? [] : [f.tipo === "LEI" ? "tipo=in.(LEI,LCP)" : `tipo=eq.${f.tipo}`]),
+      ...(f.rotina === null ? [] : [f.rotina ? "rotina=not.is.null" : "rotina=is.null"])].join("&");
+    const inicio = (pagina - 1) * porPagina;
+    return this.lembrar(`atos-busca:${JSON.stringify([f, pagina, porPagina])}`, async () => {
+      const r = await faixa<Linha<AtoExecutivo>>(this.cli, "atos_executivo", `select=*&${filtros}&order=data.desc,numero.desc`, inicio, inicio + porPagina - 1)
+        .catch(async (e) => {
+          if (e instanceof SupabaseErro && e.status === 416) return { linhas: [], total: await contar(this.cli, "atos_executivo", filtros) };
+          throw e;
+        });
+      return { total: r.total, itens: r.linhas.map((l) => deLinha<AtoExecutivo>(l)) };
+    });
+  }
+  listarVetos() {
+    return this.lembrar("vetos", () => this.linhas<Veto>("vetos", "select=*&order=publicacao.desc,id.desc")).catch(() => []);
   }
   listarCandidatosExecutivo() {
     return this.lembrar("candidatos_executivo", () => this.linhas<CandidatoExecutivo>("candidatos_executivo", "select=*&order=id"));

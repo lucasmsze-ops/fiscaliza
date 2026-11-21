@@ -7,7 +7,8 @@
  * Atos de rotina que ficam recolhidos em "O que o presidente assinou" (a lista mostra os demais). Regra sobre o começo
  * da ementa oficial, conferida em 3.164 atos de 2023 a 2026:
  * - credito: "Abre ao Orçamento Fiscal...", "Abre crédito extraordinário..." (leis, MPs e decretos);
- * - acordo: "Promulga o Acordo/a Convenção/o Protocolo..." (todo "Promulga" da lista é instrumento internacional);
+ * - acordo: "Promulga o Acordo/a Convenção/o Protocolo..." (todo "Promulga" da lista é instrumento internacional) e
+ *   "Dispõe sobre a execução do ... Protocolo Adicional ao Acordo..." (acordos da ALADI, 19 decretos de 2023 a 2026);
  * - desapropriacao: "Declara de interesse social [ou utilidade pública], para fins de desapropriação...";
  * - radiodifusao: outorga, renovação, transferência ou extinção de concessão de rádio e TV (não as regras do setor).
  */
@@ -15,14 +16,14 @@ export type GrupoRotina = "credito" | "acordo" | "desapropriacao" | "radiodifusa
 
 export const NOME_ROTINA: Record<GrupoRotina, string> = {
   credito: "Créditos no orçamento",
-  acordo: "Acordos internacionais promulgados",
+  acordo: "Acordos internacionais",
   desapropriacao: "Desapropriações",
   radiodifusao: "Concessões de rádio e TV",
 };
 
 const REGRAS: [GrupoRotina, RegExp][] = [
   ["credito", /^Abrem?\b.*\b(cr[ée]ditos?|Or[çc]amentos?)\b/i],
-  ["acordo", /^Promulga\b/i],
+  ["acordo", /^(Promulga\b|Disp[õo]e sobre a execu[çc][ãa]o d[oa]s?\b.*\b(Acordo|Protocolo|Conv[êe]nio|Tratado|Ajuste)\b)/i],
   ["desapropriacao", /^Declara de (interesse social|utilidade p[úu]blica)\b/i],
   ["radiodifusao", /^(Renova|Outorga|Transfere|Extingue|Torna sem efeito|Autoriza)\b.*radiodifus/i],
 ];

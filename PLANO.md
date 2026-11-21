@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E23y** (atualizar esta linha ao avançar). E23x e E23y (página do executivo) entram antes da E23h, a pedido do usuário (2026-11-21); E23x fechada em 2026-11-21 (dados no ar). E23g fechada em 2026-11-21 (`/propostas`). E23n fechada em 2026-11-20 (PDFs dos planos na release `planos-2026`). E22 fechada: o run agendado de 04/11 às 17h15 UTC
+**Etapa atual: E23h** (atualizar esta linha ao avançar). E23x e E23y (página do executivo) fechadas em 2026-11-21, antes da E23h, a pedido do usuário. E23g fechada em 2026-11-21 (`/propostas`). E23n fechada em 2026-11-20 (PDFs dos planos na release `planos-2026`). E22 fechada: o run agendado de 04/11 às 17h15 UTC
 terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p, E23q, E23r, E23s, E23t, E23u, E23v e E23w foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
@@ -717,27 +717,29 @@ executivo vira acompanhamento do governo, com dado oficial. Esta etapa traz os d
 ### E23y · Executivo: página no layout do protótipo (pedido de 2026-11-21)
 Layout aprovado no canvas (versão 112): Contas do governo → Como o país/estado está → Placar com o Congresso → O que o presidente
 assinou → Plano de governo (PDF) → Sobre a candidatura (recolhido). Sem subtítulo antes dos cartões: o contexto vai para o ⓘ.
-- [ ] Contas do governo: lista no estilo dos Ajustes do iOS (ícone colorido, valor à direita, frase curta do que é, barra com a marca
+- [x] Contas do governo: lista no estilo dos Ajustes do iOS (ícone colorido, valor à direita, frase curta do que é, barra com a marca
       branca do mínimo, limite ou meta e a distância até ele); "Folha de pagamento" no lugar de "Pessoal"; sai "Para onde foi o
       dinheiro". Cada item abre o gráfico de linha (2022 ao último ano, tracejado antes da posse, linha amarela do mínimo, limite ou
       meta, ano tocável). Chevron para baixo fechado e para cima aberto.
-- [ ] Como o país/estado está: lista no estilo do app Ações (minigráfico, valor e variação desde 2022), cada item abre o gráfico. No
+- [x] Como o país/estado está: lista no estilo do app Ações (minigráfico, valor e variação desde 2022), cada item abre o gráfico. No
       estado, só números do estado (sem a linha do Brasil); inflação da área do IPCA, com o nome, e "—" com o porquê nas 11 UFs sem
       IPCA; sem PIB estadual (anual e com dois anos de atraso). Decisões do usuário de 2026-11-21.
-- [ ] Gráficos em SVG montado no servidor, sem biblioteca; a escolha do ano num componente client pequeno; rótulo acessível com a série.
-- [ ] Placar com o Congresso (presidente em exercício): MPs, projetos de lei, leis complementares e PECs de `proposicoes_executivo` em
+- [x] Gráficos em SVG montado no servidor, sem biblioteca; a escolha do ano num componente client pequeno; rótulo acessível com a série.
+- [x] Placar com o Congresso (presidente em exercício): MPs, projetos de lei, leis complementares e PECs de `proposicoes_executivo` em
       barras (virou lei, perdeu a validade ou arquivado, em andamento) e os vetos; cada número abre a lista (`EnviadosExecutivo`).
-- [ ] O que o presidente assinou: totais do ano, filtro Todos/Leis/Decretos/MPs, os 5 mais recentes que não são rotina, "Ver todos" e
+- [x] O que o presidente assinou: totais do ano, filtro Todos/Leis/Decretos/MPs, os 5 mais recentes que não são rotina, "Ver todos" e
       os atos de rotina recolhidos.
-- [ ] Governador: "O que o governo assinou" como lacuna explicada; "Atuação no Congresso" continua para os 6 que são parlamentares.
-- [ ] Governador eleito que não governa hoje: contas e indicadores do estado como ponto de partida, todos "antes da posse", com o
+- [x] Governador: "O que o governo assinou" como lacuna explicada; "Atuação no Congresso" continua para os 6 que são parlamentares.
+- [x] Governador eleito que não governa hoje: contas e indicadores do estado como ponto de partida, todos "antes da posse", com o
       aviso de que o mandato começa em 06/01/2027 (decisão do usuário de 2026-11-21).
-- [ ] Sai da página o checklist do plano de governo: o plano fica só como PDF (decisão do usuário de 2026-11-21; a lista aprovada
+- [x] Sai da página o checklist do plano de governo: o plano fica só como PDF (decisão do usuário de 2026-11-21; a lista aprovada
       continua em `data/promessas/2026.json`, e a seção `#promessas` de `/como-funciona` sai junto). Idade, instrução, ocupação,
       coligação, votos e patrimônio vão para "Sobre a candidatura".
-- [ ] `/como-funciona`: o que é cada número das contas, a fonte e a regra; indicadores e vetos; `docs/METODOLOGIA.md`.
+- [x] `/como-funciona`: o que é cada número das contas, a fonte e a regra; indicadores e vetos; `docs/METODOLOGIA.md`.
+- [x] Lista completa dos atos em `/executivos/presidente/atos` (ano, tipo e rotina no endereço, 30 por página), aberta por "Ver os N
+      atos de {ano}" e pelos números da rotina.
 - Pronto quando: as páginas do presidente, de um governador reeleito e de um novo seguem o protótipo no celular e no
-  computador, no ar.
+  computador, no ar. (Conferido no preview com o Supabase em 2026-11-21: presidente, SP e AL.)
 
 ### E23h · Cargos e Dicionário
 `/cargos` e `/dicionario`: texto fixo com fonte legal (Constituição, regimentos). O Dicionário

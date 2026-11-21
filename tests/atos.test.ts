@@ -10,6 +10,7 @@ describe("atos de rotina (ementas reais de 2023 a 2026)", () => {
   it("acordos internacionais: todo Promulga", () => {
     expect(grupoRotina("Promulga o Acordo de Segurança Social entre a República Federativa do Brasil e a República de Moçambique, firmado em Brasília")).toBe("acordo");
     expect(grupoRotina("Promulga o texto modificado do Convênio Constitutivo do Fundo Financeiro para o Desenvolvimento da Bacia do Prata")).toBe("acordo");
+    expect(grupoRotina("Dispõe sobre a execução do Sexagésimo Sétimo Protocolo Adicional ao Acordo de Complementação Econômica nº 35 (67PA-ACE35), firmado")).toBe("acordo");
   });
   it("desapropriações e concessões de rádio e TV", () => {
     expect(grupoRotina("Declara de interesse social, para fins de desapropriação, os imóveis rurais abrangidos pelo território quilombola")).toBe("desapropriacao");

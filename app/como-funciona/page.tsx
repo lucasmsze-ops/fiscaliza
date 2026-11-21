@@ -295,24 +295,44 @@ export default async function ComoFunciona() {
         </p>
       </Secao>
 
-      <Secao id="promessas">
+      <Secao id="executivo">
         <p>
-          <strong>De onde vêm as promessas:</strong> do plano de governo que cada eleito em 2026 registrou no TSE (o PDF oficial,
-          publicado nos dados abertos do Tribunal). O texto de cada promessa é o do documento, entre aspas, com a página. Não resumimos
-          nem reescrevemos.
+          <strong>Contas do governo:</strong> dos relatórios que a União e cada estado entregam ao Tesouro Nacional (RREO do 6º bimestre e
+          RGF do 3º quadrimestre, no SICONFI), do último ano fechado, ao lado do que a lei exige. Saúde e educação: parte da receita de
+          impostos aplicada, contra o mínimo que o relatório informa (12% e 25% da Constituição na maioria dos estados); na União, o
+          mínimo é um valor em reais, e o número é quanto foi aplicado em relação a ele. Folha de pagamento: gasto com servidores ativos,
+          aposentados e pensionistas do Poder Executivo sobre a receita corrente líquida, contra o limite da Lei de Responsabilidade Fiscal
+          (49% nos estados, 37,9% no Executivo federal). Dívida: dívida consolidada líquida sobre a receita corrente líquida, contra o
+          limite do Senado (200%, Resolução nº 40/2001). Investimentos: obras e equipamentos pagos no ano, em reais da época. Saldo das
+          contas: o resultado primário (receitas menos despesas, sem os juros), contra a meta da Lei de Diretrizes Orçamentárias quando o
+          relatório traz a meta. Número que o relatório não traz aparece como &quot;—&quot;; quando um estado informa uma fração no lugar
+          do percentual (0,25 em vez de 25%), passamos para percentual.
         </p>
         <p>
-          <strong>Quais entram:</strong> lemos todas as frases de compromisso do plano (as com verbo no futuro, como &quot;vamos&quot; e
-          &quot;criaremos&quot;) e ficamos com as que têm uma entrega concreta que um ato oficial ou um dado oficial pode mostrar: criar
-          uma política, um programa ou um órgão, mandar ou aprovar uma lei, uma obra, uma meta com número ou prazo. Compromissos genéricos
-          (&quot;fortaleceremos&quot;, &quot;continuaremos&quot;) e de manutenção do que já existe ficam fora, porque nenhum ato marca o
-          seu cumprimento. Por enquanto, os planos de Lula (28 promessas) e de Tarcísio (28).
+          <strong>Como o país ou o estado está:</strong> o último dado de cada indicador e quanto ele mudou desde o fim de 2022, antes da
+          posse. IDH: o IDHM do Atlas Brasil (PNUD, Ipea e FJP), pelo Ipeadata. Desemprego, renda média do trabalho (descontada a
+          inflação), informalidade e pobreza (indicador 1.2.1 dos Objetivos de Desenvolvimento Sustentável): PNAD Contínua, do IBGE.
+          Inflação: IPCA em 12 meses, que o IBGE mede em 10 regiões metropolitanas e 6 capitais; no estado, a da área medida, e
+          &quot;—&quot; onde não há. PIB, só do país, em 4 trimestres. Na página de um governador, só números do estado. São indicadores
+          do lugar, não nota do governo.
         </p>
         <p>
-          <strong>Como acompanhamos:</strong> ao lado de cada promessa, só atos oficiais publicados (Diário Oficial, Câmara, Senado,
-          Assembleia) ou dados oficiais (como os do INEP e do INPE), com data, fonte e link, registrados à mão. Sem ato, a promessa
-          aparece como &quot;sem ato oficial ainda&quot;. O site não diz se uma promessa foi cumprida, está em risco ou foi descumprida,
-          nem calcula percentual do plano: isso seria um julgamento nosso, e o Fiscaliza só mostra dado oficial.
+          <strong>Placar com o Congresso:</strong> o que o Poder Executivo federal enviou desde 2023 (medidas provisórias, projetos de lei,
+          leis complementares e emendas à Constituição), pela situação registrada na Câmara: virou lei; perdeu a validade (medida
+          provisória) ou foi encerrado sem virar lei; e o resto, sem desfecho registrado ou em tramitação. Vetos: pela situação de cada
+          trecho vetado no Congresso; um veto conta como derrubado se pelo menos um trecho foi derrubado, como aguardando se falta votar
+          algum, e como mantido nos demais (inclui os prejudicados).
+        </p>
+        <p>
+          <strong>O que o presidente assinou:</strong> leis, leis complementares, decretos e medidas provisórias pela legislação federal do
+          Senado, com o título curto da ementa oficial. Créditos no orçamento, acordos internacionais promulgados, desapropriações e
+          concessões de rádio e TV ficam recolhidos como rotina, por uma regra fixa sobre o começo da ementa. Ato com data no futuro na
+          fonte fica de fora até ser corrigido.
+        </p>
+        <p>
+          <strong>Quem ainda não governa:</strong> quem foi eleito em 2026 sem estar no cargo vê as contas e os índices do estado como ponto
+          de partida, todos marcados &quot;antes da posse&quot;. Atos de governador e projetos enviados às Assembleias não têm dado aberto
+          unificado e ficam de fora. O plano de governo aparece como o PDF entregue ao TSE, sem resumo.
         </p>
       </Secao>
 
