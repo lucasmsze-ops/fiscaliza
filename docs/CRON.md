@@ -25,9 +25,30 @@ de `.env.local`). Desde a E22, roda todo dia no GitHub Actions (`.github/workflo
   extrato.
 - **Segredos:** `SUPABASE_URL` e `SUPABASE_SECRET_KEY` em Settings → Secrets and variables →
   Actions. O workflow só roda por agendamento ou à mão, nunca em pull request.
+- **Revalidação das páginas (2026-11-21):** no fim, o workflow chama `POST {SITE_URL}/api/revalidar` com o segredo
+  `REVALIDAR_SEGREDO` (o mesmo valor no GitHub, em Secrets, e na Vercel, em Environment Variables; `SITE_URL` é uma
+  variável do Actions). As páginas com ISR de 24 h passam a mostrar a coleta do dia na próxima visita, sem esperar a
+  regeneração nem um commit de redeploy. Sem os dois configurados, o passo só avisa e as páginas seguem o ISR.
+- **Sempre ativo (2026-11-21):** num repositório público, o GitHub desliga workflows agendados depois de 60 dias sem
+  atividade. O job `manter-ativo` (só com `actions: write`, sem npm) reativa o `cron.yml` pela API a cada execução.
+- **Horário:** o agendamento é 09:17 UTC, mas o GitHub atrasa os agendados em horário de pico: as execuções têm
+  começado entre 17h e 18h UTC (14h–15h em Brasília). Nada depende da hora exata.
 - **`atualizacoes`:** a cada execução, cada fonte coletada com sucesso (`camara_votacoes`,
   `senado_cota`...) ganha a data e hora da coleta. É a base da página `/atualizacoes` e a escrita
   diária que mantém o Supabase free acordado.
+
+## Datas e caches que evitam retrabalho (2026-11-21)
+
+- **"Hoje" é o dia de Brasília** (`lib/datas.ts#hojeBrasil`), no cron e no site. Em UTC, das 21h à meia-noite já era o
+  dia seguinte, e a pauta da sessão da noite sumia de "Próximas votações".
+- **Pauta:** o site mostra a coleta mais recente **de cada Casa** (`ultimaColeta`); se a Câmara falha num dia, a pauta
+  dela da véspera continua.
+- **Câmara, votações simbólicas:** resposta de votos vazia de votação com mais de 14 dias e sem placar na descrição
+  vira `estado/fontes/camara-votos/{id}.vazia` e não é baixada de novo (eram ~300 chamadas por execução).
+- **Senado, virada do ano:** o ano anterior é baixado de novo durante janeiro (a última coleta de dezembro pode ter
+  falhado ou sido antes da última sessão); depois, fica no cache.
+- **Textos oficiais** passam por `lib/texto.ts#textoOficial` (conserta os "?" que a Câmara grava no lugar do espaço
+  depois de "nº", do hífen e do "fi"; oculta CPF) na coleta e na tela.
 
 ## Ordem de uma execução
 

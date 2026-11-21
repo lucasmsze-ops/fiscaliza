@@ -15,6 +15,25 @@ Modelo:
 
 ---
 
+## 2026-11-21 · pente fino da coleta e dos títulos
+**Feito:** "hoje" no fuso de Brasília em todo o site e no cron (`lib/datas.ts`); pauta pela coleta mais recente de cada
+Casa; Senado do ano anterior rebaixado em janeiro; votações simbólicas antigas da Câmara marcadas (`.vazia`) em vez de
+baixadas de novo a cada execução; `POST /api/revalidar` chamado pelo cron no fim (páginas com ISR mostram a coleta do dia
+sem commit de redeploy); job `manter-ativo` no workflow (o GitHub desliga agendados de repositório público após 60 dias
+sem atividade); cabeçalhos de segurança (nosniff, SAMEORIGIN, Permissions-Policy); funções da Vercel sem o rastreio de
+todo .json do projeto (9.622 → 154 arquivos; build sem avisos). Títulos: "Lei nº 6.830/1980" com barra, "ao art.",
+"Esta Lei altera", ementa toda em maiúsculas, aspa e parêntese da CLT preservados, descrição da lei alterada que
+engolia o objetivo, corte na primeira oração acima de 180 caracteres, 4 linhas nos cartões de votação e pauta.
+**Medido:** comparação antiga × nova em 26.352 ementas: 1.678 títulos mudaram; aspas sem par 113 → 54, "Lei nº" sem
+converter 381 → 211, minúscula no início 2 → 0. Ensaio do cron (`--sem-publicar`) ok antes do push da E23g.
+**Decidido:** revalidação por segredo (`REVALIDAR_SEGREDO` no GitHub e na Vercel, `SITE_URL` como variável do Actions);
+sem eles o passo só avisa. Testes de regressão com os casos reais (115 no total).
+**Pendente:** configurar o segredo na Vercel e no GitHub; títulos longos de verdade (6,4 mil acima de 220 caracteres) só
+encurtam com texto escrito por alguém, o que a regra "nada escrito por nós" não permite: ficam com 4 linhas no cartão.
+**Próximo passo:** E23h.
+
+---
+
 ## 2026-11-21 · revisão no celular
 **Feito:** título das N2 a 16 px da barra de vidro (era 0 em Propostas, Como funciona e Comparar: `mb-4` no `BarraVoltar`);
 fim das páginas mais curto no celular (`pb-4` no `main`, rodapé numa linha só, espaçador da tab bar de 96 para 88 px);
