@@ -15,6 +15,39 @@ Modelo:
 
 ---
 
+## 2026-11-21 · E23x (coleta do executivo, pronta no ensaio)
+**Feito:** adapters `lib/siconfi.ts` (RREO Anexos 14 e 01, RGF Anexos 01 e 02, União e 27 UFs), `lib/ibge.ts` (apisidra: desemprego,
+renda, informalidade, pobreza, IPCA por área, PIB) e, em `lib/senado.ts`, legislação federal e vetos; regras em `lib/atos.ts`
+(rotina: créditos, acordos, desapropriações, rádio e TV; situação do veto); jobs `contas`, `indicadores`, `atos` e `vetos` no
+cron; migração 0015 (`contas_governo`, `indicadores`, `atos_executivo`, `vetos`); validação das tabelas novas (ente, período,
+nada no futuro, contagem dos vetos); IDH pela série `IDHM` do Ipeadata (`lib/ipea.ts`, API do Ipea, coautor do Atlas), sem planilha manual. Seed, conferência e
+validação aceitam tabela sem arquivo em `data/` (quebravam desde a E23q). 12 testes novos (127 no total).
+**Medido:** ensaio sem publicar: 668 números das contas (2022–2025), 2.833 dos indicadores (com o IDH), 3.163 atos desde 2023 (650 de
+rotina; o Decreto 13.162 com data de 13/12/2026 fica de fora), 206 vetos (50 com dispositivo derrubado, 107 aguardando, 49
+mantidos ou prejudicados). Primeira coleta do Tesouro: ~2,5 min com 2 consultas em voo; depois, cache.
+**Decidido:** na União, saúde e educação em reais contra o piso; nos estados, só o % (o "Valor Apurado" nem sempre é o
+aplicado). Folha da União = bloco do Executivo federal (o maior dos quatro). Limite da dívida pela Resolução do Senado 40/2001.
+Veto com qualquer dispositivo derrubado conta como derrubado. O teste no Actions é o próprio cron depois do push.
+**Lacunas:** fração no lugar de % (Amazonas e Amapá, saúde e educação, convertida coluna a coluna), educação de MT e da União em 2022 sem número,
+dívida negativa do ES em 2025, limite da dívida em reais incoerente no RGF. Ver `docs/LACUNAS.md`.
+**Próximo passo:** migração 0015 no SQL Editor; push aprovado; cron manual no Actions conferindo `tesouro_contas`,
+`ibge_indicadores` e `ipea_idh` em `atualizacoes`. Depois, E23y.
+
+## 2026-11-21 · protótipo do executivo e planejamento (E23x, E23y)
+**Feito:** telas "Executivo — Presidente" e "Executivo — Governador (SP)" no canvas Liquid Glass (versão 112, aprovadas),
+com dado real: contas do Tesouro (SICONFI), placar com o Congresso, atos pelo Senado, IBGE e IDH do Atlas Brasil. Duas
+etapas novas no `PLANO.md`: E23x (coleta: contas, indicadores, IDH, atos e vetos; migração 0015) e E23y (página no
+layout do protótipo), antes da E23h. `docs/PROTOTIPO.md` e `docs/LACUNAS.md` atualizados.
+**Decidido (pelo usuário):** contas no topo, depois como o país/estado está, placar e atos por último; gráficos de linha,
+nunca barras; "Pessoal" vira "Folha de pagamento"; sai "Para onde foi o dinheiro"; sem subtítulos antes dos cartões;
+chevron para baixo fechado e para cima aberto; governador só com números do estado (sem a linha do Brasil) e sem PIB
+estadual; o checklist do plano sai da página (fica só o PDF); governador novo vê contas e índices do estado como ponto de
+partida, "antes da posse".
+**Lacunas:** IPCA em só 16 áreas (11 UFs sem inflação), PIB estadual anual e atrasado, IDH sem API (planilha anual do
+PNUD), linha de pobreza do ODS 1.2.1 a confirmar, decreto com data futura na fonte. Ver `docs/LACUNAS.md`.
+**Próximo passo:** E23x — testar SICONFI e as duas APIs do IBGE a partir do Actions (workflow manual temporário); a API de
+localidades do IBGE não respondia a runners em 2026-11-02.
+
 ## 2026-11-21 · pente fino da coleta e dos títulos
 **Feito:** "hoje" no fuso de Brasília em todo o site e no cron (`lib/datas.ts`); pauta pela coleta mais recente de cada
 Casa; Senado do ano anterior rebaixado em janeiro; votações simbólicas antigas da Câmara marcadas (`.vazia`) em vez de

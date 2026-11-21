@@ -88,6 +88,10 @@ de `.env.local`). Desde a E22, roda todo dia no GitHub Actions (`.github/workflo
 | parlamentares | E21c | Câmara, Senado, TSE | diária |
 | cota | E21d | Câmara `/despesas` (todos da legislatura 57), Senado CEAPS (arquivo anual) | uma coleta por mês civil (`estado/fontes/cota/coletas.json`); anos com mês nos últimos 6 meses são baixados de novo, os outros vêm do cache |
 | proposições | E21e | arquivos anuais da Câmara (`proposicoes`, `proposicoesAutores`, 2023→), Senado `/processo` por autor e `/processo/{id}` | diária: ano corrente baixado de novo todo dia, anos anteriores uma vez por semana (situação de proposição antiga muda); autoria do Senado em cache para sempre |
+| `contas` | E23x | SICONFI (Tesouro): RREO do 6º bimestre (Anexos 14 e 01) e RGF do 3º quadrimestre do Executivo (Anexos 01 e 02), União e 27 UFs, 2022 → último ano fechado | ano fechado completo em cache (`siconfi/{ente}-{ano}.json`, só o extraído); o último ano fechado de novo uma vez por semana até 30/06 do ano seguinte (retificações); relatório ainda não entregue aparece no log, sem falha |
+| `indicadores` | E23x | IBGE (`apisidra.ibge.gov.br/values`, seis tabelas) e IDH pela série `IDHM` do Ipeadata (`ipeadata.gov.br/api/odata4`) | as sete consultas a cada execução (pequenas); uma que falha não apaga o que já foi coletado |
+| `atos` | E23x | Senado `/legislacao/lista` (LEI, LCP, DEC, MPV), desde 2023 | ano corrente a cada execução; anteriores uma vez por semana (`senado-legislacao/`); data de assinatura depois de hoje fica de fora, no log |
+| `vetos` | E23x | Congresso `/materia/vetos/{ano}` e `/plenario/resultado/veto/materia/{codigo}`, desde 2023 | listas a cada execução; veto decidido (sem dispositivo por votar) em cache (`congresso-vetos/`), os demais pedidos de novo |
 
 Respostas brutas ficam em `estado/fontes/` (ex.: `camara-votos/{id}.json`): votação passada não
 muda, então nunca é baixada de novo. Resposta vazia não é guardada (os votos podem chegar depois).

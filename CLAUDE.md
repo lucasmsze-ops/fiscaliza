@@ -168,6 +168,34 @@ fica com a UF errada para "quem representa o estado". Listas por estado usam `ma
 - Senado: `https://www12.senado.leg.br/noticias/feed/todasnoticias/RSS` e `/noticias/feed/noticias/RSS` (15 cada, sem paginação; texto em `description`; `/noticias/ultimas/feed` é HTML).
 - As duas citam parlamentares como "Nome (PARTIDO-UF)", com o partido em grafias variadas. Só título, link, data e citados são gravados.
 
+### Executivo (E23x) — contas, indicadores, atos e vetos, só no cron
+- **SICONFI** (`apidatalake.tesouro.gov.br/ords/siconfi/tt`, `lib/siconfi.ts`): `rreo` e `rgf`, sem chave, páginas de até 5.000
+  itens (`hasMore`, `offset`). `id_ente` = código IBGE da UF; União = 1, esfera `U`. Cada número é uma linha (`cod_conta`) e
+  uma coluna de um anexo: saúde e educação no RREO Anexo 14 ("% Aplicado" e "% Mínimo a Aplicar"; **na União o mínimo vem em
+  reais**, o piso, e o aplicado em % do piso); primário no Anexo 14 (estados "sem RPPS" com a meta da LDO; União sem meta);
+  investimentos no Anexo 01 (liquidadas até o 6º bimestre, sem intraorçamentárias); folha no RGF Anexo 01 do Executivo
+  (**a União traz quatro blocos com o mesmo código**: Executivo federal, 37,9%, e as parcelas do DF e dos ex-territórios;
+  vale o maior); dívida no RGF Anexo 02 (DCL/RCL no 3º quadrimestre, só estados). A coluna "Valor Apurado" do Anexo 14 dos
+  estados nem sempre é o aplicado (SP, educação de 2024: a base de R$ 209 bi): o site usa só o %. O valor em reais do
+  limite da dívida não bate com 200% da RCL em todo quadrimestre (SP, 3º de 2025: 170%): o limite vem da Resolução do
+  Senado nº 40/2001. Relatório não entregue = lista vazia.
+- **IBGE** (`apisidra.ibge.gov.br/values/t/{tabela}/n1/all/n3/all/v/{var}/p/all`, `lib/ibge.ts`): 4099 desemprego, 4660 v5933
+  renda média real, 4708 v12466 informalidade, 5877 v9948 pobreza (ODS 1.2.1), 7060 v2265 IPCA em 12 meses (só Brasil, 10
+  regiões metropolitanas e 6 capitais: 11 UFs sem IPCA), 5932 v6562 PIB em 4 trimestres (só Brasil). Primeira linha é o
+  cabeçalho; valor "..."/"-"/"X" fica de fora. `servicodados.ibge.gov.br` (API v3) também responde, mas é o host que não
+  respondia a runners do Actions em 2026-11-02. A página de descrição das tabelas (`desctabapi`) pede JavaScript.
+- **IDH** (IDHM do Atlas Brasil: PNUD, Ipea e FJP): o site do PNUD recusa acesso automático e o Atlas só mostra o número no
+  HTML (raspagem está fora de escopo). Vem do **Ipeadata** (`https://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='IDHM')`,
+  OData sem chave, `lib/ipea.ts`): série anual "encadeada" (1991, 2000 e 2010 pelo Censo; 2012 em diante pela PNAD Contínua),
+  `NIVNOME` "Brasil", "Estados" (`TERCODIGO` = código IBGE da UF), "Regiões" e "Outros Países"; 2024 entrou em 2026-05-29.
+  Valores iguais aos do Atlas (SP 2024: 0,838). Metadados em `/Metadados('IDHM')`.
+- **Legislação federal** (Senado `/legislacao/lista?tipo=LEI|LCP|DEC|MPV&ano=`): sem link na lista; a página oficial é
+  `legis.senado.leg.br/norma/{id}`. Numeração contínua por tipo (id `DEC-13167`). Já trouxe ato com data no futuro
+  (Decreto 13.162, "13/12/2026", em 21/11/2026).
+- **Vetos** (`/materia/vetos/{ano}`, redireciona para `.json`; `/plenario/resultado/veto/materia/{codigoMateria}`): situação por
+  dispositivo "Mantido", "Rejeitado" (= derrubado), "Prejudicado" ou "Não Apreciado" (por votar). Página do veto:
+  `congressonacional.leg.br/materias/vetos/-/veto/detalhe/{codigo}`.
+
 ### Portal da Transparência (v1.1) — chave gratuita, uma só, usada apenas no cron.
 
 ## Modelo de dados (Supabase)
@@ -211,6 +239,14 @@ candidatos_executivo id (= ano:sq), ano, cargo, uf, nome, nome_urna, genero, par
                   foto_url, situacao (eleito|nao_eleito|null = #NULO)   (todos os candidatos de 2026, para o santinho; E23q)
 pauta             id, casa, data, hora, sessao, ordem, materia, tipo, ementa, relacionada, ementa_relacionada,
                   apreciacao, url_oficial, coletado_em, temas   (Plenário de hoje em diante; o site lê a última coleta)
+contas_governo    ente (BR|UF), ano, indicador (saude|educacao|folha|divida|investimentos|primario), percentual,
+                  percentual_ref, reais, reais_ref, url   (SICONFI, 2022 → último ano fechado; E23x)
+indicadores       local (BR|UF), indicador (desemprego|renda|informalidade|pobreza|inflacao|pib|idh), periodo
+                  ("2025" | "2026-T3" | "2026-10"), valor, area (área do IPCA)   (IBGE desde 2019 e IDH; E23x)
+atos_executivo    id (= TIPO-numero), codigo (norma no Senado), tipo (LEI|LCP|DEC|MPV), numero, data, ementa,
+                  rotina (credito|acordo|desapropriacao|radiodifusao|null), url   (desde 2023; E23x)
+vetos             id (código do veto), codigo_materia, numero, ano, ementa, total, publicacao, materia_vetada,
+                  dispositivos, mantidos, derrubados, prejudicados, pendentes, url   (desde 2023; E23x)
 ```
 A tabela `quiz` e a coluna `votacoes.quiz` saem na E17; o modelo cresce a cada passo (detalhar no PLANO).
 Tudo com `upsert` por chave externa. Nenhuma coluna de CPF ou hash de CPF; CPF que apareça em texto oficial (descrição de votação, ementa) é ocultado com `lib/texto.ts#semCpf`. Volume e limites: `docs/VOLUME.md` (decisões de 2026-11-02: dados desde 2023, cota agregada por mês/categoria/fornecedor sem nota a nota, íntegra só das proposições que podem virar lei; as páginas leem números pré-calculados pelo cron, não as votações inteiras). Tamanho na sonda (SP, 438 políticos, 2023–26): 9,6 MB de JSON; esperado < 50 MB por legislatura.

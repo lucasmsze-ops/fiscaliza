@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E23h** (atualizar esta linha ao avançar). E23g fechada em 2026-11-21 (`/propostas`). E23n fechada em 2026-11-20 (PDFs dos planos na release `planos-2026`). E22 fechada: o run agendado de 04/11 às 17h15 UTC
+**Etapa atual: E23x** (atualizar esta linha ao avançar). E23x e E23y (página do executivo) entram antes da E23h, a pedido do usuário (2026-11-21). E23g fechada em 2026-11-21 (`/propostas`). E23n fechada em 2026-11-20 (PDFs dos planos na release `planos-2026`). E22 fechada: o run agendado de 04/11 às 17h15 UTC
 terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p, E23q, E23r, E23s, E23t, E23u, E23v e E23w foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
@@ -678,6 +678,63 @@ linha do tempo da tramitação fica oculta (só a situação atual é coletada).
       sem situação na fonte, só em "Todas".
 - Pronto quando: `/propostas` acha uma proposta por palavra sem acento e por número, os filtros se combinam e o link
   oficial abre. (Feito em 2026-11-21, conferido no preview com o Supabase.)
+
+### E23x · Executivo: contas, indicadores, atos e vetos no cron (pedido de 2026-11-21)
+O usuário aprovou o protótipo "Executivo — Presidente" e "Executivo — Governador (SP)" (canvas, versão 112): a página do
+executivo vira acompanhamento do governo, com dado oficial. Esta etapa traz os dados; a E23y monta a página.
+- [ ] Testar do Actions as fontes que o cron ainda não usa (em vez do workflow temporário: o próprio cron manual depois do
+      push, com a migração 0015 rodada; o job que não alcançar a fonte falha sozinho e não apaga nada):
+      SICONFI (`apidatalake.tesouro.gov.br/ords/siconfi/tt`) e IBGE (`apisidra.ibge.gov.br/values` e
+      `servicodados.ibge.gov.br/api/v3/agregados`; a API de localidades do IBGE não respondeu a runners em 2026-11-02). O que não
+      responder no Actions vira script local com arquivo versionado em `data/` (como `municipios-ibge.json`), anotado em LACUNAS.
+- [x] Job `contas` (SICONFI), União e 27 UFs, de 2022 ao último ano fechado: RREO do 6º bimestre, Anexo 14 (saúde e educação
+      aplicadas e o mínimo informado em cada relatório; na União, o piso em reais), Anexo 01 (investimentos liquidados), Anexo 06
+      (resultado primário e meta da LDO); RGF do 3º quadrimestre do Poder Executivo, Anexo 01 (pessoal sobre a receita corrente
+      líquida e o limite) e Anexo 02 (dívida consolidada líquida sobre a RCL, só estados). Ano fechado não muda: baixado uma vez; o ano
+      novo entra quando sai o 6º bimestre (janeiro). O RREO da União pagina em 5.000 linhas. Número que a fonte não traz fica nulo
+      (educação da União em 2022), nunca zero.
+- [x] Job `indicadores` (IBGE), Brasil e 27 UFs, desde 2019: desemprego (4099, por trimestre), renda média do trabalho (4660 v5933),
+      informalidade (4708 v12466), pobreza (5877 v9948, ODS 1.2.1), inflação em 12 meses (7060 v2265: Brasil e as 16 áreas do IPCA,
+      ligadas à UF de cada uma) e crescimento do PIB em 4 trimestres (5932 v6562, só Brasil). Antes de escrever o texto da pobreza,
+      conferir na ficha do IBGE qual é a linha de pobreza do indicador.
+- [x] IDH (IDHM do Atlas Brasil: PNUD, Ipea e FJP), Brasil e 27 UFs, série com a PNAD Contínua: o site do PNUD recusa acesso
+      automático e o Atlas só mostra o número dentro do HTML (raspagem está fora de escopo). Caminho achado no mesmo dia, sem
+      depender do usuário: a série `IDHM` do Ipeadata (API do Ipea, coautor do Atlas), coletada pelo job `indicadores`.
+- [x] Job `atos` (Senado `/legislacao/lista?tipo=LEI|LCP|DEC|MPV&ano=`), desde 2023: data, número, ementa (`textoOficial`), link e o
+      grupo de rotina (créditos no orçamento, acordos internacionais, desapropriações, rádio e TV) por regra fixa sobre a ementa, com
+      teste. Ato com data no futuro (o Decreto 13.162 vem "13/12/2026" em 21/11/2026) é recusado na validação e relatado no log.
+- [x] Job `vetos` (Congresso `/materia/vetos/{ano}` e `/plenario/resultado/veto/materia/{codigo}`), desde 2023: cada veto com o
+      resultado dos dispositivos resumido em mantido, derrubado (no todo ou em parte), prejudicado ou aguardando.
+- [x] Migração 0015 com `contas_governo`, `indicadores`, `atos_executivo` e `vetos` (menos de 5 mil linhas no total); validação em
+      `scripts/sonda/validar.ts`; `docs/CRON.md` e o modelo de dados do `CLAUDE.md`.
+- Pronto quando: o ensaio do cron (`--sem-publicar`) traz as quatro tabelas para a União e as 27 UFs, e os números de SP e da União
+  batem com os do protótipo. (Ensaio de 2026-11-21: 668 números das contas, 2.833 dos indicadores (com o IDH), 3.163 atos, 206 vetos; SP e
+  União iguais ao protótipo; validação ok. Falta a primeira execução no Actions.)
+
+### E23y · Executivo: página no layout do protótipo (pedido de 2026-11-21)
+Layout aprovado no canvas (versão 112): Contas do governo → Como o país/estado está → Placar com o Congresso → O que o presidente
+assinou → Plano de governo (PDF) → Sobre a candidatura (recolhido). Sem subtítulo antes dos cartões: o contexto vai para o ⓘ.
+- [ ] Contas do governo: lista no estilo dos Ajustes do iOS (ícone colorido, valor à direita, frase curta do que é, barra com a marca
+      branca do mínimo, limite ou meta e a distância até ele); "Folha de pagamento" no lugar de "Pessoal"; sai "Para onde foi o
+      dinheiro". Cada item abre o gráfico de linha (2022 ao último ano, tracejado antes da posse, linha amarela do mínimo, limite ou
+      meta, ano tocável). Chevron para baixo fechado e para cima aberto.
+- [ ] Como o país/estado está: lista no estilo do app Ações (minigráfico, valor e variação desde 2022), cada item abre o gráfico. No
+      estado, só números do estado (sem a linha do Brasil); inflação da área do IPCA, com o nome, e "—" com o porquê nas 11 UFs sem
+      IPCA; sem PIB estadual (anual e com dois anos de atraso). Decisões do usuário de 2026-11-21.
+- [ ] Gráficos em SVG montado no servidor, sem biblioteca; a escolha do ano num componente client pequeno; rótulo acessível com a série.
+- [ ] Placar com o Congresso (presidente em exercício): MPs, projetos de lei, leis complementares e PECs de `proposicoes_executivo` em
+      barras (virou lei, perdeu a validade ou arquivado, em andamento) e os vetos; cada número abre a lista (`EnviadosExecutivo`).
+- [ ] O que o presidente assinou: totais do ano, filtro Todos/Leis/Decretos/MPs, os 5 mais recentes que não são rotina, "Ver todos" e
+      os atos de rotina recolhidos.
+- [ ] Governador: "O que o governo assinou" como lacuna explicada; "Atuação no Congresso" continua para os 6 que são parlamentares.
+- [ ] Governador eleito que não governa hoje: contas e indicadores do estado como ponto de partida, todos "antes da posse", com o
+      aviso de que o mandato começa em 06/01/2027 (decisão do usuário de 2026-11-21).
+- [ ] Sai da página o checklist do plano de governo: o plano fica só como PDF (decisão do usuário de 2026-11-21; a lista aprovada
+      continua em `data/promessas/2026.json`, e a seção `#promessas` de `/como-funciona` sai junto). Idade, instrução, ocupação,
+      coligação, votos e patrimônio vão para "Sobre a candidatura".
+- [ ] `/como-funciona`: o que é cada número das contas, a fonte e a regra; indicadores e vetos; `docs/METODOLOGIA.md`.
+- Pronto quando: as páginas do presidente, de um governador reeleito e de um novo seguem o protótipo no celular e no
+  computador, no ar.
 
 ### E23h · Cargos e Dicionário
 `/cargos` e `/dicionario`: texto fixo com fonte legal (Constituição, regimentos). O Dicionário

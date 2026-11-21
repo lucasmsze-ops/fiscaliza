@@ -37,6 +37,14 @@ de propósito: "Participação" no lugar de "Presença" (CLAUDE.md); fotos ofici
 governador eleitos na tela do estado; "O caminho da proposta" na votação; aba Notícias na linha do tempo do Monitorando;
 o protótipo usa números fictícios de exemplo em alguns campos, o site mostra só o dado da fonte.
 
+Telas do executivo (2026-11-21, versão 112 do canvas, aprovadas pelo usuário; entram na E23y): "Executivo — Presidente
+(Lula)" e "Executivo — Governador (SP)", com dado real do Tesouro (SICONFI), do Congresso, do Senado, do IBGE e do Atlas
+Brasil. Ordem: Contas do governo (lista estilo Ajustes, barra com a marca do que a lei exige, gráfico de linha ao tocar),
+Como o país/estado está (lista estilo Ações, só números do estado na tela do governador), Placar com o Congresso, O que o
+presidente assinou, Plano de governo (só o PDF) e Sobre a candidatura (recolhido). Sem subtítulos antes dos cartões;
+chevron para baixo fechado e para cima aberto. Para ver uma tela fora do claude.ai: copiar `artifact-type/dc-runtime.js`
+do artifact como `support.js` ao lado do `.dc.html` e abrir com o Chrome sem janela.
+
 Funções futuras aparecem como "Em breve" (Entrar, cadastro, Comparar, STF, Impostômetro): exceção ao princípio 5
 aceita pelo usuário (CLAUDE.md). O que ainda não está 1:1 fica na E23s do `PLANO.md`.
 
