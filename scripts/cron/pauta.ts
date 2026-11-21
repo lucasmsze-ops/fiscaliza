@@ -10,10 +10,10 @@
  * cancelada, matéria retirada) fica com a coleta antiga, e o site mostra só os da coleta mais recente.
  */
 import { getPautaEvento, listarSessoesDeliberativas } from "../../lib/camara";
+import { somaDias } from "../../lib/datas";
 import { getAgendaPlenarioMes } from "../../lib/senado";
 import type { LinhaBruta } from "./estado";
 
-const somaDias = (iso: string, n: number) => { const d = new Date(`${iso}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 
 export async function jobPauta(hoje: string): Promise<{ tabelas: Record<string, LinhaBruta[]>; relatorio: string[]; falhas: number; atualizadas: string[] }> {
   const linhas: LinhaBruta[] = [];

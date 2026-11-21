@@ -8,8 +8,9 @@ import { existsSync, readFileSync } from "node:fs";
 import { montarPagina } from "../../lib/pagina";
 import { JsonRepo } from "../../lib/repo";
 import { cliente, selecionar, upsert } from "../../lib/supabase";
+import { hojeBrasil } from "../../lib/datas";
 
-export async function gravarResumos(dir: string, hoje = new Date().toISOString().slice(0, 10)) {
+export async function gravarResumos(dir: string, hoje = hojeBrasil()) {
   const repo = new JsonRepo(dir);
   const c = cliente("secreta");
   const existentes = new Map((await selecionar<{ politico_id: string; hash: string }>(c, "resumos", "select=politico_id,hash&order=politico_id")).map((r) => [r.politico_id, r.hash]));

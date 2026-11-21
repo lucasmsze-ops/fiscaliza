@@ -7,6 +7,7 @@ import { diasAfastado, governismo, participacao, type Indicador, type Periodo } 
 import type { Repo } from "./repo";
 import { normalizar } from "./texto";
 import type { Cargo, Casa, DespesaMediaUf, Politico } from "./types";
+import { hojeBrasil } from "./datas";
 
 /** Período de governo atual: o corte do governismo é 01/01/2027. */
 export const PERIODO_GOVERNO: Periodo = { inicio: "2023-01-01", fim: "2026-12-31" };
@@ -106,7 +107,7 @@ export function mesReferencia(medias: DespesaMediaUf[]): DespesaMediaUf | null {
   return [...medias].filter((m) => m.fechado).sort((a, b) => a.ano * 100 + a.mes - (b.ano * 100 + b.mes)).at(-1) ?? null;
 }
 
-export async function montarCard(repo: Repo, id: string, hoje = new Date().toISOString().slice(0, 10)): Promise<CardDados | null> {
+export async function montarCard(repo: Repo, id: string, hoje = hojeBrasil()): Promise<CardDados | null> {
   const p = await repo.getPolitico(id);
   if (!p) return null;
 

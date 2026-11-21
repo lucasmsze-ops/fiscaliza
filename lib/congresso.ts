@@ -6,6 +6,7 @@ import { siglaPartido } from "./partidos";
 import { tituloDaAgencia, type TituloAgencia } from "./noticias";
 import type { Repo } from "./repo";
 import type { Afastamento, Casa, Mandato, Politico, Votacao } from "./types";
+import { hojeBrasil } from "./datas";
 
 export interface Membro { id: string; nomeUrna: string; uf: string; fotoUrl: string | null }
 export interface Bancada { partido: string; membros: Membro[] }
@@ -125,7 +126,7 @@ export interface CongressoDados {
   cores: string[];
 }
 
-export async function montarCongresso(repo: Repo, hoje = new Date().toISOString().slice(0, 10)): Promise<CongressoDados> {
+export async function montarCongresso(repo: Repo, hoje = hojeBrasil()): Promise<CongressoDados> {
   const { casas, politicos } = await casasHoje(repo, hoje);
   return { casas, camara2027: camaraEleita([...politicos.values()]), cores: ordemDasCores(casas) };
 }
@@ -142,7 +143,7 @@ export interface VotacoesDados {
   ultimaSessao: { casa: Casa; data: string; votacoes: VotacaoResumo[] }[];
 }
 
-export async function montarVotacoes(repo: Repo, hoje = new Date().toISOString().slice(0, 10)): Promise<VotacoesDados> {
+export async function montarVotacoes(repo: Repo, hoje = hojeBrasil()): Promise<VotacoesDados> {
   const [datas, vc, vs] = await Promise.all([repo.listarDatasVotacoes(), repo.ultimasVotacoes("camara", 40), repo.ultimasVotacoes("senado", 40)]);
   const porDia: VotacoesDados["porDia"] = {};
   for (const x of datas) (porDia[x.data] ??= { camara: 0, senado: 0 })[x.casa]++;

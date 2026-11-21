@@ -15,6 +15,7 @@ import { pelaUf } from "@/lib/regioes";
 import { repo } from "@/lib/repo";
 import type { ExecutivoEleito } from "@/lib/types";
 import { CARD, NUMERO, ROTULO } from "@/lib/estilo";
+import { hojeBrasil } from "@/lib/datas";
 
 export const revalidate = 86400;
 export const dynamicParams = true;
@@ -209,7 +210,7 @@ export default async function PaginaExecutivo({ params }: Props) {
       <section className={`${card} grid gap-2.5`} aria-labelledby="ex-plano" id="plano">
         <h2 id="ex-plano" className="text-lg font-semibold">{plano ? "Plano de governo: o que foi prometido" : "Proposta de governo"}</h2>
         {plano
-          ? <ChecklistPlano plano={plano} posse={e.posse} nome={e.nomeUrna} antesDaPosse={new Date().toISOString().slice(0, 10) < e.posse} />
+          ? <ChecklistPlano plano={plano} posse={e.posse} nome={e.nomeUrna} antesDaPosse={hojeBrasil() < e.posse} />
           : <p className="text-sm leading-relaxed text-suave">O plano de governo é o documento que {fem(e) ? "a candidata" : "o candidato"} registrou no TSE. O acompanhamento ponto a ponto, só com atos oficiais, ainda não foi preparado para {e.nomeUrna}.</p>}
         <div className="grid gap-2 border-t border-borda pt-2.5">
           {arquivos.length > 0 ? (

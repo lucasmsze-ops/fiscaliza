@@ -94,10 +94,14 @@ export interface Repo {
 
 export { normalizar } from "./texto";
 
-/** Só os itens da coleta mais recente, em ordem de data, hora e ordem na pauta. */
+/**
+ * Só os itens da coleta mais recente de cada Casa, em ordem de data, hora e ordem na pauta. Por Casa: se a coleta da
+ * Câmara falha num dia e a do Senado não, a pauta da Câmara da véspera continua valendo (antes, sumia do site).
+ */
 export function ultimaColeta(ls: ItemPauta[]): ItemPauta[] {
-  const ultima = ls.map((x) => x.coletadoEm).sort().at(-1);
-  return ls.filter((x) => x.coletadoEm === ultima)
+  const ultima = new Map<string, string>();
+  for (const x of ls) if (x.coletadoEm > (ultima.get(x.casa) ?? "")) ultima.set(x.casa, x.coletadoEm);
+  return ls.filter((x) => x.coletadoEm === ultima.get(x.casa))
     .sort((a, b) => a.data.localeCompare(b.data) || (a.hora ?? "").localeCompare(b.hora ?? "") || a.casa.localeCompare(b.casa) || a.ordem - b.ordem);
 }
 import { atendeBusca, grupoSituacao, interpretarBusca, siglasDoTipo, type FiltroPropostas, type PaginaPropostas } from "./propostas";
@@ -110,6 +114,13 @@ type Tabelas = {
   votos: Voto; orientacoes: Orientacao; proposicoes: Proposicao; proposicoes_autores: ProposicaoAutor;
   proposicoes_contagem: ProposicaoContagem; atualizacoes: Atualizacao; fidelidade: FidelidadePolitico; executivos: ExecutivoEleito; candidatos_executivo: CandidatoExecutivo; pauta: ItemPauta; noticias: Noticia; proposicoes_executivo: ProposicaoExecutivo;
 };
+
+/**
+ * Caminho montado fora do alcance da análise estática do empacotador: com `path.join(dir, `${nome}.json`)` ele incluía
+ * todo .json do projeto em cada função (localmente, os 9,4 mil de estado/). Os arquivos que o site lê já entram por
+ * `outputFileTracingIncludes` (next.config.ts).
+ */
+const arquivoDe = (dir: string, nome: string) => [dir, nome].join(path.sep);
 
 /** Lê data/*.json uma vez por processo (cada tabela só quando pedida). */
 export class JsonRepo implements Repo {
@@ -136,7 +147,7 @@ export class JsonRepo implements Repo {
   private tabela<K extends keyof Tabelas>(nome: K): Promise<Tabelas[K][]> {
     let p = this.cache.get(nome);
     if (!p) {
-      p = readFile(path.join(this.dir, `${nome}.json`), "utf8").then((t) =>
+      p = readFile(arquivoDe(this.dir, `${nome}.json`), "utf8").then((t) =>
         (JSON.parse(t) as Linha<Tabelas[K]>[]).map((l) => deLinha<Tabelas[K]>(l)));
       this.cache.set(nome, p);
     }
@@ -307,7 +318,7 @@ export class JsonRepo implements Repo {
   private paginasVotacao: Promise<Map<string, VotacaoPagina>> | null = null;
   async getVotacaoPagina(id: string) {
     // Só existe no estado do cron (estado/dados/resumos_votacao.json); em data/ (sonda) não há o arquivo.
-    this.paginasVotacao ??= readFile(path.join(this.dir, "resumos_votacao.json"), "utf8")
+    this.paginasVotacao ??= readFile(arquivoDe(this.dir, "resumos_votacao.json"), "utf8")
       .then((t) => new Map((JSON.parse(t) as { votacao_id: string; pagina: VotacaoPagina }[]).map((l) => [l.votacao_id, l.pagina])))
       .catch(() => new Map());
     return (await this.paginasVotacao).get(id) ?? null;

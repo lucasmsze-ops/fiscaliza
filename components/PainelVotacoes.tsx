@@ -37,7 +37,8 @@ export function CartaoPauta({ x }: { x: ItemPauta }) {
     <div className="vidro grid content-start gap-2.5 rounded-card p-[18px]">
       <span className="text-[13px] font-semibold text-link">{NOME[x.casa]} · {diaCurto(x.data)}{x.hora ? ` · ${x.hora.replace(":00", "h").replace(":", "h")}` : ""}</span>
       {x.temas && x.temas.length > 0 && <span className="flex flex-wrap gap-1.5">{x.temas.slice(0, 2).map((t) => <Tema key={t} t={t} />)}</span>}
-      <span className="text-[15px] leading-5 font-semibold">{assunto || x.materia}</span>
+      {/* Até 4 linhas (2026-11-21); a ementa inteira fica no title e na página oficial. */}
+      <span className="line-clamp-4 text-[15px] leading-5 font-semibold" title={(x.relacionada ? x.ementaRelacionada ?? x.ementa : x.ementa) ?? undefined}>{assunto || x.materia}</span>
       <span className="text-[13px] text-suave">
         {x.relacionada ? <>Pedido ({x.materia}) sobre {x.relacionada}{tipoPorExtenso(x.relacionada) ? ` · ${tipoPorExtenso(x.relacionada)}` : ""}</> : <>{x.materia}{tipoPorExtenso(x.materia) ? ` · ${tipoPorExtenso(x.materia)}` : ""}</>}
         {x.apreciacao ? ` · ${x.apreciacao}` : ""}

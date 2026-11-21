@@ -19,13 +19,14 @@ import { publicar } from "./publicar";
 import { jobParlamentares } from "./parlamentares";
 import { gravarResumos, gravarResumosVotacao } from "./resumos";
 import { jobVotacoes } from "./votacoes";
+import { hojeBrasil } from "../../lib/datas";
 
 /** --sem-publicar: coleta, mescla e valida em estado/dados, mas não envia nada ao Supabase (ensaio). */
 const SEM_PUBLICAR = process.argv.includes("--sem-publicar");
 
 const t0 = Date.now();
 const seg = () => `${((Date.now() - t0) / 1000).toFixed(0)}s`;
-const hoje = new Date().toISOString().slice(0, 10);
+const hoje = hojeBrasil();
 if (iniciarEstado()) console.log(`[${seg()}] estado novo em ${DADOS}, a partir de data/*.json (o que o seed carregou)`);
 
 /** `atualizadas`: fontes coletadas com sucesso nesta execução (tabela `atualizacoes`); sem o campo, as duas Casas do job, se não houve falha. */

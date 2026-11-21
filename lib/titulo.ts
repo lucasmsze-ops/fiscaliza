@@ -60,13 +60,19 @@ const LEIS: Record<string, [artigo: "o" | "a", nome: string]> = {
 };
 /** Os mesmos nomes por extenso ou abreviados como as ementas os escrevem, para não repetir o nome duas vezes. */
 const APELIDOS: [RegExp, string][] = [
-  [/Consolidação das Leis do Trabalho(?:\s*[-–(]\s*CLT\)?)?/g, "CLT"],
+  // O parêntese só sai com o par: "(Consolidação das Leis do Trabalho – CLT)" vira "(CLT)", não "CLT)".
+  [/Consolidação das Leis do Trabalho\s*\(\s*CLT\s*\)/g, "CLT"],
+  [/\(\s*Consolidação das Leis do Trabalho\s*[-–]\s*CLT\s*\)/g, "(CLT)"],
+  [/Consolidação das Leis do Trabalho(?:\s*[-–]\s*CLT)?/g, "CLT"],
   [/Lei Geral de Proteção de Dados(?: Pessoais)?(?:\s*\(LGPD\))?/g, "Lei Geral de Proteção de Dados"],
 ];
 
 const MES = "(?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)";
 const DATA = `,?\\s+de\\s+(?:\\d{1,2}º?\\s+de\\s+${MES}\\s+de\\s+)?(\\d{4})`;
-const REF = new RegExp(`(Decreto-Lei|Lei Complementar|Lei|Decreto Legislativo|Decreto|Medida Provisória|Emenda Constitucional)\\s+n[ºo°ª]?\\.?\\s*(\\d[\\d.]*)${DATA}`, "gi");
+const TIPO_NORMA = "(Decreto-Lei|Lei Complementar|Lei|Decreto Legislativo|Decreto|Medida Provisória|Emenda Constitucional)(?:\\s+Federal)?\\s+n?[ºo°ª]?\\.?\\s*";
+const REF = new RegExp(`${TIPO_NORMA}(\\d[\\d.]*)${DATA}`, "gi");
+/** A mesma referência já com barra: "Lei nº 6.830/1980", "Lei Federal nº 11.340/2006" (382 ementas em 2026-11-21); nunca dentro de um marcador. */
+const REF_BARRA = new RegExp(`(?<![\\u0000\\w-])${TIPO_NORMA}(\\d[\\d.]*)\\/(\\d{4})\\b`, "gi");
 const NOMES = [...new Set(Object.values(LEIS).map(([, n]) => n))].sort((a, b) => b.length - a.length);
 const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const maiuscula = (s: string) => (s ? s[0]!.toLocaleUpperCase("pt-BR") + s.slice(1) : s);
@@ -80,11 +86,22 @@ const ARTIGO: Record<string, Record<"o" | "a", string>> = {
 /** O texto oficial sem datas, sem "e dá outras providências" e com o nome das leis conhecidas. */
 export function ementaLimpa(ementa: string): string {
   let s = consertarCaracteres(ementa).trim().replace(/[.;]\s*$/, "");
-  s = s.replace(/,?\s+e\s+dá\s+outras\s+providências\.?["”]?$/i, "").replace(/,?\s+para o fim que especifica$/i, "");
-  // Lei citada: "Lei nº 9.503, de 23 de setembro de 1997" → marcador com "Lei 9.503/1997".
-  s = s.replace(REF, (_, tipo: string, num: string, ano: string) => `\u0000${maiuscula(tipo.toLocaleLowerCase("pt-BR")).replace(/^Decreto-lei/, "Decreto-Lei").replace(/^Lei complementar/, "Lei Complementar")} ${num}/${ano}\u0001`);
-  // Lista no plural ("Leis nºs 9.249, de 26 de dezembro de 1995, e 9.250, de ...") fica sem as datas.
-  s = s.replace(/\bn[º°]s\.?\s+/g, "").replace(new RegExp(`(\\d[\\d.]*)${DATA}`, "g"), "$1/$2");
+  // Ementa toda em maiúsculas ("DISPÕE SOBRE A CRIAÇÃO..."): caixa de frase; a primeira letra volta no fim.
+  if (!/\p{Ll}/u.test(s)) s = s.toLocaleLowerCase("pt-BR");
+  s = maiuscula(s.replace(/^Esta (?:Lei|Lei Complementar)\s+/, ""));
+  // A aspa que fecha uma citação fica ('... “revoga Portarias que especifica e dá outras providências”').
+  s = s.replace(/,?\s+e\s+dá\s+outras\s+providências\.?(["”]?)$/i, "$1").replace(/,?\s+para o fim que especifica$/i, "");
+  // A descrição da lei alterada termina no "e dá outras providências" dela; o "para" do objetivo vem depois:
+  // "Altera a Lei ..., que estabelece normas ... voltadas para a responsabilidade ... e dá outras providências, para definir".
+  s = s.replace(/,\s*(?:que|o qual|a qual)\s+[^;]*?\s+e\s+dá\s+outras\s+providências["”]?,?(?=\s+(?:para|a fim de|com o objetivo de)\s)/gi, "");
+  // Lei citada: "Lei nº 9.503, de 23 de setembro de 1997" ou "Lei nº 9.503/1997" → marcador com "Lei 9.503/1997".
+  const marcador = (_: string, tipo: string, num: string, ano: string) => `\u0000${maiuscula(tipo.toLocaleLowerCase("pt-BR")).replace(/^Decreto-lei/, "Decreto-Lei").replace(/^Lei complementar/, "Lei Complementar").replace(/^Decreto legislativo/, "Decreto Legislativo").replace(/^Medida provisória/, "Medida Provisória").replace(/^Emenda constitucional/, "Emenda Constitucional")} ${num}/${ano}\u0001`;
+  s = s.replace(REF_BARRA, marcador).replace(REF, marcador);
+  // Lista no plural ("Leis nºs 9.249, de 26 de dezembro de 1995, e 9.250, de ..."; "Leis no 8.212 e 8.213, ambas de 24 de
+  // julho de 1991") fica sem as datas.
+  s = s.replace(/\bn[º°]s\.?\s+(?=\d)/g, "").replace(/\b(Leis|Decretos)\s+n[º°o]\.?\s+(?=\d)/g, "$1 ")
+    .replace(new RegExp(`(\\d[\\d.]*)${DATA}`, "g"), "$1/$2")
+    .replace(new RegExp(`,?\\s+(amb[ao]s)\\s+de\\s+\\d{1,2}º?\\s+de\\s+${MES}\\s+de\\s+(\\d{4})`, "g"), ", $1 de $2");
   // Marcador → nome conhecido (com o artigo ajustado e sem o aposto entre parênteses ou travessão) ou "Lei 1.234/2020".
   s = s.replace(/(?:\b(a|o|da|do|na|no|à|ao|pela|pelo)\s+)?\u0000([^\u0001]+)\u0001(?:\s*\([^)]*\)|\s*[-–]\s*[A-ZÁÉÍÓÚÂÊÔÃÕÇ][^,;]*?(?=,|;|\s+para\s|\s+a fim\s|$))?/g,
     (todo, art: string | undefined, ref: string) => {
@@ -109,6 +126,17 @@ export function ementaLimpa(ementa: string): string {
 /** Lei citada pelo número, como `ementaLimpa` a deixa ("Lei Complementar 200/2023", "Decreto-Lei 2.848/1940"). */
 const LEI_NO_ALVO = /\b(?:Lei Complementar|Decreto-Lei|Lei|Decreto Legislativo|Decreto|Medida Provisória|Emenda Constitucional)\s+[\d.]+\/\d{4}/g;
 
+/** "§ 4º ao art. 16 da", "a redação do inciso I do caput do art. 4º da", "parágrafo único ao art. 5º do": o dispositivo antes da lei. */
+const CONECTOR = "(?:d[oa]s?|a[os]?|à|às|n[oa]s?)\\s+";
+const ALVO_DISPOSITIVO = new RegExp(`^(?:redação\\s+)?(?:(?:${CONECTOR})?(?:inciso|alínea|parágrafo|caput|§+|arts?\\.|artigos?)\\s*[\\w.º-]*(?:\\s+único)?(?:,|\\s+e)?\\s*)+(?:${CONECTOR})?`, "i");
+/** Manchete acima disto corta na primeira oração (as seguintes, depois de ";", são outras mudanças), se sobrar o bastante. */
+const MANCHETE_LONGA = 180;
+const primeiraOracao = (s: string) => {
+  if (s.length <= MANCHETE_LONGA) return s;
+  const i = s.indexOf("; ");
+  return i >= 60 ? s.slice(0, i) : s;
+};
+
 /** Manchete: "Código Penal: aumento de pena para o crime de stalking". Sem padrão reconhecido, a ementa limpa. */
 export function manchete(ementa: string | null | undefined): string {
   if (!ementa) return "";
@@ -126,13 +154,12 @@ export function manchete(ementa: string | null | undefined): string {
     if (leis.size >= 3) alvo = "Várias leis";
     const conhecida = leis.size >= 3 ? undefined : NOMES.find((n) => alvo.includes(n));
     // Só o nome da lei (sem "o art. 323 do", "a redação do inciso I do caput do art. 4º da").
-    alvo = conhecida ?? alvo.replace(/^(?:a|o|as|os)\s+/, "").replace(/^(?:redação\s+)?(?:(?:d[oa]s?\s+)?(?:inciso|alínea|parágrafo|caput|§+|arts?\.|artigos?)\s*[\w.º-]*(?:,|\s+e)?\s*)+(?:d[oa]s?\s+)?/i, "");
+    alvo = conhecida ?? alvo.replace(/^(?:a|o|as|os)\s+/, "").replace(ALVO_DISPOSITIVO, "");
     const outras = (s.match(/;\s*(?:e\s+)?(?:a|o|as|os)\s+(?:Lei|Decreto|Código|Estatuto|CLT)/g) ?? []).length;
     // "para dispor sobre a nomeação" → ": nomeação" (o artigo sobra quando o verbo sai).
     const fim = sobre ? objetivo.replace(/^(?:a|o|as|os)\s+/, "") : objetivo;
-    if (alvo && fim) return `${maiuscula(alvo)}${outras ? ` e mais ${outras}` : ""}: ${fim}`;
+    if (alvo && fim) return primeiraOracao(`${maiuscula(alvo)}${outras ? ` e mais ${outras}` : ""}: ${fim}`);
   }
-  const d = /^Dispõe\s+sobre\s+(?:(?:a|o|as|os)\s+)?(.+)$/s.exec(s);
-  if (d) return maiuscula(d[1]!);
-  return s;
+  const d = /^Dispõe\s+sobre\s+(?:(?:a|o|as|os)\s+)?(.+)$/is.exec(s);
+  return primeiraOracao(maiuscula(d ? d[1]! : s));
 }

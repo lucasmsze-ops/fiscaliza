@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PainelVotacoes } from "@/components/PainelVotacoes";
 import { montarVotacoes } from "@/lib/congresso";
 import { repo } from "@/lib/repo";
+import { hojeBrasil } from "@/lib/datas";
 
 export const revalidate = 86400;
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 
 /** Próximas votações (pauta), últimas votações e o calendário como filtro (pedido de 2026-11-13). */
 export default async function Votacoes() {
-  const hoje = new Date().toISOString().slice(0, 10);
+  const hoje = hojeBrasil();
   const [d, pauta, atualizacoes] = await Promise.all([montarVotacoes(repo), repo.listarPauta(hoje), repo.getAtualizacoes()]);
   const coleta = atualizacoes.map((a) => a.coletadoEm).sort().at(-1) ?? null;
   return (

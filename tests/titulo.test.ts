@@ -34,6 +34,28 @@ describe("manchete (títulos curtos, 2026-11-20)", () => {
       .not.toMatch(/^Várias/);
     expect(ementaLimpa("Altera o Decreto?Lei nº?2.848, de 7 de dezembro de 1940, para punir a má?fé.")).toBe("Altera o Código Penal, para punir a má-fé");
   });
+  it("pente fino de 2026-11-21: casos reais que saíam errados", () => {
+    // Lei já com barra ("nº 6.830/1980") e dispositivo com "ao" antes da lei.
+    expect(manchete("Acrescenta § 4º ao art. 16 da Lei nº 6.830/1980, para dispensar a exigência de garantia integral do crédito para o recebimento dos embargos à execução fiscal."))
+      .toBe("Lei 6.830/1980: dispensar a exigência de garantia integral do crédito para o recebimento dos embargos à execução fiscal");
+    expect(ementaLimpa("Inclui a fibromialgia como deficiência, assegurando os direitos estabelecidos na Lei nº 13.146/2015.")).toBe("Inclui a fibromialgia como deficiência, assegurando os direitos estabelecidos no Estatuto da Pessoa com Deficiência");
+    // "Esta Lei altera" entra na regra; ementa toda em maiúsculas vira caixa de frase.
+    expect(manchete("Esta Lei altera a Lei nº 7.565, de 19 de dezembro de 1986, para permitir a transferência de titularidade de passagem aérea."))
+      .toBe("Código Brasileiro de Aeronáutica: permitir a transferência de titularidade de passagem aérea");
+    expect(manchete("DISPÕE SOBRE A CRIAÇÃO DO PROGRAMA NACIONAL DE SOCORRO EMERGENCIAL")).toBe("Criação do programa nacional de socorro emergencial");
+    // A aspa que fecha a citação fica; o parêntese da CLT só sai com o par.
+    expect(ementaLimpa("Susta os efeitos da Portaria GM/MS n° 13, de 13 de janeiro de 2023, a qual “revoga Portarias que especifica e dá outras providências”."))
+      .toBe("Susta os efeitos da Portaria GM/MS n° 13/2023, a qual “revoga Portarias que especifica”");
+    expect(ementaLimpa("Altera o art. 10-A (Consolidação das Leis do Trabalho – CLT), incluído pela Lei nº 13.467, de 2017.")).toBe("Altera o art. 10-A (CLT), incluído pela Lei 13.467/2017");
+    // "nos" é preposição, não "nºs": "nos 3 (três) meses" fica.
+    expect(ementaLimpa("Permite a doação de bens nos 3 (três) meses anteriores ao pleito.")).toBe("Permite a doação de bens nos 3 (três) meses anteriores ao pleito");
+    // A descrição da lei alterada ("..., que estabelece ... voltadas para ... e dá outras providências") não engole o objetivo.
+    expect(manchete("Altera a Lei Complementar nº 101, de 4 de maio de 2000, que estabelece normas de finanças públicas voltadas para a responsabilidade na gestão fiscal e dá outras providências, para definir com maior rigor os casos de renúncia de receita."))
+      .toBe("Lei de Responsabilidade Fiscal: definir com maior rigor os casos de renúncia de receita");
+    // Manchete longa corta na primeira oração (as outras, depois de ";", são outras mudanças).
+    const longa = manchete(`Institui o Programa ${"de apoio ".repeat(12)}aos municípios; altera a Lei nº 8.080, de 19 de setembro de 1990; e revoga dispositivos.`);
+    expect(longa).toBe(`Institui o Programa ${"de apoio ".repeat(12)}aos municípios`);
+  });
   it("vazio continua vazio", () => { expect(manchete(null)).toBe(""); });
 });
 

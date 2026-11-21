@@ -10,6 +10,7 @@ import { SITUACOES_ENCERRADAS } from "@/lib/propostas";
 import { repo } from "@/lib/repo";
 import { SUBSIDIO_CONGRESSO, subsidioEm } from "@/lib/salario";
 import { TITULO_PAGINA } from "@/lib/estilo";
+import { hojeBrasil } from "@/lib/datas";
 
 // Metodologia de cada número, fontes, privacidade e licenças (E15). Toda métrica da interface
 // linka para uma seção daqui (via components/Termo.tsx). Os números desta página saem do mesmo
@@ -77,7 +78,7 @@ export default async function ComoFunciona() {
   const fechado = ordenadas.filter((m) => m.fechado).at(-1);
   const abertos = ordenadas.filter((m) => !m.fechado);
   const rotuloMes = (m: { ano: number; mes: number }) => `${MESES[m.mes - 1]}/${m.ano}`;
-  const subsidioHoje = subsidioEm(new Date().toISOString().slice(0, 10))!;
+  const subsidioHoje = subsidioEm(hojeBrasil())!;
 
   return (
     <>

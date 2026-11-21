@@ -15,7 +15,17 @@ const config: NextConfig = {
     ];
   },
   async headers() {
-    return [{ source: "/:path*", headers: [{ key: "Referrer-Policy", value: "same-origin" }] }];
+    // HSTS a Vercel já manda. O resto: o site não é embutido em outro (clickjacking), o navegador não adivinha tipo de
+    // arquivo, e nenhuma página pede câmera, microfone ou localização (geolocalização está fora de escopo).
+    return [{
+      source: "/:path*",
+      headers: [
+        { key: "Referrer-Policy", value: "same-origin" },
+        { key: "X-Content-Type-Options", value: "nosniff" },
+        { key: "X-Frame-Options", value: "SAMEORIGIN" },
+        { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
+      ],
+    }];
   },
 };
 

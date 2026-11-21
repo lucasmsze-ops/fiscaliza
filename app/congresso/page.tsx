@@ -4,6 +4,7 @@ import { montarCongresso, montarVotacoes } from "@/lib/congresso";
 import { BuscaTopo } from "@/components/BuscaTopo";
 import { repo } from "@/lib/repo";
 import { TITULO_PAGINA } from "@/lib/estilo";
+import { hojeBrasil } from "@/lib/datas";
 
 export const revalidate = 86400;
 export const metadata: Metadata = {
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Congresso() {
-  const hoje = new Date().toISOString().slice(0, 10);
+  const hoje = hojeBrasil();
   const [d, atualizacoes, v, pauta] = await Promise.all([montarCongresso(repo), repo.getAtualizacoes(), montarVotacoes(repo), repo.listarPauta(hoje)]);
   const coleta = atualizacoes.map((a) => a.coletadoEm).sort().at(-1);
 

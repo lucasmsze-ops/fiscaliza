@@ -6,6 +6,7 @@ import { montarCard, PERIODO_GOVERNO, type CardDados } from "./card";
 import { compararComCasa, coresDoDia, type ComparacaoCasa } from "./comparacoes";
 import type { Repo } from "./repo";
 import type { Afastamento, Casa, Mandato, Proposicao, TipoVoto } from "./types";
+import { hojeBrasil } from "./datas";
 
 export type TotaisVoto = Record<TipoVoto, number>;
 
@@ -118,7 +119,7 @@ export function contarVotos(votacoesIds: string[], votos: Map<string, TipoVoto>)
   return t;
 }
 
-export async function montarPagina(repo: Repo, id: string, hoje = new Date().toISOString().slice(0, 10)): Promise<PaginaDados | null> {
+export async function montarPagina(repo: Repo, id: string, hoje = hojeBrasil()): Promise<PaginaDados | null> {
   const card = await montarCard(repo, id, hoje);
   const p = await repo.getPolitico(id);
   if (!card || !p) return null;

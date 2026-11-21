@@ -10,6 +10,7 @@ import { telefoneGabinete } from "@/lib/texto";
 import { repo } from "@/lib/repo";
 import { SUBSIDIO_CONGRESSO, subsidioEm } from "@/lib/salario";
 import { AreasAtuacao } from "@/components/AreasAtuacao";
+import { hojeBrasil } from "@/lib/datas";
 
 const dataBr = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
 
@@ -48,7 +49,7 @@ export default async function PaginaPolitico({ params }: Props) {
   const pg = await repo.getPagina((await params).slug);
   if (!pg) notFound();
   const c = pg.card;
-  const hoje = new Date().toISOString().slice(0, 10);
+  const hoje = hojeBrasil();
   const mandato = pg.mandatos.find((m) => m.fim === null) ?? null;
   const salario = c.comoCobrar ? subsidioEm(hoje) : null;
   const coleta = (await repo.getAtualizacoes()).map((a) => a.coletadoEm).sort().at(-1);

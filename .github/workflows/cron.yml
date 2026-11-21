@@ -88,3 +88,25 @@ jobs:
         with:
           path: estado
           key: estado-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Páginas do site com o dado novo
+        # Revalidação sob demanda (app/api/revalidar): as páginas com ISR de 24 h mostram a coleta de hoje sem
+        # esperar a próxima regeneração. Também quando um job falhou: os outros publicaram. Sem os segredos, só avisa.
+        if: always()
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          REVALIDAR_SEGREDO: ${{ secrets.REVALIDAR_SEGREDO }}
+        run: |
+          if [ -z "$SITE_URL" ] || [ -z "$REVALIDAR_SEGREDO" ]; then echo "::notice::SITE_URL ou REVALIDAR_SEGREDO não configurados: páginas revalidam sozinhas em até 24 h"; exit 0; fi
+          curl -fsS --retry 3 --retry-all-errors -X POST -H "Authorization: Bearer $REVALIDAR_SEGREDO" "$SITE_URL/api/revalidar"
+
+  manter-ativo:
+    # Num repositório público, o GitHub desliga workflows agendados depois de 60 dias sem atividade. Reativar pela API
+    # a cada execução zera essa contagem. Job à parte: só ele tem permissão de mexer nos workflows, e não roda npm.
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/cron.yml/enable"

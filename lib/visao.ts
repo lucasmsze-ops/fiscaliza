@@ -7,6 +7,7 @@ import { rotuloCargo } from "./card";
 import { casasHoje, ordemDasCores } from "./congresso";
 import type { Repo } from "./repo";
 import type { Casa, ExecutivoEleito, Politico } from "./types";
+import { hojeBrasil } from "./datas";
 
 export interface PessoaNoCargo {
   id: string;
@@ -62,7 +63,7 @@ export interface VisaoDados {
   municipiosPorUf: Record<string, number>;
 }
 
-export async function montarVisao(repo: Repo, hoje = new Date().toISOString().slice(0, 10)): Promise<VisaoDados> {
+export async function montarVisao(repo: Repo, hoje = hojeBrasil()): Promise<VisaoDados> {
   const [{ casas, politicos }, municipios, eleitos] = await Promise.all([casasHoje(repo, hoje), repo.listarMunicipios(), repo.listarExecutivos()]);
   const pessoas = casas.flatMap((c) => c.bancadas.flatMap((b) => b.membros.map((m) => {
     const p = politicos.get(m.id)!;

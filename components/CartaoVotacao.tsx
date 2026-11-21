@@ -35,7 +35,7 @@ export function CartaoVotacao({ v }: { v: VotacaoResumo }) {
   return (
     <Link href={hrefVotacao(v.id)} className="vidro grid content-start gap-2.5 rounded-card p-[18px] text-texto no-underline hover:bg-white/10 hover:text-texto">
       {v.temas && v.temas.length > 0 && <span className="flex flex-wrap gap-1.5">{v.temas.slice(0, 2).map((t) => <Tema key={t} t={t} />)}</span>}
-      <span className="text-[15px] leading-5 font-semibold" title={v.ementa ?? undefined}>{v.agencia?.titulo ?? (manchete(v.ementa) || v.descricao)}</span>
+      <span className="line-clamp-4 text-[15px] leading-5 font-semibold" title={v.ementa ?? undefined}>{v.agencia?.titulo ?? (manchete(v.ementa) || v.descricao)}</span>
       {v.agencia && <span className="-mt-1.5 text-xs text-suave">Título da {NOME_FONTE[v.agencia.fonte]}</span>}
       <span className="text-[13px] text-suave">{v.proposicao ?? "Sem matéria principal informada"}{resto && ` · ${resto}`}</span>
       <span className="flex flex-wrap items-center gap-2.5">

@@ -50,17 +50,22 @@ export async function jobVotacoes(hoje: string): Promise<ResultadoVotacoes> {
   const ini = ultima ? menosDias(ultima, MARGEM_DIAS) : INICIO_CAMARA;
   const lista = await listarCamara(ini, hoje);
   let baixados = 0;
-  const votosDe = async (id: string): Promise<VotoCamara[]> => {
+  const votosDe = async (id: string, data?: string): Promise<VotoCamara[]> => {
     const arq = `${dirVotos}/${id}.json`;
     const guardado = ler<VotoCamara[]>(arq);
     if (guardado?.length) return guardado;
+    // Votação simbólica (sem votos e sem placar na descrição) com mais de MARGEM_DIAS: os votos não chegam mais. Sem esta marca, as ~300
+    // simbólicas da janela eram baixadas de novo a cada execução (e a janela cresce no recesso).
+    const vazia = `${dirVotos}/${id}.vazia`;
+    if (existsSync(vazia)) return [];
     const vs = await getVotos(id);
     baixados++;
-    if (vs.length) writeFileSync(arq, JSON.stringify(vs)); // vazio: pode chegar depois
+    if (vs.length) writeFileSync(arq, JSON.stringify(vs));
+    else if (data && data < menosDias(hoje, MARGEM_DIAS)) writeFileSync(vazia, data); // recente e vazia: pode chegar depois
     return vs;
   };
   // Novas: votações da janela com votos; conhecidas: as nominais que já estão em `votacoes`.
-  const janela = await mapLimite(lista, EM_VOO, async (v) => ({ id: v.idExterno, vs: await votosDe(v.idExterno) }));
+  const janela = await mapLimite(lista, EM_VOO, async (v) => ({ id: v.idExterno, vs: await votosDe(v.idExterno, v.nominalPelaDescricao ? undefined : v.data) }));
   const novasNominais = janela.ok.filter((r) => r.vs.length > 0);
   const det = await mapLimite(novasNominais, EM_VOO, async (r) => {
     const arq = `${dirDet}/${r.id}.json`;
@@ -84,8 +89,11 @@ export async function jobVotacoes(hoje: string): Promise<ResultadoVotacoes> {
   for (let ano = Number(INICIO_SENADO.slice(0, 4)); ano <= anoAtual; ano++) {
     const de = ano === Number(INICIO_SENADO.slice(0, 4)) ? INICIO_SENADO : `${ano}-01-01`, ate = ano === anoAtual ? hoje : `${ano}-12-31`;
     const arqV = `${FONTES}/senado-votacao-${ano}.json`, arqO = `${FONTES}/senado-orientacao-${ano}.json`;
-    let vs = ano < anoAtual ? ler<VotacaoSenado[]>(arqV) : null;
-    let os = ano < anoAtual ? ler<VotacaoOrientacaoSenado[]>(arqO) : null;
+    // Ano fechado vem do cache, menos o anterior durante janeiro: a última coleta de dezembro pode ter falhado ou
+    // sido antes da última sessão do ano, e o cache dele ficaria incompleto para sempre.
+    const fechado = ano < anoAtual && !(ano === anoAtual - 1 && hoje < `${anoAtual}-02-01`);
+    let vs = fechado ? ler<VotacaoSenado[]>(arqV) : null;
+    let os = fechado ? ler<VotacaoOrientacaoSenado[]>(arqO) : null;
     try {
       if (!vs) { vs = await listarSenado(de, ate); writeFileSync(arqV, JSON.stringify(vs)); }
       if (!os) { os = await listarOrientacoesPlenario(de, ate); writeFileSync(arqO, JSON.stringify(os)); }
