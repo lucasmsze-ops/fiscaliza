@@ -10,11 +10,13 @@
  * Sai com código 1 se houver qualquer erro. Avisos (campos opcionais nulos) não falham.
  * `DATA_DIR=outro/dir` valida outra pasta (usado para testar o próprio validador).
  */
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { hojeBrasil } from "../../lib/datas";
 import type { Linha, Politico, Votacao } from "../../lib/types";
 
 const DIR = process.env.DATA_DIR ?? "data";
-const tab = <T>(t: string): T[] => JSON.parse(readFileSync(`${DIR}/${t}.json`, "utf8")) as T[];
+/** Tabela sem arquivo (as que nascem da coleta do cron, E23q em diante, ainda não coletadas) vale como vazia. */
+const tab = <T>(t: string): T[] => (existsSync(`${DIR}/${t}.json`) ? (JSON.parse(readFileSync(`${DIR}/${t}.json`, "utf8")) as T[]) : []);
 type L = Record<string, unknown>;
 const erros: string[] = [];
 const avisos: string[] = [];
@@ -42,6 +44,10 @@ const ESQUEMA: Record<string, { pk: string[]; obrig: string[]; opc: string[] }> 
   candidatos_executivo: { pk: ["id"], obrig: ["id", "ano", "cargo", "nome", "nome_urna", "partido", "tse_sq_candidato"], opc: ["uf", "genero", "numero_urna", "foto_url", "situacao"] },
   noticias: { pk: ["id"], obrig: ["id", "fonte", "titulo", "url", "data", "politicos"], opc: ["materias"] },
   proposicoes_executivo: { pk: ["id"], obrig: ["id", "id_externo", "autor", "tipo", "numero", "ano", "apresentacao", "virou_norma", "url_oficial"], opc: ["ementa", "situacao", "temas"] },
+  contas_governo: { pk: ["ente", "ano", "indicador"], obrig: ["ente", "ano", "indicador", "url"], opc: ["percentual", "percentual_ref", "reais", "reais_ref"] },
+  indicadores: { pk: ["local", "indicador", "periodo"], obrig: ["local", "indicador", "periodo", "valor"], opc: ["area"] },
+  atos_executivo: { pk: ["id"], obrig: ["id", "codigo", "tipo", "numero", "data", "url"], opc: ["ementa", "rotina"] },
+  vetos: { pk: ["id"], obrig: ["id", "codigo_materia", "numero", "ano", "total", "publicacao", "dispositivos", "mantidos", "derrubados", "prejudicados", "pendentes", "url"], opc: ["ementa", "materia_vetada"] },
 };
 const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   politicos: { genero: ["feminino", "masculino", null], cargo: ["deputado_federal", "senador"], status: ["eleito", "reeleito", "nao_eleito", "suplente", "em_exercicio"] },
@@ -56,6 +62,10 @@ const ENUM: Record<string, Record<string, readonly unknown[]>> = {
   executivos: { cargo: ["presidente", "governador"], genero: ["feminino", "masculino", null] },
   candidatos_executivo: { cargo: ["presidente", "governador"], genero: ["feminino", "masculino", null], situacao: ["eleito", "nao_eleito", null] },
   noticias: { fonte: ["camara", "senado"] },
+  contas_governo: { indicador: ["saude", "educacao", "folha", "divida", "investimentos", "primario"] },
+  indicadores: { indicador: ["desemprego", "renda", "informalidade", "pobreza", "inflacao", "pib", "idh"] },
+  atos_executivo: { tipo: ["LEI", "LCP", "DEC", "MPV"], rotina: ["credito", "acordo", "desapropriacao", "radiodifusao", null] },
+  vetos: { total: [true, false] },
 };
 
 const dados: Record<string, L[]> = {};
@@ -117,6 +127,30 @@ for (const p of ps) {
 const texto = ["politicos", "mandatos", "votos", "despesas_mes"].map((t) => readFileSync(`${DIR}/${t}.json`, "utf8")).join("");
 if (/cpf/i.test(texto)) erro("algum arquivo menciona CPF");
 if (/\b[0-9a-f]{64}\b/.test(texto)) erro("há um hash SHA-256 nos dados");
+
+// Executivo (E23x): ente e local conhecidos, período no formato do tipo, nada com data no futuro (erro da fonte que o
+// job já tira; se passar, nada é publicado), contagem dos vetos fechando com os dispositivos.
+const ENTES_OK = /^(BR|AC|AL|AM|AP|BA|CE|DF|ES|GO|MA|MG|MS|MT|PA|PB|PE|PI|PR|RJ|RN|RO|RR|RS|SC|SE|SP|TO)$/;
+const hoje = hojeBrasil();
+for (const c of dados.contas_governo!) {
+  if (!ENTES_OK.test(String(c.ente))) erro(`contas_governo: ente inválido ${c.ente}`);
+  if (Number(c.ano) > Number(hoje.slice(0, 4))) erro(`contas_governo ${c.ente} ${c.ano}: ano no futuro`);
+}
+for (const i of dados.indicadores!) {
+  if (!ENTES_OK.test(String(i.local))) erro(`indicadores: local inválido ${i.local}`);
+  if (!/^\d{4}(-T[1-4]|-(0[1-9]|1[0-2]))?$/.test(String(i.periodo))) erro(`indicadores ${i.local} ${i.indicador}: período inválido ${i.periodo}`);
+  const precisaArea = i.indicador === "inflacao" && i.local !== "BR";
+  if (precisaArea !== (i.area !== null)) erro(`indicadores ${i.local} ${i.indicador} ${i.periodo}: a área do IPCA vai só na inflação das UFs`);
+}
+for (const a of dados.atos_executivo!) {
+  if (String(a.data) > hoje) erro(`atos_executivo ${a.id}: data no futuro (${a.data})`);
+  if (a.id !== `${a.tipo}-${a.numero}`) erro(`atos_executivo ${a.id}: id não é tipo-número`);
+}
+for (const v of dados.vetos!) {
+  if (String(v.publicacao) > hoje) erro(`vetos ${v.id}: publicação no futuro`);
+  const soma = ["mantidos", "derrubados", "prejudicados", "pendentes"].reduce((s, k) => s + Number(v[k]), 0);
+  if (soma > Number(v.dispositivos)) erro(`vetos ${v.id}: ${soma} dispositivos contados para ${v.dispositivos}`);
+}
 
 // Mês fechado: contíguo desde o primeiro mês de cada bancada (não pode haver aberto antes de fechado).
 const bancadas = new Map<string, L[]>();

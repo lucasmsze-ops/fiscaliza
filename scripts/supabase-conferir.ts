@@ -4,7 +4,7 @@
  * (1,5 a 2 vezes o JSON) e a margem até os 500 MB do plano free.
  * Uso: npm run supabase:conferir   (SUPABASE_URL e SUPABASE_SECRET_KEY de .env.local; DATA_DIR=estado/dados compara com o estado do cron)
  */
-import { readFileSync, statSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { TABELAS } from "../lib/esquema";
 import { cliente, contar, rpc } from "../lib/supabase";
 
@@ -15,6 +15,7 @@ const mb = (b: number) => (b / 1024 / 1024).toFixed(2);
 let diverge = 0, jsonTotal = 0;
 console.log(`${"tabela".padEnd(18)} ${"JSON".padStart(7)} ${"banco".padStart(7)}   ${"JSON MB".padStart(8)} ${"PG MB".padStart(7)}  PG/JSON`);
 for (const t of TABELAS) {
+  if (!existsSync(`${DIR}/${t.nome}.json`)) continue; // tabela que nasce da coleta do cron (E23q em diante)
   const json = (JSON.parse(readFileSync(`${DIR}/${t.nome}.json`, "utf8")) as unknown[]).length;
   const banco = await contar(c, t.nome);
   const bytesJson = statSync(`${DIR}/${t.nome}.json`).size;

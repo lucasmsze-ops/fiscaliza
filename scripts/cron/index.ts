@@ -5,7 +5,10 @@
  * Uso: npm run cron   (SUPABASE_URL e SUPABASE_SECRET_KEY de .env.local; FISCALIZA_ESTADO=pasta opcional)
  */
 import { spawnSync } from "node:child_process";
+import { jobAtos, jobVetos } from "./atos";
+import { jobContas } from "./contas";
 import { jobCota } from "./cota";
+import { jobIndicadores } from "./indicadores";
 import { jobExecutivos } from "./executivos";
 import { jobNoticias } from "./noticias";
 import { removerPoliticosInvalidos } from "./estado";
@@ -42,6 +45,11 @@ const jobs: Job[] = [
   { nome: "pauta", rodar: () => jobPauta(hoje) },
   // Depois de parlamentares: liga as matérias aos políticos do estado (E23r).
   { nome: "noticias", rodar: () => jobNoticias() },
+  // Página do executivo (E23x): contas do Tesouro, indicadores do IBGE e IDH, atos do presidente e vetos.
+  { nome: "contas", rodar: () => jobContas(hoje) },
+  { nome: "indicadores", rodar: () => jobIndicadores() },
+  { nome: "atos", rodar: () => jobAtos(hoje) },
+  { nome: "vetos", rodar: () => jobVetos(hoje) },
 ];
 
 let falhou = false;

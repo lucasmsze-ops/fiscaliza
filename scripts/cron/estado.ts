@@ -18,7 +18,9 @@ export type LinhaBruta = Record<string, unknown>;
 export function iniciarEstado(): boolean {
   for (const d of [DADOS, PUBLICADO, FONTES]) mkdirSync(d, { recursive: true });
   if (existsSync(`${DADOS}/politicos.json`)) return false;
+  // Tabelas novas (E23q em diante) não têm arquivo em data/: nascem da primeira coleta, e o publicado vazio faz tudo ser enviado.
   for (const t of TABELAS) {
+    if (!existsSync(`data/${t.nome}.json`)) continue;
     copyFileSync(`data/${t.nome}.json`, `${DADOS}/${t.nome}.json`);
     copyFileSync(`data/${t.nome}.json`, `${PUBLICADO}/${t.nome}.json`);
   }

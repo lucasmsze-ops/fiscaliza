@@ -384,3 +384,76 @@ type Snake<S extends string, Ant extends string = ""> = S extends `${infer H}${i
 
 /** Tipo da linha persistida: as mesmas chaves em snake_case (`nomeUrna` → `nome_urna`, `votos2026` → `votos_2026`). */
 export type Linha<T> = { [K in keyof T & string as Snake<K>]: T[K] };
+
+// ---------------------------------------------------------------- executivo: contas, indicadores, atos e vetos (E23x)
+
+export type IndicadorConta = "saude" | "educacao" | "folha" | "divida" | "investimentos" | "primario";
+
+/** Tabela `contas_governo`: o que o relatório fiscal (SICONFI, `lib/siconfi.ts`) traz para o indicador no ano. */
+export interface ContaGoverno {
+  /** "BR" (União) ou a sigla da UF. */
+  ente: string;
+  ano: number;
+  indicador: IndicadorConta;
+  /** % que o relatório traz (aplicado, gasto com pessoal ou dívida sobre a receita). */
+  percentual: number | null;
+  /** % de referência: mínimo (saúde e educação nos estados), limite (folha e dívida). */
+  percentualRef: number | null;
+  /** Valor em reais (aplicado na União, despesa com pessoal, dívida, investimentos, resultado primário). */
+  reais: number | null;
+  /** Referência em reais: o piso da União (saúde e educação) ou a meta de resultado primário da LDO. */
+  reaisRef: number | null;
+  /** Consulta à API com o anexo de onde o número saiu. */
+  url: string;
+}
+
+export type IndicadorPais = "desemprego" | "renda" | "informalidade" | "pobreza" | "inflacao" | "pib" | "idh";
+
+/** Tabela `indicadores`: IBGE (`lib/ibge.ts`) e IDH do Atlas Brasil pelo Ipeadata (`lib/ipea.ts`), Brasil e UFs. */
+export interface IndicadorLocal {
+  /** "BR" ou a sigla da UF. */
+  local: string;
+  indicador: IndicadorPais;
+  /** "2025" (ano), "2026-T3" (trimestre) ou "2026-10" (mês). */
+  periodo: string;
+  valor: number;
+  /** Inflação: a área que o IPCA mede ("região metropolitana de São Paulo", "município de Rio Branco"); null nos demais. */
+  area: string | null;
+}
+
+/** Tabela `atos_executivo`: leis, leis complementares, decretos e medidas provisórias, pela legislação federal do Senado. */
+export interface AtoExecutivo {
+  /** "DEC-13167": tipo e número (cada tipo tem numeração própria e contínua). */
+  id: string;
+  /** Código da norma no Senado. */
+  codigo: string;
+  tipo: "LEI" | "LCP" | "DEC" | "MPV";
+  numero: number;
+  /** AAAA-MM-DD, da assinatura. */
+  data: string;
+  ementa: string | null;
+  /** Grupo de rotina (`lib/atos.ts#grupoRotina`) ou null. */
+  rotina: "credito" | "acordo" | "desapropriacao" | "radiodifusao" | null;
+  url: string;
+}
+
+/** Tabela `vetos`: vetos do presidente em exercício, com o resultado dos dispositivos no Congresso. */
+export interface Veto {
+  /** Código do veto no Congresso. */
+  id: string;
+  codigoMateria: string;
+  numero: number;
+  ano: number;
+  ementa: string | null;
+  total: boolean;
+  /** AAAA-MM-DD da publicação da mensagem de veto. */
+  publicacao: string;
+  /** "PL 2/2025". */
+  materiaVetada: string | null;
+  dispositivos: number;
+  mantidos: number;
+  derrubados: number;
+  prejudicados: number;
+  pendentes: number;
+  url: string;
+}

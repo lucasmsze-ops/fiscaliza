@@ -2,13 +2,14 @@
  * E19 — Carrega data/*.json no Supabase (upsert por chave primária; rodar de novo não duplica).
  * Uso: npm run seed   (lê SUPABASE_URL e SUPABASE_SECRET_KEY de .env.local)
  */
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { TABELAS } from "../lib/esquema";
 import { cliente, upsert } from "../lib/supabase";
 
 const c = cliente("secreta");
 const t0 = Date.now();
 for (const t of TABELAS) {
+  if (!existsSync(`data/${t.nome}.json`)) { console.log(`${t.nome.padEnd(18)}   sem data/${t.nome}.json (nasce da coleta do cron)`); continue; }
   const linhas = JSON.parse(readFileSync(`data/${t.nome}.json`, "utf8")) as object[];
   const t1 = Date.now();
   await upsert(c, t.nome, linhas, [...t.pk]);

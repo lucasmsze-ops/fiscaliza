@@ -24,6 +24,10 @@ export const TABELAS: readonly { nome: string; pk: readonly string[] }[] = [
   { nome: "atualizacoes", pk: ["fonte"] },
   { nome: "pauta", pk: ["id"] },
   { nome: "noticias", pk: ["id"] },
+  { nome: "contas_governo", pk: ["ente", "ano", "indicador"] },
+  { nome: "indicadores", pk: ["local", "indicador", "periodo"] },
+  { nome: "atos_executivo", pk: ["id"] },
+  { nome: "vetos", pk: ["id"] },
 ];
 
 /** Tipos de proposição que podem virar lei ou norma (decisão de 2026-11-02): ficam com a íntegra; os outros, só contagem. */

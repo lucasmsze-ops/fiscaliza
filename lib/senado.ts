@@ -441,3 +441,78 @@ export async function getClassificacoesMateria(codigoMateria: string): Promise<s
   const p = await get<{ classificacoes?: { descricao: string }[] }>(`/processo/${id}`, "/processo/{id}");
   return arr(p.classificacoes).map((c) => c.descricao.trim()).filter(Boolean);
 }
+
+// ---------------------------------------------------------------- legislação federal e vetos (E23x)
+
+/** Tipos da lista de legislação do Senado que entram em "O que o presidente assinou". */
+export const TIPOS_LEGISLACAO = ["LEI", "LCP", "DEC", "MPV"] as const;
+export type TipoLegislacao = (typeof TIPOS_LEGISLACAO)[number];
+
+export interface NormaSenado {
+  /** Código da norma no Senado (página oficial em legis.senado.leg.br/norma/{codigo}). */
+  codigo: string;
+  tipo: TipoLegislacao;
+  numero: number;
+  /** AAAA-MM-DD, da assinatura. */
+  data: string;
+  ementa: string | null;
+}
+interface NormaRaw { id: string; numero: string; ementa?: string; dataassinatura: string }
+
+/** "13/12/2026" → "2026-12-13"; null se não for uma data. */
+const isoDeBr = (s: string) => { const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s.trim()); return m ? `${m[3]}-${m[2]}-${m[1]}` : null; };
+
+/**
+ * Leis, leis complementares, decretos numerados ou medidas provisórias assinados no ano (`/legislacao/lista`). Sem
+ * paginação (363 decretos em 2026, medido). A lista não traz link: a página oficial é a do Senado (`urlNorma`).
+ */
+export async function listarLegislacao(tipo: TipoLegislacao, ano: number): Promise<NormaSenado[]> {
+  const r = await get<{ ListaDocumento?: { documentos?: { documento?: NormaRaw | NormaRaw[] } } }>(`/legislacao/lista?tipo=${tipo}&ano=${ano}`, "/legislacao/lista");
+  const out: NormaSenado[] = [];
+  for (const d of arr(r.ListaDocumento?.documentos?.documento)) {
+    const data = isoDeBr(d.dataassinatura);
+    if (!data || !Number(d.numero)) throw new Error(`legislação ${tipo} ${ano}: norma ${d.id} sem número ou data (${d.numero}, ${d.dataassinatura})`);
+    out.push({ codigo: String(d.id), tipo, numero: Number(d.numero), data, ementa: vazio(d.ementa) });
+  }
+  return out;
+}
+export const urlNorma = (codigo: string) => `https://legis.senado.leg.br/norma/${codigo}`;
+
+export interface VetoCongresso {
+  /** Código do veto no Congresso (página em congressonacional.leg.br/materias/vetos/-/veto/detalhe/{codigo}). */
+  codigo: string;
+  /** Código da matéria VET (o resultado por dispositivo é pedido por ele). */
+  codigoMateria: string;
+  numero: number;
+  ano: number;
+  ementa: string | null;
+  total: boolean;
+  /** AAAA-MM-DD da publicação da mensagem de veto. */
+  publicacao: string;
+  /** "PL 2/2025": a matéria vetada. */
+  materiaVetada: string | null;
+  dispositivos: number;
+}
+interface MateriaVetoRaw { Codigo: string; Sigla: string; Numero: string; Ano: string; Ementa?: string }
+interface VetoRaw { Codigo: string; Materia: MateriaVetoRaw; MateriaVetada?: MateriaVetoRaw; Total: string; DataPublicacao: string; QuantidadeDispositivos?: string }
+
+/** Vetos do ano (numeração do Congresso, `/materia/vetos/{ano}`). */
+export async function listarVetosAno(ano: number): Promise<VetoCongresso[]> {
+  const r = await get<{ ListaVetosAnoCN?: { Vetos?: { Veto?: VetoRaw | VetoRaw[] } } }>(`/materia/vetos/${ano}`, "/materia/vetos");
+  return arr(r.ListaVetosAnoCN?.Vetos?.Veto).map((v) => {
+    const mv = v.MateriaVetada;
+    return {
+      codigo: String(v.Codigo), codigoMateria: String(v.Materia.Codigo), numero: Number(v.Materia.Numero), ano: Number(v.Materia.Ano),
+      ementa: vazio(v.Materia.Ementa), total: v.Total.trim() === "Sim", publicacao: v.DataPublicacao.slice(0, 10),
+      materiaVetada: mv ? `${mv.Sigla.trim()} ${Number(mv.Numero)}/${mv.Ano}` : null, dispositivos: Number(v.QuantidadeDispositivos ?? 0),
+    };
+  });
+}
+export const urlVeto = (codigo: string) => `https://www.congressonacional.leg.br/materias/vetos/-/veto/detalhe/${codigo}`;
+
+/** Situação de cada dispositivo vetado (`/plenario/resultado/veto/materia/{codigoMateria}`), como a fonte escreve. */
+export async function situacoesDispositivosVeto(codigoMateria: string): Promise<string[]> {
+  const r = await get<{ ResultadoVetoMateriaCN?: { Veto?: { Dispositivos?: { Dispositivo?: { Situacao?: string } | { Situacao?: string }[] } } } }>(
+    `/plenario/resultado/veto/materia/${codigoMateria}`, "/plenario/resultado/veto/materia");
+  return arr(r.ResultadoVetoMateriaCN?.Veto?.Dispositivos?.Dispositivo).map((d) => (d.Situacao ?? "").trim());
+}
