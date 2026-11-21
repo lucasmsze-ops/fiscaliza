@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E23g** (atualizar esta linha ao avançar). E23n fechada em 2026-11-20 (PDFs dos planos na release `planos-2026`). E22 fechada: o run agendado de 04/11 às 17h15 UTC
+**Etapa atual: E23h** (atualizar esta linha ao avançar). E23g fechada em 2026-11-21 (`/propostas`). E23n fechada em 2026-11-20 (PDFs dos planos na release `planos-2026`). E22 fechada: o run agendado de 04/11 às 17h15 UTC
 terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p, E23q, E23r, E23s, E23t, E23u, E23v e E23w foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
@@ -668,6 +668,16 @@ O usuário achou os títulos (as ementas) difíceis e compridos. Sem LLM e sem e
 ### E23g · Propostas
 `/propostas`: lista geral com filtros (Casa, tipo, situação, busca na ementa) e link oficial. A
 linha do tempo da tramitação fica oculta (só a situação atual é coletada).
+- [x] `/propostas` (N2, link "Todas as propostas" em Votações): resumo (encontradas e viraram norma), busca e filtros
+      Casa, tipo, situação e ano no endereço (`?q=&casa=&tipo=&situacao=&ano=&pagina=`), 20 por página, manchete com a
+      ementa oficial que abre, situação como a fonte escreve, autores do site com link para o crachá, link oficial.
+- [x] Consulta ao banco a cada filtro (`repo.buscarProposicoes`, `lib/propostas.ts`): as ~26 mil propostas não cabem
+      num índice para o celular. Busca sem acento por expressão regular (`imatch`), todas as palavras; "PL 1234/2025",
+      "1234/2025" ou "PEC 45" procuram pelo número. Sem migração.
+- [x] Situação em três grupos (Em tramitação, Virou norma, Encerrada sem virar norma; regra em `/como-funciona#propostas`);
+      sem situação na fonte, só em "Todas".
+- Pronto quando: `/propostas` acha uma proposta por palavra sem acento e por número, os filtros se combinam e o link
+  oficial abre. (Feito em 2026-11-21, conferido no preview com o Supabase.)
 
 ### E23h · Cargos e Dicionário
 `/cargos` e `/dicionario`: texto fixo com fonte legal (Constituição, regimentos). O Dicionário

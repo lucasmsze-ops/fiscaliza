@@ -73,3 +73,5 @@ Nunca preencher com dado sintético.
 | 2026-11-20 | CGU | Emendas ao Orçamento pedem a chave da API do Portal da Transparência, ainda não cadastrada | Fora do crachá até a chave existir |
 | 2026-11-20 | TSE | Quem governa hoje (renúncias e substituições de 2026 não estão no TSE) | "Hoje" do Executivo só mostra o presidente eleito em 2022 e o governador reeleito; nos demais estados, a explicação |
 | 2026-11-20 | Senado | Ocupante da cadeira eleita em 2022 quando não é o titular empossado em 2023 (9 estados) | "A partir de fev/2027" mostra só os eleitos de 2026 e aponta para "Hoje" |
+| 2026-11-21 | Câmara | 1.952 propostas da Câmara (e 17 do Senado) sem situação: o arquivo anual e a API (`statusProposicao.descricaoSituacao`) vêm nulos, mais nas apresentadas de jul a nov/2026 | Em `/propostas` aparecem como "Situação: — (a fonte não traz)" e só no filtro "Todas as situações" |
+| 2026-11-21 | Câmara / Senado | `proposicoes` só tem as propostas com algum autor no site (ex.: PL 2338/2023, do Senado, não está) | `/propostas` diz que a lista tem só essas e que só esses autores aparecem; a autoria completa fica na página oficial |

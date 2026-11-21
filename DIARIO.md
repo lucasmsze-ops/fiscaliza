@@ -15,6 +15,35 @@ Modelo:
 
 ---
 
+## 2026-11-21 · revisão no celular
+**Feito:** título das N2 a 16 px da barra de vidro (era 0 em Propostas, Como funciona e Comparar: `mb-4` no `BarraVoltar`);
+fim das páginas mais curto no celular (`pb-4` no `main`, rodapé numa linha só, espaçador da tab bar de 96 para 88 px);
+"Próximas votações" sem espremer a contagem; `consertarCaracteres`/`textoOficial` em `lib/texto.ts` (cron e tela) e
+manchete com três leis distintas ou mais = "Várias leis: ..."; `/propostas` guarda a consulta 5 min e tenta de novo uma vez.
+**Achado:** a Câmara grava "?" no lugar do espaço especial depois de "nº", do hífen ("Decreto?Lei", "boa?fé") e da
+ligadura "fi" ("Grati?cações") em 38 ementas; a API devolve igual. Sem o espaço, a regra das datas não reconhecia
+"Lei nº?200, de 30 de agosto de 2023", e o título da pauta do PLP 299/2026 saía com as seis leis e os "?".
+Uma contagem do Supabase deu 500 (tempo esgotado) com várias páginas abertas ao mesmo tempo.
+**Decidido:** "Várias leis", sem o número: listas no plural ("as Leis nºs 8.072, 12.694...") não dão para contar com certeza.
+**Próximo passo:** o usuário confere no iPhone se ainda sobra espaço no fim de alguma tela; depois, E23h.
+
+---
+
+## 2026-11-21 · E23g · Propostas
+**Feito:** `/propostas` (`app/propostas/page.tsx`, `components/FiltrosPropostas.tsx`, `lib/propostas.ts`): resumo com
+encontradas e viraram norma, busca e filtros Casa, tipo, situação e ano no endereço, 20 por página, autores do site com
+link para o crachá e link oficial; `repo.buscarProposicoes` nas duas origens; `faixa()` e `contar()` com filtro em
+`lib/supabase.ts`; link "Todas as propostas" em Votações; regra dos grupos de situação em `/como-funciona#propostas`.
+**Decidido:** consulta ao banco a cada filtro, e não índice na CDN: são 25.892 propostas (~2,5 MB comprimido, pesado no
+celular). Sem migração: busca sem acento por `imatch` com as variantes acentuadas de cada letra (0,1–0,6 s). Situação em
+três grupos pela lista fechada de situações de encerramento (Câmara e Senado, conferida nas 65 situações do banco); situação
+nova cai em "Em tramitação". O que o Executivo enviou (`proposicoes_executivo`) fica fora da lista (segue no crachá do presidente).
+**Lacunas:** 1.969 propostas sem situação na fonte (a API da Câmara também vem nula); a tabela só tem propostas com autor
+no site.
+**Próximo passo:** E23h (Cargos e Dicionário). Pendentes de antes: emendas (chave do Portal da Transparência) e Safari real.
+
+---
+
 ## 2026-11-20 · E23w · estado no Mapa e períodos
 **Feito:** o estado abre embaixo do mapa (sem outra tela); filtro "A partir de"/"Hoje" nas três abas (`VisaoDados.futuro` e
 `executivosHoje` em `lib/visao.ts`); Como funciona em lista que abre; Congresso sem partido de início e lista antes do

@@ -72,6 +72,7 @@ Hoje (protótipo, SP):
 /monitorando        convite ao cadastro ("Em breve") e abas "Quem votei" (santinho de 2026 em ingresso, do cargo mais alto ao mais baixo, com o número de urna; E23p/E23s) e "Monitorando" (quem a pessoa monitora neste navegador e a linha do tempo de votos, projetos, leis e notícias, com o que é novo desde a última visita; E23e/E23s)
 /comparar           de 2 a 5 políticos lado a lado, sem nota nem ranking (E23f; `?ids=a,b`)
 /me-representa      redireciona para o Mapa (a página saiu em 2026-11-13; `?uf=` e `?cidade=` seguem)
+/propostas          propostas que podem virar lei desde 2023 com autor no site (E23g): busca na ementa (sem acento) ou pelo número, filtros Casa, tipo, situação e ano no endereço, 20 por página; consulta o banco a cada filtro (N2, link em Votações)
 /votacoes/[id]      uma votação do Plenário (E23k): placar, regra, ementa, caminho, como votou cada partido (id = casa-idExterno)
 /como-funciona      metodologia, fontes, licença, código
 ```
