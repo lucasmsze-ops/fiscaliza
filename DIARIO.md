@@ -30,8 +30,12 @@ aplicado). Folha da União = bloco do Executivo federal (o maior dos quatro). Li
 Veto com qualquer dispositivo derrubado conta como derrubado. O teste no Actions é o próprio cron depois do push.
 **Lacunas:** fração no lugar de % (Amazonas e Amapá, saúde e educação, convertida coluna a coluna), educação de MT e da União em 2022 sem número,
 dívida negativa do ES em 2025, limite da dívida em reais incoerente no RGF. Ver `docs/LACUNAS.md`.
-**Próximo passo:** migração 0015 no SQL Editor; push aprovado; cron manual no Actions conferindo `tesouro_contas`,
-`ibge_indicadores` e `ipea_idh` em `atualizacoes`. Depois, E23y.
+**No ar:** migração 0015 rodada pelo usuário; push 9ad72e9. Primeiro cron manual (44945651943): IBGE, Ipeadata, Senado e
+Congresso responderam do Actions; o SICONFI deu 429 depois de ~300 consultas em 2 min e 8 estados ficaram sem contas (o cron
+saiu com 1, nada se perdeu). Correção 8bdc3b0: uma consulta por vez, a cada 0,8 s, e esperas de 15 s a 2 min no 429
+(`fetchWithRetry` com base configurável e Retry-After). Segundo cron (44946559753) verde: no Supabase, 668 números das contas
+(28 entes), 2.833 indicadores, 3.163 atos e 206 vetos.
+**Próximo passo:** E23y — a página do executivo no layout do protótipo (versão 112 do canvas), lendo as quatro tabelas.
 
 ## 2026-11-21 · protótipo do executivo e planejamento (E23x, E23y)
 **Feito:** telas "Executivo — Presidente" e "Executivo — Governador (SP)" no canvas Liquid Glass (versão 112, aprovadas),

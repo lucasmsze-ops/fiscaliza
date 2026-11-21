@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E23x** (atualizar esta linha ao avançar). E23x e E23y (página do executivo) entram antes da E23h, a pedido do usuário (2026-11-21). E23g fechada em 2026-11-21 (`/propostas`). E23n fechada em 2026-11-20 (PDFs dos planos na release `planos-2026`). E22 fechada: o run agendado de 04/11 às 17h15 UTC
+**Etapa atual: E23y** (atualizar esta linha ao avançar). E23x e E23y (página do executivo) entram antes da E23h, a pedido do usuário (2026-11-21); E23x fechada em 2026-11-21 (dados no ar). E23g fechada em 2026-11-21 (`/propostas`). E23n fechada em 2026-11-20 (PDFs dos planos na release `planos-2026`). E22 fechada: o run agendado de 04/11 às 17h15 UTC
 terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p, E23q, E23r, E23s, E23t, E23u, E23v e E23w foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
@@ -682,8 +682,10 @@ linha do tempo da tramitação fica oculta (só a situação atual é coletada).
 ### E23x · Executivo: contas, indicadores, atos e vetos no cron (pedido de 2026-11-21)
 O usuário aprovou o protótipo "Executivo — Presidente" e "Executivo — Governador (SP)" (canvas, versão 112): a página do
 executivo vira acompanhamento do governo, com dado oficial. Esta etapa traz os dados; a E23y monta a página.
-- [ ] Testar do Actions as fontes que o cron ainda não usa (em vez do workflow temporário: o próprio cron manual depois do
-      push, com a migração 0015 rodada; o job que não alcançar a fonte falha sozinho e não apaga nada):
+- [x] Testar do Actions as fontes que o cron ainda não usa (em vez do workflow temporário: o próprio cron manual depois do
+      push, com a migração 0015 rodada; o job que não alcançar a fonte falha sozinho e não apaga nada). Resultado: IBGE
+      (apisidra), Ipeadata, Senado e Congresso respondem; o SICONFI respondeu 429 depois de ~300 consultas em 2 min (run
+      44945651943) e passou com uma consulta a cada 0,8 s (run 44946559753, verde):
       SICONFI (`apidatalake.tesouro.gov.br/ords/siconfi/tt`) e IBGE (`apisidra.ibge.gov.br/values` e
       `servicodados.ibge.gov.br/api/v3/agregados`; a API de localidades do IBGE não respondeu a runners em 2026-11-02). O que não
       responder no Actions vira script local com arquivo versionado em `data/` (como `municipios-ibge.json`), anotado em LACUNAS.
@@ -709,7 +711,8 @@ executivo vira acompanhamento do governo, com dado oficial. Esta etapa traz os d
       `scripts/sonda/validar.ts`; `docs/CRON.md` e o modelo de dados do `CLAUDE.md`.
 - Pronto quando: o ensaio do cron (`--sem-publicar`) traz as quatro tabelas para a União e as 27 UFs, e os números de SP e da União
   batem com os do protótipo. (Ensaio de 2026-11-21: 668 números das contas, 2.833 dos indicadores (com o IDH), 3.163 atos, 206 vetos; SP e
-  União iguais ao protótipo; validação ok. Falta a primeira execução no Actions.)
+  União iguais ao protótipo; validação ok. No ar em 2026-11-21: migração 0015 rodada pelo usuário, push 9ad72e9 e 8bdc3b0,
+  cron manual 44946559753 verde; no Supabase 668 + 2.833 + 3.163 + 206 linhas, 28 entes.)
 
 ### E23y · Executivo: página no layout do protótipo (pedido de 2026-11-21)
 Layout aprovado no canvas (versão 112): Contas do governo → Como o país/estado está → Placar com o Congresso → O que o presidente
