@@ -178,7 +178,9 @@ fica com a UF errada para "quem representa o estado". Listas por estado usam `ma
   vale o maior); dívida no RGF Anexo 02 (DCL/RCL no 3º quadrimestre, só estados). A coluna "Valor Apurado" do Anexo 14 dos
   estados nem sempre é o aplicado (SP, educação de 2024: a base de R$ 209 bi): o site usa só o %. O valor em reais do
   limite da dívida não bate com 200% da RCL em todo quadrimestre (SP, 3º de 2025: 170%): o limite vem da Resolução do
-  Senado nº 40/2001. Relatório não entregue = lista vazia.
+  Senado nº 40/2001. Relatório não entregue = lista vazia. **Limite de ritmo:** no Actions, 429 depois de ~300 consultas em
+  2 minutos (~150/min; da máquina local, 180/min passaram): uma consulta por vez, a cada 0,8 s, e no 429 esperas de 15 s a
+  2 min (`lib/siconfi.ts#aVez`).
 - **IBGE** (`apisidra.ibge.gov.br/values/t/{tabela}/n1/all/n3/all/v/{var}/p/all`, `lib/ibge.ts`): 4099 desemprego, 4660 v5933
   renda média real, 4708 v12466 informalidade, 5877 v9948 pobreza (ODS 1.2.1), 7060 v2265 IPCA em 12 meses (só Brasil, 10
   regiões metropolitanas e 6 capitais: 11 UFs sem IPCA), 5932 v6562 PIB em 4 trimestres (só Brasil). Primeira linha é o

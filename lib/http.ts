@@ -2,7 +2,8 @@
  * Cliente HTTP único dos adapters e do cron.
  *
  * - timeout de 30 s por tentativa
- * - retry com backoff exponencial (1 s, 2 s, 4 s) em erro de rede, 429 e 5xx
+ * - retry com backoff exponencial (1 s, 2 s, 4 s; base configurável) em erro de rede, 429 e 5xx; no 429, espera pelo
+ *   menos o `Retry-After` da resposta
  * - log por endpoint: status, tentativa e duração
  *
  * Uma falha num endpoint lança `HttpError`; quem chama decide se aborta o job.
@@ -15,6 +16,8 @@ export interface FetchOptions {
   retries?: number;
   /** Rótulo curto para o log, ex.: "camara:/deputados/{id}". */
   label?: string;
+  /** Espera antes da 2ª tentativa (dobra a cada nova); padrão 1 s. Fonte com limite por minuto (SICONFI) usa mais. */
+  backoffMs?: number;
 }
 
 export class HttpError extends Error {
@@ -58,8 +61,10 @@ export async function fetchWithRetry(
   const label = opts.label ?? new URL(url).pathname;
 
   let lastError: unknown;
+  let retryAfterMs = 0;
   for (let attempt = 1; attempt <= retries + 1; attempt++) {
     const started = Date.now();
+    retryAfterMs = 0;
     try {
       const res = await fetch(url, {
         headers: opts.headers,
@@ -69,12 +74,14 @@ export async function fetchWithRetry(
       if (res.ok) return res;
       lastError = new HttpError(url, res.status, `HTTP ${res.status} em ${url}`);
       if (!isRetryable(res.status)) throw lastError;
+      const ra = Number(res.headers.get("retry-after"));
+      if (res.status === 429 && Number.isFinite(ra) && ra > 0) retryAfterMs = Math.min(ra, 300) * 1000;
     } catch (err) {
       if (err instanceof HttpError) throw err;
       lastError = new HttpError(url, null, `${label}: ${describe(err)}`);
       log(label, null, attempt, Date.now() - started, describe(err));
     }
-    if (attempt <= retries) await sleep(1000 * 2 ** (attempt - 1));
+    if (attempt <= retries) await sleep(Math.max(retryAfterMs, (opts.backoffMs ?? 1000) * 2 ** (attempt - 1)));
   }
   throw lastError;
 }

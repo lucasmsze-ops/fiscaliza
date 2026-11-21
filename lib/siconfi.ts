@@ -38,11 +38,26 @@ export const urlRreo = (ente: string, ano: number, anexo: string) =>
 export const urlRgf = (ente: string, ano: number, anexo: string) =>
   `${SICONFI}/rgf?an_exercicio=${ano}&in_periodicidade=Q&nr_periodo=3&co_tipo_demonstrativo=RGF&no_anexo=${encodeURIComponent(`RGF-Anexo ${anexo}`)}&co_esfera=${esfera(ente)}&co_poder=E&id_ente=${idEnte(ente)}`;
 
+/**
+ * Ritmo do SICONFI: no GitHub Actions a API respondeu 429 depois de ~300 consultas em 2 minutos (~150 por minuto, em
+ * 2026-11-21; da máquina local, 180 por minuto passaram). Uma consulta por vez e no máximo uma a cada 0,8 s (~75 por
+ * minuto); no 429, esperas longas (15, 30, 60 e 120 s ou o Retry-After). A primeira coleta (~450 consultas) leva ~7 min; as
+ * seguintes vêm quase toda do cache.
+ */
+const INTERVALO_MS = 800;
+let proximaVez = 0;
+async function aVez() {
+  const agora = Date.now(), espera = Math.max(0, proximaVez - agora);
+  proximaVez = Math.max(agora, proximaVez) + INTERVALO_MS;
+  if (espera) await new Promise((r) => setTimeout(r, espera));
+}
+
 /** Todos os itens de um anexo (segue as páginas do ORDS). Lista vazia: o ente ainda não entregou o relatório. */
 export async function itensAnexo(url: string): Promise<Item[]> {
   const out: Item[] = [];
   for (let offset = 0; ; offset += 5000) {
-    const p = await fetchJson<Pagina>(`${url}&offset=${offset}`, { label: "siconfi", timeoutMs: 60_000 });
+    await aVez();
+    const p = await fetchJson<Pagina>(`${url}&offset=${offset}`, { label: "siconfi", timeoutMs: 60_000, retries: 4, backoffMs: 15_000 });
     out.push(...p.items);
     if (!p.hasMore || !p.items.length) return out;
   }

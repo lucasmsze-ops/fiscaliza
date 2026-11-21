@@ -28,7 +28,8 @@ export async function jobContas(hoje: string): Promise<{ tabelas: Record<string,
   const semRelatorio: string[] = [];
   let baixados = 0;
 
-  const r = await mapLimite(tarefas, 2, async ({ ente, ano }) => {
+  // Uma por vez: o SICONFI limita o ritmo por minuto (lib/siconfi.ts#aVez).
+  const r = await mapLimite(tarefas, 1, async ({ ente, ano }) => {
     const arq = `${DIR}/${ente}-${ano}.json`;
     const revalidar = ano === ultimo && hoje < `${ano + 1}-07-01` && (!existsSync(arq) || Date.now() - statSync(arq).mtimeMs > SEMANA);
     if (existsSync(arq) && !revalidar) { linhas.push(...(JSON.parse(readFileSync(arq, "utf8")) as ContaGoverno[])); return; }
