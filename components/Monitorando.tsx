@@ -7,7 +7,7 @@ import type { ItemBusca } from "@/lib/card";
 import { alternar, marcarVistos, podarVistos, useMonitorando } from "@/lib/monitorando";
 import { NOME_FONTE, type Noticia } from "@/lib/noticias";
 import type { ItemPautaAutores } from "@/lib/pauta";
-import { CARGOS, ELEICOES } from "@/lib/quem-votei";
+import { CARGOS, ELEICOES, type ItemExecutivo } from "@/lib/quem-votei";
 import { useSantinho } from "@/lib/quem-votei-estado";
 import { tipoPorExtenso } from "@/lib/votacao";
 import { manchete } from "@/lib/titulo";
@@ -317,27 +317,50 @@ function AbaMonitorando() {
   );
 }
 
-/** "+ Monitorar mais alguém": busca pelo índice de nomes (/dados/politicos, CDN, baixado ao tocar). */
+type Sugestao = Pick<ItemBusca, "id" | "nomeUrna" | "cargo" | "partidoUf" | "fotoUrl" | "busca">;
+/** Presidente e governadores eleitos em 2026 (/dados/executivos), no formato da busca: entram antes dos parlamentares. */
+const sugestaoExecutivo = (e: ItemExecutivo): Sugestao => {
+  const f = e.situacao.startsWith("Eleita");
+  return {
+    id: e.id, nomeUrna: e.nomeUrna, fotoUrl: e.fotoUrl, busca: e.busca, partidoUf: e.uf ? `${e.partido}-${e.uf}` : e.partido,
+    cargo: e.cargo === "presidente" ? `${f ? "Presidenta eleita" : "Presidente eleito"} em 2026` : `${f ? "Governadora eleita" : "Governador eleito"} em 2026`,
+  };
+};
+
+/**
+ * "+ Monitorar mais alguém": busca pelo índice de nomes (/dados/politicos) e pelo de presidente e governadores
+ * (/dados/executivos, só os eleitos, que o Monitorando acompanha), os dois na CDN e baixados ao tocar.
+ */
 function Adicionar({ ja }: { ja: Set<string> }) {
   const [q, setQ] = useState("");
-  const [indice, setIndice] = useState<ItemBusca[] | null>(null);
+  const [indice, setIndice] = useState<Sugestao[] | null>(null);
   const pedido = useRef<Promise<void> | null>(null);
-  const carregar = () => { pedido.current ??= fetch("/dados/politicos").then(async (r) => { if (r.ok) setIndice(await r.json() as ItemBusca[]); }).catch(() => { pedido.current = null; }); };
+  const carregar = () => {
+    pedido.current ??= Promise.all([
+      fetch("/dados/executivos").then(async (r) => (r.ok ? (await r.json() as ItemExecutivo[]).filter((e) => e.eleito).map(sugestaoExecutivo) : [])).catch(() => []),
+      fetch("/dados/politicos").then(async (r) => { if (!r.ok) throw new Error(String(r.status)); return await r.json() as ItemBusca[]; }),
+    ]).then(([execs, pols]) => setIndice([...execs, ...pols])).catch(() => { pedido.current = null; });
+  };
   const t = normalizar(q);
   const sugestoes = useMemo(() => {
     if (t.length < 3 || !indice) return [];
     const termos = t.split(" ");
-    return indice.filter((p) => !ja.has(p.id) && termos.every((x) => p.busca.split(" ").some((w) => w.startsWith(x)))).slice(0, 6);
+    // Nome de urna igual ao digitado primeiro ("lula" acha o presidente antes de "Lula da Fonte"), como na busca do Início.
+    const igual = (p: Sugestao) => normalizar(p.nomeUrna) === t;
+    return indice.filter((p) => !ja.has(p.id) && termos.every((x) => p.busca.split(" ").some((w) => w.startsWith(x))))
+      .sort((a, b) => Number(igual(b)) - Number(igual(a))).slice(0, 6);
   }, [t, indice, ja]);
   return (
     <div className="relative w-full min-w-[260px] sm:w-auto sm:flex-[0_1_420px]">
       <label htmlFor="mo-add" className="sr-only">Monitorar mais alguém</label>
       <input id="mo-add" type="search" autoComplete="off" value={q} onFocus={carregar} onChange={(x) => { setQ(x.target.value); carregar(); }}
         placeholder="+ Monitorar mais alguém (digite o nome)" className="h-11 w-full rounded-xl bg-preench px-3.5 text-base text-texto outline-none placeholder:text-suave focus:ring-2 focus:ring-destaque/40 sm:text-[15px]" />
+      {/* Na própria lista, não flutuando: o cartão do Monitorando corta o que passa da borda (overflow-hidden), e a lista
+          flutuante ficava escondida (visto pelo usuário em 2026-11-22). */}
       {sugestoes.length > 0 && (
-        <div className="absolute inset-x-0 top-12 z-10 overflow-hidden rounded-[22px] vidro-forte bg-[rgba(44,45,52,0.94)]">
+        <div className="mt-2 overflow-hidden rounded-[18px] border border-white/10 bg-white/6">
           {sugestoes.map((p) => (
-            <button key={p.id} type="button" onClick={() => { alternar(p.id, p.nomeUrna); setQ(""); }} className="flex w-full items-center gap-2.5 px-3.5 py-2.5 text-left text-sm hover:bg-preench-forte">
+            <button key={p.id} type="button" onClick={() => { alternar(p.id, p.nomeUrna); setQ(""); }} className="flex w-full items-center gap-2.5 border-t border-white/10 px-3.5 py-2.5 text-left text-sm first:border-t-0 hover:bg-preench-forte">
               {p.fotoUrl ? <img src={p.fotoUrl} alt="" width={32} height={32} loading="lazy" className="size-8 shrink-0 rounded-full bg-preench object-cover object-top" /> : <span aria-hidden="true" className="size-8 shrink-0 rounded-full bg-preench" />}
               <span><strong>{p.nomeUrna}</strong> <span className="text-xs text-suave">{p.cargo} · {p.partidoUf}</span></span>
             </button>
