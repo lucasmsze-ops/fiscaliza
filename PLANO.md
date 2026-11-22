@@ -869,7 +869,14 @@ decisão 3 em `docs/PROTOTIPO.md`) · "votação da semana" como
 destaque em `/votacoes` · efetividade · suplentes · RSS/ICS · seguir tema (sem conta: no
 localStorage) · dados abertos para download · **conta e resumo semanal por e-mail** (decisão de 2026-11-20:
 escopo futuro; cadastro com login, escolhas salvas em qualquer aparelho, resumo do que fizeram os monitorados;
-hoje só o convite "Em breve" do Monitorando; antes de codar, rever o princípio 3 do `CLAUDE.md`).
+hoje só o convite "Em breve" do Monitorando; antes de codar, rever o princípio 3 do `CLAUDE.md`). **Login (conversa de
+2026-11-22, para depois):** começar só com o Google pelo Supabase Auth (grátis até 50 mil usuários ativos por mês; o Google
+confirma o e-mail, sem senha nem e-mail a enviar; o usuário cria o cliente OAuth no Google Cloud e cola as chaves no
+Supabase). E-mail e senha depois, quando houver domínio próprio: o envio embutido do Supabase só entrega à equipe do
+projeto e os serviços grátis (Resend) exigem domínio (~R$ 40/ano, fora do custo zero). Duas etapas: (1) entrar e sair
+com o Google no lugar do "Em breve"; (2) Monitorando e "Quem votei" na conta (tabela com RLS, só a própria linha; o que
+está no navegador sobe no primeiro login), "Excluir minha conta" e texto de privacidade (LGPD; pedir ao Google só o
+e-mail). Antes: rever o princípio 3 com o usuário e aprovar a dependência da biblioteca do Supabase.
 
 Já viraram etapas: fidelidade partidária (E26), patrimônio (E24), comparador (Passo 7).
 Saíram com a mudança de escopo: alerta pré-votação (aviso real) e "quem vota como eu" (dependia

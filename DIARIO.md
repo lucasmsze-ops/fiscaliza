@@ -15,6 +15,15 @@ Modelo:
 
 ---
 
+## 2026-11-22 · ajustes no ar (executivo e Monitorando)
+**Feito:** listas de contas e indicadores do executivo começam todas fechadas (pedido do usuário; b00d9db). Busca do
+Monitorando: a lista de sugestões ficava escondida (flutuava para fora do cartão com overflow-hidden) e agora aparece dentro
+dele; passa a incluir presidente e governadores eleitos (`/dados/executivos`), com o nome igual ao digitado primeiro
+("lula" acha o presidente antes de "Lula da Fonte") (ead9122). Os dois no ar.
+**Decidido:** login fica para depois; quando vier, começa só com o Google (Supabase Auth) e e-mail e senha só com domínio
+próprio. Plano em duas etapas registrado no backlog do `PLANO.md`.
+**Próximo passo:** E23h (Cargos e Dicionário), em um chat novo.
+
 ## 2026-11-21 · E23y (página do executivo no protótipo)
 **Feito:** `/executivos/[id]` refeita na ordem do protótipo aprovado (canvas v112): Contas do governo (lista estilo Ajustes, régua
 com a marca do mínimo, limite ou meta), Como o país/estado está (lista estilo Ações com minigráfico e variação desde 2022), Placar
