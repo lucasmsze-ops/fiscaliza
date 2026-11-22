@@ -75,7 +75,9 @@ Hoje (protótipo, SP):
 /me-representa      redireciona para o Mapa (a página saiu em 2026-11-13; `?uf=` e `?cidade=` seguem)
 /propostas          propostas que podem virar lei desde 2023 com autor no site (E23g): busca na ementa (sem acento) ou pelo número, filtros Casa, tipo, situação e ano no endereço, 20 por página; consulta o banco a cada filtro (N2, link em Votações)
 /votacoes/[id]      uma votação do Plenário (E23k): placar, regra, ementa, caminho, como votou cada partido (id = casa-idExterno)
-/como-funciona      metodologia, fontes, licença, código
+/como-funciona      metodologia, fontes, licença, código; no topo, "Entenda" leva a Cargos e Dicionário
+/cargos             o que faz cada cargo eleito, pela Constituição (E23h; `lib/cargos.ts`): quantos, mandato, eleição, idade, reeleição e atribuições, cada regra com o link para o artigo no Planalto (`#art84`); âncora por cargo (`/cargos#senador`)
+/dicionario         os termos de `lib/glossario.ts` em ordem alfabética, com âncora (`/dicionario#veto`) e a lei que os define (E23h)
 ```
 **Navegação (2026-11-20, protótipo Liquid Glass):** N1 são as telas do menu (`/`, `/mapa`, `/congresso`, `/votacoes`,
 `/monitorando`; lista em `lib/navegacao.ts`): no celular, marca com Entrar e Dúvidas no topo e a tab bar de vidro no
@@ -88,7 +90,7 @@ do site; senão, vai para a N1 de origem). Visual: protótipo Liquid Glass, semp
 
 Planejadas (detalhar no PLANO ao chegar): lista completa com filtros em `/votacoes` (E30),
 `/uf/[uf]`, `/cidade/[ibge]` ("quem me representa"), `/eleicoes`, `/governos`,
-`/partidos`, `/cargos`, `/dicionario`, `/mais-vistos`, `/atualizacoes`.
+`/partidos`, `/mais-vistos`, `/atualizacoes`.
 
 A colinha tinha `opengraph-image.tsx` (preview com foto, cargo, status e números; saiu com a colinha na E23c); o card de compartilhamento do crachá entra na E33, com Casa e período sempre explícitos, porque um senador eleito pode ter números da Câmara. `metadataBase` vem de `VERCEL_PROJECT_PRODUCTION_URL` (ou `NEXT_PUBLIC_SITE_URL`). A fonte padrão do `next/og` só tem peso regular; buscar fonte externa na hora não é permitido.
 
@@ -261,7 +263,7 @@ Desenho em `docs/CRON.md`. Desde a E22 só o Actions publica; localmente, apenas
 ## Convenções de código
 
 - Um adapter por fonte em `lib/{tse,camara,senado}.ts`, retornando tipos internos (`Politico`, `Votacao`, `Voto`). Nenhum componente conhece o shape das APIs.
-- Componentes em `components/`. `PoliticoCard` é o único card; reutilizado em busca, colinha e OG. Na página do político, o topo é o crachá (`components/Cracha.tsx`, layout do protótipo, E23), que exibe os mesmos `CardDados`. Os dois só exibem `CardDados` de `lib/card.ts#montarCard`. Fotos com `<img>` direto da URL oficial (nunca `next/image`, que passaria pela Vercel). Explicação de termos com `components/Termo.tsx` (popover nativo do HTML, sem biblioteca).
+- Componentes em `components/`. `PoliticoCard` é o único card; reutilizado em busca, colinha e OG. Na página do político, o topo é o crachá (`components/Cracha.tsx`, layout do protótipo, E23), que exibe os mesmos `CardDados`. Os dois só exibem `CardDados` de `lib/card.ts#montarCard`. Fotos com `<img>` direto da URL oficial (nunca `next/image`, que passaria pela Vercel). Explicação de termos com `components/Termo.tsx` (popover nativo do HTML, sem biblioteca); `lib/glossario.ts` é a única lista de termos (popover, `/dicionario` e a página da votação): termo novo entra lá, nunca em outra lista.
 - Textos de interface em português do Brasil, sem jargão legislativo sem tooltip (PEC, PL, MP, obstrução, quociente).
 - Ementa como título passa por `lib/titulo.ts#manchete` (regras fixas sobre o texto oficial, sem LLM; E23u); a ementa inteira fica no detalhe e no link oficial. Votação com notícia da agência da Casa usa o título dela, com o crédito.
 - Texto oficial (ementa, descrição) passa por `lib/texto.ts#textoOficial` antes de gravar ou mostrar. Mudança numa regra de título: rodar a comparação antiga × nova em todas as ementas do banco antes de publicar (2026-11-21: uma regra nova comia o "nos" de "nos 3 meses") e pôr o caso real em `tests/titulo.test.ts`.

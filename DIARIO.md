@@ -15,6 +15,22 @@ Modelo:
 
 ---
 
+## 2026-11-22 · E23h (Cargos e Dicionário)
+**Feito:** `/cargos` (`lib/cargos.ts`): os sete cargos eleitos por esfera, em linhas que abrem, com quantos, mandato, eleição,
+posse, idade mínima, reeleição, salário (Congresso) e o que faz; cada regra com o link para o artigo no Planalto. `/dicionario`:
+os termos de `lib/glossario.ts` (18 + 30 novos) em ordem alfabética, com âncora, lei de origem e "Como calculamos" nos números do
+site. A seção "Termos" saiu de `/como-funciona` (no lugar, "Entenda" no topo com Cargos e Dicionário); o "?" de termo que não é
+métrica leva ao verbete; a página da votação monta "um destaque: ..." a partir do verbete. "O que faz um senador ›" nas abas do
+Mapa. `components/Assunto.tsx` (linha que abre) passou a servir `/como-funciona` e `/cargos`. 9 testes novos (148 no total,
+inclui o número de deputados estaduais pelo art. 27); build ok; conferido no celular (preview).
+**Decidido:** só o que a Constituição Federal e as leis nacionais dizem: as atribuições de governador, prefeito e dos legislativos
+locais variam por estado e município e ficam com a frase "está na Constituição de cada estado / lei orgânica". Texto da MP
+corrigido para "60 dias, prorrogáveis por mais 60" (era "até 120 dias"). Conferido no Planalto em 2026-11-22: arts. 14, 25, 27–32,
+44–47, 49, 51, 52, 57, 62, 64–66, 76–86, 165 e 212 da Constituição, LC 101/2000 (arts. 2º e 20), LC 141/2012 (arts. 6º e 7º),
+LC 78/1993, Lei 9.096/1995 (art. 11-A) e Código Eleitoral (arts. 84 e 108).
+**Lacunas:** Código Eleitoral compilado sem âncora por artigo; atribuições estaduais e municipais sem base aberta única.
+**Próximo passo:** E23j (filtro por tema na aba Propostas do crachá).
+
 ## 2026-11-22 · ajustes no ar (executivo e Monitorando)
 **Feito:** listas de contas e indicadores do executivo começam todas fechadas (pedido do usuário; b00d9db). Busca do
 Monitorando: a lista de sugestões ficava escondida (flutuava para fora do cartão com overflow-hidden) e agora aparece dentro

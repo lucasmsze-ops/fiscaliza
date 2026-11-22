@@ -168,7 +168,7 @@ central do `CLAUDE.md`. Na E23, achar o lugar de cada um no layout do crachá:
   tramitação, que não é coletada (hoje só a situação atual). A lista entra na E25; a linha do tempo,
   só se a tramitação passar a ser coletada.
 
-### Cargos, Dicionário → E23d
+### Cargos, Dicionário → E23h (no ar em 2026-11-22)
 - **Ambas são texto fixo com fonte legal:** antecipadas por não dependerem de coleta.
 - **Dicionário:** junta com os termos de `lib/glossario.ts`, sem duplicar.
 

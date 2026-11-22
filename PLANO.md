@@ -3,7 +3,7 @@
 Cada etapa cabe numa sessão de trabalho (um dia). A ordem importa: cada uma usa o que a
 anterior produziu. Marcar `[x]` quando concluída e registrar a sessão no `DIARIO.md`.
 
-**Etapa atual: E23h** (atualizar esta linha ao avançar). E23x e E23y (página do executivo) fechadas em 2026-11-21, antes da E23h, a pedido do usuário. E23g fechada em 2026-11-21 (`/propostas`). E23n fechada em 2026-11-20 (PDFs dos planos na release `planos-2026`). E22 fechada: o run agendado de 04/11 às 17h15 UTC
+**Etapa atual: E23j** (atualizar esta linha ao avançar; só falta o filtro por tema na aba Propostas do crachá). E23h fechada em 2026-11-22 (`/cargos` e `/dicionario`). E23x e E23y (página do executivo) fechadas em 2026-11-21, antes da E23h, a pedido do usuário. E23g fechada em 2026-11-21 (`/propostas`). E23n fechada em 2026-11-20 (PDFs dos planos na release `planos-2026`). E22 fechada: o run agendado de 04/11 às 17h15 UTC
 terminou verde. E22b, E23, E23b, E23c, E23i, E23k, E23l, E23o, E23p, E23q, E23r, E23s, E23t, E23u, E23v e E23w foram feitas adiantadas a pedido do usuário.
 
 Regras de cada etapa:
@@ -745,6 +745,16 @@ assinou → Plano de governo (PDF) → Sobre a candidatura (recolhido). Sem subt
 ### E23h · Cargos e Dicionário
 `/cargos` e `/dicionario`: texto fixo com fonte legal (Constituição, regimentos). O Dicionário
 junta os termos de `lib/glossario.ts`, sem duplicar.
+- [x] `/cargos` (`lib/cargos.ts`): presidente, senador, deputado federal, governador, deputado estadual, prefeito e
+      vereador, por esfera, em linhas que abrem (`components/Assunto.tsx`, o mesmo de `/como-funciona`): quantos,
+      mandato, eleição, posse, idade mínima, reeleição, salário (Congresso) e o que faz, cada regra com o link para o
+      artigo no Planalto (`constituicao.htm#art84`). Conferido no texto oficial em 2026-11-22. Âncora por cargo.
+- [x] `/dicionario`: os termos de `lib/glossario.ts` (48 com os 30 novos: veto, sanção, maiorias, emenda, destaque,
+      federação, quociente, orçamento, RCL...) em ordem alfabética, com âncora por termo, a lei que o define e "Como
+      calculamos" nos que são números do site. A seção "Termos" de `/como-funciona` saiu; o "?" de termo que não é
+      métrica leva ao verbete. A página da votação monta "um destaque: ..." a partir do verbete (`fraseTermo`).
+- [x] Links: "Entenda" no topo de `/como-funciona` e "O que faz um senador ›" em cada aba do Mapa.
+- Pronto quando: as duas páginas no ar, com cada regra ligada ao texto oficial.
 
 ### E23i · Crachá completo
 O que falta do crachá do protótipo com dado que já existe: "Votou com o partido?" (orientação do
