@@ -31,7 +31,8 @@ Acre, segue como "novo": não há fonte aberta de quem governa hoje, regra da E2
 **Lacunas:** títulos de leis que alteram a LOA saem longos pela regra de manchete ("Lei 15.346/2026, que estima a receita...: o
 exercício financeiro de 2026"); a ementa inteira está no link e no título do item. A rotina nova dos acordos só vale no banco
 depois do próximo cron.
-**Próximo passo:** push aprovado; cron manual (aplica a regra nova da rotina); conferir no ar. Depois, E23h.
+**No ar:** push 2b6d73a; cron manual 44966999647 verde (19 atos passaram para rotina); página conferida em produção.
+**Próximo passo:** E23h (Cargos e Dicionário).
 
 ## 2026-11-21 · E23x (coleta do executivo, pronta no ensaio)
 **Feito:** adapters `lib/siconfi.ts` (RREO Anexos 14 e 01, RGF Anexos 01 e 02, União e 27 UFs), `lib/ibge.ts` (apisidra: desemprego,

@@ -739,7 +739,8 @@ assinou → Plano de governo (PDF) → Sobre a candidatura (recolhido). Sem subt
 - [x] Lista completa dos atos em `/executivos/presidente/atos` (ano, tipo e rotina no endereço, 30 por página), aberta por "Ver os N
       atos de {ano}" e pelos números da rotina.
 - Pronto quando: as páginas do presidente, de um governador reeleito e de um novo seguem o protótipo no celular e no
-  computador, no ar. (Conferido no preview com o Supabase em 2026-11-21: presidente, SP e AL.)
+  computador, no ar. (Conferido no preview com o Supabase em 2026-11-21: presidente, SP e AL. No ar em 2026-11-21: push
+  2b6d73a, cron manual 44966999647 verde, 19 decretos de execução de acordos passados para rotina, páginas revalidadas.)
 
 ### E23h · Cargos e Dicionário
 `/cargos` e `/dicionario`: texto fixo com fonte legal (Constituição, regimentos). O Dicionário
