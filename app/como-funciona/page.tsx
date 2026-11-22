@@ -3,8 +3,9 @@ import Link from "next/link";
 import { BarraVoltar } from "@/components/BarraVoltar";
 import { Termo } from "@/components/Termo";
 import { AbrirPelaAncora } from "@/components/AbrirPelaAncora";
+import { Assunto } from "@/components/Assunto";
 import { PERIODO_GOVERNO, reais } from "@/lib/card";
-import { GLOSSARIO, SECOES, type Secao } from "@/lib/glossario";
+import { SECOES, type Secao } from "@/lib/glossario";
 import { CANAIS_CONFERIDOS_EM, CANAIS_EXTERNOS, OUVIDORIA } from "@/lib/cobrar";
 import { SITUACOES_ENCERRADAS } from "@/lib/propostas";
 import { repo } from "@/lib/repo";
@@ -31,21 +32,9 @@ const diaBr = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.sli
 
 const REPO_URL = "https://github.com/lucasmsze-ops/fiscaliza";
 
-/**
- * Um assunto da página como linha que abre (pedido de 2026-11-20: o índice levava a cartões mais abaixo, o que não fazia
- * sentido numa lista). `<details>` nativo, sem JavaScript; `AbrirPelaAncora` abre o que vier no endereço (#participacao).
- */
+/** Seção da página, com o título e a âncora de `lib/glossario.ts#SECOES`. */
 function Secao({ id, children }: { id: Secao; children: React.ReactNode }) {
-  const titulo = SECOES.find((s) => s.id === id)!.titulo;
-  return (
-    <details id={id} className="group scroll-mt-16 border-t border-borda first:border-t-0">
-      <summary className="flex min-h-12 cursor-pointer list-none items-center gap-3 px-4 py-2.5 text-base text-texto hover:bg-white/5 [&::-webkit-details-marker]:hidden">
-        <h2 id={`h-${id}`} className="flex-1 text-base font-normal group-open:font-semibold">{titulo}</h2>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(235,235,245,0.55)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 transition-transform group-open:rotate-90"><path d="m9 5 7 7-7 7" /></svg>
-      </summary>
-      <div className="grid gap-3 px-4 pb-4 text-[15px] leading-relaxed text-texto/85">{children}</div>
-    </details>
-  );
+  return <Assunto id={id} titulo={SECOES.find((s) => s.id === id)!.titulo}>{children}</Assunto>;
 }
 
 const Ext = ({ href, children }: { href: string; children: React.ReactNode }) => (
@@ -102,6 +91,21 @@ export default async function ComoFunciona() {
           </div>
         ))}
       </section>
+
+      <nav aria-labelledby="cf-entenda" className="grid gap-2">
+        <h2 id="cf-entenda" className="px-5 text-[13px] font-semibold tracking-[0.4px] text-suave uppercase">Entenda</h2>
+        <div className="vidro overflow-hidden rounded-card">
+          {([
+            ["/cargos", "Cargos", "O que faz cada cargo eleito, pela Constituição"],
+            ["/dicionario", "Dicionário", "Os termos do Congresso e do orçamento que aparecem no site"],
+          ] as const).map(([href, titulo, sub]) => (
+            <Link key={href} href={href} className="flex min-h-12 items-center gap-3 border-t border-borda px-4 py-2.5 text-texto no-underline first:border-t-0 hover:bg-white/5 hover:text-texto">
+              <span className="grid flex-1 gap-0.5"><span className="text-base">{titulo}</span><span className="text-[13px] leading-[18px] text-suave">{sub}</span></span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(235,235,245,0.55)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0"><path d="m9 5 7 7-7 7" /></svg>
+            </Link>
+          ))}
+        </div>
+      </nav>
 
       <section aria-labelledby="cf-nesta" className="grid gap-2">
         <h2 id="cf-nesta" className="px-5 text-[13px] font-semibold tracking-[0.4px] text-suave uppercase">Nesta página</h2>
@@ -437,16 +441,6 @@ export default async function ComoFunciona() {
         </ul>
       </Secao>
 
-      <Secao id="glossario">
-        <dl className="grid gap-3">
-          {Object.values(GLOSSARIO).map((g) => (
-            <div key={g.titulo}>
-              <dt className="font-medium">{g.titulo}</dt>
-              <dd className="text-suave">{g.texto}</dd>
-            </div>
-          ))}
-        </dl>
-      </Secao>
         </div>
         <p className="px-5 text-[13px] text-suave">Toque num assunto para abrir.</p>
       </section>

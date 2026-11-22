@@ -4,6 +4,7 @@
  * adivinhado. A página vem pré-calculada pelo cron (scripts/cron/votacoes-paginas.ts), porque o
  * partido de cada parlamentar no dia da votação só existe nas respostas das fontes em cache.
  */
+import { fraseTermo } from "./glossario";
 import { manchete } from "./titulo";
 import { orientacaoDoPartido } from "./fidelidade";
 import { siglaPartido } from "./partidos";
@@ -66,14 +67,14 @@ export function rotuloVotado(v: Pick<Votacao, "descricao" | "proposicao">): stri
   return [o && ROTULO_OBJETO[o], t].filter(Boolean).join(", ");
 }
 
-/** O que cada objeto quer dizer, em uma frase (cabeçalho da página). */
+/** O que cada objeto quer dizer, em uma frase (cabeçalho da página); os termos vêm do Dicionário (lib/glossario.ts). */
 export const EXPLICA_OBJETO: Record<ObjetoVotado, string> = {
   principal: "o texto da proposta (ou o texto que a substitui)",
-  emenda: "uma emenda: uma mudança pontual no texto",
-  destaque: "um destaque: um trecho separado para ser votado à parte, que fica ou sai do texto",
-  requerimento: "um requerimento: um pedido sobre o andamento (adiar, retirar de pauta, votar por partes, dar preferência)",
-  recurso: "um recurso: pedido para o Plenário rever uma decisão (como o parecer de uma comissão que encerraria a proposta)",
-  redacao: "a redação final: o texto aprovado, já com as mudanças, para conferência",
+  emenda: fraseTermo("uma emenda", "emenda"),
+  destaque: fraseTermo("um destaque", "destaque"),
+  requerimento: fraseTermo("um requerimento", "requerimento"),
+  recurso: fraseTermo("um recurso", "recurso"),
+  redacao: fraseTermo("a redação final", "redacaoFinal"),
   autoridade: "a escolha de uma autoridade indicada (ministro de tribunal, conselheiro, embaixador, diretor de agência)",
 };
 

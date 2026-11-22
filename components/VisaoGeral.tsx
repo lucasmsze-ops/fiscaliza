@@ -232,7 +232,12 @@ export function VisaoGeral({ d }: { d: VisaoDados }) {
             </div>
           )}
 
-          <p className="px-2 text-[13px] leading-[18px] text-suave">Fontes: TSE, Câmara e Senado. Cada número leva à página oficial.</p>
+          <p className="px-2 text-[13px] leading-[18px] text-suave">
+            Fontes: TSE, Câmara e Senado. Cada número leva à página oficial.{" "}
+            <Link href={`/cargos#${aba === "executivo" ? "governador" : aba === "senado" ? "senador" : "deputado-federal"}`} className="text-link no-underline">
+              O que faz {aba === "executivo" ? "um governador" : aba === "senado" ? "um senador" : "um deputado federal"} ›
+            </Link>
+          </p>
         </section>
       )}
     </main>

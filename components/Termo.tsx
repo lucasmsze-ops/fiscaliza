@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { GLOSSARIO, hrefSecao, type TermoGlossario } from "@/lib/glossario";
+import { GLOSSARIO, hrefTermo, type TermoGlossario } from "@/lib/glossario";
 
 /**
  * Termo com explicação. Usa o popover nativo do HTML (sem JavaScript nem dependência): abre com
@@ -36,7 +36,7 @@ export function Termo({ id, termo, explicacao, children }: {
         {explicacao && <span className="mt-1 block">{explicacao}</span>}
         <span className="mt-1 block text-suave">{g.texto}</span>
         <span className="mt-3 flex items-center justify-between gap-3 text-xs">
-          <a href={hrefSecao(g.secao)} className="font-semibold no-underline">{g.secao === "glossario" ? "Outros termos" : "Como calculamos"}</a>
+          <a href={hrefTermo(termo)} className="font-semibold no-underline">{g.secao ? "Como calculamos" : "No Dicionário"}</a>
           <button type="button" popoverTarget={alvo} popoverTargetAction="hide" className="font-semibold text-link">
             Fechar
           </button>
@@ -65,7 +65,7 @@ export function Info({ id, termo, explicacao, rotulo }: { id: string; termo: Ter
         {explicacao && <span className="mt-1 block">{explicacao}</span>}
         <span className="mt-1 block text-suave">{g.texto}</span>
         <span className="mt-3 flex items-center justify-between gap-3 text-xs">
-          <a href={hrefSecao(g.secao)} className="font-semibold no-underline">{g.secao === "glossario" ? "Outros termos" : "Como calculamos"}</a>
+          <a href={hrefTermo(termo)} className="font-semibold no-underline">{g.secao ? "Como calculamos" : "No Dicionário"}</a>
           <button type="button" popoverTarget={alvo} popoverTargetAction="hide" className="font-semibold text-link">Fechar</button>
         </span>
       </span>
