@@ -21,7 +21,7 @@ com a marca do mínimo, limite ou meta), Como o país/estado está (lista estilo
 com o Congresso (barras e vetos, a lista enviada recolhida) e O que o presidente assinou (totais, filtro, 5 recentes sem rotina,
 rotina recolhida), Plano de governo (só o PDF) e Sobre a candidatura (recolhido). Cada item abre o gráfico de linha
 (`components/GraficoLinha.tsx`, desenho montado no servidor em `lib/executivo-painel.ts`; o ano tocável é o único estado no
-client). Acordeão com `<details name>` (um aberto por vez, sem JavaScript), chevron para baixo fechado e para cima aberto,
+client). Acordeão com `<details name>` (todos fechados de início, um aberto por vez, sem JavaScript), chevron para baixo fechado e para cima aberto,
 contexto no "i" (popover nativo). `/executivos/presidente/atos` com filtros ano, tipo e rotina. Repo com as quatro tabelas da
 E23x. Seção `#executivo` em `/como-funciona` no lugar de `#promessas`; `ChecklistPlano` e `lib/promessas.ts` saíram.
 Rotina dos atos inclui os decretos de execução de acordos da ALADI (19). 12 testes novos com dado real (139 no total); build ok.

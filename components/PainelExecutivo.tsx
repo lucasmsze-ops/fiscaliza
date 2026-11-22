@@ -5,7 +5,8 @@ import type { LinhaConta, LinhaIndicador, LinhaPlacar } from "@/lib/executivo-pa
 /**
  * Blocos da página do executivo (E23y, protótipo aprovado em 2026-11-21, versão 112 do canvas): título de seção com o
  * "i" (o contexto que antes era subtítulo), contas do governo em lista estilo Ajustes, indicadores em lista estilo
- * Ações e o placar com o Congresso. Cada item da lista abre o gráfico de linha; um aberto por vez (`<details name>`),
+ * Ações e o placar com o Congresso. Cada item da lista abre o gráfico de linha; todos fechados de início e um aberto por
+ * vez (`<details name>`),
  * com o chevron para baixo fechado e para cima aberto (pedido do usuário).
  */
 
@@ -49,8 +50,8 @@ const RESUMO = "flex w-full cursor-pointer list-none flex-col gap-2.5 px-4 py-3.
 export function ContasGoverno({ linhas }: { linhas: LinhaConta[] }) {
   return (
     <div className="vidro overflow-hidden rounded-card">
-      {linhas.map((l, i) => (
-        <details key={l.chave} name="contas-governo" open={i === 0} className={LINHA}>
+      {linhas.map((l) => (
+        <details key={l.chave} name="contas-governo" className={LINHA}>
           <summary className={RESUMO}>
             <span className="flex items-center gap-3">
               <span aria-hidden="true" className="inline-flex size-[30px] shrink-0 items-center justify-center rounded-lg shadow-[inset_0_1px_0_rgba(255,255,255,0.28)]" style={{ background: l.cor }}>
@@ -85,8 +86,8 @@ export function ContasGoverno({ linhas }: { linhas: LinhaConta[] }) {
 export function IndicadoresLugar({ linhas }: { linhas: LinhaIndicador[] }) {
   return (
     <div className="vidro overflow-hidden rounded-card">
-      {linhas.map((l, i) => (
-        <details key={l.chave} name="indicadores-lugar" open={i === 0} className={LINHA}>
+      {linhas.map((l) => (
+        <details key={l.chave} name="indicadores-lugar" className={LINHA}>
           <summary className={`${RESUMO} py-3`}>
             <span className="flex items-center gap-3">
               <span className="grid min-w-0 flex-1 gap-0.5">
